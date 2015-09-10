@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.Utilities", "ConsoleFx.Utilities\ConsoleFx.Utilities.csproj", "{1F5CBDC3-AA66-401A-9622-AD6926C6B51C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.Parser", "ConsoleFx.Parser\ConsoleFx.Parser.csproj", "{2431B4DD-86B3-4014-AC3B-AB67DD83485A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F5CBDC3-AA66-401A-9622-AD6926C6B51C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F5CBDC3-AA66-401A-9622-AD6926C6B51C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F5CBDC3-AA66-401A-9622-AD6926C6B51C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F5CBDC3-AA66-401A-9622-AD6926C6B51C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2431B4DD-86B3-4014-AC3B-AB67DD83485A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2431B4DD-86B3-4014-AC3B-AB67DD83485A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2431B4DD-86B3-4014-AC3B-AB67DD83485A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2431B4DD-86B3-4014-AC3B-AB67DD83485A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
