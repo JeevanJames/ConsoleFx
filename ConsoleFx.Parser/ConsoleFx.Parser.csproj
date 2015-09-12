@@ -56,9 +56,6 @@
     <Compile Include="Parser.cs" />
     <Compile Include="ParserException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecifiedArgument.cs" />
-    <Compile Include="SpecifiedOption.cs" />
-    <Compile Include="SpecifiedValues.cs" />
     <Compile Include="Styles\ParserStyle.cs" />
     <Compile Include="Styles\WindowsParserStyle.cs" />
     <Compile Include="Validators\BaseValidator.cs" />

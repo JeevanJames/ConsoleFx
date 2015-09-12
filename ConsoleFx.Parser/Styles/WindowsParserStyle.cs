@@ -29,10 +29,8 @@ namespace ConsoleFx.Parser.Styles
         private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?]+)");
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
-        public override SpecifiedValues IdentifyTokens(IEnumerable<string> tokens, Arguments arguments, Options options, Behaviors behaviors)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, Options options, Behaviors behaviors)
         {
-            var values = new SpecifiedValues();
-
             ArgumentType previousType = ArgumentType.NotSet;
             ArgumentType currentType = ArgumentType.NotSet;
 
@@ -46,7 +44,7 @@ namespace ConsoleFx.Parser.Styles
                 if (!optionMatch.Success)
                 {
                     currentType = ArgumentType.Argument;
-                    values.Arguments.Add(token);
+                    yield return token;
                 }
                 else
                 {
@@ -58,12 +56,7 @@ namespace ConsoleFx.Parser.Styles
                     if (availableOption == null)
                         throw new ParserException(ParserException.Codes.InvalidOptionSpecified, Messages.InvalidOptionSpecified, specifiedOptionName);
 
-                    SpecifiedOptionParameters parameters;
-                    if (!values.Options.TryGetValue(availableOption.Name, out parameters))
-                    {
-                        parameters = new SpecifiedOptionParameters();
-                        values.Options.Add(availableOption.Name, parameters);
-                    }
+                    availableOption.Run.Occurences += 1;
 
                     //If no switch parameters are specified, stop processing
                     if (token.Length == specifiedOptionName.Length + 1)
@@ -78,14 +71,12 @@ namespace ConsoleFx.Parser.Styles
                         string value = parameterMatch.Groups[1].Value;
                         if (value.StartsWith(",", StringComparison.OrdinalIgnoreCase))
                             value = value.Remove(0, 1);
-                        parameters.Add(value);
+                        availableOption.Run.Parameters.Add(value);
                     }
                 }
             }
 
             VerifyCommandLineGrouping(previousType, currentType, behaviors.Grouping);
-
-            return values;
         }
 
         //This method is used by the code that validates the command-line grouping. It is

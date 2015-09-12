@@ -29,7 +29,7 @@ namespace ConsoleFx.Parser
     /// Represents a non-option command-line parameter.
     /// </summary>
     [DebuggerDisplay("Argument '{Name ?? string.Empty}' [{Validators.Count} validators]")]
-    public abstract class Argument
+    public sealed class Argument
     {
         public string Name { get; set; }
 

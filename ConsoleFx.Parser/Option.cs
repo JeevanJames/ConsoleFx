@@ -15,7 +15,7 @@ namespace ConsoleFx.Parser
     /// Represents a commandline switch parameter.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
-    public sealed class Option
+    public sealed partial class Option
     {
         public string Name { get; }
         public string ShortName { get; set; }
@@ -82,10 +82,10 @@ namespace ConsoleFx.Parser
 
         public Option ValidateWith(params BaseValidator[] validators)
         {
-            if (Usage.Requirement == OptionRequirement.NotAllowed)
+            if (Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
                 throw new ParserException(1000, $"Cannot add validators to option {Name} because it does not accept parameters.");
             if (Usage.ParameterType == OptionParameterType.Individual)
-                throw new ParserException(1000, $"Cannot add an all-parameter validator for option {Name} because it's parameter type is individual.");
+                throw new ParserException(1000, $"Cannot add an all-parameter validator for option {Name} because it's parameter type is individual. Use the ValidateWith overload that acceprs a parameter index.");
             foreach (BaseValidator validator in validators)
                 Validators.Add(validator);
             return this;
@@ -93,10 +93,10 @@ namespace ConsoleFx.Parser
 
         public Option ValidateWith(int parameterIndex, params BaseValidator[] validators)
         {
-            if (Usage.Requirement == OptionRequirement.NotAllowed)
+            if (Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
                 throw new ParserException(1000, $"Cannot add validators to option {Name} because it does not accept parameters.");
             if (Usage.ParameterType == OptionParameterType.Repeating)
-                throw new ParserException(1000, $"Cannot add an specific parameter validator for option {Name} because it's parameter type is repeating.");
+                throw new ParserException(1000, $"Cannot add a specific parameter validator for option {Name} because it's parameter type is repeating. Use the ValidateWith overload that does not accept a parameter index.");
             if (parameterIndex >= Usage.MaxParameters)
                 throw new ArgumentException($"Parameter index specified {parameterIndex} is greater than the number of parameters allowed for option {Name}.", nameof(parameterIndex));
             foreach (BaseValidator validator in validators)
@@ -110,8 +110,8 @@ namespace ConsoleFx.Parser
         /// to the baseType. Otherwise, it must be of type T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="expression"></param>
-        /// <param name="baseType"></param>
+        /// <param name="expression">Member expression to e</param>
+        /// <param name="baseType">Optional base type that the type T must be assignable to.</param>
         /// <returns></returns>
         private static MemberInfo GetMemberInfoFromExpression<T>(Expression<Func<T>> expression, Type baseType = null)
         {
@@ -226,6 +226,23 @@ namespace ConsoleFx.Parser
             { typeof(double), (Converter<string, double>)double.Parse },
             { typeof(decimal), (Converter<string, decimal>)decimal.Parse },
         };
+    }
+
+    public sealed partial class Option
+    {
+        internal OptionRun Run { get; } = new OptionRun();
+
+        internal void ClearRun()
+        {
+            Run.Occurences = 0;
+            Run.Parameters.Clear();
+        }
+
+        internal sealed class OptionRun
+        {
+            internal int Occurences { get; set; }
+            internal List<string> Parameters { get; } = new List<string>();
+        }
     }
 
     public delegate void OptionHandler(string[] parameters);

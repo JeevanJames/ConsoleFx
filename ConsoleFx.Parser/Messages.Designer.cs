@@ -169,7 +169,7 @@ namespace ConsoleFx.Parser {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; option should be specified at least {1} times.
+        ///   Looks up a localized string similar to The &apos;{0}&apos; option should be specified at least {1} times..
         /// </summary>
         internal static string TooFewOptions {
             get {
@@ -178,7 +178,7 @@ namespace ConsoleFx.Parser {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; option cannot be specified more than {1} times.
+        ///   Looks up a localized string similar to The &apos;{0}&apos; option cannot be specified more than {1} times..
         /// </summary>
         internal static string TooManyOptions {
             get {

@@ -31,14 +31,22 @@ namespace ConsoleFx.Parser
         /// </summary>
         Optional,
 
+        OptionalUnlimited,
+
         /// <summary>
         /// The option is required. Sets the option's MinOccurences and MaxOccurences properties to 1 (one).
         /// </summary>
         Required,
 
-        /// <summary>
-        /// The option is not allowed. Sets the option's MinOccurences and MaxOccurences properties to 0 (zero).
-        /// </summary>
+        RequiredUnlimited,
+    }
+
+    public enum OptionParameterRequirement
+    {
         NotAllowed,
+        Optional,
+        OptionalUnlimited,
+        Required,
+        RequiredUnlimited,
     }
 }

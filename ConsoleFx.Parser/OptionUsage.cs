@@ -52,7 +52,7 @@ namespace ConsoleFx.Parser
             get { return _maxOccurences; }
             set
             {
-                if (value < 0)
+                if (value < 1)
                     throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
                 _maxOccurences = value;
             }
@@ -132,9 +132,15 @@ namespace ConsoleFx.Parser
         {
             get
             {
-                if (MaxOccurences > 0)
-                    return MinOccurences > 0 ? OptionRequirement.Required : OptionRequirement.Optional;
-                return OptionRequirement.NotAllowed;
+                OptionRequirement requirement = MinOccurences > 0 ? OptionRequirement.Required : OptionRequirement.Optional;
+                if (MaxOccurences == int.MaxValue)
+                {
+                    if (requirement == OptionRequirement.Required)
+                        requirement = OptionRequirement.RequiredUnlimited;
+                    else if (requirement == OptionRequirement.Optional)
+                        requirement = OptionRequirement.OptionalUnlimited;
+                }
+                return requirement;
             }
             set
             {
@@ -142,16 +148,61 @@ namespace ConsoleFx.Parser
                 {
                     case OptionRequirement.Optional:
                         MinOccurences = 0;
-                        if (MaxOccurences == 0)
-                            MaxOccurences = 1;
+                        break;
+                    case OptionRequirement.OptionalUnlimited:
+                        MinOccurences = 0;
+                        MaxOccurences = int.MaxValue;
                         break;
                     case OptionRequirement.Required:
                         MinOccurences = 1;
-                        if (MaxOccurences == 0)
-                            MaxOccurences = 1;
                         break;
-                    case OptionRequirement.NotAllowed:
-                        MinOccurences = MaxOccurences = 0;
+                    case OptionRequirement.RequiredUnlimited:
+                        MinOccurences = 1;
+                        MaxOccurences = int.MaxValue;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Shortcut to set the option's parameter occurences based on its requirement.
+        /// </summary>
+        public OptionParameterRequirement ParameterRequirement
+        {
+            get
+            {
+                if (MinParameters == 0 && MaxParameters == 0)
+                    return OptionParameterRequirement.NotAllowed;
+                if (MinParameters == 0)
+                    return MaxParameters == int.MaxValue ? OptionParameterRequirement.OptionalUnlimited : OptionParameterRequirement.Optional;
+                return MaxParameters == int.MaxValue ? OptionParameterRequirement.RequiredUnlimited : OptionParameterRequirement.Required;
+            }
+            set
+            {
+                switch (value)
+                {
+                    case OptionParameterRequirement.Optional:
+                        MinParameters = 0;
+                        if (MaxParameters == 0)
+                            MaxParameters = 1;
+                        break;
+                    case OptionParameterRequirement.OptionalUnlimited:
+                        MinParameters = 0;
+                        MaxParameters = int.MaxValue;
+                        break;
+                    case OptionParameterRequirement.Required:
+                        MinParameters = 1;
+                        if (MaxParameters == 0)
+                            MaxParameters = 1;
+                        break;
+                    case OptionParameterRequirement.RequiredUnlimited:
+                        MinParameters = 1;
+                        MaxParameters = int.MaxValue;
+                        break;
+                    case OptionParameterRequirement.NotAllowed:
+                        MinParameters = MaxParameters = 0;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value));

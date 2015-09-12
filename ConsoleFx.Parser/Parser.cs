@@ -21,18 +21,59 @@ using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Parsers.Validators;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ConsoleFx.Parsers
 {
-    public abstract class Parser<TStyle>
+    public class Parser<TStyle>
         where TStyle : ParserStyle, new()
     {
         public Arguments Arguments { get; } = new Arguments();
         public Options Options { get; } = new Options();
         public Behaviors Behaviors { get; } = new Behaviors();
 
-        private SpecifiedValues Specified { get; set; }
+        public Argument AddArgument(bool optional = false)
+        {
+            var argument = new Argument
+            {
+                IsOptional = optional
+            };
+            Arguments.Add(argument);
+            return argument;
+        }
+
+        public Option AddOption(string name, string shortName = null, OptionRequirement? requirement = null, int minOccurences = 0,
+            int maxOccurences = 1, int? expectedOccurences = null, int minParameters = 0, int maxParameters = 0,
+            int? expectedParameters = null, bool caseSensitive = false, int order = int.MaxValue)
+        {
+            var option = new Option(name)
+            {
+                CaseSensitive = caseSensitive,
+                Order = order,
+            };
+            if (!string.IsNullOrWhiteSpace(shortName))
+                option.ShortName = shortName;
+
+            if (requirement.HasValue)
+                option.Usage.Requirement = requirement.Value;
+            else if (expectedOccurences.HasValue)
+                option.Usage.ExpectedOccurences = expectedOccurences.Value;
+            else
+            {
+                option.Usage.MinOccurences = minOccurences;
+                option.Usage.MaxOccurences = maxOccurences;
+            }
+
+            if (expectedParameters.HasValue)
+                option.Usage.ExpectedParameters = expectedParameters.Value;
+            else
+            {
+                option.Usage.MinParameters = minParameters;
+                option.Usage.MaxParameters = maxParameters;
+            }
+
+            Options.Add(option);
+            return option;
+        }
 
         /// <summary>
         /// This is the co-ordinating method that accepts a set of string tokens and performs all the
@@ -42,155 +83,109 @@ namespace ConsoleFx.Parsers
         /// to start execution. The Run method calls Parse internally to do the main work. Similarly,
         /// other derived classes like DeclarativeConsoleProgram have their own conventions.
         /// </summary>
-        protected void Parse(IEnumerable<string> tokens)
+        public void Parse(IEnumerable<string> tokens)
         {
+            ClearPreviousRun();
+
             //Identify each token passed and add to the SpecifiedValues property.
             var parserStyle = new TStyle();
-            Specified = parserStyle.IdentifyTokens(tokens, Arguments, Options, Behaviors);
+            var specifiedArguments = new List<string>(parserStyle.IdentifyTokens(tokens, Options, Behaviors));
 
-            //For each specified option, do the validations (if any) and then call its handler
-            ValidateOptions();
-            ExecuteOptionHandler();
-
-            CheckArgumentUsage();
-            CheckOptionUsage();
-            ValidateArguments();
+            //Process the specified options and arguments.
+            ProcessOptions();
+            ProcessArguments(specifiedArguments);
         }
 
-        #region Commandline parsing methods
-        //If all the options are valid, validate the option parameters against any parameter validators
-        //decorated on the method.
-        private void ValidateOptions()
+        /// <summary>
+        /// Clears any parsing data from a 
+        /// </summary>
+        private void ClearPreviousRun()
         {
-            foreach (KeyValuePair<string, SpecifiedOptionParameters> specifiedOption in Specified.Options)
-            {
-                //Note: No need to check for null on the option; we know the available option exists, because we checked for invalid options in the IdentifyTokens method
-                Option option = Options[specifiedOption.Key];
-
-                if (option.Validators.Count == 0)
-                    continue;
-
-                int parameterIdx = 0;
-                foreach (string parameter in specifiedOption.Value)
-                {
-                    OptionParameterValidators validatorsByIndex = option.Validators[parameterIdx];
-                    if (validatorsByIndex != null)
-                    {
-                        foreach (BaseValidator validator in validatorsByIndex.Validators)
-                            validator.Validate(parameter);
-                    }
-
-                    validatorsByIndex = option.Validators[-1];
-                    if (validatorsByIndex != null)
-                    {
-                        foreach (BaseValidator validator in validatorsByIndex.Validators)
-                            validator.Validate(parameter);
-                    }
-
-                    parameterIdx++;
-                }
-            }
+            foreach (Option option in Options)
+                option.ClearRun();
         }
 
-        //Iterate through all the options specified in the command line and executes their option
-        //delegates, after performing basic validation.
-        private void ExecuteOptionHandler()
-        {
-            foreach (KeyValuePair<string, SpecifiedOptionParametersCollection> specifiedOption in Properties.Specified.Options)
-            {
-                //Option should exist at this point, since we already checked for non-declared options
-                //in the ValidateOptions method
-                Option option = Options[specifiedOption.Key];
-
-                foreach (SpecifiedOptionParameters parameters in specifiedOption.Value)
-                {
-                    //Attempt to execute the delegate for the specified option. The method can perform
-                    //some basic validation, and if it fails, it can throw an exception.
-                    option.Handler(parameters.ToArray());
-                }
-            }
-        }
-
-        //Get the usage for each option based on the context, and ensure that the usage rules are met
-        private void CheckOptionUsage()
+        private void ProcessOptions()
         {
             foreach (Option option in Options)
             {
-                OptionUsage optionUsage = option.Usages[Properties.Context];
+                if (option.Usage.MinOccurences > 0 && option.Run.Occurences == 0)
+                    throw new ParserException(ParserException.Codes.RequiredOptionAbsent, Parser.Messages.RequiredOptionAbsent, option.Name);
+                if (option.Run.Occurences < option.Usage.MinOccurences)
+                    throw new ParserException(ParserException.Codes.TooFewOptions, Parser.Messages.TooFewOptions, option.Name, option.Usage.MinOccurences);
+                if (option.Run.Occurences > option.Usage.MaxOccurences)
+                    throw new ParserException(ParserException.Codes.TooManyOptions, Parser.Messages.TooManyOptions, option.Name, option.Usage.MaxOccurences);
 
-                //Get the option parameter sets for the given option
-                SpecifiedOptionParametersCollection specifiedOptionParametersCollection = Specified.Options[option] ?? new SpecifiedOptionParametersCollection();
+                if (option.Usage.MinParameters > 0 && option.Run.Parameters.Count == 0)
+                    throw new ParserException(ParserException.Codes.RequiredParametersAbsent, Parser.Messages.RequiredParametersAbsent, option.Name);
+                if (option.Usage.MinParameters == 0 && option.Usage.MaxParameters == 0 && option.Run.Parameters.Count > 0)
+                    throw new ParserException(ParserException.Codes.InvalidParametersSpecified, Parser.Messages.InvalidParametersSpecified, option.Name);
 
-                if (optionUsage.MinOccurences > 0 && specifiedOptionParametersCollection.Count == 0)
-                    throw new ParserException(ParserException.Codes.RequiredOptionAbsent, Messages.RequiredOptionAbsent, option.Name);
+                //TODO: Check against MinParameters and MaxParameters
 
-                if (optionUsage.Requirement == OptionRequirement.NotAllowed && specifiedOptionParametersCollection.Count > 0)
+                //If the option has been used and it has parameters and validators, then validate
+                //all parameters.
+                if (option.Run.Occurences > 0 && option.Run.Parameters.Count > 0 && option.Validators.Count > 0)
                 {
-                    throw new ParserException(ParserException.Codes.InvalidOptionSpecified, Messages.InvalidOptionSpecified,
-                        specifiedOptionParametersCollection[0].OptionName);
+                    int parameterIndex = 0;
+                    foreach (string parameter in option.Run.Parameters)
+                    {
+                        OptionParameterValidators validatorsByIndex = option.Validators[parameterIndex];
+                        if (validatorsByIndex != null)
+                        {
+                            foreach (BaseValidator validator in validatorsByIndex.Validators)
+                                validator.Validate(parameter);
+                        }
+
+                        validatorsByIndex = option.Validators[-1];
+                        if (validatorsByIndex != null)
+                        {
+                            foreach (BaseValidator validator in validatorsByIndex.Validators)
+                                validator.Validate(parameter);
+                        }
+
+                        parameterIndex++;
+                    }
                 }
 
-                if (optionUsage.MaxOccurences > 0)
-                {
-                    if (specifiedOptionParametersCollection.Count < optionUsage.MinOccurences)
-                        throw new ParserException(ParserException.Codes.TooFewOptions, Messages.TooFewOptions, option.Name,
-                            optionUsage.MinOccurences);
-                    if (specifiedOptionParametersCollection.Count > optionUsage.MaxOccurences)
-                        throw new ParserException(ParserException.Codes.TooManyOptions, Messages.TooManyOptions, option.Name,
-                            optionUsage.MaxOccurences);
-                }
-
-                foreach (SpecifiedOptionParameters parameters in specifiedOptionParametersCollection)
-                {
-                    if (optionUsage.MinParameters > 0 && parameters.Count == 0)
-                        throw new ParserException(ParserException.Codes.RequiredParametersAbsent, Messages.RequiredParametersAbsent,
-                            parameters.OptionName);
-                    if (optionUsage.MinParameters == 0 && optionUsage.MaxParameters == 0 && parameters.Count > 0)
-                        throw new ParserException(ParserException.Codes.InvalidParametersSpecified,
-                            Messages.InvalidParametersSpecified, parameters.OptionName);
-
-                    //TODO: Check against MinParameters and MaxParameters
-                }
+                if (option.Run.Occurences > 0)
+                    option.Handler(option.Run.Parameters.ToArray());
             }
         }
 
-        //Check the number of arguments specified on the command-line, against the min
-        //and max specified by the corresponding ArgumentUsage attribute.
-        private void CheckArgumentUsage()
+        /// <summary>
+        /// Process the specified arguments by verifying their usage, validating them and executing
+        /// their handlers.
+        /// </summary>
+        private void ProcessArguments(List<string> specifiedArguments)
         {
-            Arguments arguments = Arguments[Properties.Context];
-            if (arguments == null)
+            if (Arguments.Count == 0)
                 return;
 
+            //Throw exception of number of specified arguments is greater than number of defined arguments.
+            if (specifiedArguments.Count > Arguments.Count)
+                throw new ParserException(ParserException.Codes.InvalidNumberOfArguments, Parser.Messages.InvalidNumberOfArguments);
+
+            //Find the number of arguments that are required.
             int requiredArgumentCount = 0;
-            while (requiredArgumentCount < arguments.Count && !arguments[requiredArgumentCount].IsOptional)
+            while (requiredArgumentCount < Arguments.Count && !Arguments[requiredArgumentCount].IsOptional)
                 requiredArgumentCount++;
 
-            int specifiedArgumentsCount = Specified.Arguments.Count;
+            //Throw exception if not enough required arguments are specified.
+            if (specifiedArguments.Count < requiredArgumentCount)
+                throw new ParserException(ParserException.Codes.InvalidNumberOfArguments, Parser.Messages.InvalidNumberOfArguments);
 
-            if (specifiedArgumentsCount < requiredArgumentCount || specifiedArgumentsCount > arguments.Count)
-                throw new ParserException(ParserException.Codes.InvalidNumberOfArguments, Messages.InvalidNumberOfArguments);
-        }
-
-        //Validate the arguments against any arguments validators that are decorated on the
-        //program class.
-        //Also, in the same process, call the argument's handler delegate.
-        private void ValidateArguments()
-        {
-            Arguments arguments = Arguments[Properties.Context];
-            if (arguments == null)
-                return;
-
-            for (int argumentIdx = 0; argumentIdx < Specified.Arguments.Count; argumentIdx++)
+            //Iterate through all specified arguments and validate.
+            //If validated, run the argument handler.
+            for (int i = 0; i < specifiedArguments.Count; i++)
             {
-                string argumentValue = Specified.Arguments[argumentIdx];
-                Argument argument = arguments[argumentIdx];
+                string argumentValue = specifiedArguments[i];
+                Argument argument = Arguments[i];
                 foreach (BaseValidator validator in argument.Validators)
                     validator.Validate(argumentValue);
 
                 argument.Handler(argumentValue);
             }
         }
-        #endregion
     }
 }

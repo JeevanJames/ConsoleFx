@@ -154,9 +154,9 @@
     <value>Required parameters absent for option '{0}'</value>
   </data>
   <data name="TooFewOptions" xml:space="preserve">
-    <value>"{0}" option should be specified at least {1} times</value>
+    <value>The '{0}' option should be specified at least {1} times.</value>
   </data>
   <data name="TooManyOptions" xml:space="preserve">
-    <value>"{0}" option cannot be specified more than {1} times</value>
+    <value>The '{0}' option cannot be specified more than {1} times.</value>
   </data>
 </root>

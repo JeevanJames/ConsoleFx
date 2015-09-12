@@ -28,6 +28,6 @@ namespace ConsoleFx.Parser.Styles
             return specifiedGrouping;
         }
 
-        public abstract SpecifiedValues IdentifyTokens(IEnumerable<string> args, Arguments arguments, Options options, Behaviors behaviors);
+        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, Behaviors behaviors);
     }
 }
