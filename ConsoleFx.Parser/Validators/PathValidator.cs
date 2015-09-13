@@ -20,7 +20,7 @@ limitations under the License.
 using System;
 using System.IO;
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     public sealed class PathValidator : SingleMessageValidator
     {

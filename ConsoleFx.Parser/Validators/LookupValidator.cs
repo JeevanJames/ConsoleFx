@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     public sealed class LookupValidator : SingleMessageValidator
     {

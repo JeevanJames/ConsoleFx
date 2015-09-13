@@ -20,23 +20,23 @@ limitations under the License.
 using System;
 using System.Runtime.Serialization;
 
-namespace ConsoleFx.Parsers
+namespace ConsoleFx.Parser
 {
     [Serializable]
     public class ParserException : Exception
     {
-        protected ParserException(int errorCode)
-        {
-        }
+        public int ErrorCode { get; }
 
-        public ParserException(int errorCode, string message, params object[] args)
+        public ParserException(int errorCode, string message)
             : base(message)
         {
+            ErrorCode = errorCode;
         }
 
         protected ParserException(int errorCode, string message, Exception innerException)
             : base(message, innerException)
         {
+            ErrorCode = errorCode;
         }
 
         internal ParserException(SerializationInfo info, StreamingContext context)

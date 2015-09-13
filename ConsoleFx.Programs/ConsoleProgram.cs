@@ -17,26 +17,15 @@ limitations under the License.
 */
 #endregion
 
-using System;
+using ConsoleFx.Parser.Styles;
 
-namespace ConsoleFx.Parser.Validators
+namespace ConsoleFx.Programs
 {
-    public sealed class CustomValidator : SingleMessageValidator
+    public sealed class ConsoleProgram<TStyle> : BaseConsoleProgram<TStyle>
+        where TStyle : ParserStyle, new()
     {
-        private readonly Func<string, bool> _validator;
-
-        public CustomValidator(Func<string, bool> validator)
-            : base(Messages.Custom)
+        public ConsoleProgram(ExecuteHandler handler) : base(handler)
         {
-            if (validator == null)
-                throw new ArgumentNullException(nameof(validator));
-            _validator = validator;
-        }
-
-        public override void Validate(string parameterValue)
-        {
-            if (!_validator(parameterValue))
-                ValidationFailed(parameterValue);
         }
     }
 }

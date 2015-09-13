@@ -25,13 +25,13 @@ namespace ConsoleFx.Parser
     public enum OptionParameterType
     {
         /// <summary>
+        /// The parameters are repeating and have the same meaning
+        /// </summary>
+        Repeating,
+
+        /// <summary>
         /// Each parameter is independant, has its own meaning and is at a specific position
         /// </summary>
         Individual,
-
-        /// <summary>
-        /// The parameters are repeating and have the same meaning
-        /// </summary>
-        Repeating
     }
 }

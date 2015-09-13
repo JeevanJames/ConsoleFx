@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleFx.Parsers.Validators {
+namespace ConsoleFx.Parser.Validators {
     using System;
     
     

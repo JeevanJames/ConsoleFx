@@ -17,76 +17,73 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Parsers.Validators;
-using System.Collections.ObjectModel;
-using System.Linq;
+using ConsoleFx.Parser.Validators;
+using System.Collections.Generic;
 
 namespace ConsoleFx.Parser
 {
+    /// <summary>
+    /// Collection of all parameter validators of an option. The collection is grouped by parameter index.
+    /// A parameter index of -1 indicates validators for all parameters.
+    /// </summary>
     public sealed class OptionParameterValidators
     {
-        public OptionParameterValidators(int parameterIndex)
+        private readonly Option _option;
+        private readonly Dictionary<int, ValidatorCollection> _validators = new Dictionary<int, ValidatorCollection>();
+
+        public OptionParameterValidators(Option option)
         {
-            ParameterIndex = parameterIndex;
+            _option = option;
         }
 
-        public int ParameterIndex { get; }
-
-        public ValidatorCollection Validators { get; } = new ValidatorCollection();
-    }
-
-    /// <summary>
-    /// Collection of all parameter validators of an option. The collection is grouped by parameter index
-    /// </summary>
-    public sealed class OptionParameterValidatorsCollection : KeyedCollection<int, OptionParameterValidators>
-    {
-        public void Add(BaseValidator validator)
+        public void Add(params BaseValidator[] validators)
         {
-            Add(-1, validator);
+            Add(-1, validators);
         }
 
-        public void Add(int parameterIndex, BaseValidator validator)
+        public void Add(int parameterIndex, params BaseValidator[] validators)
         {
+            if (_option.Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
+                throw new ParserException(1000, $"Cannot add validators to option {_option.Name} because it does not accept parameters.");
+            if (parameterIndex >= 0 && _option.Usage.ParameterType == OptionParameterType.Repeating)
+                throw new ParserException(1000, $"Cannot add a specific parameter validator for option {_option.Name} because it is configured to have repeating parameters, where all parameters share the same validators. Use the ValidateWith overload that does not accept a parameter index.");
+            if (parameterIndex >= _option.Usage.MaxParameters)
+                throw new ParserException(1000, $"Parameter index specified {parameterIndex} is greater than the number of parameters allowed for option {_option.Name}.");
+
             if (parameterIndex < -1)
                 parameterIndex = -1;
 
-            OptionParameterValidators validatorsByIndex = this[parameterIndex];
-            if (validatorsByIndex == null)
+            ValidatorCollection validatorList;
+            if (!_validators.TryGetValue(parameterIndex, out validatorList))
             {
-                validatorsByIndex = new OptionParameterValidators(parameterIndex);
-                Add(validatorsByIndex);
+                validatorList = new ValidatorCollection();
+                _validators.Add(parameterIndex, validatorList);
             }
-            validatorsByIndex.Validators.Add(validator);
+            foreach (BaseValidator validator in validators)
+                validatorList.Add(validator);
         }
 
-        protected override int GetKeyForItem(OptionParameterValidators item)
+        public int Count
         {
-            return item.ParameterIndex;
+            get { return _validators.Count; }
         }
 
-        protected override void InsertItem(int index, OptionParameterValidators item)
+        internal IReadOnlyList<BaseValidator> GetValidators(int parameterIndex = -1)
         {
-            //TODO: Ensure that only index is only -1 or specific indices, but not both
-            base.InsertItem(index, item);
-        }
+            ValidatorCollection commonValidators;
+            _validators.TryGetValue(-1, out commonValidators);
 
-        protected override void SetItem(int index, OptionParameterValidators item)
-        {
-            //TODO: Ensure that only index is only -1 or specific indices, but not both
-            base.SetItem(index, item);
-        }
+            ValidatorCollection indexValidators = null;
+            if (_option.Usage.ParameterType == OptionParameterType.Individual && parameterIndex >= 0)
+                _validators.TryGetValue(parameterIndex, out indexValidators);
 
-        public new OptionParameterValidators this[int parameterIndex]
-        {
-            get
-            {
-                if (Dictionary != null)
-                {
-                    OptionParameterValidators validators;
-                    return Dictionary.TryGetValue(parameterIndex, out validators) ? validators : null;
-                }
-                return this.FirstOrDefault(vals => vals.ParameterIndex == parameterIndex);
-            }
+            int capacity = (commonValidators != null ? commonValidators.Count : 0) + (indexValidators != null ? indexValidators.Count : 0);
+            var validators = new List<BaseValidator>(capacity);
+            if (commonValidators != null)
+                validators.AddRange(commonValidators);
+            if (indexValidators != null)
+                validators.AddRange(indexValidators);
+            return validators;
         }
     }
 }

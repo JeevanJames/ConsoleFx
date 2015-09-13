@@ -17,8 +17,8 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Parsers;
-using ConsoleFx.Parsers.Validators;
+using ConsoleFx.Parser;
+using ConsoleFx.Parser.Validators;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -67,20 +67,21 @@ namespace ConsoleFx.Parser
                 Add(argument);
         }
 
-        protected override void InsertItem(int index, Argument item)
+        protected override void InsertItem(int index, Argument argument)
         {
-            base.InsertItem(index, item);
+            base.InsertItem(index, argument);
             VerifyOptionalArgumentsAtEnd();
         }
 
-        protected override void SetItem(int index, Argument item)
+        protected override void SetItem(int index, Argument argument)
         {
-            base.SetItem(index, item);
+            base.SetItem(index, argument);
             VerifyOptionalArgumentsAtEnd();
         }
 
         //Called whenever an argument is added or set in the collection.
         //Verifies that the optional arguments are specified only after the required ones.
+        //TODO: Try and optimize this to not traverse the whole list each time.
         private void VerifyOptionalArgumentsAtEnd()
         {
             bool optional = false;

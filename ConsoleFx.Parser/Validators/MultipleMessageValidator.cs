@@ -18,8 +18,9 @@ limitations under the License.
 #endregion
 
 using System.Globalization;
+using System.Linq;
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     /// <summary>
     /// Base class for validators that perform multiple checks and hence can produce more than one
@@ -33,10 +34,11 @@ namespace ConsoleFx.Parsers.Validators
         /// </summary>
         /// <param name="message">The validation error message</param>
         /// <param name="parameterValue">The parameter value that caused the validation to fail</param>
-        protected static void ValidationFailed(string message, string parameterValue)
+        protected static void ValidationFailed(string message, string parameterValue, params object[] args)
         {
+            object[] formatArgs = new object[] { parameterValue }.Concat(args).ToArray();
             throw new ParserException(ParserException.Codes.ValidationFailed,
-                string.Format(CultureInfo.CurrentCulture, message, parameterValue));
+                string.Format(CultureInfo.CurrentCulture, message, formatArgs));
         }
     }
 }

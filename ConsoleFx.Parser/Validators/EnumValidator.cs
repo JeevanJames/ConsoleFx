@@ -20,7 +20,7 @@ limitations under the License.
 using System;
 using System.Linq;
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     public class EnumValidator : SingleMessageValidator
     {

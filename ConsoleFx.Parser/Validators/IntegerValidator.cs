@@ -17,7 +17,7 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     public sealed class IntegerValidator : MultipleMessageValidator
     {

@@ -19,7 +19,7 @@ limitations under the License.
 
 using System.Globalization;
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     /// <summary>
     /// Base class for validators that only do a single check and hence can only produce a single error

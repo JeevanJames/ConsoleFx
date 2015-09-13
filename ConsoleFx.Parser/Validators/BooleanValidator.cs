@@ -19,7 +19,7 @@ limitations under the License.
 
 using System;
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     /// <summary>
     /// Checks whether the parameter value is 'True' or 'False'. The check is not case sensitive.

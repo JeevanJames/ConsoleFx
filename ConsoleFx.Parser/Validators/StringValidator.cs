@@ -19,7 +19,7 @@ limitations under the License.
 
 using System;
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     public sealed class StringValidator : MultipleMessageValidator
     {
@@ -40,9 +40,9 @@ namespace ConsoleFx.Parsers.Validators
         public override void Validate(string parameterValue)
         {
             if (parameterValue.Length < MinLength)
-                ValidationFailed(MinLengthMessage, parameterValue);
+                ValidationFailed(MinLengthMessage, parameterValue, MinLength);
             if (parameterValue.Length > MaxLength)
-                ValidationFailed(MaxLengthMessage, parameterValue);
+                ValidationFailed(MaxLengthMessage, parameterValue, MaxLength);
         }
 
         public int MaxLength { get; set; }

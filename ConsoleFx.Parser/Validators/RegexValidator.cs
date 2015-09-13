@@ -20,7 +20,7 @@ limitations under the License.
 using System;
 using System.Text.RegularExpressions;
 
-namespace ConsoleFx.Parsers.Validators
+namespace ConsoleFx.Parser.Validators
 {
     public sealed class RegexValidator : SingleMessageValidator
     {

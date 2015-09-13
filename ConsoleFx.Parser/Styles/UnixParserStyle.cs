@@ -1,4 +1,4 @@
-#region --- License & Copyright Notice ---
+﻿#region --- License & Copyright Notice ---
 /*
 ConsoleFx CommandLine Processing Library
 Copyright 2015 Jeevan James
@@ -17,28 +17,21 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
-namespace ConsoleFx.Parser.Validators
+namespace ConsoleFx.Parser.Styles
 {
-    /// <summary>
-    /// Base class for all validators
-    /// </summary>
-    public abstract class BaseValidator
+    public sealed class UnixParserStyle : ParserStyle
     {
-        public abstract void Validate(string parameterValue);
-    }
-
-    /// <summary>
-    /// Collection of validator classes
-    /// </summary>
-    public sealed class ValidatorCollection : Collection<BaseValidator>
-    {
-        public void AddRange(IEnumerable<BaseValidator> validators)
+        public override CommandGrouping GetGrouping(CommandGrouping specifiedGrouping)
         {
-            foreach (BaseValidator validator in validators)
-                Add(validator);
+            return base.GetGrouping(specifiedGrouping);
+        }
+
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, Behaviors behaviors)
+        {
+            throw new NotImplementedException();
         }
     }
 }

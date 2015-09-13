@@ -17,7 +17,7 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Parsers;
+using ConsoleFx.Parser;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -54,7 +54,7 @@ namespace ConsoleFx.Parser.Styles
 
                     Option availableOption = options[specifiedOptionName];
                     if (availableOption == null)
-                        throw new ParserException(ParserException.Codes.InvalidOptionSpecified, Messages.InvalidOptionSpecified, specifiedOptionName);
+                        throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, specifiedOptionName));
 
                     availableOption.Run.Occurences += 1;
 
@@ -63,7 +63,7 @@ namespace ConsoleFx.Parser.Styles
                         continue;
 
                     if (token[specifiedOptionName.Length + 1] != ':')
-                        throw new ParserException(ParserException.Codes.InvalidOptionParameterSpecifier, Messages.InvalidOptionParameterSpecifier, specifiedOptionName);
+                        throw new ParserException(ParserException.Codes.InvalidOptionParameterSpecifier, string.Format(Messages.InvalidOptionParameterSpecifier, specifiedOptionName));
 
                     MatchCollection parameterMatches = OptionParameterPattern.Matches(token, optionMatch.Length + 1);
                     foreach (Match parameterMatch in parameterMatches)
