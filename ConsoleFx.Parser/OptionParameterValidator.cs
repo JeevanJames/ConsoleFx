@@ -19,6 +19,7 @@ limitations under the License.
 
 using ConsoleFx.Parser.Validators;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleFx.Parser
 {
@@ -63,10 +64,7 @@ namespace ConsoleFx.Parser
                 validatorList.Add(validator);
         }
 
-        public int Count
-        {
-            get { return _validators.Count; }
-        }
+        public int Count => _validators.Sum(kvp => kvp.Value.Count);
 
         internal IReadOnlyList<BaseValidator> GetValidators(int parameterIndex = -1)
         {

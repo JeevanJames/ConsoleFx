@@ -25,6 +25,13 @@ namespace ConsoleFx.Parser
     public class Parser<TStyle> : BaseParser<TStyle>
         where TStyle : ParserStyle, new()
     {
+        public Parser()
+        {
+            Arguments = base.Arguments;
+            Options = base.Options;
+            Behaviors = base.Behaviors;
+        }
+
         public new Arguments Arguments { get; }
         public new Options Options { get; }
         public new Behaviors Behaviors { get; }

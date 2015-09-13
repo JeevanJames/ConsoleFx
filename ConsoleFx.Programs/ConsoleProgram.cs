@@ -17,15 +17,64 @@ limitations under the License.
 */
 #endregion
 
+using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
+using System;
+using System.Collections.Generic;
 
 namespace ConsoleFx.Programs
 {
     public sealed class ConsoleProgram<TStyle> : BaseConsoleProgram<TStyle>
         where TStyle : ParserStyle, new()
     {
-        public ConsoleProgram(ExecuteHandler handler) : base(handler)
+        private readonly List<Option> _options = new List<Option>();
+        private readonly List<Argument> _arguments = new List<Argument>();
+        private readonly ExecuteHandler _handler;
+
+        public ConsoleProgram(ExecuteHandler handler)
         {
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+            _handler = handler;
+        }
+
+        public Argument AddArgument(bool optional = false)
+        {
+            var argument = new Argument
+            {
+                IsOptional = optional
+            };
+            _arguments.Add(argument);
+            return argument;
+        }
+
+        public Option AddOption(string name, string shortName = null, bool caseSensitive = false, int order = int.MaxValue)
+        {
+            var option = new Option(name)
+            {
+                CaseSensitive = caseSensitive,
+                Order = order,
+            };
+            if (!string.IsNullOrWhiteSpace(shortName))
+                option.ShortName = shortName;
+
+            _options.Add(option);
+            return option;
+        }
+
+        protected override IEnumerable<Option> GetOptions()
+        {
+            return _options;
+        }
+
+        protected override IEnumerable<Argument> GetArguments()
+        {
+            return _arguments;
+        }
+
+        protected override int Execute()
+        {
+            return _handler();
         }
     }
 }

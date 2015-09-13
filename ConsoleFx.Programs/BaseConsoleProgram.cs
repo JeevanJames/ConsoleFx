@@ -25,50 +25,29 @@ using System.Linq;
 
 namespace ConsoleFx.Programs
 {
-    public abstract class BaseConsoleProgram<TStyle> : BaseParser<TStyle>
+    public interface IConsoleProgram
+    {
+        int Run();
+    }
+
+    public abstract class BaseConsoleProgram<TStyle> : IConsoleProgram
         where TStyle : ParserStyle, new()
     {
         private readonly ExecuteHandler _handler;
-
-        protected BaseConsoleProgram(ExecuteHandler handler)
-        {
-            if (handler == null)
-                throw new ArgumentNullException(nameof(handler));
-            _handler = handler;
-        }
-
-        public Argument AddArgument(bool optional = false)
-        {
-            var argument = new Argument
-            {
-                IsOptional = optional
-            };
-            Arguments.Add(argument);
-            return argument;
-        }
-
-        public Option AddOption(string name, string shortName = null, bool caseSensitive = false, int order = int.MaxValue)
-        {
-            var option = new Option(name)
-            {
-                CaseSensitive = caseSensitive,
-                Order = order,
-            };
-            if (!string.IsNullOrWhiteSpace(shortName))
-                option.ShortName = shortName;
-
-            Options.Add(option);
-
-            return option;
-        }
 
         public int Run()
         {
             try
             {
-                IEnumerable<string> args = Environment.GetCommandLineArgs().Skip(1);
-                Parse(args);
-                return _handler();
+                var parser = new Parser<TStyle>();
+                foreach (Option option in GetOptions())
+                    parser.Options.Add(option);
+                foreach (Argument argument in GetArguments())
+                    parser.Arguments.Add(argument);
+
+                parser.Parse(GetCommandLineArgs());
+
+                return Execute();
             }
             catch (ParserException ex)
             {
@@ -81,8 +60,24 @@ namespace ConsoleFx.Programs
                 return -1;
             }
         }
+
+        protected virtual IEnumerable<string> GetCommandLineArgs()
+        {
+            return Environment.GetCommandLineArgs().Skip(1);
+        }
+
+        protected virtual IEnumerable<Option> GetOptions()
+        {
+            yield break;
+        }
+
+        protected virtual IEnumerable<Argument> GetArguments()
+        {
+            yield break;
+        }
+
+        protected abstract int Execute();
     }
 
     public delegate int ExecuteHandler();
-
 }

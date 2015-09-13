@@ -59,11 +59,19 @@ namespace ConsoleFx.Programs
         }
     }
 
-    public sealed class Command<TStyle> : BaseConsoleProgram<TStyle>
+    public abstract class Command<TStyle> : BaseConsoleProgram<TStyle>, IConsoleProgram
         where TStyle : ParserStyle, new()
     {
-        public Command(ExecuteHandler handler) : base(handler)
+        private readonly IEnumerable<string> _args;
+
+        protected Command(IEnumerable<string> args)
         {
+            _args = args;
+        }
+
+        protected override IEnumerable<string> GetCommandLineArgs()
+        {
+            return _args;
         }
     }
 

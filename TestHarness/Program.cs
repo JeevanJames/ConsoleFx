@@ -1,5 +1,4 @@
-﻿using ConsoleFx.Parser;
-using ConsoleFx.Parser.Styles;
+﻿using ConsoleFx.Parser.Styles;
 using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
 
@@ -10,27 +9,11 @@ namespace TestHarness
 {
     internal static class Program
     {
-        private static string _first;
+        public static string First;
 
         private static int Main()
         {
-            var program = new MultiCommandProgram<WindowsParserStyle>(SelectProgram);
-            return program.Run();
-        }
-
-
-        private static Command<WindowsParserStyle> SelectProgram(string[] commands)
-        {
-            switch (commands[0])
-            {
-                case "list": return GetListCommand();
-                default: return null;
-            }
-        }
-
-        private static Command<WindowsParserStyle> GetListCommand()
-        {
-            var program = new Command<WindowsParserStyle>(ListHandler);
+            var program = new ConsoleProgram<WindowsParserStyle>(ListHandler);
             program.AddOption("first", "f")
                 .Required()
                 .ParametersRequired()
@@ -38,16 +21,16 @@ namespace TestHarness
                 {
                     MinLengthMessage = "First value must be at least 5 characters long"
                 })
-                .AssignTo(() => _first);
-            return program;
+                .AssignTo(() => First);
+            return program.Run();
         }
+
 
         private static int ListHandler()
         {
             WriteLine("In List mode");
-            WriteLine($"First = {_first}");
-            return 1;
+            WriteLine($"First = {First}");
+            return 0;
         }
-
     }
 }
