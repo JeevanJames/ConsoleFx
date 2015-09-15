@@ -64,16 +64,18 @@ namespace ConsoleFx.Parser
         {
             foreach (Option option in Options)
             {
-                if (option.Usage.MinOccurences > 0 && option.Run.Occurences == 0)
+                int occurences = option.Run.Occurences;
+
+                if (option.Usage.MinOccurences > 0 && occurences == 0)
                     throw new ParserException(ParserException.Codes.RequiredOptionAbsent, string.Format(Messages.RequiredOptionAbsent, option.Name));
-                if (option.Run.Occurences < option.Usage.MinOccurences)
+                if (occurences < option.Usage.MinOccurences)
                     throw new ParserException(ParserException.Codes.TooFewOptions, string.Format(Messages.TooFewOptions, option.Name, option.Usage.MinOccurences));
-                if (option.Run.Occurences > option.Usage.MaxOccurences)
+                if (occurences > option.Usage.MaxOccurences)
                     throw new ParserException(ParserException.Codes.TooManyOptions, string.Format(Messages.TooManyOptions, option.Name, option.Usage.MaxOccurences));
 
-                if (option.Usage.MinParameters > 0 && option.Run.Parameters.Count == 0)
+                if (occurences > 0 && option.Usage.MinParameters > 0 && option.Run.Parameters.Count == 0)
                     throw new ParserException(ParserException.Codes.RequiredParametersAbsent, string.Format(Messages.RequiredParametersAbsent, option.Name));
-                if (option.Usage.MinParameters == 0 && option.Usage.MaxParameters == 0 && option.Run.Parameters.Count > 0)
+                if (occurences > 0 && option.Usage.MinParameters == 0 && option.Usage.MaxParameters == 0 && option.Run.Parameters.Count > 0)
                     throw new ParserException(ParserException.Codes.InvalidParametersSpecified, string.Format(Messages.InvalidParametersSpecified, option.Name));
 
                 //TODO: Check against MinParameters and MaxParameters

@@ -25,13 +25,32 @@ using System.Reflection;
 
 namespace ConsoleFx.Programs
 {
-    public static class OptionAssignmentExtensions
+    public static class AssignmentExtensions
     {
+        public static void HandleWith(this Argument argument, ArgumentHandler handler)
+        {
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+            argument.Handler = handler;
+        }
+
         public static void HandleWith(this Option option, OptionHandler handler)
         {
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
             option.Handler = handler;
+        }
+
+        public static void AssignTo<T>(this Argument argument, Expression<Func<T>> expression, Converter<string, T> converter = null)
+        {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+            argument.Handler = arg => {
+                converter = GetConverterFor(converter);
+                MemberInfo dataMember = GetMemberInfoFromExpression(expression);
+                object value = converter != null ? (object)converter(arg) : arg;
+                SetDataMemberValue(dataMember, value);
+            };
         }
 
         public static void AssignTo<T>(this Option option, Expression<Func<T>> expression, Converter<string, T> converter = null)
@@ -43,6 +62,21 @@ namespace ConsoleFx.Programs
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression);
                 object value = converter != null ? (object)converter(prms[0]) : prms[0];
                 SetDataMemberValue(dataMember, value);
+            };
+        }
+
+        public static void AddToList<T>(this Argument argument, Expression<Func<IList<T>>> expression, Converter<string, T> converter = null)
+        {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            argument.Handler = arg => {
+                converter = GetConverterFor(converter);
+
+                MemberInfo dataMember = GetMemberInfoFromExpression(expression, typeof(IList<T>));
+                IList<T> list = GetDataMemberValue<IList<T>>(dataMember);
+                object value = converter != null ? (object)converter(arg) : arg;
+                list.Add((T)value);
             };
         }
 

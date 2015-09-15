@@ -4,32 +4,56 @@ using ConsoleFx.Programs;
 
 using static System.Console;
 using static ConsoleFx.Utilities.ConsoleEx;
+using System.Collections.Generic;
+using System.IO;
 
 namespace TestHarness
 {
+    public enum BackupType
+    {
+        Full,
+        Incremental,
+    }
+
     internal static class Program
     {
-        public static string First;
+        public static bool Verbose;
+        public static BackupType BackupType = BackupType.Full;
+        public static List<string> Excludes = new List<string>();
+        public static DirectoryInfo BackupDirectory;
 
         private static int Main()
         {
-            var program = new ConsoleProgram<UnixParserStyle>(ListHandler);
-            program.AddOption("first", "f")
-                .Required()
+            var app = new ConsoleProgram<UnixParserStyle>(Handler);
+            app.AddOption("verbose", "v")
+                .Flag(() => Verbose);
+            app.AddOption("type", "t")
                 .ParametersRequired()
-                .ValidateWith(new StringValidator(5, 10)
-                {
-                    MinLengthMessage = "First value must be at least 5 characters long"
-                })
-                .AssignTo(() => First);
-            return program.Run();
+                .ValidateWith(new EnumValidator<BackupType>() { ErrorMessage = "Please specify either Full or Incremental for the backup type." })
+                .AssignTo(() => BackupType);
+            app.AddOption("exclude", "e")
+                .Optional(int.MaxValue)
+                .ParametersRequired(int.MaxValue)
+                .ValidateWith(new RegexValidator(@"^[\w.*?]+$"))
+                .AddToList(() => Excludes);
+            app.AddArgument()
+                .ValidateWith(new PathValidator(PathType.Directory))
+                .AssignTo(() => BackupDirectory, directory => new DirectoryInfo(directory));
+            return app.Run();
         }
 
 
-        private static int ListHandler()
+        private static int Handler()
         {
-            WriteLine("In List mode");
-            WriteLine($"First = {First}");
+            WriteLine($"{BackupType} backup requested for the directory {BackupDirectory}");
+            if (Excludes.Count > 0)
+            {
+                WriteLine($"Following files to be excluded:");
+                foreach (string exclude in Excludes)
+                    WriteLine($"    {exclude}");
+            }
+            if (Verbose)
+                WriteLine("Verbose output requested.");
             return 0;
         }
     }

@@ -43,8 +43,8 @@
     <Compile Include="BaseConsoleProgram.cs" />
     <Compile Include="ConsoleProgram.cs" />
     <Compile Include="MultiCommandProgram.cs" />
-    <Compile Include="OptionAssignmentExtensions.cs" />
-    <Compile Include="OptionExtensions.cs" />
+    <Compile Include="AssignmentExtensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,7 @@ using ConsoleFx.Parser.Validators;
 
 namespace ConsoleFx.Programs
 {
-    public static class OptionExtensions
+    public static class Extensions
     {
         public static Option Optional(this Option option, int max = 1)
         {
@@ -64,6 +64,13 @@ namespace ConsoleFx.Programs
         {
             option.Usage.ExpectedParameters = expected;
             return option;
+        }
+
+        public static Argument ValidateWith(this Argument argument, params BaseValidator[] validators)
+        {
+            foreach (BaseValidator validator in validators)
+                argument.Validators.Add(validator);
+            return argument;
         }
 
         public static Option ValidateWith(this Option option, params BaseValidator[] validators)
