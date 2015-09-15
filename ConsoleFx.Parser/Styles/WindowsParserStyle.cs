@@ -17,7 +17,6 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Parser;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

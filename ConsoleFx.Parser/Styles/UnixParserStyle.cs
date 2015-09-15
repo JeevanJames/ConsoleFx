@@ -19,6 +19,8 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ConsoleFx.Parser.Styles
 {
@@ -29,9 +31,45 @@ namespace ConsoleFx.Parser.Styles
             return base.GetGrouping(specifiedGrouping);
         }
 
+        private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)");
+
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, Behaviors behaviors)
         {
-            throw new NotImplementedException();
+            Option currentOption = null;
+
+            foreach (string arg in args)
+            {
+                Match optionMatch = OptionPattern.Match(arg);
+
+                if (!optionMatch.Success && currentOption == null)
+                {
+                    yield return arg;
+                    continue;
+                }
+
+                if (optionMatch.Success)
+                {
+                    bool isShortOption = optionMatch.Groups[1].Value.Length == 1;
+                    string optionName = optionMatch.Groups[2].Value;
+
+                    Func<Option, bool> predicate = isShortOption ? (Func<Option, bool>)(opt => opt.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase)) : opt => opt.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase);
+                    Option option = options.FirstOrDefault(predicate);
+                    if (option == null)
+                        throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
+
+                    if (option.CaseSensitive)
+                    {
+                        if (isShortOption && !option.ShortName.Equals(optionName, StringComparison.Ordinal))
+                            throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
+                        if (!option.Name.Equals(optionName, StringComparison.Ordinal))
+                            throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
+                    }
+
+                    currentOption = option;
+                    option.Run.Occurences += 1;
+                } else
+                    currentOption.Run.Parameters.Add(arg);
+            }
         }
     }
 }

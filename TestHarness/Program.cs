@@ -13,7 +13,7 @@ namespace TestHarness
 
         private static int Main()
         {
-            var program = new ConsoleProgram<WindowsParserStyle>(ListHandler);
+            var program = new ConsoleProgram<UnixParserStyle>(ListHandler);
             program.AddOption("first", "f")
                 .Required()
                 .ParametersRequired()
