@@ -25,11 +25,6 @@ namespace ConsoleFx
     {
         public int ErrorCode { get; }
 
-        protected ConsoleFxException(int errorCode)
-        {
-            ErrorCode = errorCode;
-        }
-
         protected ConsoleFxException(int errorCode, string message) : base(message)
         {
             ErrorCode = errorCode;

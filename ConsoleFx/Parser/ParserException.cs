@@ -18,24 +18,19 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Runtime.Serialization;
 
 namespace ConsoleFx.Parser
 {
-    public class ParserException : Exception
+    public class ParserException : ConsoleFxException
     {
-        public int ErrorCode { get; }
-
         public ParserException(int errorCode, string message)
-            : base(message)
+            : base(errorCode, message)
         {
-            ErrorCode = errorCode;
         }
 
         protected ParserException(int errorCode, string message, Exception innerException)
-            : base(message, innerException)
+            : base(errorCode, message, innerException)
         {
-            ErrorCode = errorCode;
         }
 
         #region Codes constants inner class

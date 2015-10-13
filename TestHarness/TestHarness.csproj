@@ -35,12 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -50,13 +44,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleFx.Programs\ConsoleFx.Programs.csproj">
-      <Project>{3fa06a8c-f6fb-4cf6-bab9-4772b8e71121}</Project>
-      <Name>ConsoleFx.Programs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ConsoleFx.Utilities\ConsoleFx.Utilities.csproj">
-      <Project>{1f5cbdc3-aa66-401a-9622-ad6926c6b51c}</Project>
-      <Name>ConsoleFx.Utilities</Name>
+    <ProjectReference Include="..\ConsoleFx\ConsoleFx.csproj">
+      <Project>{7dc038a5-0ecc-4ec3-8497-7c1504fa0113}</Project>
+      <Name>ConsoleFx</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

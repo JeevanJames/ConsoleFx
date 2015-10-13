@@ -24,11 +24,6 @@ namespace ConsoleFx.Utilities.Capture
 {
     public sealed class ConsoleCaptureException : ConsoleFxException
     {
-        public ConsoleCaptureException(int errorCode)
-            : base(errorCode)
-        {
-        }
-
         public ConsoleCaptureException(int errorCode, string message)
             : base(errorCode, message)
         {
