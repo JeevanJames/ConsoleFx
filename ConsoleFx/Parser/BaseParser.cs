@@ -66,6 +66,8 @@ namespace ConsoleFx.Parser
         {
             foreach (Option option in Options)
             {
+                option.Scope = Behaviors.Scope;
+
                 int occurences = option.Run.Occurences;
 
                 if (option.Usage.MinOccurences > 0 && occurences == 0)
@@ -140,6 +142,7 @@ namespace ConsoleFx.Parser
             {
                 string argumentValue = specifiedArguments[i];
                 Argument argument = Arguments[i];
+                argument.Scope = Behaviors.Scope;
                 foreach (BaseValidator validator in argument.Validators)
                     validator.Validate(argumentValue);
 

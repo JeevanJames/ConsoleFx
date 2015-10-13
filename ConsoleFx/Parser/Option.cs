@@ -1,12 +1,9 @@
-﻿using ConsoleFx.Parser.Validators;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace ConsoleFx.Parser
 {
@@ -32,6 +29,7 @@ namespace ConsoleFx.Parser
             Validators = new OptionParameterValidators(this);
         }
 
+        internal object Scope { get; set; }
     }
 
     public sealed partial class Option

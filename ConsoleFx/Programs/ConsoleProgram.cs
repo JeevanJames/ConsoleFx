@@ -31,7 +31,8 @@ namespace ConsoleFx.Programs
         private readonly List<Argument> _arguments = new List<Argument>();
         private readonly ExecuteHandler _handler;
 
-        public ConsoleProgram(ExecuteHandler handler)
+        public ConsoleProgram(ExecuteHandler handler, CommandGrouping grouping = CommandGrouping.DoesNotMatter, object scope = null)
+            : base(grouping, scope)
         {
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));

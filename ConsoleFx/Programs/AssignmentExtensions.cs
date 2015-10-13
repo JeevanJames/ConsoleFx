@@ -49,7 +49,7 @@ namespace ConsoleFx.Programs
                 converter = GetConverterFor(converter);
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression);
                 object value = converter != null ? (object)converter(arg) : arg;
-                SetDataMemberValue(dataMember, value);
+                SetDataMemberValue(dataMember, value, argument.Scope);
             };
         }
 
@@ -61,7 +61,7 @@ namespace ConsoleFx.Programs
                 converter = GetConverterFor(converter);
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression);
                 object value = converter != null ? (object)converter(prms[0]) : prms[0];
-                SetDataMemberValue(dataMember, value);
+                SetDataMemberValue(dataMember, value, option.Scope);
             };
         }
 
@@ -74,7 +74,7 @@ namespace ConsoleFx.Programs
                 converter = GetConverterFor(converter);
 
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression, typeof(IList<T>));
-                IList<T> list = GetDataMemberValue<IList<T>>(dataMember);
+                IList<T> list = GetDataMemberValue<IList<T>>(dataMember, argument.Scope);
                 object value = converter != null ? (object)converter(arg) : arg;
                 list.Add((T)value);
             };
@@ -89,7 +89,7 @@ namespace ConsoleFx.Programs
                 converter = GetConverterFor(converter);
 
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression, typeof(IList<T>));
-                IList<T> list = GetDataMemberValue<IList<T>>(dataMember);
+                IList<T> list = GetDataMemberValue<IList<T>>(dataMember, option.Scope);
                 foreach (string prm in prms)
                 {
                     object value = converter != null ? (object)converter(prm) : prm;
@@ -117,7 +117,7 @@ namespace ConsoleFx.Programs
 
             option.Handler = prms => {
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression);
-                SetDataMemberValue(dataMember, true);
+                SetDataMemberValue(dataMember, true, option.Scope);
             };
         }
 
@@ -138,7 +138,7 @@ namespace ConsoleFx.Programs
                 throw new ArgumentException($"The expression should return a data member (field or property) from the '{typeof(T).FullName}' type.", nameof(expression));
             if (baseType != null)
             {
-                if (!baseType.GetTypeInfo().IsAssignableFrom(memberExpression.Type.GetTypeInfo()))
+                if (!baseType.IsAssignableFrom(memberExpression.Type))
                     throw new ArgumentException($"Expression data member '{memberExpression.Member.Name}' should be assignable to type '{baseType.FullName}'", nameof(expression));
             }
             else if (memberExpression.Type != typeof(T))
@@ -152,15 +152,15 @@ namespace ConsoleFx.Programs
         /// <typeparam name="T"></typeparam>
         /// <param name="member"></param>
         /// <returns></returns>
-        private static T GetDataMemberValue<T>(MemberInfo member)
+        private static T GetDataMemberValue<T>(MemberInfo member, object scope)
         {
             var property = member as PropertyInfo;
             if (property != null)
-                return (T)property.GetValue(null, null);
+                return (T)property.GetValue(scope, null);
 
             var field = member as FieldInfo;
             if (field != null)
-                return (T)field.GetValue(null);
+                return (T)field.GetValue(scope);
 
             string declaringTypeName = member.DeclaringType != null ? member.DeclaringType.FullName : "Unknown";
             throw new ParserException(1000, $"The member '{member.Name}' in type '{declaringTypeName}' should be either a property or a field to be specified in an argument/option handler");
@@ -171,19 +171,19 @@ namespace ConsoleFx.Programs
         /// </summary>
         /// <param name="member"></param>
         /// <param name="value"></param>
-        private static void SetDataMemberValue(MemberInfo member, object value)
+        private static void SetDataMemberValue(MemberInfo member, object value, object scope)
         {
             var property = member as PropertyInfo;
             if (property != null)
             {
-                property.SetValue(null, value, null);
+                property.SetValue(scope, value, null);
                 return;
             }
 
             var field = member as FieldInfo;
             if (field != null)
             {
-                field.SetValue(null, value);
+                field.SetValue(scope, value);
                 return;
             }
 

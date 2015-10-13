@@ -17,30 +17,31 @@ namespace TestHarness
         Incremental,
     }
 
-    internal static class Program
+    internal class Program
     {
-        public static bool Verbose;
-        public static BackupType BackupType = BackupType.Full;
-        public static List<string> Excludes = new List<string>();
-        public static DirectoryInfo BackupDirectory;
+        private bool Verbose;
+        private BackupType BackupType = BackupType.Full;
+        private List<string> Excludes = new List<string>();
+        private DirectoryInfo BackupDirectory;
 
         private static int Main()
         {
-            var app = new ConsoleProgram<UnixParserStyle>(Handler);
+            var program = new Program();
+            var app = new ConsoleProgram<UnixParserStyle>(program.Handler, scope: program);
             app.AddOption("verbose", "v")
-                .Flag(() => Verbose);
+                .Flag(() => program.Verbose);
             app.AddOption("type", "t")
                 .ParametersRequired()
                 .ValidateWith(new EnumValidator<BackupType>() { ErrorMessage = "Please specify either Full or Incremental for the backup type." })
-                .AssignTo(() => BackupType);
+                .AssignTo(() => program.BackupType);
             app.AddOption("exclude", "e")
                 .Optional(int.MaxValue)
                 .ParametersRequired(int.MaxValue)
                 .ValidateWith(new RegexValidator(@"^[\w.*?]+$"))
-                .AddToList(() => Excludes);
+                .AddToList(() => program.Excludes);
             app.AddArgument()
                 .ValidateWith(new PathValidator(PathType.Directory))
-                .AssignTo(() => BackupDirectory, directory => new DirectoryInfo(directory));
+                .AssignTo(() => program.BackupDirectory, directory => new DirectoryInfo(directory));
             try
             {
                 return app.Run();
@@ -59,7 +60,7 @@ namespace TestHarness
         }
 
 
-        private static int Handler()
+        private int Handler()
         {
             WriteLine($"{BackupType} backup requested for the directory {BackupDirectory}");
             if (Excludes.Count > 0)

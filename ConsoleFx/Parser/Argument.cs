@@ -46,6 +46,8 @@ namespace ConsoleFx.Parser
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators { get; } = new ValidatorCollection();
+
+        internal object Scope { get; set; }
     }
 
     public delegate void ArgumentHandler(string value);

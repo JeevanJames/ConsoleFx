@@ -35,11 +35,22 @@ namespace ConsoleFx.Programs
     {
         private readonly ExecuteHandler _handler;
 
+        private readonly CommandGrouping _grouping;
+        private readonly object _scope;
+
+        protected BaseConsoleProgram(CommandGrouping grouping = CommandGrouping.DoesNotMatter, object scope = null)
+        {
+            _grouping = grouping;
+            _scope = scope;
+        }
+
         public int Run()
         {
             try
             {
                 var parser = new Parser<TStyle>();
+                parser.Behaviors.Grouping = _grouping;
+                parser.Behaviors.Scope = _scope;
                 foreach (Option option in GetOptions())
                     parser.Options.Add(option);
                 foreach (Argument argument in GetArguments())
