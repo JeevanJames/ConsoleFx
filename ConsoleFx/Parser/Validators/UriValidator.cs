@@ -21,20 +21,42 @@ using System;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public sealed class UriValidator : SingleMessageValidator
+    public class UriValidator : AdditionalChecksValidator<Uri>
     {
         public UriKind UriKind { get; }
 
-        public UriValidator(UriKind uriKind) : base(Messages.Uri)
+        public UriValidator(UriKind uriKind)
         {
             UriKind = uriKind;
         }
 
-        public override void Validate(string parameterValue)
+        protected override Uri PrimaryChecks(string parameterValue)
         {
             Uri uri;
             if (!Uri.TryCreate(parameterValue, UriKind, out uri))
-                ValidationFailed(parameterValue);
+                ValidationFailed(parameterValue, UriKindMessage);
+            return uri;
+        }
+
+        public string UriKindMessage { get; set; } = Messages.Uri;
+    }
+
+    /// <summary>
+    /// Multiple message validator that allows derived classes to perform additional checks.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class AdditionalChecksValidator<T> : MultipleMessageValidator
+    {
+        public sealed override void Validate(string parameterValue)
+        {
+            T value = PrimaryChecks(parameterValue);
+            AdditionalChecks(value);
+        }
+
+        protected abstract T PrimaryChecks(string parameterValue);
+
+        protected virtual void AdditionalChecks(T value)
+        {
         }
     }
 }

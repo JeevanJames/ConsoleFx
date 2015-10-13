@@ -151,6 +151,7 @@ namespace ConsoleFx.Programs
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="member"></param>
+        /// <param name="scope">Instance on which to set data member value. Use null for static member.</param>
         /// <returns></returns>
         private static T GetDataMemberValue<T>(MemberInfo member, object scope)
         {
@@ -171,6 +172,7 @@ namespace ConsoleFx.Programs
         /// </summary>
         /// <param name="member"></param>
         /// <param name="value"></param>
+        /// <param name="scope">Instance on which to set data member value. Use null for static member.</param>
         private static void SetDataMemberValue(MemberInfo member, object value, object scope)
         {
             var property = member as PropertyInfo;
