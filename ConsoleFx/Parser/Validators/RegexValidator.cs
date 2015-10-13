@@ -49,9 +49,8 @@ namespace ConsoleFx.Parser.Validators
 
     public static class RegexPattern
     {
-        public const string Email = @"^[^_][a-zA-Z0-9_]+[^_]@{1}[a-z]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$";
-        public const string FileMask = @"^[\w\.\*\?][\w\s\.\*\?]*$";
-        public const string Url = @"";
+        public static readonly Regex Email = new Regex(@"^[^_][a-zA-Z0-9_]+[^_]@{1}[a-z]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$");
+        public static readonly Regex FileMask = new Regex(@"^[\w\.\*\?][\w\s\.\*\?]*$");
 
         private static string _path;
 

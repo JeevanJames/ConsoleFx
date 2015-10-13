@@ -17,12 +17,21 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.Parser
+using System;
+
+namespace ConsoleFx.Parser.Validators
 {
-    public sealed class Behaviors
+    public sealed class GuidValidator : SingleMessageValidator
     {
-        public bool DisplayUsageOnError { get; set; }
-        public CommandGrouping Grouping { get; set; }
-        public object Scope { get; set; }
+        public GuidValidator() : base(Messages.Guid)
+        {
+        }
+
+        public override void Validate(string parameterValue)
+        {
+            Guid guid;
+            if (!Guid.TryParse(parameterValue, out guid))
+                ValidationFailed(parameterValue);
+        }
     }
 }

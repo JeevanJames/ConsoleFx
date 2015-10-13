@@ -126,6 +126,9 @@
   <data name="Enum" xml:space="preserve">
     <value>The parameter you specified "{0}" does not match any of the allowed values</value>
   </data>
+  <data name="Guid" xml:space="preserve">
+    <value>The parameter you specified '{0}' is not a valid GUID.</value>
+  </data>
   <data name="Integer_NotAnInteger" xml:space="preserve">
     <value>{0} is not a valid integer</value>
   </data>
@@ -146,5 +149,8 @@
   </data>
   <data name="String_MinLength" xml:space="preserve">
     <value>The parameter you specified "{0}" should be at least {1} characters long</value>
+  </data>
+  <data name="Uri" xml:space="preserve">
+    <value>The parameter you specified '{0}' is not a valid URI.</value>
   </data>
 </root>

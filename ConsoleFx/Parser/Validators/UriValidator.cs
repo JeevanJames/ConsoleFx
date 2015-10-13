@@ -17,12 +17,24 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.Parser
+using System;
+
+namespace ConsoleFx.Parser.Validators
 {
-    public sealed class Behaviors
+    public sealed class UriValidator : SingleMessageValidator
     {
-        public bool DisplayUsageOnError { get; set; }
-        public CommandGrouping Grouping { get; set; }
-        public object Scope { get; set; }
+        public UriKind UriKind { get; }
+
+        public UriValidator(UriKind uriKind) : base(Messages.Uri)
+        {
+            UriKind = uriKind;
+        }
+
+        public override void Validate(string parameterValue)
+        {
+            Uri uri;
+            if (!Uri.TryCreate(parameterValue, UriKind, out uri))
+                ValidationFailed(parameterValue);
+        }
     }
 }

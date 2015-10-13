@@ -41,7 +41,11 @@
     <Compile Include="Parser\BaseParser.cs" />
     <Compile Include="Parser\Behaviors.cs" />
     <Compile Include="Parser\CommandGrouping.cs" />
-    <Compile Include="Parser\Messages.Designer.cs" />
+    <Compile Include="Parser\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Parser\Option.cs" />
     <Compile Include="Parser\OptionParameterType.cs" />
     <Compile Include="Parser\OptionParameterValidator.cs" />
@@ -56,6 +60,7 @@
     <Compile Include="Parser\Validators\BooleanValidator.cs" />
     <Compile Include="Parser\Validators\CustomValidator.cs" />
     <Compile Include="Parser\Validators\EnumValidator.cs" />
+    <Compile Include="Parser\Validators\GuidValidator.cs" />
     <Compile Include="Parser\Validators\IntegerValidator.cs" />
     <Compile Include="Parser\Validators\LookupValidator.cs" />
     <Compile Include="Parser\Validators\Messages.Designer.cs">
@@ -68,6 +73,7 @@
     <Compile Include="Parser\Validators\RegexValidator.cs" />
     <Compile Include="Parser\Validators\SingleMessageValidator.cs" />
     <Compile Include="Parser\Validators\StringValidator.cs" />
+    <Compile Include="Parser\Validators\UriValidator.cs" />
     <Compile Include="Programs\AssignmentExtensions.cs" />
     <Compile Include="Programs\BaseConsoleProgram.cs" />
     <Compile Include="Programs\ConsoleProgram.cs" />
@@ -80,7 +86,10 @@
     <Compile Include="Utilities\ConsoleEx.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Parser\Messages.resx" />
+    <EmbeddedResource Include="Parser\Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Parser\Validators\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>

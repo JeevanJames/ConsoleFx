@@ -88,6 +88,15 @@ namespace ConsoleFx.Parser.Validators {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid GUID..
+        /// </summary>
+        internal static string Guid {
+            get {
+                return ResourceManager.GetString("Guid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is not a valid integer.
         /// </summary>
         internal static string Integer_NotAnInteger {
@@ -147,6 +156,15 @@ namespace ConsoleFx.Parser.Validators {
         internal static string String_MinLength {
             get {
                 return ResourceManager.GetString("String_MinLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid URI..
+        /// </summary>
+        internal static string Uri {
+            get {
+                return ResourceManager.GetString("Uri", resourceCulture);
             }
         }
     }
