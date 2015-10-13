@@ -26,12 +26,25 @@ namespace ConsoleFx.Parser.Styles
 {
     public sealed class UnixParserStyle : ParserStyle
     {
-        public override CommandGrouping GetGrouping(CommandGrouping specifiedGrouping)
+        public override CommandGrouping GetGrouping(CommandGrouping specifiedGrouping, Options options, Arguments arguments)
         {
-            return base.GetGrouping(specifiedGrouping);
+            //Options before arguments will not work if there are any options that do not have a
+            //fixed number of parameters (i.e. ExpectedParameters == null). The groupings gets
+            //changed to DoesNotMatter.
+            bool optionsHaveVariableParameters = options.Any(option => !option.Usage.ExpectedParameters.HasValue);
+            if (specifiedGrouping == CommandGrouping.OptionsBeforeArguments && optionsHaveVariableParameters)
+                specifiedGrouping = CommandGrouping.DoesNotMatter;
+
+            //If DoesNotMatter or OptionsBeforeArguments and any option has unlimited parameters,
+            //change to OptionsAfterArguments.
+            bool optionsHaveUnlimitedParameters = options.Any(option => option.Usage.MaxParameters == int.MaxValue);
+            if (specifiedGrouping != CommandGrouping.OptionsAfterArguments && optionsHaveUnlimitedParameters)
+                specifiedGrouping = CommandGrouping.OptionsAfterArguments;
+
+            return specifiedGrouping;
         }
 
-        public override void ValidateOptions(Options options)
+        public override void ValidateDefinedOptions(Options options)
         {
             Option invalidOption = options.FirstOrDefault(option => !string.IsNullOrEmpty(option.ShortName) && option.ShortName.Length > 1);
             if (invalidOption != null)

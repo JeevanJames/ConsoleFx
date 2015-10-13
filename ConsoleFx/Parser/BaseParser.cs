@@ -44,7 +44,8 @@ namespace ConsoleFx.Parser
 
             //Identify each token passed and add to the SpecifiedValues property.
             var parserStyle = new TStyle();
-            parserStyle.ValidateOptions(Options);
+            Behaviors.Grouping = parserStyle.GetGrouping(Behaviors.Grouping, Options, Arguments);
+            parserStyle.ValidateDefinedOptions(Options);
             var specifiedArguments = new List<string>(parserStyle.IdentifyTokens(tokens, Options, Behaviors));
 
             //Process the specified options and arguments.

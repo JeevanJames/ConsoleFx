@@ -23,18 +23,18 @@ namespace ConsoleFx.Parser.Styles
 {
     public abstract class ParserStyle
     {
-        public virtual CommandGrouping GetGrouping(CommandGrouping specifiedGrouping)
+        public virtual CommandGrouping GetGrouping(CommandGrouping specifiedGrouping, Options options, Arguments arguments)
         {
             return specifiedGrouping;
         }
 
         /// <summary>
-        /// Validate that the allowed options are compatible with the parser style.
+        /// Validate that the defined options are compatible with the parser style.
         /// An exception should be thrown if any option is invalid.
         /// An example of an invalid option is a short name longer than one character for the UNIX style parser.
         /// </summary>
-        /// <param name="options"></param>
-        public virtual void ValidateOptions(Options options)
+        /// <param name="options">List of all the defined options.</param>
+        public virtual void ValidateDefinedOptions(Options options)
         {
         }
 
