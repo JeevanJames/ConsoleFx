@@ -97,6 +97,13 @@ namespace ConsoleFx.Parser.Styles
                         currentOption = option;
                 } else
                     currentOption.Run.Parameters.Add(arg);
+
+                //If we're on an option (currentOption != null) and the number of parameters has
+                //reached the maximum allowed, then we can stop handling that option by setting
+                //currentOption to null so that the next arg  will be treated as a new option or
+                //argument.
+                if (currentOption != null && currentOption.Run.Parameters.Count > currentOption.Usage.MaxParameters)
+                    currentOption = null;
             }
         }
     }
