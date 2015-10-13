@@ -31,7 +31,14 @@ namespace ConsoleFx.Parser.Styles
             return base.GetGrouping(specifiedGrouping);
         }
 
-        private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)");
+        public override void ValidateOptions(Options options)
+        {
+            Option invalidOption = options.FirstOrDefault(option => !string.IsNullOrEmpty(option.ShortName) && option.ShortName.Length > 1);
+            if (invalidOption != null)
+                throw new ParserException(1000, $"Option '{invalidOption.Name}' has an invalid short name. Short names for the UNIX style parser should be a single character only.");
+        }
+
+        private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)(?:=(.+))?");
 
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, Behaviors behaviors)
         {
@@ -51,6 +58,8 @@ namespace ConsoleFx.Parser.Styles
                 {
                     bool isShortOption = optionMatch.Groups[1].Value.Length == 1;
                     string optionName = optionMatch.Groups[2].Value;
+                    string parameterValue = optionMatch.Groups[3].Value;
+                    bool isParameterSpecified = !string.IsNullOrEmpty(parameterValue);
 
                     Func<Option, bool> predicate = isShortOption ? (Func<Option, bool>)(opt => opt.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase)) : opt => opt.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase);
                     Option option = options.FirstOrDefault(predicate);
@@ -65,8 +74,14 @@ namespace ConsoleFx.Parser.Styles
                             throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
                     }
 
-                    currentOption = option;
                     option.Run.Occurences += 1;
+                    if (isParameterSpecified)
+                    {
+                        option.Run.Parameters.Add(parameterValue);
+                        currentOption = null;
+                    }
+                    else
+                        currentOption = option;
                 } else
                     currentOption.Run.Parameters.Add(arg);
             }

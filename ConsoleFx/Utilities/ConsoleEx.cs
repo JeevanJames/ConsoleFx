@@ -21,8 +21,6 @@ using System;
 using System.Security;
 using System.Text;
 
-using static System.Console;
-
 namespace ConsoleFx.Utilities
 {
     public static class ConsoleEx
@@ -39,10 +37,10 @@ namespace ConsoleFx.Utilities
         /// <param name="message">A composite format string representing the message to be displayed</param>
         /// <param name="args">An array of objects to write using message</param>
         /// <returns>The input entered by the user</returns>
-        public static string Prompt(string message, params object[] args)
+        public static string Prompt(string message)
         {
-            Console.Write(message, args);
-            return ReadLine();
+            Console.Write(message);
+            return Console.ReadLine();
         }
 
         /// <summary>
@@ -53,10 +51,10 @@ namespace ConsoleFx.Utilities
         /// <param name="message">A composite format string representing the message to be displayed</param>
         /// <param name="args">An array of objects to write using message</param>
         /// <returns>The input entered by the user</returns>
-        public static string Prompt(ConsoleColor? foreColor, ConsoleColor? backColor, string message, params object[] args)
+        public static string Prompt(string message, ConsoleColor? foreColor, ConsoleColor? backColor = null)
         {
-            Write(foreColor, backColor, message, args);
-            return ReadLine();
+            Write(message, foreColor, backColor);
+            return Console.ReadLine();
         }
         #endregion
 
@@ -79,12 +77,12 @@ namespace ConsoleFx.Utilities
 
             var result = new StringBuilder();
 
-            ConsoleKeyInfo keyInfo = ReadKey(true);
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             while (keyInfo.Key != ConsoleKey.Enter)
             {
                 result.Append(keyInfo.KeyChar);
                 Console.Write(SecretMask);
-                keyInfo = ReadKey(true);
+                keyInfo = Console.ReadKey(true);
             }
             Console.WriteLine();
 
@@ -175,7 +173,7 @@ namespace ConsoleFx.Utilities
             ConsoleKey key;
             do
             {
-                key = ReadKey(true).Key;
+                key = Console.ReadKey(true).Key;
             } while (Array.IndexOf(keys, key) < 0);
             return key;
         }
@@ -190,19 +188,19 @@ namespace ConsoleFx.Utilities
         /// <param name="backColor">The background color to display the message. Specify null to use the default background color.</param>
         /// <param name="text">A composite format string representing the message to be displayed</param>
         /// <param name="args">An array of objects to write using message</param>
-        public static void Write(ConsoleColor? foreColor, ConsoleColor? backColor, string text, params object[] args)
+        public static void Write(string text, ConsoleColor? foreColor, ConsoleColor? backColor = null)
         {
             if (foreColor.HasValue)
-                ForegroundColor = foreColor.Value;
+                Console.ForegroundColor = foreColor.Value;
             if (backColor.HasValue)
-                BackgroundColor = backColor.Value;
-            Console.Write(text, args);
-            ResetColor();
+                Console.BackgroundColor = backColor.Value;
+            Console.Write(text);
+            Console.ResetColor();
         }
 
-        public static void WriteLine(ConsoleColor? foreColor, ConsoleColor? backColor, string text, params object[] args)
+        public static void WriteLine(string text, ConsoleColor? foreColor, ConsoleColor? backColor = null)
         {
-            Write(foreColor, backColor, text, args);
+            Write(text, foreColor, backColor);
             Console.WriteLine();
         }
 
@@ -226,7 +224,7 @@ namespace ConsoleFx.Utilities
                 throw new ArgumentNullException("text");
 
             var indentStr = new string(' ', indent);
-            int lineWidth = WindowWidth - indent - 1;
+            int lineWidth = Console.WindowWidth - indent - 1;
 
             int startPos = 0;
             while (startPos < text.Length)

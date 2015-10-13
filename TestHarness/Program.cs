@@ -6,6 +6,8 @@ using static System.Console;
 using static ConsoleFx.Utilities.ConsoleEx;
 using System.Collections.Generic;
 using System.IO;
+using System;
+using System.Diagnostics;
 
 namespace TestHarness
 {
@@ -39,7 +41,21 @@ namespace TestHarness
             app.AddArgument()
                 .ValidateWith(new PathValidator(PathType.Directory))
                 .AssignTo(() => BackupDirectory, directory => new DirectoryInfo(directory));
-            return app.Run();
+            try
+            {
+                return app.Run();
+            }
+            catch (Exception ex)
+            {
+                WriteLine(ex.ToString(), ConsoleColor.Red);
+                ReadLine();
+                return -1;
+            }
+            finally
+            {
+                if (Debugger.IsAttached)
+                    ReadLine();
+            }
         }
 
 

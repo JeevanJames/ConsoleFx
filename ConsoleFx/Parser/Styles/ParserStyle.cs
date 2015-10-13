@@ -28,6 +28,24 @@ namespace ConsoleFx.Parser.Styles
             return specifiedGrouping;
         }
 
+        /// <summary>
+        /// Validate that the allowed options are compatible with the parser style.
+        /// An exception should be thrown if any option is invalid.
+        /// An example of an invalid option is a short name longer than one character for the UNIX style parser.
+        /// </summary>
+        /// <param name="options"></param>
+        public virtual void ValidateOptions(Options options)
+        {
+        }
+
+        /// <summary>
+        /// Identifies all provided arguments as arguments, options and option parameters.
+        /// No rules are checked during thie phase.
+        /// </summary>
+        /// <param name="args">The provided arguments to identify.</param>
+        /// <param name="options">All defined options.</param>
+        /// <param name="behaviors"></param>
+        /// <returns></returns>
         public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, Behaviors behaviors);
     }
 }
