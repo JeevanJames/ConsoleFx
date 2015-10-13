@@ -32,8 +32,9 @@ namespace ConsoleFx.Parser.Validators
         {
             if (enumType == null)
                 throw new ArgumentNullException(nameof(enumType));
-            if (!enumType.IsEnum)
-                throw new ArgumentException("The enumType parameter should specify a enumerator type", nameof(enumType));
+            //TODO: Portable
+            //if (!enumType.IsEnum)
+            //    throw new ArgumentException("The enumType parameter should specify a enumerator type", nameof(enumType));
             EnumType = enumType;
             IgnoreCase = ignoreCase;
         }

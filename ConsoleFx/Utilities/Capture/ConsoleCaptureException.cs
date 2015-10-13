@@ -22,7 +22,6 @@ using System.Runtime.Serialization;
 
 namespace ConsoleFx.Utilities.Capture
 {
-    [Serializable]
     public sealed class ConsoleCaptureException : ConsoleFxException
     {
         public ConsoleCaptureException(int errorCode)
@@ -37,11 +36,6 @@ namespace ConsoleFx.Utilities.Capture
 
         public ConsoleCaptureException(int errorCode, string message, Exception innerException)
             : base(errorCode, message, innerException)
-        {
-        }
-
-        internal ConsoleCaptureException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
 

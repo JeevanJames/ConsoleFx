@@ -18,11 +18,9 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Runtime.Serialization;
 
-namespace ConsoleFx.Utilities
+namespace ConsoleFx
 {
-    [Serializable]
     public abstract class ConsoleFxException : Exception
     {
         public int ErrorCode { get; }
@@ -40,11 +38,6 @@ namespace ConsoleFx.Utilities
         protected ConsoleFxException(int errorCode, string message, Exception innerException) : base(message, innerException)
         {
             ErrorCode = errorCode;
-        }
-
-        protected ConsoleFxException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
         }
     }
 }

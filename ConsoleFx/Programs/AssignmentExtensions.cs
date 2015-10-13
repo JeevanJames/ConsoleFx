@@ -41,7 +41,7 @@ namespace ConsoleFx.Programs
             option.Handler = handler;
         }
 
-        public static void AssignTo<T>(this Argument argument, Expression<Func<T>> expression, Converter<string, T> converter = null)
+        public static void AssignTo<T>(this Argument argument, Expression<Func<T>> expression, Converter<T> converter = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -53,7 +53,7 @@ namespace ConsoleFx.Programs
             };
         }
 
-        public static void AssignTo<T>(this Option option, Expression<Func<T>> expression, Converter<string, T> converter = null)
+        public static void AssignTo<T>(this Option option, Expression<Func<T>> expression, Converter<T> converter = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -65,7 +65,7 @@ namespace ConsoleFx.Programs
             };
         }
 
-        public static void AddToList<T>(this Argument argument, Expression<Func<IList<T>>> expression, Converter<string, T> converter = null)
+        public static void AddToList<T>(this Argument argument, Expression<Func<IList<T>>> expression, Converter<T> converter = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -80,7 +80,7 @@ namespace ConsoleFx.Programs
             };
         }
 
-        public static void AddToList<T>(this Option option, Expression<Func<IList<T>>> expression, Converter<string, T> converter = null)
+        public static void AddToList<T>(this Option option, Expression<Func<IList<T>>> expression, Converter<T> converter = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -138,7 +138,7 @@ namespace ConsoleFx.Programs
                 throw new ArgumentException($"The expression should return a data member (field or property) from the '{typeof(T).FullName}' type.", nameof(expression));
             if (baseType != null)
             {
-                if (!baseType.IsAssignableFrom(memberExpression.Type))
+                if (!baseType.GetTypeInfo().IsAssignableFrom(memberExpression.Type.GetTypeInfo()))
                     throw new ArgumentException($"Expression data member '{memberExpression.Member.Name}' should be assignable to type '{baseType.FullName}'", nameof(expression));
             }
             else if (memberExpression.Type != typeof(T))
@@ -191,7 +191,7 @@ namespace ConsoleFx.Programs
             throw new ParserException(1000, $"The member '{member.Name}' in type '{declaringTypeName}' should be either a property or a field to be specified in an argument/option handler");
         }
 
-        private static Converter<string, T> GetConverterFor<T>(Converter<string, T> converter)
+        private static Converter<T> GetConverterFor<T>(Converter<T> converter)
         {
             Type type = typeof(T);
 
@@ -201,7 +201,7 @@ namespace ConsoleFx.Programs
                 return converter;
 
             //Special handling for enums
-            if (type.IsEnum)
+            if (type.GetTypeInfo().IsEnum)
                 return str => (T)Enum.Parse(type, str, true);
 
             //Special handling for booleans
@@ -221,7 +221,7 @@ namespace ConsoleFx.Programs
             //For any basic type, return a pre-defined converter from the lookup dictionary
             Delegate @delegate;
             if (_converterLookup.TryGetValue(typeof(T), out @delegate))
-                return (Converter<string, T>)@delegate;
+                return (Converter<T>)@delegate;
 
             //If we cannot figure it out for the caller, then throw an exception saying that the caller
             //must explicitly specify the converter.
@@ -230,18 +230,20 @@ namespace ConsoleFx.Programs
 
         //Lookup of converters for all basic types
         private static readonly Dictionary<Type, Delegate> _converterLookup = new Dictionary<Type, Delegate> {
-            { typeof(int), (Converter<string, int>)int.Parse },
-            { typeof(uint), (Converter<string, uint>)uint.Parse },
-            { typeof(sbyte), (Converter<string, sbyte>)sbyte.Parse },
-            { typeof(byte), (Converter<string, byte>)byte.Parse },
-            { typeof(char), (Converter<string, char>)char.Parse },
-            { typeof(short), (Converter<string, short>)short.Parse },
-            { typeof(ushort), (Converter<string, ushort>)ushort.Parse },
-            { typeof(long), (Converter<string, long>)long.Parse },
-            { typeof(ulong), (Converter<string, ulong>)ulong.Parse },
-            { typeof(float), (Converter<string, float>)float.Parse },
-            { typeof(double), (Converter<string, double>)double.Parse },
-            { typeof(decimal), (Converter<string, decimal>)decimal.Parse },
+            { typeof(int), (Converter<int>)int.Parse },
+            { typeof(uint), (Converter<uint>)uint.Parse },
+            { typeof(sbyte), (Converter<sbyte>)sbyte.Parse },
+            { typeof(byte), (Converter<byte>)byte.Parse },
+            { typeof(char), (Converter<char>)(str => { char ch; return char.TryParse(str, out ch) ? ch : '\0'; }) },
+            { typeof(short), (Converter<short>)short.Parse },
+            { typeof(ushort), (Converter<ushort>)ushort.Parse },
+            { typeof(long), (Converter<long>)long.Parse },
+            { typeof(ulong), (Converter<ulong>)ulong.Parse },
+            { typeof(float), (Converter<float>)float.Parse },
+            { typeof(double), (Converter<double>)double.Parse },
+            { typeof(decimal), (Converter<decimal>)decimal.Parse },
         };
     }
+
+    public delegate T Converter<out T>(string input);
 }

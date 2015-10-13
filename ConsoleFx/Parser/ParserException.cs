@@ -22,7 +22,6 @@ using System.Runtime.Serialization;
 
 namespace ConsoleFx.Parser
 {
-    [Serializable]
     public class ParserException : Exception
     {
         public int ErrorCode { get; }
@@ -37,11 +36,6 @@ namespace ConsoleFx.Parser
             : base(message, innerException)
         {
             ErrorCode = errorCode;
-        }
-
-        internal ParserException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
         }
 
         #region Codes constants inner class

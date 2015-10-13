@@ -50,10 +50,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleFx.Parser\ConsoleFx.Parser.csproj">
-      <Project>{2431b4dd-86b3-4014-ac3b-ab67dd83485a}</Project>
-      <Name>ConsoleFx.Parser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ConsoleFx.Programs\ConsoleFx.Programs.csproj">
       <Project>{3fa06a8c-f6fb-4cf6-bab9-4772b8e71121}</Project>
       <Name>ConsoleFx.Programs</Name>
