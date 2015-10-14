@@ -35,7 +35,6 @@ namespace ConsoleFx.Utilities
         /// Displays a message and waits for user input.
         /// </summary>
         /// <param name="message">A composite format string representing the message to be displayed</param>
-        /// <param name="args">An array of objects to write using message</param>
         /// <returns>The input entered by the user</returns>
         public static string Prompt(string message)
         {
@@ -49,7 +48,6 @@ namespace ConsoleFx.Utilities
         /// <param name="foreColor">The foreground color to display the message. Specify null to use the default foreground color.</param>
         /// <param name="backColor">The background color to display the message. Specify null to use the default background color.</param>
         /// <param name="message">A composite format string representing the message to be displayed</param>
-        /// <param name="args">An array of objects to write using message</param>
         /// <returns>The input entered by the user</returns>
         public static string Prompt(string message, ConsoleColor? foreColor, ConsoleColor? backColor = null)
         {
@@ -187,7 +185,6 @@ namespace ConsoleFx.Utilities
         /// <param name="foreColor">The foreground color to display the message. Specify null to use the default foreground color.</param>
         /// <param name="backColor">The background color to display the message. Specify null to use the default background color.</param>
         /// <param name="text">A composite format string representing the message to be displayed</param>
-        /// <param name="args">An array of objects to write using message</param>
         public static void Write(string text, ConsoleColor? foreColor, ConsoleColor? backColor = null)
         {
             if (foreColor.HasValue)

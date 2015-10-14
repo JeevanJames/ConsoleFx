@@ -37,6 +37,7 @@ namespace ConsoleFx.Parser.Validators
         /// </summary>
         /// <param name="message">The validation error message</param>
         /// <param name="parameterValue">The parameter value that caused the validation to fail</param>
+        /// <param name="args">Optional arguments to the message.</param>
         protected static void ValidationFailed(string message, string parameterValue, params object[] args)
         {
             object[] formatArgs = new object[] { parameterValue }.Concat(args).ToArray();
