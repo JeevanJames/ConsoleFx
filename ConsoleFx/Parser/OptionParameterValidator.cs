@@ -37,12 +37,12 @@ namespace ConsoleFx.Parser
             _option = option;
         }
 
-        public void Add(params BaseValidator[] validators)
+        public void Add(params Validator[] validators)
         {
             Add(-1, validators);
         }
 
-        public void Add(int parameterIndex, params BaseValidator[] validators)
+        public void Add(int parameterIndex, params Validator[] validators)
         {
             if (_option.Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
                 throw new ParserException(1000, $"Cannot add validators to option {_option.Name} because it does not accept parameters.");
@@ -60,13 +60,13 @@ namespace ConsoleFx.Parser
                 validatorList = new ValidatorCollection();
                 _validators.Add(parameterIndex, validatorList);
             }
-            foreach (BaseValidator validator in validators)
+            foreach (Validator validator in validators)
                 validatorList.Add(validator);
         }
 
         public int Count => _validators.Sum(kvp => kvp.Value.Count);
 
-        internal IReadOnlyList<BaseValidator> GetValidators(int parameterIndex = -1)
+        internal IReadOnlyList<Validator> GetValidators(int parameterIndex = -1)
         {
             ValidatorCollection commonValidators;
             _validators.TryGetValue(-1, out commonValidators);
@@ -76,7 +76,7 @@ namespace ConsoleFx.Parser
                 _validators.TryGetValue(parameterIndex, out indexValidators);
 
             int capacity = (commonValidators != null ? commonValidators.Count : 0) + (indexValidators != null ? indexValidators.Count : 0);
-            var validators = new List<BaseValidator>(capacity);
+            var validators = new List<Validator>(capacity);
             if (commonValidators != null)
                 validators.AddRange(commonValidators);
             if (indexValidators != null)

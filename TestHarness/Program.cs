@@ -32,7 +32,7 @@ namespace TestHarness
                 .Flag(() => program.Verbose);
             app.AddOption("type", "t")
                 .ParametersRequired()
-                .ValidateWith(new EnumValidator<BackupType>() { ErrorMessage = "Please specify either Full or Incremental for the backup type." })
+                .ValidateWith(new EnumValidator<BackupType>() { Message = "Please specify either Full or Incremental for the backup type." })
                 .AssignTo(() => program.BackupType);
             app.AddOption("exclude", "e")
                 .Optional(int.MaxValue)

@@ -22,28 +22,30 @@ using System.IO;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public sealed class PathValidator : SingleMessageValidator
+    public class PathValidator : Validator<string>
     {
         public PathValidator(PathType pathType = PathType.File, bool checkIfExists = true)
-            : base(Messages.Path)
         {
             PathType = pathType;
             CheckIfExists = checkIfExists;
         }
 
-        public override void Validate(string parameterValue)
-        {
-            if (!CheckIfExists)
-                return;
-
-            Func<string, bool> checker = PathType == PathType.File ? File.Exists : new Func<string, bool>(Directory.Exists);
-            if (!checker(parameterValue))
-                ValidationFailed(parameterValue);
-        }
-
         public bool CheckIfExists { get; set; }
 
         public PathType PathType { get; set; }
+
+        public string Message { get; set; } = Messages.Path;
+
+        protected override string PrimaryChecks(string parameterValue)
+        {
+            if (!CheckIfExists)
+                return parameterValue;
+
+            Func<string, bool> checker = PathType == PathType.File ? File.Exists : new Func<string, bool>(Directory.Exists);
+            if (!checker(parameterValue))
+                ValidationFailed(parameterValue, Message);
+            return parameterValue;
+        }
     }
 
     public enum PathType

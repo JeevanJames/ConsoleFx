@@ -66,23 +66,23 @@ namespace ConsoleFx.Programs
             return option;
         }
 
-        public static Argument ValidateWith(this Argument argument, params BaseValidator[] validators)
+        public static Argument ValidateWith(this Argument argument, params Validator[] validators)
         {
-            foreach (BaseValidator validator in validators)
+            foreach (Validator validator in validators)
                 argument.Validators.Add(validator);
             return argument;
         }
 
-        public static Option ValidateWith(this Option option, params BaseValidator[] validators)
+        public static Option ValidateWith(this Option option, params Validator[] validators)
         {
-            foreach (BaseValidator validator in validators)
+            foreach (Validator validator in validators)
                 option.Validators.Add(validator);
             return option;
         }
 
-        public static Option ValidateWith(this Option option, int parameterIndex, params BaseValidator[] validators)
+        public static Option ValidateWith(this Option option, int parameterIndex, params Validator[] validators)
         {
-            foreach (BaseValidator validator in validators)
+            foreach (Validator validator in validators)
                 option.Validators.Add(parameterIndex, validator);
             return option;
         }

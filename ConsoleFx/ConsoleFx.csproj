@@ -56,7 +56,6 @@
     <Compile Include="Parser\Styles\ParserStyle.cs" />
     <Compile Include="Parser\Styles\UnixParserStyle.cs" />
     <Compile Include="Parser\Styles\WindowsParserStyle.cs" />
-    <Compile Include="Parser\Validators\BaseValidator.cs" />
     <Compile Include="Parser\Validators\BooleanValidator.cs" />
     <Compile Include="Parser\Validators\CustomValidator.cs" />
     <Compile Include="Parser\Validators\EnumValidator.cs" />
@@ -68,10 +67,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Parser\Validators\MultipleMessageValidator.cs" />
+    <Compile Include="Parser\Validators\Validator.cs" />
     <Compile Include="Parser\Validators\PathValidator.cs" />
     <Compile Include="Parser\Validators\RegexValidator.cs" />
-    <Compile Include="Parser\Validators\SingleMessageValidator.cs" />
     <Compile Include="Parser\Validators\StringValidator.cs" />
     <Compile Include="Parser\Validators\UriValidator.cs" />
     <Compile Include="Programs\AssignmentExtensions.cs" />

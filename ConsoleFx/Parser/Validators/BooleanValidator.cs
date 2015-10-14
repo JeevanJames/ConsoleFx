@@ -24,40 +24,41 @@ namespace ConsoleFx.Parser.Validators
     /// <summary>
     /// Checks whether the parameter value is 'True' or 'False'. The check is not case sensitive.
     /// </summary>
-    public sealed class BooleanValidator : SingleMessageValidator
+    public class BooleanValidator : Validator<string>
     {
         private readonly BooleanType _booleanType;
 
         public BooleanValidator()
-            : base(Messages.Boolean)
         {
             _booleanType = BooleanType.TrueFalse;
         }
 
         public BooleanValidator(BooleanType booleanType)
-            : base(Messages.Boolean)
         {
             _booleanType = booleanType;
         }
 
-        public override void Validate(string parameterValue)
+        public string Message { get; set; } = Messages.Boolean;
+
+        protected override string PrimaryChecks(string parameterValue)
         {
             switch (_booleanType)
             {
                 case BooleanType.TrueFalse:
                     bool boolValue;
                     if (!bool.TryParse(parameterValue, out boolValue))
-                        ValidationFailed(parameterValue);
+                        ValidationFailed(parameterValue, Message);
                     break;
                 case BooleanType.YesNo:
                     if (!parameterValue.Equals("yes", StringComparison.OrdinalIgnoreCase) && !parameterValue.Equals("no", StringComparison.OrdinalIgnoreCase))
-                        ValidationFailed(parameterValue);
+                        ValidationFailed(parameterValue, Message);
                     break;
                 case BooleanType.OneZero:
                     if (!parameterValue.Equals("1", StringComparison.OrdinalIgnoreCase) && !parameterValue.Equals("0", StringComparison.OrdinalIgnoreCase))
-                        ValidationFailed(parameterValue);
+                        ValidationFailed(parameterValue, Message);
                     break;
             }
+            return parameterValue;
         }
     }
 

@@ -91,17 +91,17 @@ namespace ConsoleFx.Parser
                     int parameterIndex = 0;
                     foreach (string parameter in option.Run.Parameters)
                     {
-                        IEnumerable<BaseValidator> validatorsByIndex = option.Validators.GetValidators(parameterIndex);
+                        IEnumerable<Validator> validatorsByIndex = option.Validators.GetValidators(parameterIndex);
                         if (validatorsByIndex != null)
                         {
-                            foreach (BaseValidator validator in validatorsByIndex)
+                            foreach (Validator validator in validatorsByIndex)
                                 validator.Validate(parameter);
                         }
 
                         validatorsByIndex = option.Validators.GetValidators(-1);
                         if (validatorsByIndex != null)
                         {
-                            foreach (BaseValidator validator in validatorsByIndex)
+                            foreach (Validator validator in validatorsByIndex)
                                 validator.Validate(parameter);
                         }
 
@@ -143,7 +143,7 @@ namespace ConsoleFx.Parser
                 string argumentValue = specifiedArguments[i];
                 Argument argument = Arguments[i];
                 argument.Scope = Behaviors.Scope;
-                foreach (BaseValidator validator in argument.Validators)
+                foreach (Validator validator in argument.Validators)
                     validator.Validate(argumentValue);
 
                 argument.Handler(argumentValue);

@@ -17,17 +17,20 @@ limitations under the License.
 */
 #endregion
 
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 
 namespace ConsoleFx.Parser.Validators
 {
     /// <summary>
-    /// Base class for validators that perform multiple checks and hence can produce more than one
-    /// error message.
+    /// Base class for all validators
     /// </summary>
-    public abstract class MultipleMessageValidator : BaseValidator
+    public abstract class Validator
     {
+        public abstract void Validate(string parameterValue);
+
         /// <summary>
         /// Shortcut method for throwing a failed validation exception. Use this from derived classes,
         /// instead of throwing the exception directly
@@ -39,6 +42,37 @@ namespace ConsoleFx.Parser.Validators
             object[] formatArgs = new object[] { parameterValue }.Concat(args).ToArray();
             throw new ParserException(ParserException.Codes.ValidationFailed,
                 string.Format(CultureInfo.CurrentCulture, message, formatArgs));
+        }
+    }
+
+    /// <summary>
+    /// Base class for validators that perform multiple checks and hence can produce more than one
+    /// error message.
+    /// </summary>
+    public abstract class Validator<T> : Validator
+    {
+        public override sealed void Validate(string parameterValue)
+        {
+            T value = PrimaryChecks(parameterValue);
+            AdditionalChecks(value);
+        }
+
+        protected abstract T PrimaryChecks(string parameterValue);
+
+        protected virtual void AdditionalChecks(T value)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Collection of validator classes
+    /// </summary>
+    public sealed class ValidatorCollection : Collection<Validator>
+    {
+        public void AddRange(IEnumerable<Validator> validators)
+        {
+            foreach (Validator validator in validators)
+                Add(validator);
         }
     }
 }

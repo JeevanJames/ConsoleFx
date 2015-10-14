@@ -21,7 +21,7 @@ using System;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public sealed class StringValidator : MultipleMessageValidator
+    public sealed class StringValidator : Validator<string>
     {
         public StringValidator(int maxLength)
             : this(0, maxLength)
@@ -37,12 +37,13 @@ namespace ConsoleFx.Parser.Validators
             MaxLength = maxLength;
         }
 
-        public override void Validate(string parameterValue)
+        protected override string PrimaryChecks(string parameterValue)
         {
             if (parameterValue.Length < MinLength)
                 ValidationFailed(MinLengthMessage, parameterValue, MinLength);
             if (parameterValue.Length > MaxLength)
                 ValidationFailed(MaxLengthMessage, parameterValue, MaxLength);
+            return parameterValue;
         }
 
         public int MaxLength { get; set; }

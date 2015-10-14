@@ -22,33 +22,34 @@ using System.Linq;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public class EnumValidator : SingleMessageValidator
+    public class EnumValidator : Validator<string>
     {
         private Type EnumType { get; }
         private bool IgnoreCase { get; }
 
         public EnumValidator(Type enumType, bool ignoreCase = true)
-            : base(Messages.Enum)
         {
             if (enumType == null)
                 throw new ArgumentNullException(nameof(enumType));
-            //TODO: Portable
-            //if (!enumType.IsEnum)
-            //    throw new ArgumentException("The enumType parameter should specify a enumerator type", nameof(enumType));
+            if (!enumType.IsEnum)
+                throw new ArgumentException("The enumType parameter should specify a enumerator type", nameof(enumType));
             EnumType = enumType;
             IgnoreCase = ignoreCase;
         }
 
-        public override void Validate(string parameterValue)
+        public string Message { get; set; } = Messages.Enum;
+
+        protected override string PrimaryChecks(string parameterValue)
         {
             string[] enumNames = Enum.GetNames(EnumType);
             StringComparison comparison = IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
             if (!enumNames.Any(enumName => parameterValue.Equals(enumName, comparison)))
-                ValidationFailed(parameterValue);
+                ValidationFailed(parameterValue, Message);
+            return parameterValue;
         }
     }
 
-    public sealed class EnumValidator<TEnum> : EnumValidator
+    public class EnumValidator<TEnum> : EnumValidator
         where TEnum : struct
     {
         public EnumValidator(bool ignoreCase = true)

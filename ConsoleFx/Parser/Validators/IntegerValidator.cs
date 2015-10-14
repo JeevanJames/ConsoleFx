@@ -19,7 +19,7 @@ limitations under the License.
 
 namespace ConsoleFx.Parser.Validators
 {
-    public sealed class IntegerValidator : MultipleMessageValidator
+    public class IntegerValidator : Validator<long>
     {
         private readonly long _minimumValue;
         private readonly long _maximumValue;
@@ -33,13 +33,14 @@ namespace ConsoleFx.Parser.Validators
         public string NotAnIntegerMessage { get; set; } = Messages.Integer_NotAnInteger;
         public string OutOfRangeMessage { get; set; } = Messages.Integer_OutOfRange;
 
-        public override void Validate(string parameterValue)
+        protected override long PrimaryChecks(string parameterValue)
         {
             long value;
             if (!long.TryParse(parameterValue, out value))
                 ValidationFailed(NotAnIntegerMessage, parameterValue);
             if (value < _minimumValue || value > _maximumValue)
                 ValidationFailed(OutOfRangeMessage, parameterValue);
+            return value;
         }
     }
 }

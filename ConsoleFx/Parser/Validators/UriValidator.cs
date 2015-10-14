@@ -21,7 +21,7 @@ using System;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public class UriValidator : AdditionalChecksValidator<Uri>
+    public class UriValidator : Validator<Uri>
     {
         public UriKind UriKind { get; }
 
@@ -39,24 +39,5 @@ namespace ConsoleFx.Parser.Validators
         }
 
         public string UriKindMessage { get; set; } = Messages.Uri;
-    }
-
-    /// <summary>
-    /// Multiple message validator that allows derived classes to perform additional checks.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public abstract class AdditionalChecksValidator<T> : MultipleMessageValidator
-    {
-        public sealed override void Validate(string parameterValue)
-        {
-            T value = PrimaryChecks(parameterValue);
-            AdditionalChecks(value);
-        }
-
-        protected abstract T PrimaryChecks(string parameterValue);
-
-        protected virtual void AdditionalChecks(T value)
-        {
-        }
     }
 }

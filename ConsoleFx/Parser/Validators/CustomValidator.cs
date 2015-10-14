@@ -21,22 +21,28 @@ using System;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public sealed class CustomValidator : SingleMessageValidator
+    public sealed class CustomValidator : Validator<string>
     {
         private readonly Func<string, bool> _validator;
 
         public CustomValidator(Func<string, bool> validator)
-            : base(Messages.Custom)
         {
             if (validator == null)
                 throw new ArgumentNullException(nameof(validator));
             _validator = validator;
         }
 
-        public override void Validate(string parameterValue)
+        public string Message { get; set; } = Messages.Custom;
+
+        protected override sealed string PrimaryChecks(string parameterValue)
         {
             if (!_validator(parameterValue))
-                ValidationFailed(parameterValue);
+                ValidationFailed(parameterValue, Message);
+            return parameterValue;
+        }
+
+        protected override sealed void AdditionalChecks(string value)
+        {
         }
     }
 }

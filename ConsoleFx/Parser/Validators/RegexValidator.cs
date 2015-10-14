@@ -22,10 +22,9 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public sealed class RegexValidator : SingleMessageValidator
+    public class RegexValidator : Validator<string>
     {
         public RegexValidator(Regex regex)
-            : base(Messages.Regex)
         {
             if (regex == null)
                 throw new ArgumentNullException(nameof(regex));
@@ -33,18 +32,20 @@ namespace ConsoleFx.Parser.Validators
         }
 
         public RegexValidator(string pattern)
-            : base(Messages.Regex)
         {
             Regex = new Regex(pattern);
         }
 
-        public override void Validate(string parameterValue)
+        public Regex Regex { get; }
+
+        public string Message { get; set; } = Messages.Regex;
+
+        protected override string PrimaryChecks(string parameterValue)
         {
             if (!Regex.IsMatch(parameterValue))
-                ValidationFailed(parameterValue);
+                ValidationFailed(parameterValue, Message);
+            return parameterValue;
         }
-
-        public Regex Regex { get; }
     }
 
     public static class RegexPattern
