@@ -19,63 +19,152 @@ limitations under the License.
 
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
+using ConsoleFx.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleFx.Programs
 {
-    public sealed class ConsoleProgram<TStyle> : BaseConsoleProgram<TStyle>
+    public sealed class ConsoleProgram<TStyle> : CommandLineParser<TStyle>
         where TStyle : ParserStyle, new()
     {
-        private readonly List<Option> _options = new List<Option>();
-        private readonly List<Argument> _arguments = new List<Argument>();
         private readonly ExecuteHandler _handler;
+        private readonly Dictionary<Type, Delegate> _errorHandlers = new Dictionary<Type, Delegate>();
 
-        public ConsoleProgram(ExecuteHandler handler, CommandGrouping grouping = CommandGrouping.DoesNotMatter, object scope = null)
-            : base(grouping, scope)
+        public ConsoleProgram(ExecuteHandler handler)
         {
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
             _handler = handler;
         }
 
-        public Argument AddArgument(bool optional = false)
+        public new Behaviors Behaviors { get; }
+
+        public int Run()
         {
-            var argument = new Argument
+            try
             {
-                IsOptional = optional
-            };
-            _arguments.Add(argument);
-            return argument;
-        }
-
-        public Option AddOption(string name, string shortName = null, bool caseSensitive = false, int order = int.MaxValue)
-        {
-            var option = new Option(name)
+                string[] args = Environment.GetCommandLineArgs();
+                Parse(args.Skip(1));
+                return _handler();
+            }
+            catch (Exception ex)
             {
-                CaseSensitive = caseSensitive,
-                Order = order,
-            };
-            if (!string.IsNullOrWhiteSpace(shortName))
-                option.ShortName = shortName;
-
-            _options.Add(option);
-            return option;
+                return HandleError(ex);
+            }
         }
 
-        protected override IEnumerable<Option> GetOptions()
+        //This method is public because it should also be called from a try-catch block in the program.
+        //The built-in error handling code is only available from within the Run() method, which does
+        //the bulk of the work, but the programmer still has to handle exceptions from the remaining
+        //code (i.e. the code that sets up the command-line parsing parameters).
+        public int HandleError(Exception ex)
         {
-            return _options;
+            FireBeforeError(ex);
+            try
+            {
+                //Find the corresponding error handler and execute it (or use the default error handler).
+                Delegate handler;
+                int exitCode;
+                if (_errorHandlers.TryGetValue(ex.GetType(), out handler))
+                   exitCode = (int)handler.DynamicInvoke(ex);
+                else
+                    exitCode = DefaultErrorHandler(ex);
+
+                //Display usage, if needed
+                //if (Behaviors.DisplayUsageOnError)
+                //    DisplayUsage();
+
+                return exitCode;
+            }
+            finally
+            {
+                FireAfterError(ex);
+            }
         }
 
-        protected override IEnumerable<Argument> GetArguments()
+        /// <summary>
+        /// Assigns a new error handler for a specified exception types. The handler is called whenever
+        /// an exception of the specified type or it's derived types is thrown.
+        /// </summary>
+        /// <typeparam name="TException">The type of exception to handle</typeparam>
+        /// <param name="handler">The method that handles the specified exception type</param>
+        public void SetErrorHandler<TException>(ErrorHandler<TException> handler)
+            where TException : Exception
         {
-            return _arguments;
+            _errorHandlers.Add(typeof(TException), handler);
         }
 
-        protected override int Execute()
+        /// <summary>
+        /// Occurs before an error is handled an error handler. Allows you to specify pre-error actions
+        /// that are common to all error handlers (like setting the console foreground color to red,
+        /// for example).
+        /// </summary>
+        public event EventHandler<ErrorEventArgs> BeforeError;
+
+        /// <summary>
+        /// Occurs after an error has been handled by an error handler. Allows you to specify post-error
+        /// actions that are common to all error handlers (like resetting the console foreground to
+        /// default, for example).
+        /// </summary>
+        public event EventHandler<ErrorEventArgs> AfterError;
+
+        /// <summary>
+        /// The default error handler, in case the framework cannot find a specific handler for an exception
+        /// </summary>
+        /// <param name="ex">Exception to handle.</param>
+        private static int DefaultErrorHandler(Exception ex)
         {
-            return _handler();
+            var cfxException = ex as ConsoleFxException;
+
+            //If the exception derives from ArgumentException or it derives from ConsoleFxException
+            //and has a negative error code, treat it as an internal exception.
+            if (ex is ArgumentException || (cfxException != null && cfxException.ErrorCode < 0))
+                Console.WriteLine(Messages.InternalError, ex.Message);
+            else
+                Console.WriteLine(ex.Message);
+            ConsoleEx.WriteBlankLine();
+
+            return cfxException != null ? cfxException.ErrorCode : -1;
+        }
+
+        private void FireBeforeError(Exception exception)
+        {
+            EventHandler<ErrorEventArgs> beforeError = BeforeError;
+            if (beforeError != null)
+                beforeError(this, new ErrorEventArgs(exception));
+        }
+
+        private void FireAfterError(Exception exception)
+        {
+            EventHandler<ErrorEventArgs> afterError = AfterError;
+            if (afterError != null)
+                afterError(this, new ErrorEventArgs(exception));
         }
     }
+
+    /// <summary>
+    /// Provides exception details for the BeforeError and AfterError events of ConsoleProgram classes
+    /// </summary>
+    public sealed class ErrorEventArgs : EventArgs
+    {
+        private readonly Exception _exception;
+
+        internal ErrorEventArgs(Exception exception)
+        {
+            _exception = exception;
+        }
+
+        /// <summary>
+        /// The exception that is being handled
+        /// </summary>
+        public Exception Exception
+        {
+            get { return _exception; }
+        }
+    }
+
+    public delegate int ExecuteHandler();
+    public delegate int ErrorHandler<in TException>(TException exception) where TException : Exception;
 }

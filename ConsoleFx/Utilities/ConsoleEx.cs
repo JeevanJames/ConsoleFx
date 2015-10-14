@@ -218,7 +218,7 @@ namespace ConsoleFx.Utilities
         public static void WriteIndented(string text, int indent, bool indentFirstLine = false)
         {
             if (text == null)
-                throw new ArgumentNullException("text");
+                throw new ArgumentNullException(nameof(text));
 
             var indentStr = new string(' ', indent);
             int lineWidth = Console.WindowWidth - indent - 1;

@@ -1,13 +1,13 @@
 ﻿using ConsoleFx.Parser.Styles;
 using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
-
-using static System.Console;
-using static ConsoleFx.Utilities.ConsoleEx;
-using System.Collections.Generic;
-using System.IO;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+
+using static ConsoleFx.Utilities.ConsoleEx;
+using static System.Console;
 
 namespace TestHarness
 {
@@ -27,7 +27,8 @@ namespace TestHarness
         private static int Main()
         {
             var program = new Program();
-            var app = new ConsoleProgram<UnixParserStyle>(program.Handler, scope: program);
+            var app = new ConsoleProgram<WindowsParserStyle>(program.Handler);
+            app.Behaviors.Scope = program;
             app.AddOption("verbose", "v")
                 .Flag(() => program.Verbose);
             app.AddOption("type", "t")
@@ -48,9 +49,7 @@ namespace TestHarness
             }
             catch (Exception ex)
             {
-                WriteLine(ex.ToString(), ConsoleColor.Red);
-                ReadLine();
-                return -1;
+                return app.HandleError(ex);
             }
             finally
             {

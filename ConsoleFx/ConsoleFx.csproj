@@ -77,9 +77,14 @@
     <Compile Include="Parser\Validators\StringValidator.cs" />
     <Compile Include="Parser\Validators\UriValidator.cs" />
     <Compile Include="Programs\AssignmentExtensions.cs" />
-    <Compile Include="Programs\BaseConsoleProgram.cs" />
+    <Compile Include="Programs\CommandLineParser.cs" />
     <Compile Include="Programs\ConsoleProgram.cs" />
     <Compile Include="Programs\Extensions.cs" />
+    <Compile Include="Programs\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Programs\MultiCommandProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Capture\ConsoleCapture.cs" />
@@ -93,6 +98,10 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Parser\Validators\Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Programs\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>

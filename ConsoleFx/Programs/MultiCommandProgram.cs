@@ -25,56 +25,56 @@ using System.Linq;
 
 namespace ConsoleFx.Programs
 {
-    public sealed class MultiCommandProgram<TStyle>
-        where TStyle : ParserStyle, new()
-    {
-        private readonly CommandSelector<TStyle> _selector;
+    //public sealed class MultiCommandProgram<TStyle>
+    //    where TStyle : ParserStyle, new()
+    //{
+    //    private readonly CommandSelector<TStyle> _selector;
 
-        public MultiCommandProgram(CommandSelector<TStyle> selector)
-        {
-            if (selector == null)
-                throw new ArgumentNullException(nameof(selector));
-            _selector = selector;
-        }
+    //    public MultiCommandProgram(CommandSelector<TStyle> selector)
+    //    {
+    //        if (selector == null)
+    //            throw new ArgumentNullException(nameof(selector));
+    //        _selector = selector;
+    //    }
 
-        public int Run()
-        {
-            try
-            {
-                string[] allArgs = Environment.GetCommandLineArgs();
-                IEnumerable<string> programArgs = allArgs.Skip(2);
-                Command<TStyle> program = _selector(new string[] { allArgs[1] });
-                return program.Run();
-            }
-            catch (ParserException ex)
-            {
-                Console.WriteLine(ex);
-                return ex.ErrorCode;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return -1;
-            }
-        }
-    }
+    //    public int Run()
+    //    {
+    //        try
+    //        {
+    //            string[] allArgs = Environment.GetCommandLineArgs();
+    //            IEnumerable<string> programArgs = allArgs.Skip(2);
+    //            Command<TStyle> program = _selector(new string[] { allArgs[1] });
+    //            return program.Run();
+    //        }
+    //        catch (ParserException ex)
+    //        {
+    //            Console.WriteLine(ex);
+    //            return ex.ErrorCode;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine(ex);
+    //            return -1;
+    //        }
+    //    }
+    //}
 
-    public abstract class Command<TStyle> : BaseConsoleProgram<TStyle>, IConsoleProgram
-        where TStyle : ParserStyle, new()
-    {
-        private readonly IEnumerable<string> _args;
+    //public abstract class Command<TStyle> : BaseConsoleProgram<TStyle>, IConsoleProgram
+    //    where TStyle : ParserStyle, new()
+    //{
+    //    private readonly IEnumerable<string> _args;
 
-        protected Command(IEnumerable<string> args)
-        {
-            _args = args;
-        }
+    //    protected Command(IEnumerable<string> args)
+    //    {
+    //        _args = args;
+    //    }
 
-        protected override IEnumerable<string> GetCommandLineArgs()
-        {
-            return _args;
-        }
-    }
+    //    protected override IEnumerable<string> GetCommandLineArgs()
+    //    {
+    //        return _args;
+    //    }
+    //}
 
-    public delegate Command<TStyle> CommandSelector<TStyle>(string[] commands)
-        where TStyle : ParserStyle, new();
+    //public delegate Command<TStyle> CommandSelector<TStyle>(string[] commands)
+    //    where TStyle : ParserStyle, new();
 }
