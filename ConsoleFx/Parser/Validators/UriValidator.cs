@@ -30,14 +30,14 @@ namespace ConsoleFx.Parser.Validators
             UriKind = uriKind;
         }
 
+        public string Message { get; set; } = Messages.Uri;
+
         protected override Uri PrimaryChecks(string parameterValue)
         {
             Uri uri;
             if (!Uri.TryCreate(parameterValue, UriKind, out uri))
-                ValidationFailed(parameterValue, UriKindMessage);
+                ValidationFailed(parameterValue, Message);
             return uri;
         }
-
-        public string UriKindMessage { get; set; } = Messages.Uri;
     }
 }
