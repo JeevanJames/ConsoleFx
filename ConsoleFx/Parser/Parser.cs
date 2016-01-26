@@ -27,14 +27,18 @@ namespace ConsoleFx.Parser
     {
         public Parser()
         {
-            Arguments = base.Arguments;
-            Options = base.Options;
-            Behaviors = base.Behaviors;
+            Behaviors = new Behaviors(InternalBehaviors);
         }
 
-        public new Arguments Arguments { get; }
-        public new Options Options { get; }
-        public new Behaviors Behaviors { get; }
+        public Argument AddArgument(bool optional = false) => InternalAddArgument(optional);
+
+        public Option AddOption(string name, string shortName = null, bool caseSensitive = false,
+            int order = int.MaxValue) =>
+            InternalAddOption(name, shortName, caseSensitive, order);
+
+        public Behaviors Behaviors { get; }
+
+        //TODO: Specified arguments and options properties
 
         public new void Parse(IEnumerable<string> tokens)
         {

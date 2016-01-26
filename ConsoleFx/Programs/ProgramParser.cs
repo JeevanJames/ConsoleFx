@@ -22,32 +22,19 @@ using ConsoleFx.Parser.Styles;
 
 namespace ConsoleFx.Programs
 {
-    public abstract class CommandLineParser<TStyle> : BaseParser<TStyle>
+    /// <summary>
+    ///     Parser specific to console programs. Adds some commandline-specific behaviors.
+    /// </summary>
+    /// <typeparam name="TStyle">The parser style to use.</typeparam>
+    public abstract class ProgramParser<TStyle> : BaseParser<TStyle>
         where TStyle : ParserStyle, new()
     {
-        public Argument AddArgument(bool optional = false)
-        {
-            var argument = new Argument
-            {
-                IsOptional = optional
-            };
-            Arguments.Add(argument);
-            return argument;
-        }
+        public bool DisplayUsageOnError { get; set; }
 
-        public Option AddOption(string name, string shortName = null, bool caseSensitive = false, int order = int.MaxValue)
-        {
-            var option = new Option(name)
-            {
-                CaseSensitive = caseSensitive,
-                Order = order,
-            };
-            if (!string.IsNullOrWhiteSpace(shortName))
-                option.ShortName = shortName;
+        public Argument AddArgument(bool optional = false) => InternalAddArgument(optional);
 
-            Options.Add(option);
-            return option;
-        }
-
+        public Option AddOption(string name, string shortName = null, bool caseSensitive = false,
+            int order = int.MaxValue) =>
+                InternalAddOption(name, shortName, caseSensitive, order);
     }
 }

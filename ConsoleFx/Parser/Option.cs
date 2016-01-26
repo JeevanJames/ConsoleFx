@@ -8,7 +8,7 @@ using System.Linq;
 namespace ConsoleFx.Parser
 {
     /// <summary>
-    /// Represents a commandline switch parameter.
+    ///     Represents a commandline switch parameter.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
     public sealed partial class Option
@@ -32,6 +32,8 @@ namespace ConsoleFx.Parser
         internal object Scope { get; set; }
     }
 
+    //Tracks the results of a particular run.
+    //These are all internal properties as they are used only at the framework level.
     public sealed partial class Option
     {
         internal OptionRun Run { get; } = new OptionRun();
@@ -49,11 +51,15 @@ namespace ConsoleFx.Parser
         }
     }
 
-    public delegate void OptionHandler(string[] parameters);
+    /// <summary>
+    ///     Delegate that is executed for every option that is specified on the command line.
+    /// </summary>
+    /// <param name="parameters">The list of parameters specified for the option.</param>
+    public delegate void OptionHandler(IReadOnlyList<string> parameters);
 
     /// <summary>
-    /// Represents a collection of options. Note: This is not a keyed collection because the key
-    /// can be either the name or short name.
+    ///     Represents a collection of options. Note: This is not a keyed collection because the key
+    ///     can be either the name or short name.
     /// </summary>
     public sealed class Options : Collection<Option>
     {
@@ -62,7 +68,8 @@ namespace ConsoleFx.Parser
             get
             {
                 return this.FirstOrDefault(option => {
-                    StringComparison comparison = option.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+                    StringComparison comparison = option.CaseSensitive
+                        ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
                     if (name.Equals(option.Name, comparison))
                         return true;
                     if (!string.IsNullOrEmpty(option.ShortName) && name.Equals(option.ShortName, comparison))
@@ -73,39 +80,46 @@ namespace ConsoleFx.Parser
         }
 
         /// <summary>
-        /// Prevents duplicate options from being inserted.
+        ///     Prevents duplicate options from being inserted.
         /// </summary>
         /// <param name="index">Location to insert the new option.</param>
         /// <param name="item">Option to insert.</param>
         protected override void InsertItem(int index, Option item)
         {
             if (this.Any(DuplicateCheck(item)))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, item.Name), nameof(item));
+            {
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, item.Name), nameof(item));
+            }
             base.InsertItem(index, item);
         }
 
         /// <summary>
-        /// Prevents duplicate options from being set.
+        ///     Prevents duplicate options from being set.
         /// </summary>
         /// <param name="index">Location to set the new option.</param>
         /// <param name="item">Option to set.</param>
         protected override void SetItem(int index, Option item)
         {
             if (this.Any(DuplicateCheck(item)))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, item.Name), nameof(item));
+            {
+                throw new ArgumentException(
+                    string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, item.Name), nameof(item));
+            }
             base.SetItem(index, item);
         }
-         
+
         /// <summary>
-        /// Returns a delegate that can check whether the passed option is already available in the
-        /// collection. Used whenever options are added or set in the collection.
+        ///     Returns a delegate that can check whether the passed option is already available in the
+        ///     collection. Used whenever options are added or set in the collection.
         /// </summary>
         /// <param name="option">Option that is being set.</param>
         /// <returns>True if the option already exists in the collection. Otherwise false.</returns>
         private static Func<Option, bool> DuplicateCheck(Option option)
         {
             return opt => {
-                StringComparison comparison = opt.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+                StringComparison comparison = opt.CaseSensitive
+                    ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
                 if (option.Name.Equals(opt.Name, comparison))
                     return true;
                 if (!string.IsNullOrEmpty(opt.ShortName) && option.ShortName.Equals(opt.ShortName, comparison))

@@ -80,7 +80,7 @@ namespace ConsoleFx.Parser.Styles
 
         //This method is used by the code that validates the command-line grouping. It is
         //called for every iteration of the arguments
-        private void VerifyCommandLineGrouping(ArgumentType previousType, ArgumentType currentType, CommandGrouping grouping)
+        private static void VerifyCommandLineGrouping(ArgumentType previousType, ArgumentType currentType, CommandGrouping grouping)
         {
             if (grouping == CommandGrouping.DoesNotMatter)
                 return;

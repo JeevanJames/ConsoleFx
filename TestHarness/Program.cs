@@ -17,32 +17,35 @@ namespace TestHarness
         Incremental,
     }
 
-    internal class Program
+    internal sealed class Parameters
     {
-        private bool Verbose;
-        private BackupType BackupType = BackupType.Full;
-        private List<string> Excludes = new List<string>();
-        private DirectoryInfo BackupDirectory;
+        public bool Verbose { get; set; }
+        public BackupType BackupType { get; set; } = BackupType.Full;
+        public List<string> Excludes { get; } = new List<string>();
+        public DirectoryInfo BackupDirectory { get; set; }
+    }
+
+    internal static class Program
+    {
+        private static readonly Parameters _parameters = new Parameters();
 
         private static int Main()
         {
-            var program = new Program();
-            var app = new ConsoleProgram<WindowsParserStyle>(program.Handler);
-            app.Behaviors.Scope = program;
+            var app = new ConsoleProgram<WindowsParserStyle>(Handler, _parameters);
             app.AddOption("verbose", "v")
-                .Flag(() => program.Verbose);
+                .Flag(() => _parameters.Verbose);
             app.AddOption("type", "t")
                 .ParametersRequired()
-                .ValidateWith(new EnumValidator<BackupType>() { Message = "Please specify either Full or Incremental for the backup type." })
-                .AssignTo(() => program.BackupType);
+                .ValidateWith(new EnumValidator<BackupType> { Message = "Please specify either Full or Incremental for the backup type." })
+                .AssignTo(() => _parameters.BackupType);
             app.AddOption("exclude", "e")
                 .Optional(int.MaxValue)
                 .ParametersRequired(int.MaxValue)
                 .ValidateWith(new RegexValidator(@"^[\w.*?]+$"))
-                .AddToList(() => program.Excludes);
+                .AddToList(() => _parameters.Excludes);
             app.AddArgument()
                 .ValidateWith(new PathValidator(PathType.Directory))
-                .AssignTo(() => program.BackupDirectory, directory => new DirectoryInfo(directory));
+                .AssignTo(() => _parameters.BackupDirectory, directory => new DirectoryInfo(directory));
             try
             {
                 return app.Run();
@@ -59,17 +62,17 @@ namespace TestHarness
         }
 
 
-        private int Handler()
+        private static int Handler()
         {
-            WriteLine($"{BackupType} backup requested for the directory {BackupDirectory}");
-            if (Excludes.Count > 0)
+            WriteLine($"{_parameters.BackupType} backup requested for the directory {_parameters.BackupDirectory}");
+            if (_parameters.Excludes.Count > 0)
             {
-                WriteLine($"Following files to be excluded:");
-                foreach (string exclude in Excludes)
-                    WriteLine($"    {exclude}");
+                WriteLine(@"Following files to be excluded:");
+                foreach (string exclude in _parameters.Excludes)
+                    WriteLine($"    {exclude}", ConsoleColor.DarkMagenta);
             }
-            if (Verbose)
-                WriteLine("Verbose output requested.");
+            if (_parameters.Verbose)
+                WriteLine(@"Verbose output requested.");
             return 0;
         }
     }

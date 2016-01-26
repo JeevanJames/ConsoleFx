@@ -32,7 +32,7 @@ namespace ConsoleFx.Utilities
 
         #region Prompt methods
         /// <summary>
-        /// Displays a message and waits for user input.
+        ///     Displays a message and waits for user input.
         /// </summary>
         /// <param name="message">A composite format string representing the message to be displayed</param>
         /// <returns>The input entered by the user</returns>
@@ -43,7 +43,7 @@ namespace ConsoleFx.Utilities
         }
 
         /// <summary>
-        /// Displays a message in the specific foreground and background colors and waits for user input.
+        ///     Displays a message in the specific foreground and background colors and waits for user input.
         /// </summary>
         /// <param name="foreColor">The foreground color to display the message. Specify null to use the default foreground color.</param>
         /// <param name="backColor">The background color to display the message. Specify null to use the default background color.</param>
@@ -58,14 +58,18 @@ namespace ConsoleFx.Utilities
 
         #region ReadSecret methods
         /// <summary>
-        /// <para>The character to be used when entering a secret value using the ReadSecret methods. The default is '*'.</para>
-        /// <para>Changing this value applies globally.</para>
+        ///     <para>The character to be used when entering a secret value using the ReadSecret methods. The default is '*'.</para>
+        ///     <para>Changing this value applies globally.</para>
         /// </summary>
         /// <remarks>
-        /// <para>You can specify a null character (\x0) to prevent any output from displaying and the cursor
-        /// from moving as characters are typed.</para>
-        /// <para>Alternatively, you can specify a space character to prevent any output from displaying,
-        /// although the cursor will move with the characters typed.</para>
+        ///     <para>
+        ///         You can specify a null character (\x0) to prevent any output from displaying and the cursor
+        ///         from moving as characters are typed.
+        ///     </para>
+        ///     <para>
+        ///         Alternatively, you can specify a space character to prevent any output from displaying,
+        ///         although the cursor will move with the characters typed.
+        ///     </para>
         /// </remarks>
         public static char SecretMask { get; set; }
 
@@ -129,7 +133,7 @@ namespace ConsoleFx.Utilities
 
         #region WaitForXXXX methods
         /// <summary>
-        /// Waits for the user to press the ENTER (RETURN) key
+        ///     Waits for the user to press the ENTER (RETURN) key
         /// </summary>
         public static void WaitForEnter()
         {
@@ -137,8 +141,8 @@ namespace ConsoleFx.Utilities
         }
 
         /// <summary>
-        /// Waits for the user to press any key on the keyboard. Displays the character representing
-        /// the pressed key in the console window.
+        ///     Waits for the user to press any key on the keyboard. Displays the character representing
+        ///     the pressed key in the console window.
         /// </summary>
         /// <returns>Information about the pressed key</returns>
         public static ConsoleKeyInfo WaitForAnyKey()
@@ -147,7 +151,7 @@ namespace ConsoleFx.Utilities
         }
 
         /// <summary>
-        /// Waits for any of a specified set of keys to be pressed by the user.
+        ///     Waits for any of a specified set of keys to be pressed by the user.
         /// </summary>
         /// <param name="keys">An array of characters representing the allowed set of characters.</param>
         /// <returns>The character pressed by the user</returns>
@@ -162,7 +166,7 @@ namespace ConsoleFx.Utilities
         }
 
         /// <summary>
-        /// Waits for any of a specified set of keys to be pressed by the user.
+        ///     Waits for any of a specified set of keys to be pressed by the user.
         /// </summary>
         /// <param name="keys">An array of ConsoleKey objects representing the allowed set of keys.</param>
         /// <returns>The key pressed by the user</returns>
@@ -179,13 +183,13 @@ namespace ConsoleFx.Utilities
 
         #region Write & WriteLine methods
         /// <summary>
-        /// Displays a string on the Console using the specified foreground and background colors. Similar
-        /// to the Console.Write method.
+        ///     Displays a string on the Console using the specified foreground and background colors. Similar
+        ///     to the Console.Write method.
         /// </summary>
+        /// <param name="text">A composite format string representing the message to be displayed</param>
         /// <param name="foreColor">The foreground color to display the message. Specify null to use the default foreground color.</param>
         /// <param name="backColor">The background color to display the message. Specify null to use the default background color.</param>
-        /// <param name="text">A composite format string representing the message to be displayed</param>
-        public static void Write(string text, ConsoleColor? foreColor, ConsoleColor? backColor = null)
+        public static void Write(string text, ConsoleColor? foreColor = null, ConsoleColor? backColor = null)
         {
             if (foreColor.HasValue)
                 Console.ForegroundColor = foreColor.Value;
@@ -195,26 +199,50 @@ namespace ConsoleFx.Utilities
             Console.ResetColor();
         }
 
-        public static void WriteLine(string text, ConsoleColor? foreColor, ConsoleColor? backColor = null)
+        public static void WriteLine(string text, ConsoleColor? foreColor = null, ConsoleColor? backColor = null)
         {
             Write(text, foreColor, backColor);
             Console.WriteLine();
         }
 
         /// <summary>
-        /// Writes a blank line to the Console. Just a more descriptive way to do a Console.WriteLine().
+        ///     Writes a blank line to the Console. Just a more descriptive way to do a Console.WriteLine().
         /// </summary>
         public static void WriteBlankLine()
         {
             Console.WriteLine();
         }
 
+        /// <summary>
+        ///     Writes multiple lines to the console.
+        /// </summary>
+        /// <param name="lines">The lines to write.</param>
         public static void WriteLines(params string[] lines)
         {
             foreach (string line in lines)
                 Console.WriteLine(line);
         }
 
+        /// <summary>
+        ///     Writes multiple lines to the console, with each line being left-aligned to the specified indent.
+        /// </summary>
+        /// <param name="indent">The indent to left align each line.</param>
+        /// <param name="lines">The lines to write.</param>
+        public static void WriteLines(int indent, params string[] lines)
+        {
+            foreach (string line in lines)
+                WriteIndented(line, indent, true);
+        }
+
+        /// <summary>
+        ///     Writes a long piece of text to the console such that each new line is left-aligned to the same indent.
+        /// </summary>
+        /// <param name="text">The text to write.</param>
+        /// <param name="indent">The indent to left align the text.</param>
+        /// <param name="indentFirstLine">
+        ///     Whether the first line should be indented or just written from the current cursor
+        ///     position.
+        /// </param>
         public static void WriteIndented(string text, int indent, bool indentFirstLine = false)
         {
             if (text == null)
@@ -223,12 +251,12 @@ namespace ConsoleFx.Utilities
             var indentStr = new string(' ', indent);
             int lineWidth = Console.WindowWidth - indent - 1;
 
-            int startPos = 0;
+            var startPos = 0;
             while (startPos < text.Length)
             {
                 int length = Math.Min(lineWidth, text.Length - startPos);
                 string str = text.Substring(startPos, length);
-                if (startPos > 0)
+                if (startPos > 0 || indentFirstLine)
                     Console.Write(indentStr);
                 Console.WriteLine(str);
                 startPos += lineWidth;

@@ -26,20 +26,21 @@ using System.Linq;
 
 namespace ConsoleFx.Programs
 {
-    public sealed class ConsoleProgram<TStyle> : CommandLineParser<TStyle>
+    public sealed class ConsoleProgram<TStyle> : ProgramParser<TStyle>
         where TStyle : ParserStyle, new()
     {
         private readonly ExecuteHandler _handler;
         private readonly Dictionary<Type, Delegate> _errorHandlers = new Dictionary<Type, Delegate>();
 
-        public ConsoleProgram(ExecuteHandler handler)
+        public ConsoleProgram(ExecuteHandler handler, object scope = null)
         {
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
             _handler = handler;
+            Behaviors = new Behaviors(InternalBehaviors) { Scope = scope };
         }
 
-        public new Behaviors Behaviors { get; }
+        public Behaviors Behaviors { get; }
 
         public int Run()
         {
