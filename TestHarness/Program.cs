@@ -1,12 +1,14 @@
-﻿using ConsoleFx.Parser.Styles;
-using ConsoleFx.Parser.Validators;
-using ConsoleFx.Programs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
+using ConsoleFx.Parser.Styles;
+using ConsoleFx.Parser.Validators;
+using ConsoleFx.Programs;
+
 using static ConsoleFx.Utilities.ConsoleEx;
+
 using static System.Console;
 
 namespace TestHarness
@@ -14,7 +16,7 @@ namespace TestHarness
     public enum BackupType
     {
         Full,
-        Incremental,
+        Incremental
     }
 
     internal sealed class Parameters
@@ -36,7 +38,9 @@ namespace TestHarness
                 .Flag(() => _parameters.Verbose);
             app.AddOption("type", "t")
                 .ParametersRequired()
-                .ValidateWith(new EnumValidator<BackupType> { Message = "Please specify either Full or Incremental for the backup type." })
+                .ValidateWith(new EnumValidator<BackupType> {
+                    Message = "Please specify either Full or Incremental for the backup type."
+                })
                 .AssignTo(() => _parameters.BackupType);
             app.AddOption("exclude", "e")
                 .Optional(int.MaxValue)
@@ -60,7 +64,6 @@ namespace TestHarness
                     ReadLine();
             }
         }
-
 
         private static int Handler()
         {

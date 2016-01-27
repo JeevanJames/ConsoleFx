@@ -17,12 +17,13 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Parser;
-using ConsoleFx.Parser.Styles;
-using ConsoleFx.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using ConsoleFx.Parser;
+using ConsoleFx.Parser.Styles;
+using ConsoleFx.Utilities;
 
 namespace ConsoleFx.Programs
 {
@@ -69,7 +70,7 @@ namespace ConsoleFx.Programs
                 Delegate handler;
                 int exitCode;
                 if (_errorHandlers.TryGetValue(ex.GetType(), out handler))
-                   exitCode = (int)handler.DynamicInvoke(ex);
+                    exitCode = (int)handler.DynamicInvoke(ex);
                 else
                     exitCode = DefaultErrorHandler(ex);
 
@@ -86,8 +87,8 @@ namespace ConsoleFx.Programs
         }
 
         /// <summary>
-        /// Assigns a new error handler for a specified exception types. The handler is called whenever
-        /// an exception of the specified type or it's derived types is thrown.
+        ///     Assigns a new error handler for a specified exception types. The handler is called whenever
+        ///     an exception of the specified type or it's derived types is thrown.
         /// </summary>
         /// <typeparam name="TException">The type of exception to handle</typeparam>
         /// <param name="handler">The method that handles the specified exception type</param>
@@ -98,21 +99,21 @@ namespace ConsoleFx.Programs
         }
 
         /// <summary>
-        /// Occurs before an error is handled an error handler. Allows you to specify pre-error actions
-        /// that are common to all error handlers (like setting the console foreground color to red,
-        /// for example).
+        ///     Occurs before an error is handled an error handler. Allows you to specify pre-error actions
+        ///     that are common to all error handlers (like setting the console foreground color to red,
+        ///     for example).
         /// </summary>
         public event EventHandler<ErrorEventArgs> BeforeError;
 
         /// <summary>
-        /// Occurs after an error has been handled by an error handler. Allows you to specify post-error
-        /// actions that are common to all error handlers (like resetting the console foreground to
-        /// default, for example).
+        ///     Occurs after an error has been handled by an error handler. Allows you to specify post-error
+        ///     actions that are common to all error handlers (like resetting the console foreground to
+        ///     default, for example).
         /// </summary>
         public event EventHandler<ErrorEventArgs> AfterError;
 
         /// <summary>
-        /// The default error handler, in case the framework cannot find a specific handler for an exception
+        ///     The default error handler, in case the framework cannot find a specific handler for an exception
         /// </summary>
         /// <param name="ex">Exception to handle.</param>
         private static int DefaultErrorHandler(Exception ex)
@@ -127,45 +128,39 @@ namespace ConsoleFx.Programs
                 Console.WriteLine(ex.Message);
             ConsoleEx.WriteBlankLine();
 
-            return cfxException != null ? cfxException.ErrorCode : -1;
+            return cfxException?.ErrorCode ?? -1;
         }
 
         private void FireBeforeError(Exception exception)
         {
             EventHandler<ErrorEventArgs> beforeError = BeforeError;
-            if (beforeError != null)
-                beforeError(this, new ErrorEventArgs(exception));
+            beforeError?.Invoke(this, new ErrorEventArgs(exception));
         }
 
         private void FireAfterError(Exception exception)
         {
             EventHandler<ErrorEventArgs> afterError = AfterError;
-            if (afterError != null)
-                afterError(this, new ErrorEventArgs(exception));
+            afterError?.Invoke(this, new ErrorEventArgs(exception));
         }
     }
 
     /// <summary>
-    /// Provides exception details for the BeforeError and AfterError events of ConsoleProgram classes
+    ///     Provides exception details for the BeforeError and AfterError events of ConsoleProgram classes
     /// </summary>
     public sealed class ErrorEventArgs : EventArgs
     {
-        private readonly Exception _exception;
-
         internal ErrorEventArgs(Exception exception)
         {
-            _exception = exception;
+            Exception = exception;
         }
 
         /// <summary>
-        /// The exception that is being handled
+        ///     The exception that is being handled
         /// </summary>
-        public Exception Exception
-        {
-            get { return _exception; }
-        }
+        public Exception Exception { get; }
     }
 
     public delegate int ExecuteHandler();
+
     public delegate int ErrorHandler<in TException>(TException exception) where TException : Exception;
 }

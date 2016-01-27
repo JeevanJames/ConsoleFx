@@ -11,7 +11,7 @@ namespace ConsoleFx.Parser
     ///     Represents a commandline switch parameter.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
-    public sealed partial class Option
+    public sealed partial class Option : Arg
     {
         public string Name { get; }
         public string ShortName { get; set; }
@@ -28,8 +28,6 @@ namespace ConsoleFx.Parser
             Name = name;
             Validators = new OptionParameterValidators(this);
         }
-
-        internal object Scope { get; set; }
     }
 
     //Tracks the results of a particular run.

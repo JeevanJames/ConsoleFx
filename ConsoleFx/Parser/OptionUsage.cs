@@ -23,18 +23,25 @@ using System.Diagnostics;
 namespace ConsoleFx.Parser
 {
     /// <summary>
-    /// Rules for specifying an option on the command line. This includes number of occurences of
-    /// the option (defaults: 0 min and 1 max) and number of parameters (default: 0).
-    /// Additional shortcut properties (<see cref="ExpectedOccurences"/>, 
-    /// <see cref="ExpectedParameters"/> and <see cref="Requirement"/> allow both min and max
-    /// values to be set for common scenarios.
+    ///     Rules for specifying an option on the command line. This includes number of occurences of
+    ///     the option (defaults: 0 min and 1 max) and number of parameters (default: 0).
+    ///     Additional shortcut properties (<see cref="ExpectedOccurences" />,
+    ///     <see cref="ExpectedParameters" /> and <see cref="Requirement" /> allow both min and max
+    ///     values to be set for common scenarios.
     /// </summary>
     [DebuggerDisplay("{Requirement} | Parameters: {MinParameters} - {MaxParameters}")]
     public sealed class OptionUsage
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _minOccurences;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _maxOccurences = 1;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _minParameters;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _maxParameters;
 
         public OptionUsage()
@@ -47,6 +54,9 @@ namespace ConsoleFx.Parser
             MaxParameters = 0;
         }
 
+        /// <summary>
+        ///     Specifies the maximum allowed occurences of the option.
+        /// </summary>
         public int MaxOccurences
         {
             get { return _maxOccurences; }
@@ -58,6 +68,9 @@ namespace ConsoleFx.Parser
             }
         }
 
+        /// <summary>
+        ///     Specifies the minimum allowed occurences of the option.
+        /// </summary>
         public int MinOccurences
         {
             get { return _minOccurences; }
@@ -69,6 +82,9 @@ namespace ConsoleFx.Parser
             }
         }
 
+        /// <summary>
+        ///     Specifies the maximum allowed number of parameters for the option.
+        /// </summary>
         public int MaxParameters
         {
             get { return _maxParameters; }
@@ -80,6 +96,9 @@ namespace ConsoleFx.Parser
             }
         }
 
+        /// <summary>
+        ///     Specifies the minimum allowed number of parameters for the option.
+        /// </summary>
         public int MinParameters
         {
             get { return _minParameters; }
@@ -92,9 +111,9 @@ namespace ConsoleFx.Parser
         }
 
         /// <summary>
-        /// Shortcut to get/set both min and max occurence values.
-        /// If min and max values are different, returns null.
-        /// If set to null, then the defaults of 0 (min) and 1 (max) are set.
+        ///     Shortcut to get/set both min and max occurence values.
+        ///     If min and max values are different, returns null.
+        ///     If set to null, then the defaults of 0 (min) and 1 (max) are set.
         /// </summary>
         public int? ExpectedOccurences
         {
@@ -109,9 +128,9 @@ namespace ConsoleFx.Parser
         }
 
         /// <summary>
-        /// Shortcut to get/set both min and max parameter values.
-        /// If min and max values are different, returns null.
-        /// If set to null, then the defaults of 0 (min) and 0 (max) are set.
+        ///     Shortcut to get/set both min and max parameter values.
+        ///     If min and max values are different, returns null.
+        ///     If set to null, then the defaults of 0 (min) and 0 (max) are set.
         /// </summary>
         public int? ExpectedParameters
         {
@@ -126,13 +145,14 @@ namespace ConsoleFx.Parser
         }
 
         /// <summary>
-        /// Shortcut to set the option's occurences based on its requirement.
+        ///     Shortcut to set the option's occurences based on its requirement.
         /// </summary>
         public OptionRequirement Requirement
         {
             get
             {
-                OptionRequirement requirement = MinOccurences > 0 ? OptionRequirement.Required : OptionRequirement.Optional;
+                OptionRequirement requirement = MinOccurences > 0
+                    ? OptionRequirement.Required : OptionRequirement.Optional;
                 if (MaxOccurences == int.MaxValue)
                 {
                     if (requirement == OptionRequirement.Required)
@@ -167,7 +187,7 @@ namespace ConsoleFx.Parser
         }
 
         /// <summary>
-        /// Shortcut to set the option's parameter occurences based on its requirement.
+        ///     Shortcut to set the option's parameter occurences based on its requirement.
         /// </summary>
         public OptionParameterRequirement ParameterRequirement
         {
@@ -176,8 +196,12 @@ namespace ConsoleFx.Parser
                 if (MinParameters == 0 && MaxParameters == 0)
                     return OptionParameterRequirement.NotAllowed;
                 if (MinParameters == 0)
-                    return MaxParameters == int.MaxValue ? OptionParameterRequirement.OptionalUnlimited : OptionParameterRequirement.Optional;
-                return MaxParameters == int.MaxValue ? OptionParameterRequirement.RequiredUnlimited : OptionParameterRequirement.Required;
+                {
+                    return MaxParameters == int.MaxValue
+                        ? OptionParameterRequirement.OptionalUnlimited : OptionParameterRequirement.Optional;
+                }
+                return MaxParameters == int.MaxValue
+                    ? OptionParameterRequirement.RequiredUnlimited : OptionParameterRequirement.Required;
             }
             set
             {

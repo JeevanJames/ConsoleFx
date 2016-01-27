@@ -17,37 +17,35 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Parser;
-using ConsoleFx.Parser.Validators;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
+using ConsoleFx.Parser.Validators;
+
 namespace ConsoleFx.Parser
 {
     /// <summary>
-    /// Represents a non-option command-line parameter.
+    ///     Represents a non-option command-line parameter.
     /// </summary>
     [DebuggerDisplay("Argument '{Name ?? string.Empty}' [{Validators.Count} validators]")]
-    public sealed class Argument
+    public sealed class Argument : Arg
     {
         public string Name { get; set; }
 
         /// <summary>
-        /// Delegate to call when the argument is encountered.
+        ///     Delegate to call when the argument is encountered.
         /// </summary>
         public ArgumentHandler Handler { get; set; }
 
         /// <summary>
-        /// Indicates whether the argument is optional. Like C# optional parameters, then can only
-        /// be specified after all the required parameters.
+        ///     Indicates whether the argument is optional. Like C# optional parameters, then can only
+        ///     be specified after all the required parameters.
         /// </summary>
         public bool IsOptional { get; set; }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators { get; } = new ValidatorCollection();
-
-        internal object Scope { get; set; }
     }
 
     public delegate void ArgumentHandler(string value);
@@ -86,7 +84,7 @@ namespace ConsoleFx.Parser
         //TODO: Try and optimize this to not traverse the whole list each time.
         private void VerifyOptionalArgumentsAtEnd()
         {
-            bool optional = false;
+            var optional = false;
             foreach (Argument argument in this)
             {
                 if (!optional)
@@ -94,8 +92,10 @@ namespace ConsoleFx.Parser
                 else
                 {
                     if (!argument.IsOptional)
+                    {
                         throw new ParserException(ParserException.Codes.RequiredArgumentsDefinedAfterOptional,
                             Messages.RequiredArgumentsDefinedAfterOptional);
+                    }
                 }
             }
         }
