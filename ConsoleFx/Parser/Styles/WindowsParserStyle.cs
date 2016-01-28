@@ -28,14 +28,14 @@ namespace ConsoleFx.Parser.Styles
         private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?]+)");
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, Options options, Behaviors behaviors)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, Options options, CommandGrouping grouping, object scope)
         {
             ArgumentType previousType = ArgumentType.NotSet;
             ArgumentType currentType = ArgumentType.NotSet;
 
             foreach (string token in tokens)
             {
-                VerifyCommandLineGrouping(previousType, currentType, behaviors.Grouping);
+                VerifyCommandLineGrouping(previousType, currentType, grouping);
 
                 previousType = currentType;
 
@@ -75,7 +75,7 @@ namespace ConsoleFx.Parser.Styles
                 }
             }
 
-            VerifyCommandLineGrouping(previousType, currentType, behaviors.Grouping);
+            VerifyCommandLineGrouping(previousType, currentType, grouping);
         }
 
         //This method is used by the code that validates the command-line grouping. It is

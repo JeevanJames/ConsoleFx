@@ -45,9 +45,9 @@ namespace ConsoleFx.Parser.Styles
         /// </summary>
         /// <param name="args">The provided arguments to identify.</param>
         /// <param name="options">All defined options.</param>
-        /// <param name="behaviors"></param>
+        /// <param name="grouping"></param>
+        /// <param name="scope"></param>
         /// <returns></returns>
-        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options,
-            Behaviors behaviors);
+        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, CommandGrouping grouping, object scope);
     }
 }

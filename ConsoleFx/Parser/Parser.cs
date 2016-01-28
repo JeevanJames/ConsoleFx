@@ -87,7 +87,7 @@ namespace ConsoleFx.Parser
 
             //Validate all the available options based on the parser style rules.
             ParserStyle.ValidateDefinedOptions(Options);
-            var specifiedArguments = new List<string>(ParserStyle.IdentifyTokens(tokens, Options, new Behaviors { Grouping = Grouping, Scope = Scope }));
+            var specifiedArguments = new List<string>(ParserStyle.IdentifyTokens(tokens, Options, Grouping, Scope));
 
             //Process the specified options and arguments.
             ProcessOptions();

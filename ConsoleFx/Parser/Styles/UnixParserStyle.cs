@@ -53,7 +53,7 @@ namespace ConsoleFx.Parser.Styles
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)(?:=(.+))?");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, Behaviors behaviors)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, CommandGrouping grouping, object scope)
         {
             Option currentOption = null;
 
