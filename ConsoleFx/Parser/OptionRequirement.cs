@@ -20,33 +20,32 @@ limitations under the License.
 namespace ConsoleFx.Parser
 {
     /// <summary>
-    /// Specifies whether an option is required, optional or not allowed for a program context.
+    ///     Specifies whether an option is required, optional or not allowed for a program context.
     /// </summary>
     public enum OptionRequirement
     {
         /// <summary>
-        /// The option is optional (this is the default). Sets the option's MinOccurences property
-        /// to 0 (zero) and MaxOccurences property to 1 (one). However, the MaxOccurence value can
-        /// be increased, and as long as the MinOccurence value is zero, it will be considered optional.
+        ///     The option is optional (this is the default). Sets the option's MinOccurences property
+        ///     to 0 (zero) and MaxOccurences property to 1 (one). However, the MaxOccurence value can
+        ///     be increased, and as long as the MinOccurence value is zero, it will be considered optional.
         /// </summary>
         Optional,
 
+        /// <summary>
+        ///     The option is optional. Sets the option's MinOccurences property to 0 and MaxOccurences
+        ///     property to int.MaxValue to indicate unlimited number of occurences.
+        /// </summary>
         OptionalUnlimited,
 
         /// <summary>
-        /// The option is required. Sets the option's MinOccurences and MaxOccurences properties to 1 (one).
+        ///     The option is required. Sets the option's MinOccurences and MaxOccurences properties to 1 (one).
         /// </summary>
         Required,
 
-        RequiredUnlimited,
-    }
-
-    public enum OptionParameterRequirement
-    {
-        NotAllowed,
-        Optional,
-        OptionalUnlimited,
-        Required,
-        RequiredUnlimited,
+        /// <summary>
+        ///     The option is required. Sets the option's MinOccurences property to 1 and MaxOccurences
+        ///     property to int.MaxValue to indicate unlimited number of occurences.
+        /// </summary>
+        RequiredUnlimited
     }
 }

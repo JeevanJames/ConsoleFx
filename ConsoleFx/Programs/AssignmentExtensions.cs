@@ -45,11 +45,11 @@ namespace ConsoleFx.Programs
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
-            argument.Handler = arg => {
+            argument.Handler = (arg, scope) => {
                 converter = GetConverterFor(converter);
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression);
                 object value = converter != null ? (object)converter(arg) : arg;
-                SetDataMemberValue(dataMember, value, argument.Scope);
+                SetDataMemberValue(dataMember, value, scope);
             };
         }
 
@@ -57,11 +57,11 @@ namespace ConsoleFx.Programs
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
-            option.Handler = prms => {
+            option.Handler = (prms, scope) => {
                 converter = GetConverterFor(converter);
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression);
                 object value = converter != null ? (object)converter(prms[0]) : prms[0];
-                SetDataMemberValue(dataMember, value, option.Scope);
+                SetDataMemberValue(dataMember, value, scope);
             };
         }
 
@@ -70,11 +70,10 @@ namespace ConsoleFx.Programs
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            argument.Handler = arg => {
+            argument.Handler = (arg, scope) => {
                 converter = GetConverterFor(converter);
-
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression, typeof(IList<T>));
-                IList<T> list = GetDataMemberValue<IList<T>>(dataMember, argument.Scope);
+                IList<T> list = GetDataMemberValue<IList<T>>(dataMember, scope);
                 object value = converter != null ? (object)converter(arg) : arg;
                 list.Add((T)value);
             };
@@ -85,11 +84,11 @@ namespace ConsoleFx.Programs
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            option.Handler = prms => {
+            option.Handler = (prms, scope) => {
                 converter = GetConverterFor(converter);
 
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression, typeof(IList<T>));
-                IList<T> list = GetDataMemberValue<IList<T>>(dataMember, option.Scope);
+                IList<T> list = GetDataMemberValue<IList<T>>(dataMember, scope);
                 foreach (string prm in prms)
                 {
                     object value = converter != null ? (object)converter(prm) : prm;
@@ -115,9 +114,9 @@ namespace ConsoleFx.Programs
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            option.Handler = prms => {
+            option.Handler = (prms, scope) => {
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression);
-                SetDataMemberValue(dataMember, true, option.Scope);
+                SetDataMemberValue(dataMember, true, scope);
             };
         }
 

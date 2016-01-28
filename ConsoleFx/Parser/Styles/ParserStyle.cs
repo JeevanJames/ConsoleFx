@@ -23,15 +23,16 @@ namespace ConsoleFx.Parser.Styles
 {
     public abstract class ParserStyle
     {
-        public virtual CommandGrouping GetGrouping(CommandGrouping specifiedGrouping, Options options, Arguments arguments)
+        public virtual CommandGrouping GetGrouping(CommandGrouping specifiedGrouping, Options options,
+            Arguments arguments)
         {
             return specifiedGrouping;
         }
 
         /// <summary>
-        /// Validate that the defined options are compatible with the parser style.
-        /// An exception should be thrown if any option is invalid.
-        /// An example of an invalid option is a short name longer than one character for the UNIX style parser.
+        ///     Validate that the defined options are compatible with the parser style.
+        ///     An exception should be thrown if any option is invalid.
+        ///     An example of an invalid option is a short name longer than one character for the UNIX style parser.
         /// </summary>
         /// <param name="options">List of all the defined options.</param>
         public virtual void ValidateDefinedOptions(Options options)
@@ -39,13 +40,14 @@ namespace ConsoleFx.Parser.Styles
         }
 
         /// <summary>
-        /// Identifies all provided arguments as arguments, options and option parameters.
-        /// No rules are checked during thie phase.
+        ///     Identifies all provided arguments as arguments, options and option parameters.
+        ///     No rules are checked during this phase.
         /// </summary>
         /// <param name="args">The provided arguments to identify.</param>
         /// <param name="options">All defined options.</param>
         /// <param name="behaviors"></param>
         /// <returns></returns>
-        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, Behaviors behaviors);
+        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options,
+            Behaviors behaviors);
     }
 }

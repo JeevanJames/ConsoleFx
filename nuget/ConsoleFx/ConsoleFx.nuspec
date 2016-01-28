@@ -17,7 +17,7 @@ Visit the project URL for documentation or download the full package to obtain t
         <summary>ConsoleFx is a framework to build command-line applications, with support for command-line argument parsing and handling, including built-in error handling and validation support.</summary>
         <releaseNotes>All-new refactored version. Moved to GitHub.
 Important: This release has breaking changes from the previous version.</releaseNotes>
-        <copyright>Copyright (c) Jeevan James 2006-2015</copyright>
+        <copyright>Copyright (c) Jeevan James 2006-2016</copyright>
         <tags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</tags>
     </metadata>
     <files>

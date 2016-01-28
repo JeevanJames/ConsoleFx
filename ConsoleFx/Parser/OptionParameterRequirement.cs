@@ -1,4 +1,4 @@
-﻿#region --- License & Copyright Notice ---
+#region --- License & Copyright Notice ---
 /*
 ConsoleFx CommandLine Processing Library
 Copyright 2015 Jeevan James
@@ -20,18 +20,33 @@ limitations under the License.
 namespace ConsoleFx.Parser
 {
     /// <summary>
-    ///     Specify whether the parameters of an option are repeating or individual
+    ///     Specifies whether the parameters for an option are required, optional or not allowed.
     /// </summary>
-    public enum OptionParameterType
+    public enum OptionParameterRequirement
     {
         /// <summary>
-        ///     The parameters are repeating and have the same meaning
+        ///     Parameters are not allowed for the option.
         /// </summary>
-        Repeating,
+        NotAllowed,
 
         /// <summary>
-        ///     Each parameter is independant, has its own meaning and is at a specific position
+        ///     The option allows 0 to 1 parameters.
         /// </summary>
-        Individual
+        Optional,
+
+        /// <summary>
+        ///     The option allows 0 to unlimited parameters.
+        /// </summary>
+        OptionalUnlimited,
+
+        /// <summary>
+        ///     The option allows 1 parameter.
+        /// </summary>
+        Required,
+
+        /// <summary>
+        ///     The option allows 1 to unlimited parameters.
+        /// </summary>
+        RequiredUnlimited
     }
 }

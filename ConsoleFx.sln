@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\TestHarness.csproj", "{E56434B6-A674-4EE0-B315-2A1711A1CBFE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx", "ConsoleFx\ConsoleFx.csproj", "{7DC038A5-0ECC-4EC3-8497-7C1504FA0113}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness.MultiCommand", "TestHarness.MultiCommand\TestHarness.MultiCommand.csproj", "{66332FA1-4BA4-4578-A0CA-8C4FACAAC413}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7DC038A5-0ECC-4EC3-8497-7C1504FA0113}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DC038A5-0ECC-4EC3-8497-7C1504FA0113}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DC038A5-0ECC-4EC3-8497-7C1504FA0113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66332FA1-4BA4-4578-A0CA-8C4FACAAC413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66332FA1-4BA4-4578-A0CA-8C4FACAAC413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66332FA1-4BA4-4578-A0CA-8C4FACAAC413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66332FA1-4BA4-4578-A0CA-8C4FACAAC413}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

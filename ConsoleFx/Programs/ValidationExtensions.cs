@@ -22,17 +22,22 @@ using ConsoleFx.Parser.Validators;
 
 namespace ConsoleFx.Programs
 {
-    public static class Extensions
+    /// <summary>
+    ///     Extensions to the Option and Argument classes to set them up for various validations.
+    /// </summary>
+    public static class ValidationExtensions
     {
         public static Option Optional(this Option option, int max = 1)
         {
-            option.Usage.Requirement = max == int.MaxValue ? OptionRequirement.OptionalUnlimited : OptionRequirement.Optional;
+            option.Usage.Requirement = max == int.MaxValue
+                ? OptionRequirement.OptionalUnlimited : OptionRequirement.Optional;
             return option;
         }
 
         public static Option Required(this Option option, int max = 1)
         {
-            option.Usage.Requirement = max == int.MaxValue ? OptionRequirement.RequiredUnlimited : OptionRequirement.Required;
+            option.Usage.Requirement = max == int.MaxValue
+                ? OptionRequirement.RequiredUnlimited : OptionRequirement.Required;
             return option;
         }
 
@@ -50,13 +55,15 @@ namespace ConsoleFx.Programs
 
         public static Option ParametersOptional(this Option option, int max = 1)
         {
-            option.Usage.ParameterRequirement = max == int.MaxValue ? OptionParameterRequirement.OptionalUnlimited : OptionParameterRequirement.Optional;
+            option.Usage.ParameterRequirement = max == int.MaxValue
+                ? OptionParameterRequirement.OptionalUnlimited : OptionParameterRequirement.Optional;
             return option;
         }
 
         public static Option ParametersRequired(this Option option, int max = 1)
         {
-            option.Usage.ParameterRequirement = max == int.MaxValue ? OptionParameterRequirement.RequiredUnlimited : OptionParameterRequirement.Required;
+            option.Usage.ParameterRequirement = max == int.MaxValue
+                ? OptionParameterRequirement.RequiredUnlimited : OptionParameterRequirement.Required;
             return option;
         }
 

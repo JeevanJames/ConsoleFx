@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+
+<package>
+    <metadata>
+        <id>$id$</id>
+        <version>$version$</version>
+        <authors>$author$</authors>
+        <owners>$author$</owners>
+        <licenseUrl>https://github.com/JeevanJames/ConsoleFx/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/JeevanJames/ConsoleFx/</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/JeevanJames/ConsoleFx/master/Image.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>ConsoleFx is a framework to build command-line applications, with support for command-line argument parsing and handling, including built-in error handling and validation support.</summary>
+        <description>$description$</description>
+        <releaseNotes>Added Runner.cs and Usage.txt content files.</releaseNotes>
+        <copyright>Copyright (c) Jeevan James 2007-2016</copyright>
+        <tags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</tags>
+        <contentFiles>
+            <files include="cs/any/Runner.cs"/>
+            <files include="any/any/Usage.txt" buildAction="EmbeddedResource"/>
+        </contentFiles>
+    </metadata>
+</package>
