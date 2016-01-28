@@ -17,17 +17,18 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Parser;
-using ConsoleFx.Parser.Styles;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
+using ConsoleFx.Parser;
+using ConsoleFx.Parser.Styles;
+
 namespace ConsoleFx.Programs
 {
-    public sealed class MultiCommandProgram
+    public sealed class MultiCommandProgram : ConsoleProgram
     {
         public ParserStyle ParserStyle { get; }
         private CommandCollection Commands { get; } = new CommandCollection();
@@ -58,30 +59,18 @@ namespace ConsoleFx.Programs
             return RegisterCommand(command);
         }
 
-        public Command RegisterCommand(ExecuteHandler handler, params string[] names) => RegisterCommand(handler, (IEnumerable<string>)names);
+        public Command RegisterCommand(ExecuteHandler handler, params string[] names)
+            => RegisterCommand(handler, (IEnumerable<string>)names);
 
-        public int Run()
+        protected override int InternalRun()
         {
-            try
-            {
-                string[] allArgs = Environment.GetCommandLineArgs();
-                string commandName = allArgs[1];
-                Command command = Commands.FindCommand(commandName);
-                if (command == null)
-                    throw new InvalidOperationException($"Unrecognized command: {commandName}");
-                IEnumerable<string> commandArgs = allArgs.Skip(2);
-                return command.Run(commandArgs);
-            }
-            catch (ParserException ex)
-            {
-                Console.WriteLine(ex);
-                return ex.ErrorCode;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return -1;
-            }
+            string[] allArgs = Environment.GetCommandLineArgs();
+            string commandName = allArgs[1];
+            Command command = Commands.FindCommand(commandName);
+            if (command == null)
+                throw new InvalidOperationException($"Unrecognized command: {commandName}");
+            IEnumerable<string> commandArgs = allArgs.Skip(2);
+            return command.Run(commandArgs);
         }
     }
 
@@ -113,7 +102,8 @@ namespace ConsoleFx.Programs
                     sb.Append(name);
                     return sb;
                 }).ToString();
-                throw new ArgumentException($"The following command names have duplicates: {duplicateNamesString}", nameof(names));
+                throw new ArgumentException($"The following command names have duplicates: {duplicateNamesString}",
+                    nameof(names));
             }
         }
 
@@ -134,7 +124,8 @@ namespace ConsoleFx.Programs
             return 0;
         }
 
-        public static Command Create(ExecuteHandler handler, params string[] names) => new DelegateCommand(handler, names);
+        public static Command Create(ExecuteHandler handler, params string[] names)
+            => new DelegateCommand(handler, names);
     }
 
     internal sealed class CommandCollection : Collection<Command>
@@ -148,6 +139,7 @@ namespace ConsoleFx.Programs
             }
             return null;
         }
+
         protected override void InsertItem(int index, Command command)
         {
             EnsureCommandNamesAreUnique(command);

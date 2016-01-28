@@ -79,6 +79,7 @@
     <Compile Include="Parser\Validators\UriValidator.cs" />
     <Compile Include="Programs\AssignmentExtensions.cs" />
     <Compile Include="Programs\ConsoleProgram.cs" />
+    <Compile Include="Programs\SimpleProgram.cs" />
     <Compile Include="Programs\ValidationExtensions.cs" />
     <Compile Include="Programs\Messages.Designer.cs">
       <AutoGen>True</AutoGen>

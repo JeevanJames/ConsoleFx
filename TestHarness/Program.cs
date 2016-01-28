@@ -29,27 +29,28 @@ namespace TestHarness
 
     internal static class Program
     {
-        private static readonly Parameters _parameters = new Parameters();
-
         private static int Main()
         {
-            var app = new ConsoleProgram<WindowsParserStyle>(Handler, scope: _parameters);
+            var parameters = new Parameters();
+            var app = new SimpleProgram(Handler, new WindowsParserStyle(), scope: parameters);
+            app.BeforeError += (sender, args) => ForegroundColor = ConsoleColor.Red;
+            app.AfterError += (sender, args) => ResetColor();
             app.AddOption("verbose", "v")
-                .Flag(() => _parameters.Verbose);
+                .Flag(() => parameters.Verbose);
             app.AddOption("type", "t")
                 .ParametersRequired()
                 .ValidateWith(new EnumValidator<BackupType> {
                     Message = "Please specify either Full or Incremental for the backup type."
                 })
-                .AssignTo(() => _parameters.BackupType);
+                .AssignTo(() => parameters.BackupType);
             app.AddOption("exclude", "e")
                 .Optional(int.MaxValue)
                 .ParametersRequired(int.MaxValue)
                 .ValidateWith(new RegexValidator(@"^[\w.*?]+$"))
-                .AddToList(() => _parameters.Excludes);
+                .AddToList(() => parameters.Excludes);
             app.AddArgument()
                 .ValidateWith(new PathValidator(PathType.Directory))
-                .AssignTo(() => _parameters.BackupDirectory, directory => new DirectoryInfo(directory));
+                .AssignTo(() => parameters.BackupDirectory, directory => new DirectoryInfo(directory));
             try
             {
                 return app.Run();
@@ -65,16 +66,17 @@ namespace TestHarness
             }
         }
 
-        private static int Handler()
+        private static int Handler(object scope)
         {
-            WriteLine($"{_parameters.BackupType} backup requested for the directory {_parameters.BackupDirectory}");
-            if (_parameters.Excludes.Count > 0)
+            var parameters = (Parameters)scope;
+            WriteLine($"{parameters.BackupType} backup requested for the directory {parameters.BackupDirectory}");
+            if (parameters.Excludes.Count > 0)
             {
                 WriteLine(@"Following files to be excluded:");
-                foreach (string exclude in _parameters.Excludes)
-                    WriteLine($"    {exclude}", ConsoleColor.DarkMagenta);
+                foreach (string exclude in parameters.Excludes)
+                    WriteLine($"    {exclude}", ConsoleColor.Magenta);
             }
-            if (_parameters.Verbose)
+            if (parameters.Verbose)
                 WriteLine(@"Verbose output requested.");
             return 0;
         }
