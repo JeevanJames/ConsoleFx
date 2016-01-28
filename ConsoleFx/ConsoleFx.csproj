@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleFxException.cs" />
-    <Content Include="contentFiles\cs\any\Runner.cs" />
+    <None Include="contentFiles\cs\any\Runner.cs" />
     <Compile Include="Parser\Argument.cs" />
     <Compile Include="Parser\Behaviors.cs" />
     <Compile Include="Parser\CommandGrouping.cs" />
@@ -91,6 +91,11 @@
     <Compile Include="Utilities\Capture\ConsoleCapture.cs" />
     <Compile Include="Utilities\Capture\ConsoleCaptureException.cs" />
     <Compile Include="Utilities\Capture\ConsoleCaptureResult.cs" />
+    <Compile Include="Utilities\Capture\ErrorMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\ConsoleEx.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +111,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Capture\ErrorMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="ConsoleFx.nuspec">
@@ -113,7 +122,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="contentFiles\cs\any\Usage.txt" />
+    <None Include="contentFiles\cs\any\Usage.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

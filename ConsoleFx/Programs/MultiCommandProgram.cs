@@ -76,9 +76,6 @@ namespace ConsoleFx.Programs
 
     public abstract class Command
     {
-        public IReadOnlyList<string> Names { get; }
-        internal ParserStyle ParserStyle { private get; set; }
-
         protected Command(IEnumerable<string> names)
         {
             if (names == null)
@@ -86,6 +83,16 @@ namespace ConsoleFx.Programs
             CheckDuplicateNames(names);
             Names = new List<string>(names);
         }
+
+        /// <summary>
+        ///     Gets the name or names of the command.
+        /// </summary>
+        public IReadOnlyList<string> Names { get; }
+
+        /// <summary>
+        ///     Internally set parser style property that is set by the MultiCommandProgram instance.
+        /// </summary>
+        internal ParserStyle ParserStyle { private get; set; }
 
         private static void CheckDuplicateNames(IEnumerable<string> names)
         {
@@ -107,9 +114,10 @@ namespace ConsoleFx.Programs
             }
         }
 
-        public Argument AddArgument()
+        public Argument AddArgument(bool optional = false)
         {
-            throw new NotImplementedException();
+            var argument = new Argument { IsOptional = optional };
+            return argument;
         }
 
         public Option AddOption()
@@ -154,7 +162,7 @@ namespace ConsoleFx.Programs
 
         private void EnsureCommandNamesAreUnique(Command command, int? index = null)
         {
-            //TODO: Implement this
+            //TODO: Implement this 
         }
     }
 
