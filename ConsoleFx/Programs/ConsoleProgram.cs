@@ -27,28 +27,31 @@ using ConsoleFx.Utilities;
 
 namespace ConsoleFx.Programs
 {
-    public sealed class ConsoleProgram<TStyle> : ProgramParser<TStyle>
-        where TStyle : ParserStyle, new()
+    public class ConsoleProgram
     {
+        private readonly Parser.Parser _parser;
         private readonly ExecuteHandler _handler;
         private readonly Dictionary<Type, Delegate> _errorHandlers = new Dictionary<Type, Delegate>();
 
-        public ConsoleProgram(ExecuteHandler handler, object scope = null)
+        public ConsoleProgram(ExecuteHandler handler, ParserStyle parserStyle, CommandGrouping grouping = CommandGrouping.DoesNotMatter, object scope = null)
         {
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
+            _parser = new Parser.Parser(parserStyle, grouping, scope);
             _handler = handler;
-            Behaviors = new Behaviors(InternalBehaviors) { Scope = scope };
         }
 
-        public Behaviors Behaviors { get; }
+        public Argument AddArgument(bool optional = false) => _parser.AddArgument(optional);
+
+        public Option AddOption(string name, string shortName = null, bool caseSensitive = false,
+            int order = int.MaxValue) => _parser.AddOption(name, shortName, caseSensitive, order);
 
         public int Run()
         {
             try
             {
                 string[] args = Environment.GetCommandLineArgs();
-                Parse(args.Skip(1));
+                _parser.Parse(args.Skip(1));
                 return _handler();
             }
             catch (Exception ex)
@@ -118,14 +121,20 @@ namespace ConsoleFx.Programs
         /// <param name="ex">Exception to handle.</param>
         private static int DefaultErrorHandler(Exception ex)
         {
+#if DEBUG
+            Console.WriteLine(ex);
+#endif
             var cfxException = ex as ConsoleFxException;
 
+#if !DEBUG
             //If the exception derives from ArgumentException or it derives from ConsoleFxException
             //and has a negative error code, treat it as an internal exception.
             if (ex is ArgumentException || (cfxException != null && cfxException.ErrorCode < 0))
                 Console.WriteLine(Messages.InternalError, ex.Message);
             else
                 Console.WriteLine(ex.Message);
+#endif
+
             ConsoleEx.WriteBlankLine();
 
             return cfxException?.ErrorCode ?? -1;
@@ -158,6 +167,14 @@ namespace ConsoleFx.Programs
         ///     The exception that is being handled
         /// </summary>
         public Exception Exception { get; }
+    }
+
+    public sealed class ConsoleProgram<TStyle> : ConsoleProgram
+        where TStyle : ParserStyle, new()
+    {
+        public ConsoleProgram(ExecuteHandler handler, CommandGrouping grouping = CommandGrouping.DoesNotMatter, object scope = null) : base(handler, new TStyle(), grouping, scope)
+        {
+        }
     }
 
     public delegate int ExecuteHandler();

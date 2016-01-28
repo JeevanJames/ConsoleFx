@@ -41,9 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleFxException.cs" />
-    <Compile Include="Parser\Arg.cs" />
+    <Content Include="contentFiles\cs\any\Runner.cs" />
     <Compile Include="Parser\Argument.cs" />
-    <Compile Include="Parser\BaseParser.cs" />
     <Compile Include="Parser\Behaviors.cs" />
     <Compile Include="Parser\CommandGrouping.cs" />
     <Compile Include="Parser\Messages.Designer.cs">
@@ -79,7 +78,6 @@
     <Compile Include="Parser\Validators\StringValidator.cs" />
     <Compile Include="Parser\Validators\UriValidator.cs" />
     <Compile Include="Programs\AssignmentExtensions.cs" />
-    <Compile Include="Programs\ProgramParser.cs" />
     <Compile Include="Programs\ConsoleProgram.cs" />
     <Compile Include="Programs\ValidationExtensions.cs" />
     <Compile Include="Programs\Messages.Designer.cs">
@@ -109,7 +107,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ConsoleFx.nuspec" />
+    <None Include="ConsoleFx.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="contentFiles\cs\any\Usage.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

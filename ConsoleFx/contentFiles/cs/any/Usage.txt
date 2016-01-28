@@ -1,0 +1,11 @@
+<Application name>
+<Application description>
+Copyright (c) 20XX <Company name>
+
+<Usage signature>
+
+   -option1 (short: o1) <Description>
+   -option2 (short: o2) <Description>
+   
+   -argument1  <Description>
+   -argument2  <Description>

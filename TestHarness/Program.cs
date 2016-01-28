@@ -33,7 +33,7 @@ namespace TestHarness
 
         private static int Main()
         {
-            var app = new ConsoleProgram<WindowsParserStyle>(Handler, _parameters);
+            var app = new ConsoleProgram<WindowsParserStyle>(Handler, scope: _parameters);
             app.AddOption("verbose", "v")
                 .Flag(() => _parameters.Verbose);
             app.AddOption("type", "t")

@@ -11,7 +11,7 @@ namespace ConsoleFx.Parser
     ///     Represents a commandline switch parameter.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
-    public sealed partial class Option : Arg
+    public sealed partial class Option
     {
         public string Name { get; }
         public string ShortName { get; set; }
@@ -53,7 +53,8 @@ namespace ConsoleFx.Parser
     ///     Delegate that is executed for every option that is specified on the command line.
     /// </summary>
     /// <param name="parameters">The list of parameters specified for the option.</param>
-    public delegate void OptionHandler(IReadOnlyList<string> parameters);
+    /// <param name="scope">The object to save data related to the option.</param>
+    public delegate void OptionHandler(IReadOnlyList<string> parameters, object scope);
 
     /// <summary>
     ///     Represents a collection of options. Note: This is not a keyed collection because the key

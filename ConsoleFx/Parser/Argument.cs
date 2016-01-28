@@ -29,7 +29,7 @@ namespace ConsoleFx.Parser
     ///     Represents a non-option command-line parameter.
     /// </summary>
     [DebuggerDisplay("Argument '{Name ?? string.Empty}' [{Validators.Count} validators]")]
-    public sealed class Argument : Arg
+    public sealed class Argument
     {
         public string Name { get; set; }
 
@@ -48,7 +48,7 @@ namespace ConsoleFx.Parser
         public ValidatorCollection Validators { get; } = new ValidatorCollection();
     }
 
-    public delegate void ArgumentHandler(string value);
+    public delegate void ArgumentHandler(string value, object scope);
 
     public sealed class Arguments : Collection<Argument>
     {
