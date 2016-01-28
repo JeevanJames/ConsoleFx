@@ -18,7 +18,6 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Runtime.Serialization;
 
 namespace ConsoleFx.Utilities.Capture
 {

@@ -39,7 +39,7 @@ namespace ConsoleFx.Utilities.Capture
             if (fileName == null)
                 throw new ArgumentNullException(nameof(fileName));
             if (!File.Exists(fileName))
-                throw new ArgumentException($"File {fileName} does not exist.", nameof(fileName));
+                throw new ArgumentException(string.Format(ErrorMessages.Arg_FileNotExists, fileName), nameof(fileName));
             FileName = fileName;
             Arguments = arguments;
         }
@@ -66,7 +66,7 @@ namespace ConsoleFx.Utilities.Capture
 
                 if (!process.Start())
                     throw new ConsoleCaptureException(ConsoleCaptureException.Codes.ProcessStartFailed,
-                        $"Could not start the process with file name {FileName}.");
+                        string.Format(ErrorMessages.ProcessStartFailed, FileName));
 
                 string outputMessage, errorMessage = string.Empty;
                 int exitCode = captureError
@@ -117,7 +117,7 @@ namespace ConsoleFx.Utilities.Capture
             {
                 var waitHandles = new[] { outputResult.AsyncWaitHandle, errorResult.AsyncWaitHandle };
                 if (!WaitHandle.WaitAll(waitHandles))
-                    throw new ConsoleCaptureException(ConsoleCaptureException.Codes.ProcessAborted, "The process was aborted.");
+                    throw new ConsoleCaptureException(ConsoleCaptureException.Codes.ProcessAborted, ErrorMessages.ProcessAborted);
             }
 
             outputMessage = outputReader.EndInvoke(outputResult);

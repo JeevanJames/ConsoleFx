@@ -18,6 +18,8 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleFx.Parser.Validators
 {
@@ -26,46 +28,31 @@ namespace ConsoleFx.Parser.Validators
     /// </summary>
     public class BooleanValidator : Validator<string>
     {
-        private readonly BooleanType _booleanType;
+        private readonly List<string> _trueStrings = new List<string>();
+        private readonly List<string> _falseStrings = new List<string>();
+        private readonly StringComparison _comparison;
 
-        public BooleanValidator()
+        public BooleanValidator(string trueString = "true", string falseString = "false", bool caseSensitive = false)
         {
-            _booleanType = BooleanType.TrueFalse;
+            _trueStrings.Add(trueString);
+            _falseStrings.Add(falseString);
+            _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        public BooleanValidator(BooleanType booleanType)
+        public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings, bool caseSensitive = false)
         {
-            _booleanType = booleanType;
+            _trueStrings.AddRange(trueStrings);
+            _falseStrings.AddRange(falseStrings);
+            _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
         public string Message { get; set; } = Messages.Boolean;
 
         protected override string PrimaryChecks(string parameterValue)
         {
-            switch (_booleanType)
-            {
-                case BooleanType.TrueFalse:
-                    bool boolValue;
-                    if (!bool.TryParse(parameterValue, out boolValue))
-                        ValidationFailed(parameterValue, Message);
-                    break;
-                case BooleanType.YesNo:
-                    if (!parameterValue.Equals("yes", StringComparison.OrdinalIgnoreCase) && !parameterValue.Equals("no", StringComparison.OrdinalIgnoreCase))
-                        ValidationFailed(parameterValue, Message);
-                    break;
-                case BooleanType.OneZero:
-                    if (!parameterValue.Equals("1", StringComparison.OrdinalIgnoreCase) && !parameterValue.Equals("0", StringComparison.OrdinalIgnoreCase))
-                        ValidationFailed(parameterValue, Message);
-                    break;
-            }
+            if (!_trueStrings.Any(str => str.Equals(parameterValue, _comparison)) && !_falseStrings.Any(str => str.Equals(parameterValue, _comparison)))
+                ValidationFailed(parameterValue, Message);
             return parameterValue;
         }
-    }
-
-    public enum BooleanType
-    {
-        TrueFalse,
-        YesNo,
-        OneZero,
     }
 }
