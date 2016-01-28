@@ -17,11 +17,12 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+
+using ConsoleFx.Parser;
 
 namespace ConsoleFx.Programs
 {
@@ -41,7 +42,8 @@ namespace ConsoleFx.Programs
             option.Handler = handler;
         }
 
-        public static void AssignTo<T>(this Argument argument, Expression<Func<T>> expression, Converter<T> converter = null)
+        public static void AssignTo<T>(this Argument argument, Expression<Func<T>> expression,
+            Converter<T> converter = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -65,7 +67,21 @@ namespace ConsoleFx.Programs
             };
         }
 
-        public static void AddToList<T>(this Argument argument, Expression<Func<IList<T>>> expression, Converter<T> converter = null)
+        public static void AssignTo<TScope, T>(this Option option, Expression<Func<TScope, T>> expression,
+            Converter<T> converter = null)
+        {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+            option.Handler = (prms, scope) => {
+                converter = GetConverterFor(converter);
+                MemberInfo dataMember = GetMemberInfoFromExpression(expression);
+                object value = converter != null ? (object)converter(prms[0]) : prms[0];
+                SetDataMemberValue(dataMember, value, scope);
+            };
+        }
+
+        public static void AddToList<T>(this Argument argument, Expression<Func<IList<T>>> expression,
+            Converter<T> converter = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -79,7 +95,8 @@ namespace ConsoleFx.Programs
             };
         }
 
-        public static void AddToList<T>(this Option option, Expression<Func<IList<T>>> expression, Converter<T> converter = null)
+        public static void AddToList<T>(this Option option, Expression<Func<IList<T>>> expression,
+            Converter<T> converter = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -98,19 +115,47 @@ namespace ConsoleFx.Programs
         }
 
         /// <summary>
-        /// Shortcut to a option handler that sets a boolean value to true if the option is specified
-        /// on the command line.
-        /// The prerequisite to use this method is that the option should not occur more than once
-        /// and should not accept any parameters.
+        ///     Shortcut to a option handler that sets a boolean value to true if the option is specified
+        ///     on the command line.
+        ///     The prerequisite to use this method is that the option should not occur more than once
+        ///     and should not accept any parameters.
         /// </summary>
         /// <param name="option">The option to handle.</param>
         /// <param name="expression">The expression pointing to the boolean field to set.</param>
         public static void Flag(this Option option, Expression<Func<bool>> expression)
         {
             if (option.Usage.MaxOccurences > 1)
-                throw new Exception($"Cannot use the Flag method to handle the {option.Name} option because it can be specified more than one time.");
+            {
+                throw new Exception(
+                    $"Cannot use the Flag method to handle the {option.Name} option because it can be specified more than one time.");
+            }
             if (option.Usage.ParameterRequirement != OptionParameterRequirement.NotAllowed)
-                throw new Exception($"Cannot use the Flag method to handle the {option.Name} option because it requires parameters.");
+            {
+                throw new Exception(
+                    $"Cannot use the Flag method to handle the {option.Name} option because it requires parameters.");
+            }
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            option.Handler = (prms, scope) => {
+                MemberInfo dataMember = GetMemberInfoFromExpression(expression);
+                SetDataMemberValue(dataMember, true, scope);
+            };
+        }
+
+        //TODO: Extract common code from these 2 overloads
+        public static void Flag<TScope>(this Option option, Expression<Func<TScope, bool>> expression)
+        {
+            if (option.Usage.MaxOccurences > 1)
+            {
+                throw new Exception(
+                    $"Cannot use the Flag method to handle the {option.Name} option because it can be specified more than one time.");
+            }
+            if (option.Usage.ParameterRequirement != OptionParameterRequirement.NotAllowed)
+            {
+                throw new Exception(
+                    $"Cannot use the Flag method to handle the {option.Name} option because it requires parameters.");
+            }
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
@@ -121,9 +166,9 @@ namespace ConsoleFx.Programs
         }
 
         /// <summary>
-        /// Extracts the MemberInfo data from a member expression.
-        /// If baseType is specified, then the type specified in the expression must be assignable
-        /// to the baseType. Otherwise, it must be of type T.
+        ///     Extracts the MemberInfo data from a member expression.
+        ///     If baseType is specified, then the type specified in the expression must be assignable
+        ///     to the baseType. Otherwise, it must be of type T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="expression">Member expression to e</param>
@@ -134,19 +179,60 @@ namespace ConsoleFx.Programs
             var lambda = (LambdaExpression)expression;
             var memberExpression = lambda.Body as MemberExpression;
             if (memberExpression == null)
-                throw new ArgumentException($"The expression should return a data member (field or property) from the '{typeof(T).FullName}' type.", nameof(expression));
+            {
+                throw new ArgumentException(
+                    $"The expression should return a data member (field or property) from the '{typeof(T).FullName}' type.",
+                    nameof(expression));
+            }
             if (baseType != null)
             {
                 if (!baseType.IsAssignableFrom(memberExpression.Type))
-                    throw new ArgumentException($"Expression data member '{memberExpression.Member.Name}' should be assignable to type '{baseType.FullName}'", nameof(expression));
+                {
+                    throw new ArgumentException(
+                        $"Expression data member '{memberExpression.Member.Name}' should be assignable to type '{baseType.FullName}'",
+                        nameof(expression));
+                }
+            } else if (memberExpression.Type != typeof(T))
+            {
+                throw new ArgumentException(
+                    $"Expression data member '{memberExpression.Member.Name}' should be of type '{typeof(T).FullName}'",
+                    nameof(expression));
+            }
+            return memberExpression.Member;
+        }
+
+        //TODO: Extract common code from these two overloads
+        private static MemberInfo GetMemberInfoFromExpression<T, TScope>(Expression<Func<TScope, T>> expression,
+            Type baseType = null)
+        {
+            var lambda = (LambdaExpression)expression;
+            var memberExpression = lambda.Body as MemberExpression;
+            if (memberExpression == null)
+            {
+                throw new ArgumentException(
+                    $"The expression should return a data member (field or property) from the '{typeof(T).FullName}' type.",
+                    nameof(expression));
+            }
+            if (baseType != null)
+            {
+                if (!baseType.IsAssignableFrom(memberExpression.Type))
+                {
+                    throw new ArgumentException(
+                        $"Expression data member '{memberExpression.Member.Name}' should be assignable to type '{baseType.FullName}'",
+                        nameof(expression));
+                }
             }
             else if (memberExpression.Type != typeof(T))
-                throw new ArgumentException($"Expression data member '{memberExpression.Member.Name}' should be of type '{typeof(T).FullName}'", nameof(expression));
+            {
+                throw new ArgumentException(
+                    $"Expression data member '{memberExpression.Member.Name}' should be of type '{typeof(T).FullName}'",
+                    nameof(expression));
+            }
             return memberExpression.Member;
         }
 
         /// <summary>
-        /// Given a data member, return its value.
+        ///     Given a data member, return its value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="member"></param>
@@ -163,11 +249,12 @@ namespace ConsoleFx.Programs
                 return (T)field.GetValue(scope);
 
             string declaringTypeName = member.DeclaringType != null ? member.DeclaringType.FullName : "Unknown";
-            throw new ParserException(1000, $"The member '{member.Name}' in type '{declaringTypeName}' should be either a property or a field to be specified in an argument/option handler");
+            throw new ParserException(1000,
+                $"The member '{member.Name}' in type '{declaringTypeName}' should be either a property or a field to be specified in an argument/option handler");
         }
 
         /// <summary>
-        /// Sets the value of the given data member.
+        ///     Sets the value of the given data member.
         /// </summary>
         /// <param name="member"></param>
         /// <param name="value"></param>
@@ -189,7 +276,8 @@ namespace ConsoleFx.Programs
             }
 
             string declaringTypeName = member.DeclaringType != null ? member.DeclaringType.FullName : "Unknown";
-            throw new ParserException(1000, $"The member '{member.Name}' in type '{declaringTypeName}' should be either a property or a field to be specified in an argument/option handler");
+            throw new ParserException(1000,
+                $"The member '{member.Name}' in type '{declaringTypeName}' should be either a property or a field to be specified in an argument/option handler");
         }
 
         private static Converter<T> GetConverterFor<T>(Converter<T> converter)
@@ -207,17 +295,21 @@ namespace ConsoleFx.Programs
 
             //Special handling for booleans
             if (type == typeof(bool))
+            {
                 return str => {
                     bool boolValue;
                     if (bool.TryParse(str, out boolValue))
                         return (T)(object)boolValue;
-                    if (str.Equals("yes", StringComparison.OrdinalIgnoreCase) || str.Equals("1", StringComparison.OrdinalIgnoreCase))
+                    if (str.Equals("yes", StringComparison.OrdinalIgnoreCase) ||
+                        str.Equals("1", StringComparison.OrdinalIgnoreCase))
                         return (T)(object)true;
-                    if (str.Equals("no", StringComparison.OrdinalIgnoreCase) || str.Equals("0", StringComparison.OrdinalIgnoreCase))
+                    if (str.Equals("no", StringComparison.OrdinalIgnoreCase) ||
+                        str.Equals("0", StringComparison.OrdinalIgnoreCase))
                         return (T)(object)false;
 
                     throw new FormatException($"Invalid boolean value specified - {str}.");
                 };
+            }
 
             //For any basic type, return a pre-defined converter from the lookup dictionary
             Delegate @delegate;
@@ -226,7 +318,8 @@ namespace ConsoleFx.Programs
 
             //If we cannot figure it out for the caller, then throw an exception saying that the caller
             //must explicitly specify the converter.
-            throw new ParserException(1000, $"Cannot find default converter for type '{type.FullName}'. Please specify one manually.");
+            throw new ParserException(1000,
+                $"Cannot find default converter for type '{type.FullName}'. Please specify one manually.");
         }
 
         //Lookup of converters for all basic types
@@ -234,15 +327,19 @@ namespace ConsoleFx.Programs
             { typeof(int), (Converter<int>)int.Parse },
             { typeof(uint), (Converter<uint>)uint.Parse },
             { typeof(sbyte), (Converter<sbyte>)sbyte.Parse },
-            { typeof(byte), (Converter<byte>)byte.Parse },
-            { typeof(char), (Converter<char>)(str => { char ch; return char.TryParse(str, out ch) ? ch : '\0'; }) },
+            { typeof(byte), (Converter<byte>)byte.Parse }, {
+                typeof(char), (Converter<char>)(str => {
+                    char ch;
+                    return char.TryParse(str, out ch) ? ch : '\0';
+                })
+            },
             { typeof(short), (Converter<short>)short.Parse },
             { typeof(ushort), (Converter<ushort>)ushort.Parse },
             { typeof(long), (Converter<long>)long.Parse },
             { typeof(ulong), (Converter<ulong>)ulong.Parse },
             { typeof(float), (Converter<float>)float.Parse },
             { typeof(double), (Converter<double>)double.Parse },
-            { typeof(decimal), (Converter<decimal>)decimal.Parse },
+            { typeof(decimal), (Converter<decimal>)decimal.Parse }
         };
     }
 

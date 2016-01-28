@@ -36,13 +36,13 @@ namespace TestHarness
             app.BeforeError += (sender, args) => ForegroundColor = ConsoleColor.Red;
             app.AfterError += (sender, args) => ResetColor();
             app.AddOption("verbose", "v")
-                .Flag(() => parameters.Verbose);
+                .Flag<Parameters>(p => p.Verbose);
             app.AddOption("type", "t")
                 .ParametersRequired()
                 .ValidateWith(new EnumValidator<BackupType> {
                     Message = "Please specify either Full or Incremental for the backup type."
                 })
-                .AssignTo(() => parameters.BackupType);
+                .AssignTo((Parameters p) => p.BackupType);
             app.AddOption("exclude", "e")
                 .Optional(int.MaxValue)
                 .ParametersRequired(int.MaxValue)
