@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using ConsoleFx.Parser;
@@ -129,8 +130,10 @@ namespace ConsoleFx.Programs
         {
             var parser = new Parser.Parser(ParserStyle);
             parser.Parse(args);
-            return 0;
+            return InternalRun();
         }
+
+        protected abstract int InternalRun();
 
         public static Command Create(ExecuteHandler handler, params string[] names)
             => new DelegateCommand(handler, names);
@@ -162,21 +165,34 @@ namespace ConsoleFx.Programs
 
         private void EnsureCommandNamesAreUnique(Command command, int? index = null)
         {
-            //TODO: Implement this 
+            //TODO: Implement this
         }
     }
 
     public sealed class DelegateCommand : Command
     {
+        private readonly ExecuteHandler _handler;
+
         public DelegateCommand(ExecuteHandler handler, IEnumerable<string> names) : base(names)
         {
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+            _handler = handler;
         }
+
+        protected override int InternalRun() => _handler?.Invoke(null) ?? -1;
     }
 
     public sealed class HelpCommand : Command
     {
         public HelpCommand() : base(new[] { "help", "h", "?" })
         {
+        }
+
+        protected override int InternalRun()
+        {
+            Console.WriteLine("Help");
+            return 0;
         }
     }
 }
