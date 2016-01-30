@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
+using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
@@ -19,64 +20,60 @@ namespace TestHarness
         Incremental
     }
 
-    internal sealed class Parameters
+    public sealed class Program : SingleCommandProgram
     {
+        private static int Main()
+        {
+            var program = new Program();
+            int exitCode = program.Run();
+            if (Debugger.IsAttached)
+                ReadLine();
+            return exitCode;
+        }
+
+        public Program() : base(new WindowsParserStyle())
+        {
+        }
+
         public bool Verbose { get; set; }
         public BackupType BackupType { get; set; } = BackupType.Full;
         public List<string> Excludes { get; } = new List<string>();
         public DirectoryInfo BackupDirectory { get; set; }
-    }
 
-    internal static class Program
-    {
-        private static int Main()
+        protected override IEnumerable<Argument> GetArguments()
         {
-            var parameters = new Parameters();
-            var app = new SimpleProgram(Handler, new WindowsParserStyle(), scope: parameters);
-            app.BeforeError += (sender, args) => ForegroundColor = ConsoleColor.Red;
-            app.AfterError += (sender, args) => ResetColor();
-            app.AddOption("verbose", "v")
-                .Flag<Parameters>(p => p.Verbose);
-            app.AddOption("type", "t")
+            yield return CreateArgument()
+                .ValidateWith(new PathValidator(PathType.Directory))
+                .AssignTo(() => BackupDirectory, directory => new DirectoryInfo(directory));
+        }
+
+        protected override IEnumerable<Option> GetOptions()
+        {
+            yield return CreateOption("verbose", "v")
+                .Flag(() => Verbose);
+            yield return CreateOption("type", "t")
                 .ParametersRequired()
                 .ValidateWith(new EnumValidator<BackupType> {
                     Message = "Please specify either Full or Incremental for the backup type."
                 })
-                .AssignTo((Parameters p) => p.BackupType);
-            app.AddOption("exclude", "e")
+                .AssignTo(() => BackupType);
+            yield return CreateOption("exclude", "e")
                 .Optional(int.MaxValue)
                 .ParametersRequired(int.MaxValue)
                 .ValidateWith(new RegexValidator(@"^[\w.*?]+$"))
-                .AddToList(() => parameters.Excludes);
-            app.AddArgument()
-                .ValidateWith(new PathValidator(PathType.Directory))
-                .AssignTo(() => parameters.BackupDirectory, directory => new DirectoryInfo(directory));
-            try
-            {
-                return app.Run();
-            }
-            catch (Exception ex)
-            {
-                return app.HandleError(ex);
-            }
-            finally
-            {
-                if (Debugger.IsAttached)
-                    ReadLine();
-            }
+                .AddToList(() => Excludes);
         }
 
-        private static int Handler(object scope)
+        protected override int Handle()
         {
-            var parameters = (Parameters)scope;
-            WriteLine($"{parameters.BackupType} backup requested for the directory {parameters.BackupDirectory}");
-            if (parameters.Excludes.Count > 0)
+            WriteLine($"{BackupType} backup requested for the directory {BackupDirectory}");
+            if (Excludes.Count > 0)
             {
                 WriteLine(@"Following files to be excluded:");
-                foreach (string exclude in parameters.Excludes)
+                foreach (string exclude in Excludes)
                     WriteLine($"    {exclude}", ConsoleColor.Magenta);
             }
-            if (parameters.Verbose)
+            if (Verbose)
                 WriteLine(@"Verbose output requested.");
             return 0;
         }

@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Programs;
+
+using static System.Console;
 
 namespace TestHarness.MultiCommand
 {
@@ -12,33 +13,24 @@ namespace TestHarness.MultiCommand
         private static int Main()
         {
             var app = new MultiCommandProgram(new UnixParserStyle());
-            try
-            {
-                app.RegisterCommand<UpdateCommand>();
-                app.RegisterCommand<HelpCommand>();
-                return app.Run();
-            }
-            catch (Exception ex)
-            {
-                return app.HandleError(ex);
-            }
-            finally
-            {
-                if (Debugger.IsAttached)
-                    Console.ReadLine();
-            }
+            app.RegisterCommand<UpdateCommand>();
+            app.RegisterCommand<HelpCommand>();
+            int exitCode = app.Run();
+            if (Debugger.IsAttached)
+                ReadLine();
+            return exitCode;
         }
     }
 
     public sealed class UpdateCommand : Command
     {
-        public UpdateCommand() : base(new [] { "update", "u" })
+        public UpdateCommand() : base(new[] { "update", "u" })
         {
         }
 
-        protected override int InternalRun()
+        protected override int Handle()
         {
-            Console.WriteLine("Update");
+            WriteLine("Update");
             return 0;
         }
     }

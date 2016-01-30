@@ -42,7 +42,7 @@ namespace ConsoleFx.Programs
             option.Handler = handler;
         }
 
-        public static void AssignTo<T>(this Argument argument, Expression<Func<T>> expression,
+        public static Argument AssignTo<T>(this Argument argument, Expression<Func<T>> expression,
             Converter<T> converter = null)
         {
             if (expression == null)
@@ -53,9 +53,10 @@ namespace ConsoleFx.Programs
                 object value = converter != null ? (object)converter(arg) : arg;
                 SetDataMemberValue(dataMember, value, scope);
             };
+            return argument;
         }
 
-        public static void AssignTo<T>(this Option option, Expression<Func<T>> expression, Converter<T> converter = null)
+        public static Option AssignTo<T>(this Option option, Expression<Func<T>> expression, Converter<T> converter = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -65,6 +66,7 @@ namespace ConsoleFx.Programs
                 object value = converter != null ? (object)converter(prms[0]) : prms[0];
                 SetDataMemberValue(dataMember, value, scope);
             };
+            return option;
         }
 
         public static void AssignTo<TScope, T>(this Option option, Expression<Func<TScope, T>> expression,
@@ -95,7 +97,7 @@ namespace ConsoleFx.Programs
             };
         }
 
-        public static void AddToList<T>(this Option option, Expression<Func<IList<T>>> expression,
+        public static Option AddToList<T>(this Option option, Expression<Func<IList<T>>> expression,
             Converter<T> converter = null)
         {
             if (expression == null)
@@ -112,6 +114,7 @@ namespace ConsoleFx.Programs
                     list.Add((T)value);
                 }
             };
+            return option;
         }
 
         /// <summary>
@@ -122,7 +125,7 @@ namespace ConsoleFx.Programs
         /// </summary>
         /// <param name="option">The option to handle.</param>
         /// <param name="expression">The expression pointing to the boolean field to set.</param>
-        public static void Flag(this Option option, Expression<Func<bool>> expression)
+        public static Option Flag(this Option option, Expression<Func<bool>> expression)
         {
             if (option.Usage.MaxOccurences > 1)
             {
@@ -141,6 +144,8 @@ namespace ConsoleFx.Programs
                 MemberInfo dataMember = GetMemberInfoFromExpression(expression);
                 SetDataMemberValue(dataMember, true, scope);
             };
+
+            return option;
         }
 
         //TODO: Extract common code from these 2 overloads

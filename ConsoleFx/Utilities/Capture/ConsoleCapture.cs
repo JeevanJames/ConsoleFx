@@ -38,8 +38,6 @@ namespace ConsoleFx.Utilities.Capture
         {
             if (fileName == null)
                 throw new ArgumentNullException(nameof(fileName));
-            if (!File.Exists(fileName))
-                throw new ArgumentException(string.Format(ErrorMessages.Arg_FileNotExists, fileName), nameof(fileName));
             FileName = fileName;
             Arguments = arguments;
         }
@@ -130,9 +128,7 @@ namespace ConsoleFx.Utilities.Capture
         }
 
         //Static shortcut for capturing console output.
-        public static ConsoleCaptureResult Start(string fileName, string arguments = null, bool captureError = false)
-        {
-            return new ConsoleCapture(fileName, arguments).Start(captureError);
-        }
+        public static ConsoleCaptureResult Start(string fileName, string arguments = null, bool captureError = false) =>
+            new ConsoleCapture(fileName, arguments).Start(captureError);
     }
 }
