@@ -29,7 +29,7 @@ namespace ConsoleFx.Parser
     ///     Represents a non-option command-line parameter.
     /// </summary>
     [DebuggerDisplay("Argument [{Validators.Count} validators]")]
-    public sealed class Argument
+    public sealed class Argument : Arg
     {
         /// <summary>
         ///     Delegate to call when the argument is encountered.

@@ -15,9 +15,5 @@
         <releaseNotes>Added Runner.cs and Usage.txt content files.</releaseNotes>
         <copyright>Copyright (c) Jeevan James 2007-2016</copyright>
         <tags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</tags>
-        <contentFiles>
-            <files include="cs/any/Runner.cs"/>
-            <files include="any/any/Usage.txt" buildAction="EmbeddedResource"/>
-        </contentFiles>
     </metadata>
 </package>
