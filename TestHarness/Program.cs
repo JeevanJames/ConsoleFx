@@ -52,7 +52,7 @@ namespace TestHarness
         protected override IEnumerable<Option> GetOptions()
         {
             yield return CreateOption("verbose", "v")
-                .Description("Displays detailed output in the console.")
+                .Description("Displays detailed output in the console. This can be useful for developers, support engineers and administrators.")
                 .Flag(() => Verbose);
             yield return CreateOption("type", "t")
                 .Description("The type of backup to perform - full or incremental")

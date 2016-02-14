@@ -20,23 +20,24 @@ limitations under the License.
 namespace ConsoleFx.Parser
 {
     /// <summary>
-    /// Specifies how the command line parameters are expected to be grouped.
+    ///     Specifies how the command line args are expected to be grouped.
     /// </summary>
-    public enum CommandGrouping
+    public enum ArgGrouping
     {
         /// <summary>
-        /// Command line parameters grouping does not matter. Options and arguments can be mixed together.
+        ///     Command line parameters grouping does not matter. Options and arguments can be mixed together.
+        ///     This is the default grouping.
         /// </summary>
         DoesNotMatter,
 
         /// <summary>
-        /// Options must be specified before arguments in the command line.
+        ///     Options must be specified before arguments in the command line.
         /// </summary>
         OptionsBeforeArguments,
 
         /// <summary>
-        /// Options must be specified after arguments in the command line.
+        ///     Options must be specified after arguments in the command line.
         /// </summary>
-        OptionsAfterArguments,
+        OptionsAfterArguments
     }
 }

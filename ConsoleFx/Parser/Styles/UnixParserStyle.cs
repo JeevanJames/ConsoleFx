@@ -26,20 +26,20 @@ namespace ConsoleFx.Parser.Styles
 {
     public sealed class UnixParserStyle : ParserStyle
     {
-        public override CommandGrouping GetGrouping(CommandGrouping specifiedGrouping, Options options, Arguments arguments)
+        public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, Options options, Arguments arguments)
         {
             //Options before arguments will not work if there are any options that do not have a
             //fixed number of parameters (i.e. ExpectedParameters == null). The groupings gets
             //changed to DoesNotMatter.
             bool optionsHaveVariableParameters = options.Any(option => !option.Usage.ExpectedParameters.HasValue);
-            if (specifiedGrouping == CommandGrouping.OptionsBeforeArguments && optionsHaveVariableParameters)
-                specifiedGrouping = CommandGrouping.DoesNotMatter;
+            if (specifiedGrouping == ArgGrouping.OptionsBeforeArguments && optionsHaveVariableParameters)
+                specifiedGrouping = ArgGrouping.DoesNotMatter;
 
             //If DoesNotMatter or OptionsBeforeArguments and any option has unlimited parameters,
             //change to OptionsAfterArguments.
             bool optionsHaveUnlimitedParameters = options.Any(option => option.Usage.MaxParameters == int.MaxValue);
-            if (specifiedGrouping != CommandGrouping.OptionsAfterArguments && optionsHaveUnlimitedParameters)
-                specifiedGrouping = CommandGrouping.OptionsAfterArguments;
+            if (specifiedGrouping != ArgGrouping.OptionsAfterArguments && optionsHaveUnlimitedParameters)
+                specifiedGrouping = ArgGrouping.OptionsAfterArguments;
 
             return specifiedGrouping;
         }
@@ -53,7 +53,7 @@ namespace ConsoleFx.Parser.Styles
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)(?:=(.+))?");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, CommandGrouping grouping, object scope)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, ArgGrouping grouping, object scope)
         {
             Option currentOption = null;
 

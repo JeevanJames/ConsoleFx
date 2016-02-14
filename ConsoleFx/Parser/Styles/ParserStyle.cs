@@ -23,7 +23,7 @@ namespace ConsoleFx.Parser.Styles
 {
     public abstract class ParserStyle
     {
-        public virtual CommandGrouping GetGrouping(CommandGrouping specifiedGrouping, Options options,
+        public virtual ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, Options options,
             Arguments arguments)
         {
             return specifiedGrouping;
@@ -48,6 +48,6 @@ namespace ConsoleFx.Parser.Styles
         /// <param name="grouping"></param>
         /// <param name="scope"></param>
         /// <returns></returns>
-        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, CommandGrouping grouping, object scope);
+        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, ArgGrouping grouping, object scope);
     }
 }

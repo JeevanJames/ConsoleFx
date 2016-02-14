@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Programs.UsageBuilders;
@@ -28,8 +27,11 @@ namespace ConsoleFx.Programs
         protected override int HandleError(Exception ex, Parser.Parser parser)
         {
             int exitCode = base.HandleError(ex, parser);
-            Console.WriteLine();
-            UsageBuilder?.Display(parser);
+            if (UsageBuilder != null)
+            {
+                Console.WriteLine();
+                UsageBuilder.Display(parser);
+            }
             return exitCode;
         }
     }

@@ -53,7 +53,7 @@ namespace ConsoleFx.Programs
 
     public abstract class Command : BaseCommand
     {
-        protected Command(IEnumerable<string> names, CommandGrouping grouping = CommandGrouping.DoesNotMatter) : base(null)
+        protected Command(IEnumerable<string> names, ArgGrouping grouping = ArgGrouping.DoesNotMatter) : base(null)
         {
             if (names == null)
                 throw new ArgumentNullException(nameof(names));

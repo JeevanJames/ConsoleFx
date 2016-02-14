@@ -40,19 +40,15 @@ namespace ConsoleFx.Programs
             ParserStyle = parserStyle;
         }
 
+        /// <summary>
+        ///     The parser style to use for this command.
+        /// </summary>
         protected ParserStyle ParserStyle { get; set; }
 
-        protected CommandGrouping Grouping { get; set; }
-
-        protected virtual IEnumerable<Argument> GetArguments()
-        {
-            yield break;
-        }
-
-        protected virtual IEnumerable<Option> GetOptions()
-        {
-            yield break;
-        }
+        /// <summary>
+        ///     The expected grouping of the args of this command.
+        /// </summary>
+        protected ArgGrouping Grouping { get; set; }
 
         protected int CoreRun(IEnumerable<string> args)
         {
@@ -70,6 +66,29 @@ namespace ConsoleFx.Programs
             }
         }
 
+        /// <summary>
+        ///     Override this method to specify the arguments supported by the command.
+        /// </summary>
+        /// <returns>Collection of <see cref="ConsoleFx.Parser.Argument" /> instance.</returns>
+        protected virtual IEnumerable<Argument> GetArguments()
+        {
+            yield break;
+        }
+
+        /// <summary>
+        ///     Override this method to specify the options supported by the command.
+        /// </summary>
+        /// <returns>Collection of <see cref="ConsoleFx.Parser.Option" /></returns>
+        protected virtual IEnumerable<Option> GetOptions()
+        {
+            yield break;
+        }
+
+        /// <summary>
+        ///     Constructs the default <see cref="ConsoleFx.Parser.Parser" /> instance for use by this command. Override this
+        ///     method to customize the parser instance.
+        /// </summary>
+        /// <returns>The <see cref="ConsoleFx.Parser.Parser" /> instance.</returns>
         protected virtual Parser.Parser SetupParser()
         {
             var parser = new Parser.Parser(ParserStyle, Grouping, this);
@@ -80,8 +99,22 @@ namespace ConsoleFx.Programs
             return parser;
         }
 
+        /// <summary>
+        ///     Override this method to provide the default logic of the command.
+        /// </summary>
+        /// <returns>The exit code for the command. Zero for successful exit codes and non-zero for failures.</returns>
         protected abstract int Handle();
 
+        /// <summary>
+        ///     Handles any exceptions thrown during the setup and execution of the command.
+        ///     Override this method to provide custom handling of exceptions.
+        /// </summary>
+        /// <param name="ex">The thrown exception.</param>
+        /// <param name="parser">
+        ///     The <see cref="ConsoleFx.Parser.Parser" /> instance used by the command. Useful for dynamically
+        ///     constructing the usage details.
+        /// </param>
+        /// <returns>The exit code for the command. Zero for successful exit codes and non-zero for failures.</returns>
         protected virtual int HandleError(Exception ex, Parser.Parser parser)
         {
 #if DEBUG
@@ -104,8 +137,21 @@ namespace ConsoleFx.Programs
             return cfxException?.ErrorCode ?? -1;
         }
 
+        /// <summary>
+        ///     Utility method to create an <see cref="ConsoleFx.Parser.Argument" />
+        /// </summary>
+        /// <param name="optional">True if the argument is optional; otherwise false.</param>
+        /// <returns>An instance of the new argument.</returns>
         protected Argument CreateArgument(bool optional = false) => new Argument { IsOptional = optional };
 
+        /// <summary>
+        ///     Utility method to create an <see cref="ConsoleFx.Parser.Option" />
+        /// </summary>
+        /// <param name="name">Name of the option</param>
+        /// <param name="shortName">Optional short name of the option</param>
+        /// <param name="caseSensitive">True if the option name and short name are case sensitive; otherwise false.</param>
+        /// <param name="order">The priority for processing the option. Lower priorities are process first.</param>
+        /// <returns>An instance of the new option.</returns>
         protected Option CreateOption(string name, string shortName = null, bool caseSensitive = false,
             int order = int.MaxValue)
         {

@@ -28,7 +28,7 @@ namespace ConsoleFx.Parser.Styles
         private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?]+)");
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, Options options, CommandGrouping grouping, object scope)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, Options options, ArgGrouping grouping, object scope)
         {
             ArgumentType previousType = ArgumentType.NotSet;
             ArgumentType currentType = ArgumentType.NotSet;
@@ -80,18 +80,18 @@ namespace ConsoleFx.Parser.Styles
 
         //This method is used by the code that validates the command-line grouping. It is
         //called for every iteration of the arguments
-        private static void VerifyCommandLineGrouping(ArgumentType previousType, ArgumentType currentType, CommandGrouping grouping)
+        private static void VerifyCommandLineGrouping(ArgumentType previousType, ArgumentType currentType, ArgGrouping grouping)
         {
-            if (grouping == CommandGrouping.DoesNotMatter)
+            if (grouping == ArgGrouping.DoesNotMatter)
                 return;
 
             if (previousType == ArgumentType.NotSet || currentType == ArgumentType.NotSet)
                 return;
 
-            if (grouping == CommandGrouping.OptionsAfterArguments && previousType == ArgumentType.Option &&
+            if (grouping == ArgGrouping.OptionsAfterArguments && previousType == ArgumentType.Option &&
                 currentType == ArgumentType.Argument)
                 throw new ParserException(ParserException.Codes.OptionsAfterParameters, Messages.OptionsAfterParameters);
-            if (grouping == CommandGrouping.OptionsBeforeArguments && previousType == ArgumentType.Argument &&
+            if (grouping == ArgGrouping.OptionsBeforeArguments && previousType == ArgumentType.Argument &&
                 currentType == ArgumentType.Option)
                 throw new ParserException(ParserException.Codes.OptionsBeforeParameters, Messages.OptionsBeforeParameters);
         }

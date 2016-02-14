@@ -26,7 +26,7 @@ namespace ConsoleFx.Parser
 {
     public class Parser
     {
-        public Parser(ParserStyle parserStyle, CommandGrouping grouping = CommandGrouping.DoesNotMatter, object scope = null)
+        public Parser(ParserStyle parserStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter, object scope = null)
         {
             ParserStyle = parserStyle;
             Grouping = grouping;
@@ -39,7 +39,7 @@ namespace ConsoleFx.Parser
         ///     Specifies how the args should be grouped.
         ///     Note: This can be overridden by the parser style.
         /// </summary>
-        public CommandGrouping Grouping { get; set; }
+        public ArgGrouping Grouping { get; set; }
 
         /// <summary>
         ///     The object instance to write argument and option values when parsing the command-line args.

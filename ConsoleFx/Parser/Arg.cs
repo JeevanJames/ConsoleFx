@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace ConsoleFx.Parser
 {
     /// <summary>
+    ///     Represents a command line arg.
     ///     Base class for <see cref="T:ConsoleFx.Parser.Option" /> and <see cref="T:ConsoleFx.Parser.Argument" />.
     /// </summary>
     public abstract partial class Arg
