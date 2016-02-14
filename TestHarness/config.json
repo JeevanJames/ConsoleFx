@@ -1,0 +1,11 @@
+﻿{
+  "verbose": 1,
+  "type": "Full",
+  "exclude": [
+    "*.png",
+    "*.jpg"
+  ],
+  "arguments": [
+    "D:\\Temp"
+  ]
+}

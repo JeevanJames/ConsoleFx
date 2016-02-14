@@ -36,16 +36,16 @@ namespace ConsoleFx.Parser
     {
         internal OptionRun Run { get; } = new OptionRun();
 
-        internal void ClearRun()
-        {
-            Run.Occurences = 0;
-            Run.Parameters.Clear();
-        }
-
         internal sealed class OptionRun
         {
             internal int Occurences { get; set; }
             internal List<string> Parameters { get; } = new List<string>();
+
+            internal void Clear()
+            {
+                Occurences = 0;
+                Parameters.Clear();
+            }
         }
     }
 

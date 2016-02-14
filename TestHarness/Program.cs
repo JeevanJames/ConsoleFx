@@ -40,19 +40,30 @@ namespace TestHarness
         public BackupType BackupType { get; set; } = BackupType.Full;
         public List<string> Excludes { get; } = new List<string>();
         public DirectoryInfo BackupDirectory { get; set; }
+        public FileInfo BackupFile { get; set; }
 
         protected override IEnumerable<Argument> GetArguments()
         {
             yield return CreateArgument()
-                .Description("Backup path", "The directory to backup")
+                .Description("directory", "The directory to backup. Specified directory must exist.")
                 .ValidateWith(new PathValidator(PathType.Directory))
                 .AssignTo(() => BackupDirectory, directory => new DirectoryInfo(directory));
+            yield return CreateArgument()
+                .Description("backup file", "The path to a ZIP file that will contain the backup.")
+                .ValidateWith(new PathValidator(checkIfExists: false))
+                .ValidateWith(a => {
+                    string fullPath = Path.GetFullPath(a);
+                    string extension = Path.GetExtension(fullPath);
+                    return extension.Equals(".zip", StringComparison.OrdinalIgnoreCase);
+                })
+                .AssignTo(() => BackupFile, file => new FileInfo(file));
         }
 
         protected override IEnumerable<Option> GetOptions()
         {
             yield return CreateOption("verbose", "v")
-                .Description("Displays detailed output in the console. This can be useful for developers, support engineers and administrators.")
+                .Description(
+                    "Displays detailed output in the console. This can be useful for developers, support engineers and administrators.")
                 .Flag(() => Verbose);
             yield return CreateOption("type", "t")
                 .Description("The type of backup to perform - full or incremental")

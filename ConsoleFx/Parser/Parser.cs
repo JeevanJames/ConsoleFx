@@ -18,7 +18,9 @@ limitations under the License.
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
+using ConsoleFx.Parser.Config;
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Parser.Validators;
 
@@ -37,15 +39,16 @@ namespace ConsoleFx.Parser
 
         /// <summary>
         ///     Specifies how the args should be grouped.
-        ///     Note: This can be overridden by the parser style.
+        ///     Note: This can be overridden by the parser style at runtime.
         /// </summary>
         public ArgGrouping Grouping { get; set; }
 
         /// <summary>
         ///     The object instance to write argument and option values when parsing the command-line args.
-        ///     If null, then these values are written to static properties.
         /// </summary>
         public object Scope { get; set; }
+
+        public ConfigReader ConfigReader { get; set; }
 
         public Arguments Arguments { get; } = new Arguments();
         public Options Options { get; } = new Options();
@@ -79,6 +82,7 @@ namespace ConsoleFx.Parser
         /// </summary>
         public void Parse(IEnumerable<string> tokens)
         {
+            //Clears any previously data on identified options.
             ClearPreviousRun();
 
             //Even though the caller can define the grouping, the parser style can override it based
@@ -87,11 +91,17 @@ namespace ConsoleFx.Parser
 
             //Validate all the available options based on the parser style rules.
             ParserStyle.ValidateDefinedOptions(Options);
-            var specifiedArguments = new List<string>(ParserStyle.IdentifyTokens(tokens, Options, Grouping, Scope));
+
+            //Identify all tokens as options or arguments. Identified option details are stored in
+            //the Option instance itself. Identified arguments are returned from the method.
+            IEnumerable<string> specifiedArguments = ParserStyle.IdentifyTokens(tokens, Options, Grouping, Scope);
+
+            if (ConfigReader != null)
+                specifiedArguments = ConfigReader.Run(specifiedArguments, Options);
 
             //Process the specified options and arguments.
             ProcessOptions();
-            ProcessArguments(specifiedArguments);
+            ProcessArguments(specifiedArguments.ToList());
         }
 
         /// <summary>
@@ -100,7 +110,7 @@ namespace ConsoleFx.Parser
         private void ClearPreviousRun()
         {
             foreach (Option option in Options)
-                option.ClearRun();
+                option.Run.Clear();
         }
 
         private void ProcessOptions()
@@ -173,7 +183,7 @@ namespace ConsoleFx.Parser
         ///     Process the specified arguments by verifying their usage, validating them and executing
         ///     their handlers.
         /// </summary>
-        private void ProcessArguments(List<string> specifiedArguments)
+        private void ProcessArguments(IReadOnlyList<string> specifiedArguments)
         {
             if (Arguments.Count == 0)
                 return;
@@ -186,7 +196,7 @@ namespace ConsoleFx.Parser
             }
 
             //Find the number of arguments that are required.
-            var requiredArgumentCount = 0;
+            int requiredArgumentCount = 0;
             while (requiredArgumentCount < Arguments.Count && !Arguments[requiredArgumentCount].IsOptional)
                 requiredArgumentCount++;
 
@@ -199,7 +209,7 @@ namespace ConsoleFx.Parser
 
             //Iterate through all specified arguments and validate.
             //If validated, run the argument handler.
-            for (var i = 0; i < specifiedArguments.Count; i++)
+            for (int i = 0; i < specifiedArguments.Count; i++)
             {
                 string argumentValue = specifiedArguments[i];
                 Argument argument = Arguments[i];

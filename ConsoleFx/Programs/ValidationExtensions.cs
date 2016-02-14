@@ -1,4 +1,6 @@
-﻿using ConsoleFx.Parser;
+﻿using System;
+
+using ConsoleFx.Parser;
 using ConsoleFx.Parser.Validators;
 
 namespace ConsoleFx.Programs
@@ -62,12 +64,18 @@ namespace ConsoleFx.Programs
             return argument;
         }
 
+        public static Argument ValidateWith(this Argument argument, Func<string, bool> customValidator) =>
+            ValidateWith(argument, new CustomValidator(customValidator));
+
         public static Option ValidateWith(this Option option, params Validator[] validators)
         {
             foreach (Validator validator in validators)
                 option.Validators.Add(validator);
             return option;
         }
+
+        public static Option ValidateWith(this Option option, Func<string, bool> customValidator) =>
+            ValidateWith(option, new CustomValidator(customValidator));
 
         public static Option ValidateWith(this Option option, int parameterIndex, params Validator[] validators)
         {
