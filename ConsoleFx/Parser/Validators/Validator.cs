@@ -52,7 +52,7 @@ namespace ConsoleFx.Parser.Validators
     /// </summary>
     public abstract class Validator<T> : Validator
     {
-        public override sealed void Validate(string parameterValue)
+        public sealed override void Validate(string parameterValue)
         {
             T value = PrimaryChecks(parameterValue);
             AdditionalChecks(value);

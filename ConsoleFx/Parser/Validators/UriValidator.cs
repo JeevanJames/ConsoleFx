@@ -36,7 +36,7 @@ namespace ConsoleFx.Parser.Validators
         {
             Uri uri;
             if (!Uri.TryCreate(parameterValue, UriKind, out uri))
-                ValidationFailed(parameterValue, Message);
+                ValidationFailed(Message, parameterValue);
             return uri;
         }
     }
