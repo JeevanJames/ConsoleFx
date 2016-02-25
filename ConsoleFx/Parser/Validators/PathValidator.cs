@@ -36,7 +36,7 @@ namespace ConsoleFx.Parser.Validators
 
         public string Message { get; set; } = Messages.Path;
 
-        protected override string PrimaryChecks(string parameterValue)
+        protected override string ValidateAsString(string parameterValue)
         {
             if (!CheckIfExists)
                 return parameterValue;

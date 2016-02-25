@@ -16,7 +16,7 @@ Visit the project URL for documentation or download the full package to obtain t
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
 
-[assembly: AssemblyInformationalVersion("2.0.0-rc02")]
+[assembly: AssemblyInformationalVersion("2.0.0-rc03")]
 [assembly: AssemblyVersion("2.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 

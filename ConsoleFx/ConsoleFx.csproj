@@ -74,6 +74,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
+    <Compile Include="Parser\Validators\ValidationException.cs" />
     <Compile Include="Parser\Validators\Validator.cs" />
     <Compile Include="Parser\Validators\PathValidator.cs" />
     <Compile Include="Parser\Validators\RegexValidator.cs" />

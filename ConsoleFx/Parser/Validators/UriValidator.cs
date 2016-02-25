@@ -32,7 +32,7 @@ namespace ConsoleFx.Parser.Validators
 
         public string Message { get; set; } = Messages.Uri;
 
-        protected override Uri PrimaryChecks(string parameterValue)
+        protected override Uri ValidateAsString(string parameterValue)
         {
             Uri uri;
             if (!Uri.TryCreate(parameterValue, UriKind, out uri))

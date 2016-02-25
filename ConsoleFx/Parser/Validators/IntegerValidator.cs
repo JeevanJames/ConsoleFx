@@ -33,7 +33,7 @@ namespace ConsoleFx.Parser.Validators
         public string NotAnIntegerMessage { get; set; } = Messages.Integer_NotAnInteger;
         public string OutOfRangeMessage { get; set; } = Messages.Integer_OutOfRange;
 
-        protected override long PrimaryChecks(string parameterValue)
+        protected override long ValidateAsString(string parameterValue)
         {
             long value;
             if (!long.TryParse(parameterValue, out value))

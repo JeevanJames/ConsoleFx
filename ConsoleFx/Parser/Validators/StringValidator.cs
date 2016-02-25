@@ -37,7 +37,7 @@ namespace ConsoleFx.Parser.Validators
             MaxLength = maxLength;
         }
 
-        protected override string PrimaryChecks(string parameterValue)
+        protected override string ValidateAsString(string parameterValue)
         {
             if (parameterValue.Length < MinLength)
                 ValidationFailed(MinLengthMessage, parameterValue, MinLength);

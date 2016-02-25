@@ -39,7 +39,7 @@ namespace ConsoleFx.Parser.Validators
 
         public string Message { get; set; } = Messages.Enum;
 
-        protected override string PrimaryChecks(string parameterValue)
+        protected override string ValidateAsString(string parameterValue)
         {
             string[] enumNames = Enum.GetNames(EnumType);
             StringComparison comparison = IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;

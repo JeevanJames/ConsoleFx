@@ -50,7 +50,7 @@ namespace ConsoleFx.Parser.Validators
 
         public string Message { get; set; } = Messages.Lookup;
 
-        protected override string PrimaryChecks(string parameterValue)
+        protected override string ValidateAsString(string parameterValue)
         {
             StringComparison comparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
             if (!_items.Any(item => parameterValue.Equals(item, comparison)))

@@ -25,7 +25,7 @@ namespace ConsoleFx.Parser.Validators
     {
         public string Message { get; set; } = Messages.Guid;
 
-        protected override Guid PrimaryChecks(string parameterValue)
+        protected override Guid ValidateAsString(string parameterValue)
         {
             Guid guid;
             if (!Guid.TryParse(parameterValue, out guid))

@@ -40,7 +40,7 @@ namespace ConsoleFx.Parser.Validators
 
         public string Message { get; set; } = Messages.Regex;
 
-        protected override string PrimaryChecks(string parameterValue)
+        protected override string ValidateAsString(string parameterValue)
         {
             if (!Regex.IsMatch(parameterValue))
                 ValidationFailed(parameterValue, Message);

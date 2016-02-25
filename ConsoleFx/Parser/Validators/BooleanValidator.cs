@@ -24,35 +24,40 @@ using System.Linq;
 namespace ConsoleFx.Parser.Validators
 {
     /// <summary>
-    /// Checks whether the parameter value is 'True' or 'False'. The check is not case sensitive.
+    ///     Checks whether the parameter value is 'True' or 'False'. The check is not case sensitive.
     /// </summary>
-    public class BooleanValidator : Validator<string>
+    public class BooleanValidator : SingleMessageValidator<bool>
     {
         private readonly List<string> _trueStrings = new List<string>();
         private readonly List<string> _falseStrings = new List<string>();
         private readonly StringComparison _comparison;
 
         public BooleanValidator(string trueString = "true", string falseString = "false", bool caseSensitive = false)
+            : base(Messages.Boolean)
         {
             _trueStrings.Add(trueString);
             _falseStrings.Add(falseString);
             _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings, bool caseSensitive = false)
+        public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings,
+            bool caseSensitive = false) : base(Messages.Boolean)
         {
             _trueStrings.AddRange(trueStrings);
             _falseStrings.AddRange(falseStrings);
             _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        public string Message { get; set; } = Messages.Boolean;
-
-        protected override string PrimaryChecks(string parameterValue)
+        protected override bool ValidateAsString(string parameterValue)
         {
-            if (!_trueStrings.Any(str => str.Equals(parameterValue, _comparison)) && !_falseStrings.Any(str => str.Equals(parameterValue, _comparison)))
-                ValidationFailed(parameterValue, Message);
-            return parameterValue;
+            bool isTrue = _trueStrings.Any(str => str.Equals(parameterValue, _comparison));
+            if (isTrue)
+                return true;
+            bool isFalse = _falseStrings.Any(str => str.Equals(parameterValue, _comparison));
+            if (isFalse)
+                return false;
+            ValidationFailed(parameterValue, Message);
+            return false;
         }
     }
 }

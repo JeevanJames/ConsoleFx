@@ -34,15 +34,11 @@ namespace ConsoleFx.Parser.Validators
 
         public string Message { get; set; } = Messages.Custom;
 
-        protected override sealed string PrimaryChecks(string parameterValue)
+        protected sealed override string ValidateAsString(string parameterValue)
         {
             if (!_validator(parameterValue))
                 ValidationFailed(parameterValue, Message);
             return parameterValue;
-        }
-
-        protected override sealed void AdditionalChecks(string value)
-        {
         }
     }
 }
