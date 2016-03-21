@@ -45,6 +45,7 @@
     <Compile Include="Parser\Arg.cs" />
     <Compile Include="Parser\Argument.cs" />
     <Compile Include="Parser\ArgGrouping.cs" />
+    <Compile Include="Parser\Command.cs" />
     <Compile Include="Parser\Config\ConfigReader.cs" />
     <Compile Include="Parser\Config\OverrideBehavior.cs" />
     <Compile Include="Parser\Messages.Designer.cs">

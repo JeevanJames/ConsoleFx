@@ -23,11 +23,8 @@ namespace ConsoleFx.Parser.Styles
 {
     public abstract class ParserStyle
     {
-        public virtual ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, Options options,
-            Arguments arguments)
-        {
-            return specifiedGrouping;
-        }
+        public virtual ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, Options options, IList<Argument> arguments) =>
+            specifiedGrouping;
 
         /// <summary>
         ///     Validate that the defined options are compatible with the parser style.

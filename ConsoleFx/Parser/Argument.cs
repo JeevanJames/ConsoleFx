@@ -50,21 +50,6 @@ namespace ConsoleFx.Parser
 
     public sealed class Arguments : Collection<Argument>
     {
-        public Arguments()
-        {
-        }
-
-        public Arguments(IList<Argument> list)
-            : base(list)
-        {
-        }
-
-        public Arguments(IEnumerable<Argument> arguments)
-        {
-            foreach (Argument argument in arguments)
-                Add(argument);
-        }
-
         protected override void InsertItem(int index, Argument argument)
         {
             base.InsertItem(index, argument);

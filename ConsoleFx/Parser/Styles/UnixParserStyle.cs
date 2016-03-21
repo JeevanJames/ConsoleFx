@@ -26,7 +26,7 @@ namespace ConsoleFx.Parser.Styles
 {
     public sealed class UnixParserStyle : ParserStyle
     {
-        public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, Options options, Arguments arguments)
+        public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, Options options, IList<Argument> arguments)
         {
             //Options before arguments will not work if there are any options that do not have a
             //fixed number of parameters (i.e. ExpectedParameters == null). The groupings gets

@@ -50,31 +50,16 @@ namespace ConsoleFx.Parser
 
         public ConfigReader ConfigReader { get; set; }
 
-        public Arguments Arguments { get; } = new Arguments();
-        public Options Options { get; } = new Options();
+        public Command RootCommand { get; } = new Command();
 
-        public Argument AddArgument(bool optional = false)
-        {
-            var argument = new Argument {
-                IsOptional = optional
-            };
-            Arguments.Add(argument);
-            return argument;
-        }
+        public Arguments Arguments => RootCommand.Arguments;
+        public Options Options => RootCommand.Options;
+        public Commands Commands => RootCommand.Commands; 
 
-        public Option AddOption(string name, string shortName = null, bool caseSensitive = false,
-            int order = int.MaxValue)
-        {
-            var option = new Option(name) {
-                CaseSensitive = caseSensitive,
-                Order = order
-            };
-            if (!string.IsNullOrWhiteSpace(shortName))
-                option.ShortName = shortName;
+        public Argument AddArgument(bool optional = false) => RootCommand.AddArgument(optional);
 
-            Options.Add(option);
-            return option;
-        }
+        public Option AddOption(string name, string shortName = null, bool caseSensitive = false, int order = int.MaxValue) =>
+            RootCommand.AddOption(name, shortName, caseSensitive, order);
 
         /// <summary>
         ///     This is the co-ordinating method that accepts a set of string tokens and performs all the
