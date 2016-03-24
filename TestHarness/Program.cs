@@ -13,6 +13,8 @@ using static ConsoleFx.Utilities.ConsoleEx;
 
 using static System.Console;
 
+using Command = ConsoleFx.Parser.Command;
+
 namespace TestHarness
 {
     public enum BackupType
@@ -25,8 +27,9 @@ namespace TestHarness
     {
         private static int Main()
         {
-            var program = new Program { UsageBuilder = new MetadataUsageBuilder() };
-            int exitCode = program.Run();
+            int exitCode = new NpmProgram(new WindowsParserStyle()).Run();
+            //var program = new Program { UsageBuilder = new MetadataUsageBuilder() };
+            //int exitCode = program.Run();
             if (Debugger.IsAttached)
                 ReadLine();
             return exitCode;
@@ -94,4 +97,47 @@ namespace TestHarness
             return 0;
         }
     }
+
+    public sealed class NpmProgram : ConsoleProgram
+    {
+        public bool Verbose { get; set; }
+
+        public NpmProgram(ParserStyle parserStyle) : base(parserStyle)
+        {
+        }
+
+        protected override int Handle()
+        {
+            WriteLine(@"Running console program");
+            WriteLine($"Verbose: {Verbose}");
+
+            WriteLine($"Force: {Force}");
+            WriteLine($"Package Name: {PackageName}");
+
+            return 0;
+        }
+
+        protected override IEnumerable<Option> GetOptions()
+        {
+            yield return new Option("verbose") {ShortName = "v"}
+                .Optional()
+                .Flag(() => Verbose);
+        }
+
+        public bool Force { get; set; }
+        public string PackageName { get; set; }
+
+        protected override IEnumerable<Command> GetCommands()
+        {
+            var install = new Command("install");
+            install.AddArgument()
+                .ValidateWith(new RegexValidator(@"\w+"))
+                .AssignTo(() => PackageName);
+            install.AddOption("force", "f")
+                .Flag(() => Force);
+            yield return install;
+        }
+    }
+
+
 }

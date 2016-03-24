@@ -84,6 +84,7 @@
     <Compile Include="Parser\Validators\UriValidator.cs" />
     <Compile Include="Programs\AssignmentExtensions.cs" />
     <Compile Include="Programs\BaseCommand.cs" />
+    <Compile Include="Programs\ConsoleProgram.cs" />
     <Compile Include="Programs\HelpExtensions.cs" />
     <Compile Include="Programs\SingleCommandProgram.cs" />
     <Compile Include="Programs\UsageBuilders\MetadataUsageBuilder.cs" />
@@ -94,7 +95,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Programs\MultiCommandProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Capture\ConsoleCapture.cs" />
     <Compile Include="Utilities\Capture\ConsoleCaptureException.cs" />

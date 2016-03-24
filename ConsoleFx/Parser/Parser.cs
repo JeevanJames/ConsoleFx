@@ -86,14 +86,15 @@ namespace ConsoleFx.Parser
 
             //Identify all tokens as options or arguments. Identified option details are stored in
             //the Option instance itself. Identified arguments are returned from the method.
-            IEnumerable<string> specifiedArguments = ParserStyle.IdentifyTokens(tokens, run.Options, Grouping, Scope);
+            List<string> specifiedArguments =
+                ParserStyle.IdentifyTokens(run.Tokens, run.Options, Grouping, Scope).ToList();
 
-            if (ConfigReader != null)
-                specifiedArguments = ConfigReader.Run(specifiedArguments, Options);
+            //if (ConfigReader != null)
+            //    specifiedArguments = ConfigReader.Run(specifiedArguments, Options);
 
             //Process the specified options and arguments.
             ProcessOptions(run.Options);
-            ProcessArguments(specifiedArguments.ToList());
+            ProcessArguments(specifiedArguments, run.Arguments);
         }
 
         private Run CreateRun(IReadOnlyList<string> tokens)
@@ -208,13 +209,13 @@ namespace ConsoleFx.Parser
         ///     Process the specified arguments by verifying their usage, validating them and executing
         ///     their handlers.
         /// </summary>
-        private void ProcessArguments(IReadOnlyList<string> specifiedArguments)
+        private void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<Argument> runArguments)
         {
-            if (Arguments.Count == 0)
+            if (runArguments.Count == 0)
                 return;
 
             //Throw exception of number of specified arguments is greater than number of defined arguments.
-            if (specifiedArguments.Count > Arguments.Count)
+            if (specifiedArguments.Count > runArguments.Count)
             {
                 throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
                     Messages.InvalidNumberOfArguments);
@@ -222,7 +223,7 @@ namespace ConsoleFx.Parser
 
             //Find the number of arguments that are required.
             var requiredArgumentCount = 0;
-            while (requiredArgumentCount < Arguments.Count && !Arguments[requiredArgumentCount].IsOptional)
+            while (requiredArgumentCount < runArguments.Count && !runArguments[requiredArgumentCount].IsOptional)
                 requiredArgumentCount++;
 
             //Throw exception if not enough required arguments are specified.
@@ -237,7 +238,7 @@ namespace ConsoleFx.Parser
             for (var i = 0; i < specifiedArguments.Count; i++)
             {
                 string argumentValue = specifiedArguments[i];
-                Argument argument = Arguments[i];
+                Argument argument = runArguments[i];
                 foreach (Validator validator in argument.Validators)
                     validator.Validate(argumentValue);
 
