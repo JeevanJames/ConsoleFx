@@ -23,8 +23,16 @@ namespace ConsoleFx.Parser.Styles
 {
     public abstract class ParserStyle
     {
-        public virtual ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, Options options, IList<Argument> arguments) =>
-            specifiedGrouping;
+        /// <summary>
+        ///     Allows the parser style to override the preferred grouping based on it's rules for the specified options and
+        ///     arguments.
+        /// </summary>
+        /// <param name="specifiedGrouping">The preferred grouping.</param>
+        /// <param name="options">The list of allowed options.</param>
+        /// <param name="arguments">The list of allowed arguments.</param>
+        /// <returns>The final grouping for the specified options and arguments.</returns>
+        public virtual ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options, IReadOnlyList<Argument> arguments)
+            => specifiedGrouping;
 
         /// <summary>
         ///     Validate that the defined options are compatible with the parser style.
@@ -32,7 +40,7 @@ namespace ConsoleFx.Parser.Styles
         ///     An example of an invalid option is a short name longer than one character for the UNIX style parser.
         /// </summary>
         /// <param name="options">List of all the defined options.</param>
-        public virtual void ValidateDefinedOptions(Options options)
+        public virtual void ValidateDefinedOptions(IEnumerable<Option> options)
         {
         }
 
@@ -45,6 +53,7 @@ namespace ConsoleFx.Parser.Styles
         /// <param name="grouping"></param>
         /// <param name="scope"></param>
         /// <returns></returns>
-        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, ArgGrouping grouping, object scope);
+        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, IReadOnlyList<OptionRun> options,
+            ArgGrouping grouping, object scope);
     }
 }

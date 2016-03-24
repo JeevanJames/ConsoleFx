@@ -61,6 +61,7 @@
     <Compile Include="Parser\OptionUsage.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\ParserException.cs" />
+    <Compile Include="Parser\Run.cs" />
     <Compile Include="Parser\Styles\ParserStyle.cs" />
     <Compile Include="Parser\Styles\UnixParserStyle.cs" />
     <Compile Include="Parser\Styles\WindowsParserStyle.cs" />

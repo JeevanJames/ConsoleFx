@@ -11,7 +11,7 @@ namespace ConsoleFx.Parser
     ///     Represents a commandline switch parameter.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
-    public sealed partial class Option : Arg
+    public sealed class Option : Arg
     {
         public string Name { get; }
         public string ShortName { get; set; }
@@ -28,24 +28,18 @@ namespace ConsoleFx.Parser
             Name = name;
             Validators = new OptionParameterValidators(this);
         }
-    }
 
-    //Tracks the results of a particular run.
-    //These are all internal properties as they are used only at the framework level.
-    public sealed partial class Option
-    {
-        internal OptionRun Run { get; } = new OptionRun();
-
-        internal sealed class OptionRun
+        public bool HasName(string name)
         {
-            internal int Occurences { get; set; }
-            internal List<string> Parameters { get; } = new List<string>();
-
-            internal void Clear()
-            {
-                Occurences = 0;
-                Parameters.Clear();
-            }
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+            StringComparison comparison = CaseSensitive
+                ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            if (name.Equals(Name, comparison))
+                return true;
+            if (!string.IsNullOrEmpty(ShortName) && name.Equals(ShortName, comparison))
+                return true;
+            return false;
         }
     }
 
@@ -114,17 +108,7 @@ namespace ConsoleFx.Parser
         /// </summary>
         /// <param name="option">Option that is being set.</param>
         /// <returns>True if the option already exists in the collection. Otherwise false.</returns>
-        private static Func<Option, bool> DuplicateCheck(Option option)
-        {
-            return opt => {
-                StringComparison comparison = opt.CaseSensitive
-                    ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-                if (option.Name.Equals(opt.Name, comparison))
-                    return true;
-                if (!string.IsNullOrEmpty(opt.ShortName) && option.ShortName.Equals(opt.ShortName, comparison))
-                    return true;
-                return false;
-            };
-        }
+        //TODO: Check if this method is being used.
+        private static Func<Option, bool> DuplicateCheck(Option option) => opt => opt.HasName(option.Name);
     }
 }

@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ConsoleFx.Parser.Styles
@@ -28,7 +29,7 @@ namespace ConsoleFx.Parser.Styles
         private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?]+)");
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, Options options, ArgGrouping grouping, object scope)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options, ArgGrouping grouping, object scope)
         {
             ArgumentType previousType = ArgumentType.NotSet;
             ArgumentType currentType = ArgumentType.NotSet;
@@ -51,11 +52,11 @@ namespace ConsoleFx.Parser.Styles
 
                     string specifiedOptionName = optionMatch.Groups[1].Value;
 
-                    Option availableOption = options[specifiedOptionName];
+                    OptionRun availableOption = options.FirstOrDefault(or => or.Option.HasName(specifiedOptionName));
                     if (availableOption == null)
                         throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, specifiedOptionName));
 
-                    availableOption.Run.Occurences += 1;
+                    availableOption.Occurences += 1;
 
                     //If no switch parameters are specified, stop processing
                     if (token.Length == specifiedOptionName.Length + 1)
@@ -70,7 +71,7 @@ namespace ConsoleFx.Parser.Styles
                         string value = parameterMatch.Groups[1].Value;
                         if (value.StartsWith(",", StringComparison.OrdinalIgnoreCase))
                             value = value.Remove(0, 1);
-                        availableOption.Run.Parameters.Add(value);
+                        availableOption.Parameters.Add(value);
                     }
                 }
             }

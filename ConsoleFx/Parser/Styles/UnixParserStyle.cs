@@ -26,7 +26,7 @@ namespace ConsoleFx.Parser.Styles
 {
     public sealed class UnixParserStyle : ParserStyle
     {
-        public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, Options options, IList<Argument> arguments)
+        public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options, IReadOnlyList<Argument> arguments)
         {
             //Options before arguments will not work if there are any options that do not have a
             //fixed number of parameters (i.e. ExpectedParameters == null). The groupings gets
@@ -44,7 +44,7 @@ namespace ConsoleFx.Parser.Styles
             return specifiedGrouping;
         }
 
-        public override void ValidateDefinedOptions(Options options)
+        public override void ValidateDefinedOptions(IEnumerable<Option> options)
         {
             Option invalidOption = options.FirstOrDefault(option => !string.IsNullOrEmpty(option.ShortName) && option.ShortName.Length > 1);
             if (invalidOption != null)
@@ -53,9 +53,9 @@ namespace ConsoleFx.Parser.Styles
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)(?:=(.+))?");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, Options options, ArgGrouping grouping, object scope)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, IReadOnlyList<OptionRun> options, ArgGrouping grouping, object scope)
         {
-            Option currentOption = null;
+            OptionRun currentOption = null;
 
             foreach (string arg in args)
             {
@@ -74,35 +74,37 @@ namespace ConsoleFx.Parser.Styles
                     string parameterValue = optionMatch.Groups[3].Value;
                     bool isParameterSpecified = !string.IsNullOrEmpty(parameterValue);
 
-                    Func<Option, bool> predicate = isShortOption ? (Func<Option, bool>)(opt => opt.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase)) : opt => opt.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase);
-                    Option option = options.FirstOrDefault(predicate);
+                    Func<OptionRun, bool> predicate = isShortOption
+                        ? (Func<OptionRun, bool>)(or => or.Option.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase))
+                        : or => or.Option.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase);
+                    OptionRun option = options.FirstOrDefault(predicate);
                     if (option == null)
                         throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
 
-                    if (option.CaseSensitive)
+                    if (option.Option.CaseSensitive)
                     {
-                        if (isShortOption && !option.ShortName.Equals(optionName, StringComparison.Ordinal))
+                        if (isShortOption && !option.Option.ShortName.Equals(optionName, StringComparison.Ordinal))
                             throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
-                        if (!option.Name.Equals(optionName, StringComparison.Ordinal))
+                        if (!option.Option.Name.Equals(optionName, StringComparison.Ordinal))
                             throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
                     }
 
-                    option.Run.Occurences += 1;
+                    option.Occurences += 1;
                     if (isParameterSpecified)
                     {
-                        option.Run.Parameters.Add(parameterValue);
+                        option.Parameters.Add(parameterValue);
                         currentOption = null;
                     }
                     else
                         currentOption = option;
                 } else
-                    currentOption.Run.Parameters.Add(arg);
+                    currentOption.Parameters.Add(arg);
 
                 //If we're on an option (currentOption != null) and the number of parameters has
                 //reached the maximum allowed, then we can stop handling that option by setting
                 //currentOption to null so that the next arg  will be treated as a new option or
                 //argument.
-                if (currentOption != null && currentOption.Run.Parameters.Count > currentOption.Usage.MaxParameters)
+                if (currentOption != null && currentOption.Parameters.Count > currentOption.Option.Usage.MaxParameters)
                     currentOption = null;
             }
         }
