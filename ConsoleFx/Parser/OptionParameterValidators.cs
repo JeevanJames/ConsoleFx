@@ -112,23 +112,19 @@ namespace ConsoleFx.Parser
         ///     all parameters.
         /// </param>
         /// <returns></returns>
-        internal IReadOnlyList<Validator> GetValidators(int parameterIndex = -1)
+        internal IEnumerable<Validator> GetValidators(int parameterIndex)
         {
             ValidatorCollection commonValidators;
             _validators.TryGetValue(-1, out commonValidators);
 
-            ValidatorCollection indexValidators = null;
-            if (_option.Usage.ParameterType == OptionParameterType.Individual && parameterIndex >= 0)
-                _validators.TryGetValue(parameterIndex, out indexValidators);
+            if (_option.Usage.ParameterType != OptionParameterType.Individual || parameterIndex < 0)
+                return commonValidators ?? Enumerable.Empty<Validator>();
 
-            int capacity = (commonValidators?.Count ?? 0) +
-                (indexValidators?.Count ?? 0);
-            var validators = new List<Validator>(capacity);
-            if (commonValidators != null)
-                validators.AddRange(commonValidators);
-            if (indexValidators != null)
-                validators.AddRange(indexValidators);
-            return validators;
+            ValidatorCollection indexValidators;
+            if (!_validators.TryGetValue(parameterIndex, out indexValidators) || indexValidators == null)
+                return commonValidators ?? Enumerable.Empty<Validator>();
+
+            return (commonValidators ?? Enumerable.Empty<Validator>()).Concat(indexValidators);
         }
     }
 }

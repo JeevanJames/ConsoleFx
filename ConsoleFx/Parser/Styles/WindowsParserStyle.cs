@@ -29,7 +29,7 @@ namespace ConsoleFx.Parser.Styles
         private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?]+)");
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options, ArgGrouping grouping, object scope)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options, ArgGrouping grouping)
         {
             ArgumentType previousType = ArgumentType.NotSet;
             ArgumentType currentType = ArgumentType.NotSet;

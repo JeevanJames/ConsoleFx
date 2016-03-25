@@ -91,7 +91,7 @@ namespace ConsoleFx.Programs
         /// <returns>The <see cref="ConsoleFx.Parser.Parser" /> instance.</returns>
         protected virtual Parser.Parser SetupParser()
         {
-            var parser = new Parser.Parser(ParserStyle, Grouping, this);
+            var parser = new Parser.Parser(ParserStyle, Grouping);
             foreach (Argument argument in GetArguments())
                 parser.Arguments.Add(argument);
             foreach (Option option in GetOptions())

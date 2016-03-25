@@ -17,7 +17,6 @@ limitations under the License.
 */
 #endregion
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -32,11 +31,6 @@ namespace ConsoleFx.Parser
     public sealed class Argument : Arg
     {
         /// <summary>
-        ///     Delegate to call when the argument is encountered.
-        /// </summary>
-        public ArgumentHandler Handler { get; set; }
-
-        /// <summary>
         ///     Indicates whether the argument is optional. Like C# optional parameters, then can only
         ///     be specified after all the required parameters.
         /// </summary>
@@ -45,8 +39,6 @@ namespace ConsoleFx.Parser
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators { get; } = new ValidatorCollection();
     }
-
-    public delegate void ArgumentHandler(string value, object scope);
 
     public sealed class Arguments : Collection<Argument>
     {

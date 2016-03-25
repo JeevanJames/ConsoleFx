@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Validators;
@@ -11,6 +12,30 @@ namespace ConsoleFx.Programs
     /// </summary>
     public static class ValidationExtensions
     {
+        public static Option FormatParamsAs(this Option option, OptionParameterFormatter formatter)
+        {
+            if (formatter == null)
+                throw new ArgumentNullException(nameof(formatter));
+            option.Formatter = formatter;
+            return option;
+        }
+
+        public static Option FormatParamsAs(this Option option, string formatStr)
+        {
+            if (string.IsNullOrWhiteSpace(formatStr))
+                throw new ArgumentException(@"The format string cannot be empty or blank.", nameof(formatStr));
+            option.Formatter = value => string.Format(formatStr, value);
+            return option;
+        }
+
+        public static Option ParamsOfType<T>(this Option option, Converter<string, T> converter = null)
+        {
+            option.Type = typeof(T);
+            if (converter != null)
+                option.TypeConverter = value => converter(value);
+            return option;
+        }
+
         public static Option Optional(this Option option, int max = 1)
         {
             option.Usage.Requirement = max == int.MaxValue

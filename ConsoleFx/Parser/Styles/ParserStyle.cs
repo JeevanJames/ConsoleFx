@@ -51,9 +51,7 @@ namespace ConsoleFx.Parser.Styles
         /// <param name="args">The provided arguments to identify.</param>
         /// <param name="options">All defined options.</param>
         /// <param name="grouping"></param>
-        /// <param name="scope"></param>
         /// <returns></returns>
-        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, IReadOnlyList<OptionRun> options,
-            ArgGrouping grouping, object scope);
+        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, IReadOnlyList<OptionRun> options, ArgGrouping grouping);
     }
 }

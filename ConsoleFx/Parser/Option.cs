@@ -13,14 +13,6 @@ namespace ConsoleFx.Parser
     [DebuggerDisplay("Option: {Name}")]
     public sealed class Option : Arg
     {
-        public string Name { get; }
-        public string ShortName { get; set; }
-        public bool CaseSensitive { get; set; }
-        public int Order { get; set; }
-        public OptionUsage Usage { get; } = new OptionUsage();
-        public OptionParameterValidators Validators { get; }
-        public OptionHandler Handler { get; set; }
-
         public Option(string name)
         {
             if (name == null)
@@ -29,6 +21,33 @@ namespace ConsoleFx.Parser
             Validators = new OptionParameterValidators(this);
         }
 
+        /// <summary>
+        ///     Name of the option.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        ///     Optional alternative name for the option, normally a shorter version.
+        /// </summary>
+        public string ShortName { get; set; }
+
+        /// <summary>
+        ///     Specifies whether the option name and short name are case sensitive.
+        /// </summary>
+        public bool CaseSensitive { get; set; }
+
+        public int Order { get; set; }
+        public OptionUsage Usage { get; } = new OptionUsage();
+        public OptionParameterValidators Validators { get; }
+        public OptionParameterFormatter Formatter { get; set; }
+        public Type Type { get; set; }
+        public Converter<string, object> TypeConverter { get; set; }
+
+        /// <summary>
+        ///     Returns whether the option's name or short name matches the specified name.
+        /// </summary>
+        /// <param name="name">The name to check against.</param>
+        /// <returns>True, if either the name or short name matches.</returns>
         public bool HasName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -47,8 +66,9 @@ namespace ConsoleFx.Parser
     ///     Delegate that is executed for every option that is specified on the command line.
     /// </summary>
     /// <param name="parameters">The list of parameters specified for the option.</param>
-    /// <param name="scope">The object to save data related to the option.</param>
-    public delegate void OptionHandler(IReadOnlyList<string> parameters, object scope);
+    public delegate void OptionHandler(IReadOnlyList<string> parameters);
+
+    public delegate string OptionParameterFormatter(string value);
 
     /// <summary>
     ///     Represents a collection of options. Note: This is not a keyed collection because the key

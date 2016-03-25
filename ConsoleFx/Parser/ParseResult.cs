@@ -1,45 +1,59 @@
-using System;
 using System.Collections.Generic;
 
 namespace ConsoleFx.Parser
 {
     public abstract class BaseParseResult
     {
-        private Dictionary<string, object> _options = new Dictionary<string, object>();
-        private ParseCommandResult _command;
+        public ParseCommandResult Command { get; internal set; }
+
+        internal Dictionary<string, object> InternalOptions { get; } = new Dictionary<string, object>();
+
+        public IReadOnlyDictionary<string, object> Options => InternalOptions;
 
         public T OptionAs<T>(string name, T @default = default(T))
         {
             object value;
-            return _options.TryGetValue(name, out value) ? (T) value : @default;
+            return Options.TryGetValue(name, out value) ? (T)value : @default;
         }
 
-        public IReadOnlyList<T> OptionAsListOf<T>(string name)
+        public IReadOnlyList<T> OptionsAsListOf<T>(string name)
         {
             object value;
-            return _options.TryGetValue(name, out value) ? (List<T>) value : null;
+            return Options.TryGetValue(name, out value) ? (List<T>)value : null;
         }
 
-        public string Option(string name)
-        {
-            object value;
-            return _options.TryGetValue(name, out value) ? (string) value : null;
-        }
+        public string Option(string name) => OptionAs<string>(name);
 
-        public IReadOnlyList<string> OptionsAsList(string name)
-        {
-            object value;
-            return _options.TryGetValue(name, out value) ? (List<string>)value : null;
-        }
+        public IReadOnlyList<string> OptionsAsList(string name) => OptionsAsListOf<string>(name);
     }
 
+    /// <summary>
+    ///     Represents results of parsing a specified set of tokens. This class represents the results for the root command.
+    ///     Results for all commands (if any) are stored hierarchially under the <see cref="BaseParseResult.Command" />
+    ///     property.
+    ///     Options for the root command as well as all subsequent commands are available under the
+    ///     <see cref="BaseParseResult.Options" /> property of the respective result classes.
+    ///     Since only the arguments of the last command can be considered, these are stored in the root result and not the
+    ///     result of the final command, to avoid unnecessary traversal.
+    /// </summary>
     public sealed class ParseResult : BaseParseResult
     {
-        private IReadOnlyList<string> _arguments = new List<string>();
+        internal ParseResult()
+        {
+        }
+
+        internal List<string> InternalArguments { get; } = new List<string>();
+
+        public IReadOnlyList<string> Arguments => InternalArguments;
     }
 
-    public class ParseCommandResult : BaseParseResult
+    public sealed class ParseCommandResult : BaseParseResult
     {
-        //private string _name;
+        internal ParseCommandResult(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; }
     }
 }

@@ -20,7 +20,7 @@ namespace ConsoleFx.Programs
 
         protected virtual ArgGrouping Grouping => ArgGrouping.DoesNotMatter;
 
-        protected virtual IEnumerable<Parser.Command> GetCommands()
+        protected virtual IEnumerable<Command> GetCommands()
         {
             yield break;
         }
@@ -35,11 +35,11 @@ namespace ConsoleFx.Programs
             yield break;
         }
 
-        protected abstract int Handle();
+        protected abstract int Handle(ParseResult result);
 
         public int Run()
         {
-            var parser = new Parser.Parser(_parserStyle, Grouping, this);
+            var parser = new Parser.Parser(_parserStyle, Grouping);
             foreach (Argument argument in GetArguments())
                 parser.Arguments.Add(argument);
             foreach (Option option in GetOptions())
@@ -48,8 +48,8 @@ namespace ConsoleFx.Programs
                 parser.Commands.Add(command);
             try
             {
-                parser.Parse(Environment.GetCommandLineArgs().Skip(1));
-                return Handle();
+                ParseResult result = parser.Parse(Environment.GetCommandLineArgs().Skip(1));
+                return Handle(result);
             } catch (Exception ex)
             {
                 Console.WriteLine(ex);

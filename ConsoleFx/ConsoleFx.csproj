@@ -83,8 +83,8 @@
     <Compile Include="Parser\Validators\RegexValidator.cs" />
     <Compile Include="Parser\Validators\StringValidator.cs" />
     <Compile Include="Parser\Validators\UriValidator.cs" />
-    <Compile Include="Programs\AssignmentExtensions.cs" />
     <Compile Include="Programs\BaseCommand.cs" />
+    <Compile Include="Programs\CommandBuilder.cs" />
     <Compile Include="Programs\ConsoleProgram.cs" />
     <Compile Include="Programs\HelpExtensions.cs" />
     <Compile Include="Programs\SingleCommandProgram.cs" />
