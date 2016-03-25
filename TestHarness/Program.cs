@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -47,7 +48,16 @@ namespace TestHarness
                     WriteLine($"Command: {commandResult.Name}");
                 foreach (KeyValuePair<string, object> kvp in currentResult.Options)
                 {
-                    WriteLine($"Option {kvp.Key}: {kvp.Value}");
+                    Write($"Option {kvp.Key}: ");
+                    var list = kvp.Value as IList;
+                    if (list != null)
+                    {
+                        foreach (object item in list)
+                            Write($"{item?.ToString() ?? "(null)"}, ");
+                        WriteLine();
+                    }
+                    else
+                        WriteLine($"Option {kvp.Key}: {kvp.Value}");
                 }
                 currentResult = currentResult.Command;
             }
@@ -102,6 +112,10 @@ namespace TestHarness
                     .ParametersRequired();
                 yield return new Option("force") { ShortName = "f" }
                     .NoParameters();
+                yield return new Option("format")
+                    .FormatParamsAs(v => v.ToUpperInvariant())
+                    .ParametersRequired()
+                    .Optional(int.MaxValue);
             }
         }
 

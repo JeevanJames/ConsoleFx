@@ -1,18 +1,37 @@
+#region --- License & Copyright Notice ---
+/*
+ConsoleFx CommandLine Processing Library
+Copyright 2015 Jeevan James
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#endregion
+
 using System.Collections.Generic;
 
 namespace ConsoleFx.Parser
 {
-    internal sealed class Run
+    internal sealed class ParseRun
     {
         /// <summary>
         ///     All specified commands.
         ///     Note: We use a <see cref="List{T}" /> instead of the Commands collection here, because we want to avoid the
         ///     duplicate checks, as commands at different levels can have the same name.
         /// </summary>
-        internal List<Command> Commands = new List<Command>();
+        internal List<Command> Commands { get; } = new List<Command>();
 
         /// <summary>
-        ///     All allowed arguments.
+        ///     All allowed arguments and their values.
         /// </summary>
         internal List<ArgumentRun> Arguments { get; } = new List<ArgumentRun>();
 

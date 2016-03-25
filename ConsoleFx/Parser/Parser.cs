@@ -71,7 +71,7 @@ namespace ConsoleFx.Parser
         {
             IReadOnlyList<string> tokenList = tokens.ToList();
 
-            Run run = CreateRun(tokenList);
+            ParseRun run = CreateRun(tokenList);
             IReadOnlyList<Option> justOptions = run.Options.Select(o => o.Option).ToList();
             IReadOnlyList<Argument> justArguments = run.Arguments.Select(a => a.Argument).ToList();
 
@@ -98,9 +98,9 @@ namespace ConsoleFx.Parser
             return CreateParseResult(run);
         }
 
-        private Run CreateRun(IReadOnlyList<string> tokens)
+        private ParseRun CreateRun(IReadOnlyList<string> tokens)
         {
-            var run = new Run();
+            var run = new ParseRun();
 
             Command currentCommand = RootCommand;
 
@@ -224,7 +224,7 @@ namespace ConsoleFx.Parser
                 converter = value => typeConverter.ConvertFromString(value);
             }
 
-            if (option.Usage.MaxParameters > 1)
+            if (option.Usage.MaxParameters > 1 || (option.Usage.MaxParameters == 1 && option.Usage.MaxOccurences > 1))
             {
                 Type listType = typeof(List<>).MakeGenericType(optionType);
                 var list = (IList)Activator.CreateInstance(listType, optionRun.Parameters.Count);
@@ -288,7 +288,7 @@ namespace ConsoleFx.Parser
             }
         }
 
-        private static ParseResult CreateParseResult(Run run)
+        private static ParseResult CreateParseResult(ParseRun run)
         {
             var result = new ParseResult();
 

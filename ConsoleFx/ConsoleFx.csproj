@@ -62,7 +62,7 @@
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\ParseResult.cs" />
     <Compile Include="Parser\ParserException.cs" />
-    <Compile Include="Parser\Run.cs" />
+    <Compile Include="Parser\ParseRun.cs" />
     <Compile Include="Parser\Styles\ParserStyle.cs" />
     <Compile Include="Parser\Styles\UnixParserStyle.cs" />
     <Compile Include="Parser\Styles\WindowsParserStyle.cs" />
@@ -83,11 +83,9 @@
     <Compile Include="Parser\Validators\RegexValidator.cs" />
     <Compile Include="Parser\Validators\StringValidator.cs" />
     <Compile Include="Parser\Validators\UriValidator.cs" />
-    <Compile Include="Programs\BaseCommand.cs" />
     <Compile Include="Programs\CommandBuilder.cs" />
     <Compile Include="Programs\ConsoleProgram.cs" />
     <Compile Include="Programs\HelpExtensions.cs" />
-    <Compile Include="Programs\SingleCommandProgram.cs" />
     <Compile Include="Programs\UsageBuilders\MetadataUsageBuilder.cs" />
     <Compile Include="Programs\UsageBuilders\UsageBuilder.cs" />
     <Compile Include="Programs\ValidationExtensions.cs" />

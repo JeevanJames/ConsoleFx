@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Validators;
@@ -71,6 +70,7 @@ namespace ConsoleFx.Programs
 
         public static Option ParametersRequired(this Option option, int max = 1)
         {
+            option.Usage.MaxParameters = max;
             option.Usage.ParameterRequirement = max == int.MaxValue
                 ? OptionParameterRequirement.RequiredUnlimited : OptionParameterRequirement.Required;
             return option;
