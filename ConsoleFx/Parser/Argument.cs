@@ -30,14 +30,19 @@ namespace ConsoleFx.Parser
     [DebuggerDisplay("Argument [{Validators.Count} validators]")]
     public sealed class Argument : Arg
     {
+        private ValidatorCollection _validators;
+
         /// <summary>
         ///     Indicates whether the argument is optional. Like C# optional parameters, then can only
         ///     be specified after all the required parameters.
         /// </summary>
         public bool IsOptional { get; set; }
 
+        /// <summary>
+        ///     Validators for this argument.
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public ValidatorCollection Validators { get; } = new ValidatorCollection();
+        public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
     }
 
     public sealed class Arguments : Collection<Argument>
@@ -59,7 +64,7 @@ namespace ConsoleFx.Parser
         //TODO: Try and optimize this to not traverse the whole list each time.
         private void VerifyOptionalArgumentsAtEnd()
         {
-            var optional = false;
+            bool optional = false;
             foreach (Argument argument in this)
             {
                 if (!optional)

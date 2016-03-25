@@ -9,11 +9,13 @@ namespace ConsoleFx.Parser
     /// </summary>
     public abstract partial class Arg
     {
+        private CustomMetadata _metadata;
+
         /// <summary>
         ///     Optional metadata that can be used by ancillary frameworks, such as the usage builders.
         ///     This is simply a key-value structure.
         /// </summary>
-        public CustomMetadata Metadata { get; } = new CustomMetadata();
+        public CustomMetadata Metadata => _metadata ?? (_metadata = new CustomMetadata());
     }
 
     public abstract partial class Arg
