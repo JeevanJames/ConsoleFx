@@ -7,10 +7,10 @@ using System.Text.RegularExpressions;
 namespace ConsoleFx.Parser
 {
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
-    public sealed class Command
+    public sealed class Command : MetadataObject
     {
         /// <summary>
-        /// Creates the root command, which has no name.
+        ///     Creates the root command, which has no name.
         /// </summary>
         internal Command()
         {
@@ -21,51 +21,52 @@ namespace ConsoleFx.Parser
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
             if (!NamePattern.IsMatch(name))
-                throw new ArgumentException($"'{name}' is not a valid command name. Command names should only consist of alphanumeric characters.", nameof(name));
+            {
+                throw new ArgumentException(
+                    $"'{name}' is not a valid command name. Command names should only consist of alphanumeric characters.",
+                    nameof(name));
+            }
             Name = name;
             NameComparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
         private static readonly Regex NamePattern = new Regex(@"^\w+$", RegexOptions.Compiled);
 
+        /// <summary>
+        ///     Gets the name of the command.
+        /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        ///     Specifies whether the command name is case-sensitive.
+        /// </summary>
         public bool CaseSensitive => NameComparison == StringComparison.Ordinal;
 
+        /// <summary>
+        ///     The <see cref="StringComparison" /> value used for comparing the command name.
+        /// </summary>
         internal StringComparison NameComparison { get; }
 
+        /// <summary>
+        ///     Collection of <see cref="Argument" /> objects for this command.
+        /// </summary>
         public Arguments Arguments { get; } = new Arguments();
 
+        /// <summary>
+        ///     Collection of <see cref="Option" /> objects for this command.
+        /// </summary>
         public Options Options { get; } = new Options();
 
+        /// <summary>
+        ///     Collection of <see cref="Command" /> sub-command objects for this command.
+        /// </summary>
         public Commands Commands { get; } = new Commands();
-
-        public Argument AddArgument(bool optional = false)
-        {
-            var argument = new Argument
-            {
-                IsOptional = optional
-            };
-            Arguments.Add(argument);
-            return argument;
-        }
-
-        public Option AddOption(string name, string shortName = null, bool caseSensitive = false,
-            int order = int.MaxValue)
-        {
-            var option = new Option(name)
-            {
-                CaseSensitive = caseSensitive,
-                Order = order
-            };
-            if (!string.IsNullOrWhiteSpace(shortName))
-                option.ShortName = shortName;
-
-            Options.Add(option);
-            return option;
-        }
     }
 
+    /// <summary>
+    ///     Collection of <see cref="Command" /> objects. This collection adds special behavior to prevent duplicate command
+    ///     names in the collection as well as the ability to retrieve sub-commands based on the correct case-sensivity.
+    /// </summary>
     public sealed class Commands : Collection<Command>
     {
         public Command this[string name] =>
@@ -85,12 +86,15 @@ namespace ConsoleFx.Parser
 
         private void CheckDuplicates(Command command, int index)
         {
-            for (int i = 0; i < this.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (i == index)
                     continue;
                 if (this[i].Name.Equals(command.Name, this[i].NameComparison))
-                    throw new ArgumentException($"Command named '{command.Name}' already exists in the command collection.");
+                {
+                    throw new ArgumentException(
+                        $"Command named '{command.Name}' already exists in the command collection.");
+                }
             }
         }
     }

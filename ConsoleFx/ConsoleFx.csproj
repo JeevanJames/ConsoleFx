@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="ConsoleFxException.cs" />
     <None Include="ConsoleFx.licenseheader" />
-    <Compile Include="Parser\Arg.cs" />
+    <Compile Include="Parser\MetadataObject.cs" />
     <Compile Include="Parser\Argument.cs" />
     <Compile Include="Parser\ArgGrouping.cs" />
     <Compile Include="Parser\Command.cs" />

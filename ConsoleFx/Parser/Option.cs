@@ -11,7 +11,7 @@ namespace ConsoleFx.Parser
     ///     Represents a commandline switch parameter.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
-    public sealed class Option : Arg
+    public sealed class Option : MetadataObject
     {
         public Option(string name)
         {

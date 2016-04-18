@@ -56,12 +56,6 @@ namespace ConsoleFx.Parser
         public Options Options => RootCommand.Options;
         public Commands Commands => RootCommand.Commands;
 
-        public Argument AddArgument(bool optional = false) => RootCommand.AddArgument(optional);
-
-        public Option AddOption(string name, string shortName = null, bool caseSensitive = false,
-            int order = int.MaxValue) =>
-                RootCommand.AddOption(name, shortName, caseSensitive, order);
-
         /// <summary>
         /// Parses the given set of tokens based on the rules specified by the <see cref="Arguments"/>, <see cref="Options"/> and <see cref="Commands"/> properties.
         /// </summary>
@@ -74,7 +68,7 @@ namespace ConsoleFx.Parser
             ParseRun run = CreateRun(tokenList);
 
             //Extract out just the option and argument objects from their respective run collections.
-            //We want to pass these to protected methods that only need to deal with the Option and
+            //We want to pass these to parser style methods that only need to deal with the Option and
             //Argument objects and not have to deal with the 'run' aspects. See some of the calls to
             //protected methods from this method.
             IReadOnlyList<Option> justOptions = run.Options.Select(o => o.Option).ToList();
@@ -97,7 +91,7 @@ namespace ConsoleFx.Parser
             //if (ConfigReader != null)
             //    specifiedArguments = ConfigReader.Run(specifiedArguments, Options);
 
-            //Process the specified options and arguments.
+            //Process the specified options and arguments, and resolve their values.
             ProcessOptions(run.Options);
             ProcessArguments(specifiedArguments, run.Arguments);
 

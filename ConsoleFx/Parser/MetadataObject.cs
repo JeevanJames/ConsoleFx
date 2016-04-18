@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace ConsoleFx.Parser
 {
     /// <summary>
-    ///     Represents a command line arg.
+    ///     Base class for objects that store ad-hoc metadata.
     ///     Base class for <see cref="T:ConsoleFx.Parser.Option" /> and <see cref="T:ConsoleFx.Parser.Argument" />.
     /// </summary>
-    public abstract partial class Arg
+    public abstract partial class MetadataObject
     {
         private CustomMetadata _metadata;
 
@@ -18,7 +18,7 @@ namespace ConsoleFx.Parser
         public CustomMetadata Metadata => _metadata ?? (_metadata = new CustomMetadata());
     }
 
-    public abstract partial class Arg
+    public abstract partial class MetadataObject
     {
         public sealed class CustomMetadata
         {

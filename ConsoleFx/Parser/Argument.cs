@@ -28,13 +28,13 @@ namespace ConsoleFx.Parser
     ///     Represents a non-option command-line parameter.
     /// </summary>
     [DebuggerDisplay("Argument [{Validators.Count} validators]")]
-    public sealed class Argument : Arg
+    public sealed class Argument : MetadataObject
     {
         private ValidatorCollection _validators;
 
         /// <summary>
         ///     Indicates whether the argument is optional. Like C# optional parameters, then can only
-        ///     be specified after all the required parameters.
+        ///     be specified after all the required arguments.
         /// </summary>
         public bool IsOptional { get; set; }
 
@@ -59,24 +59,25 @@ namespace ConsoleFx.Parser
             VerifyOptionalArgumentsAtEnd();
         }
 
-        //Called whenever an argument is added or set in the collection.
-        //Verifies that the optional arguments are specified only after the required ones.
-        //TODO: Try and optimize this to not traverse the whole list each time.
+        /// <summary>
+        ///     Called whenever an argument is added or set in the collection to verify that optional arguments are specified only
+        ///     after the required ones.
+        /// </summary>
         private void VerifyOptionalArgumentsAtEnd()
         {
-            bool optional = false;
+            //TODO: Try and optimize this to not traverse the whole list each time.
+            bool inOptionalSet = false;
             foreach (Argument argument in this)
             {
-                if (!optional)
-                    optional = argument.IsOptional;
-                else
+                if (inOptionalSet)
                 {
                     if (!argument.IsOptional)
                     {
                         throw new ParserException(ParserException.Codes.RequiredArgumentsDefinedAfterOptional,
                             Messages.RequiredArgumentsDefinedAfterOptional);
                     }
-                }
+                } else
+                    inOptionalSet = argument.IsOptional;
             }
         }
     }
