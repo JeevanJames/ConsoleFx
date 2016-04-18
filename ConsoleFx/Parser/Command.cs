@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ConsoleFx.Parser
 {
+    [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
     public sealed class Command
     {
         /// <summary>

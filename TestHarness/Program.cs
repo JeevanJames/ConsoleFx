@@ -23,7 +23,7 @@ namespace TestHarness
     {
         private static int Main()
         {
-            int exitCode = new NpmProgram(new WindowsParserStyle()).Run();
+            int exitCode = new NpmProgram(new UnixParserStyle()).Run();
             if (Debugger.IsAttached)
                 ReadLine();
             return exitCode;
@@ -38,28 +38,22 @@ namespace TestHarness
 
         protected override int Handle(ParseResult result)
         {
-            BaseParseResult currentResult = result;
-            while (currentResult != null)
+            Command command = result.Command;
+            if (command == null)
+                WriteLine(@"Root Command");
+            else
+                WriteLine($"Command: {command.Name}");
+            foreach (KeyValuePair<string, object> kvp in result.Options)
             {
-                var commandResult = currentResult as ParseCommandResult;
-                if (commandResult == null)
-                    WriteLine("Root Command");
-                else
-                    WriteLine($"Command: {commandResult.Name}");
-                foreach (KeyValuePair<string, object> kvp in currentResult.Options)
+                Write($"Option {kvp.Key}: ");
+                var list = kvp.Value as IList;
+                if (list != null)
                 {
-                    Write($"Option {kvp.Key}: ");
-                    var list = kvp.Value as IList;
-                    if (list != null)
-                    {
-                        foreach (object item in list)
-                            Write($"{item?.ToString() ?? "(null)"}, ");
-                        WriteLine();
-                    }
-                    else
-                        WriteLine($"Option {kvp.Key}: {kvp.Value}");
-                }
-                currentResult = currentResult.Command;
+                    foreach (object item in list)
+                        Write($"{item?.ToString() ?? "(null)"}, ");
+                    WriteLine();
+                } else
+                    WriteLine(kvp.Value);
             }
             return 0;
         }

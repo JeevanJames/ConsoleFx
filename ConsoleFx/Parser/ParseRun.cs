@@ -21,11 +21,15 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.Parser
 {
+    /// <summary>
+    ///     Represents the internal state of a single parse execution. This includes the commands, arguments and options that
+    ///     were specified.
+    /// </summary>
     internal sealed class ParseRun
     {
         /// <summary>
         ///     All specified commands.
-        ///     Note: We use a <see cref="List{T}" /> instead of the Commands collection here, because we want to avoid the
+        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we want to avoid the
         ///     duplicate checks, as commands at different levels can have the same name.
         /// </summary>
         internal List<Command> Commands { get; } = new List<Command>();

@@ -17,11 +17,9 @@ limitations under the License.
 */
 #endregion
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace ConsoleFx.Parser.Validators
 {
@@ -61,7 +59,7 @@ namespace ConsoleFx.Parser.Validators
         public sealed override void Validate(string parameterValue)
         {
             T value = ValidateAsString(parameterValue);
-            ValidateAsActualType(value);
+            ValidateAsActualType(value, parameterValue);
         }
 
         /// <summary>
@@ -79,8 +77,9 @@ namespace ConsoleFx.Parser.Validators
         ///     This is useful for additional validations that can only be performed on the actual typed value.
         /// </summary>
         /// <param name="value">The typed parameter value.</param>
+        /// <param name="parameterValue">The parameter value as a string</param>
         /// <exception cref="ValidationException">Thrown if the validation fails.</exception>
-        protected virtual void ValidateAsActualType(T value)
+        protected virtual void ValidateAsActualType(T value, string parameterValue)
         {
         }
     }

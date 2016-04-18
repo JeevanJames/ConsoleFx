@@ -2,9 +2,9 @@
 
 namespace ConsoleFx.Parser.Validators
 {
-    public sealed class ValidationException : ParserException
+    public class ValidationException : ParserException
     {
-        public ValidationException(string message, Type validatorType, string parameterValue) : base(ParserException.Codes.ValidationFailed, message)
+        public ValidationException(string message, Type validatorType, string parameterValue) : base(Codes.ValidationFailed, message)
         {
             ValidatorType = validatorType;
             ParameterValue = parameterValue;

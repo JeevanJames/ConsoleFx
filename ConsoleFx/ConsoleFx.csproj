@@ -67,8 +67,10 @@
     <Compile Include="Parser\Styles\UnixParserStyle.cs" />
     <Compile Include="Parser\Styles\WindowsParserStyle.cs" />
     <Compile Include="Parser\Validators\BooleanValidator.cs" />
+    <Compile Include="Parser\Validators\CompositeValidator.cs" />
     <Compile Include="Parser\Validators\CustomValidator.cs" />
     <Compile Include="Parser\Validators\EnumValidator.cs" />
+    <Compile Include="Parser\Validators\FileValidator.cs" />
     <Compile Include="Parser\Validators\GuidValidator.cs" />
     <Compile Include="Parser\Validators\IntegerValidator.cs" />
     <Compile Include="Parser\Validators\LookupValidator.cs" />

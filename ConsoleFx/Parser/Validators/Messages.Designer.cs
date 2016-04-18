@@ -88,6 +88,42 @@ namespace ConsoleFx.Parser.Validators {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified file &apos;{0}&apos; has an invalid extension. Valid extensions are {1}..
+        /// </summary>
+        internal static string File_InvalidExtension {
+            get {
+                return ResourceManager.GetString("File_InvalidExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; does not exist or you do not have sufficient permissions to access it..
+        /// </summary>
+        internal static string File_Missing {
+            get {
+                return ResourceManager.GetString("File_Missing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid file name..
+        /// </summary>
+        internal static string File_NameInvalid {
+            get {
+                return ResourceManager.GetString("File_NameInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file name you specified &apos;{0}&apos; exceeds the system-defined maximum length..
+        /// </summary>
+        internal static string File_PathTooLong {
+            get {
+                return ResourceManager.GetString("File_PathTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid GUID..
         /// </summary>
         internal static string Guid {

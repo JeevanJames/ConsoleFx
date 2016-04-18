@@ -72,6 +72,11 @@ namespace ConsoleFx.Parser
             IReadOnlyList<string> tokenList = tokens.ToList();
 
             ParseRun run = CreateRun(tokenList);
+
+            //Extract out just the option and argument objects from their respective run collections.
+            //We want to pass these to protected methods that only need to deal with the Option and
+            //Argument objects and not have to deal with the 'run' aspects. See some of the calls to
+            //protected methods from this method.
             IReadOnlyList<Option> justOptions = run.Options.Select(o => o.Option).ToList();
             IReadOnlyList<Argument> justArguments = run.Arguments.Select(a => a.Argument).ToList();
 
@@ -88,6 +93,7 @@ namespace ConsoleFx.Parser
             List<string> specifiedArguments =
                 ParserStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
 
+            //TODO: Come back to this later
             //if (ConfigReader != null)
             //    specifiedArguments = ConfigReader.Run(specifiedArguments, Options);
 
@@ -137,6 +143,8 @@ namespace ConsoleFx.Parser
                 }
             }
 
+            if (run.Tokens == null)
+                run.Tokens = new List<string>(0);
             return run;
         }
 
@@ -251,7 +259,7 @@ namespace ConsoleFx.Parser
         ///     Process the specified arguments by verifying their usage, validating them and executing
         ///     their handlers.
         /// </summary>
-        private void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
+        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
         {
             if (argumentRuns.Count == 0)
                 return;
@@ -290,28 +298,47 @@ namespace ConsoleFx.Parser
 
         private static ParseResult CreateParseResult(ParseRun run)
         {
-            var result = new ParseResult();
-
-            //TODO: Is there a better predicate logic here?
-            IEnumerable<OptionRun> rootOptionRuns = run.Options.Where(option => option.Command.Name == null);
-            foreach (OptionRun rootOptionRun in rootOptionRuns)
-                result.InternalOptions.Add(rootOptionRun.Option.Name, rootOptionRun.ResolvedValue);
-
-            BaseParseResult currentResult = result;
+            Command finalCommand = run.Commands.Count > 0 ? run.Commands[run.Commands.Count - 1] : null;
+            List<string> arguments = run.Arguments
+                .Select(ar => ar.Value)
+                .ToList();
+            Dictionary<string, object> options = run.Options
+                .Where(option => option.Command.Name == null)
+                .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.ResolvedValue);
             foreach (Command command in run.Commands)
             {
-                var commandResult = new ParseCommandResult(command.Name);
-                currentResult.Command = commandResult;
-
                 IEnumerable<OptionRun> commandOptionRuns = run.Options.Where(option => option.Command == command);
                 foreach (OptionRun commandOptionRun in commandOptionRuns)
-                    commandResult.InternalOptions.Add(commandOptionRun.Option.Name, commandOptionRun.ResolvedValue);
+                    options.Add(commandOptionRun.Option.Name, commandOptionRun.ResolvedValue);
             }
 
-            foreach (ArgumentRun argumentRun in run.Arguments)
-                result.InternalArguments.Add(argumentRun.Value);
-
-            return result;
+            return new ParseResult(finalCommand, arguments, options);
         }
+
+        //private static ParseResult CreateParseResult(ParseRun run)
+        //{
+        //    var result = new ParseResult();
+
+        //    //TODO: Is there a better predicate logic here?
+        //    IEnumerable<OptionRun> rootOptionRuns = run.Options.Where(option => option.Command.Name == null);
+        //    foreach (OptionRun rootOptionRun in rootOptionRuns)
+        //        result.InternalOptions.Add(rootOptionRun.Option.Name, rootOptionRun.ResolvedValue);
+
+        //    BaseParseResult currentResult = result;
+        //    foreach (Command command in run.Commands)
+        //    {
+        //        var commandResult = new ParseCommandResult(command.Name);
+        //        currentResult.Command = commandResult;
+
+        //        IEnumerable<OptionRun> commandOptionRuns = run.Options.Where(option => option.Command == command);
+        //        foreach (OptionRun commandOptionRun in commandOptionRuns)
+        //            commandResult.InternalOptions.Add(commandOptionRun.Option.Name, commandOptionRun.ResolvedValue);
+        //    }
+
+        //    foreach (ArgumentRun argumentRun in run.Arguments)
+        //        result.InternalArguments.Add(argumentRun.Value);
+
+        //    return result;
+        //}
     }
 }

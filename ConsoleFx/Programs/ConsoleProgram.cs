@@ -44,7 +44,7 @@ namespace ConsoleFx.Programs
                 parser.Arguments.Add(argument);
             foreach (Option option in GetOptions())
                 parser.Options.Add(option);
-            foreach (Parser.Command command in GetCommands())
+            foreach (Command command in GetCommands())
                 parser.Commands.Add(command);
             try
             {

@@ -1,5 +1,4 @@
-﻿using System.CodeDom;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using ConsoleFx.Parser;
 
@@ -11,7 +10,7 @@ namespace ConsoleFx.Programs
 
         protected virtual IEnumerable<Argument> Arguments
         {
-            get { yield break;}
+            get { yield break; }
         }
 
         protected virtual IEnumerable<Option> Options
@@ -24,16 +23,18 @@ namespace ConsoleFx.Programs
             get { yield break; }
         }
 
-        public static implicit operator Command(CommandBuilder builder)
+        public Command ToCommand()
         {
-            var command = new Command(builder.Name);
-            foreach (Argument argument in builder.Arguments)
+            var command = new Command(Name);
+            foreach (Argument argument in Arguments)
                 command.Arguments.Add(argument);
-            foreach (Option option in builder.Options)
+            foreach (Option option in Options)
                 command.Options.Add(option);
-            foreach (Command subcommand in builder.Commands)
+            foreach (Command subcommand in Commands)
                 command.Commands.Add(subcommand);
             return command;
         }
+
+        public static implicit operator Command(CommandBuilder builder) => builder.ToCommand();
     }
 }
