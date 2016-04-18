@@ -22,48 +22,29 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public class RegexValidator : Validator<string>
+    public class RegexValidator : SingleMessageValidator<string>
     {
-        public RegexValidator(Regex regex)
+        public RegexValidator(Regex regex) : base(Messages.Regex)
         {
             if (regex == null)
                 throw new ArgumentNullException(nameof(regex));
             Regex = regex;
         }
 
-        public RegexValidator(string pattern)
+        public RegexValidator(string pattern) : base(Messages.Regex)
         {
+            if (string.IsNullOrEmpty(pattern))
+                throw new ArgumentException("Value cannot be null or empty.", nameof(pattern));
             Regex = new Regex(pattern);
         }
 
         public Regex Regex { get; }
-
-        public string Message { get; set; } = Messages.Regex;
 
         protected override string ValidateAsString(string parameterValue)
         {
             if (!Regex.IsMatch(parameterValue))
                 ValidationFailed(parameterValue, Message);
             return parameterValue;
-        }
-    }
-
-    public static class RegexPattern
-    {
-        public static readonly Regex Email = new Regex(@"^[^_][a-zA-Z0-9_]+[^_]@{1}[a-z]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$");
-        public static readonly Regex FileMask = new Regex(@"^[\w\.\*\?][\w\s\.\*\?]*$");
-
-        private static string _path;
-
-        public static string Path
-        {
-            get { return _path ?? (_path = BuildPathRegex()); }
-        }
-
-        private static string BuildPathRegex()
-        {
-            //TODO:
-            return string.Empty;
         }
     }
 }

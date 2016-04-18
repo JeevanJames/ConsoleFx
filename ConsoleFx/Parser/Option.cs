@@ -36,11 +36,45 @@ namespace ConsoleFx.Parser
         /// </summary>
         public bool CaseSensitive { get; set; }
 
+        /// <summary>
+        ///     Priority order for processing the option. Options with higher <see cref="Order" /> values are processed before
+        ///     those with lower values.
+        /// </summary>
+        //TODO: Need to implement this
         public int Order { get; set; }
+
+        /// <summary>
+        ///     Various usage options for the option and its parameters, including the minimum and maximum allowed occurences of
+        ///     the option itself, and also the minimum and maximum allowed number of parameters that can be specified for each
+        ///     occurence.
+        /// </summary>
         public OptionUsage Usage { get; } = new OptionUsage();
+
+        /// <summary>
+        ///     Collection of validators that can validate some or all of the option's parameters.
+        /// </summary>
         public OptionParameterValidators Validators { get; }
+
+        /// <summary>
+        ///     Optional delegate that allows a option parameter value to be custom formatted.
+        ///     During parsing, the formatting is performed before any type conversion.
+        /// </summary>
         public OptionParameterFormatter Formatter { get; set; }
+
+        /// <summary>
+        ///     The type that the option parameters should be converted to. If a <see cref="TypeConverter" /> is specified, then it
+        ///     is used to perform the type conversion, otherwise the framework looks for a default string-to-type type converter
+        ///     for the expected type. If a type converter is not found, an exception is thrown during the parsing.
+        /// </summary>
+        /// <remarks>
+        ///     This type applies to all parameters. In case different parameters are to be converted to different types, the
+        ///     conversion must happen outside the ConsoleFx framework.
+        /// </remarks>
         public Type Type { get; set; }
+
+        /// <summary>
+        ///     Optional converter to convert a string parameter value to the actual <see cref="Type" />.
+        /// </summary>
         public Converter<string, object> TypeConverter { get; set; }
 
         /// <summary>

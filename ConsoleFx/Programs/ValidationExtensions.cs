@@ -61,6 +61,7 @@ namespace ConsoleFx.Programs
             return option;
         }
 
+        //TODO: Does it make sense to have an option that can have optional parameters? How do we handle an occurence where no parameter is specified? Normally for parameters, we either add it to a list (for multiple) or assign it to a value. And for no parameters, we either assign it to a bool (for single occurence) or to a int (for multiple). But how can we mix both scenarios?
         public static Option ParametersOptional(this Option option, int max = 1)
         {
             option.Usage.ParameterRequirement = max == int.MaxValue

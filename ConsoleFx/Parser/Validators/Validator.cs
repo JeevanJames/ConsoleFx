@@ -29,7 +29,7 @@ namespace ConsoleFx.Parser.Validators
     public abstract class Validator
     {
         /// <summary>
-        /// Validates the specified parameter value and throws an exception if the validation fails.
+        ///     Validates the specified parameter value and throws an exception if the validation fails.
         /// </summary>
         /// <param name="parameterValue">The parameter value to validate.</param>
         /// <exception cref="ValidationException">Thrown if the validation fails.</exception>
@@ -51,9 +51,12 @@ namespace ConsoleFx.Parser.Validators
     }
 
     /// <summary>
-    ///     Base class for validators that perform multiple checks and hence can produce more than one
-    ///     error message.
+    ///     Base class for typed validators; i.e. validators that perform additional validations once the parameter value has
+    ///     been converted to its native type.
+    ///     This class breaks the validation into 2 parts - validation of the string parameter value and validation of the
+    ///     converted typed value.
     /// </summary>
+    //TODO: The conversion performed by this class seems redundant considering the type conversion details specified by the option itself (using its Type and TypeConverter properties). Can we perform the conversion once and then pass the converted value into this class for the typed validation. Also, consider that the conversion logic for validators and that for the option could be different, leading to inconsistencies.
     public abstract class Validator<T> : Validator
     {
         public sealed override void Validate(string parameterValue)
@@ -82,16 +85,6 @@ namespace ConsoleFx.Parser.Validators
         protected virtual void ValidateAsActualType(T value, string parameterValue)
         {
         }
-    }
-
-    public abstract class SingleMessageValidator<T> : Validator<T>
-    {
-        protected SingleMessageValidator(string message)
-        {
-            Message = message;
-        }
-
-        public string Message { get; set; }
     }
 
     /// <summary>

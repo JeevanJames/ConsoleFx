@@ -37,6 +37,7 @@ namespace ConsoleFx.Parser
         /// <summary>
         ///     The option allows 0 to unlimited parameters.
         /// </summary>
+        //TODO: Should we remove based on the comments on the ValidationExtensions.ParametersOptional method?
         OptionalUnlimited,
 
         /// <summary>

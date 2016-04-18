@@ -57,10 +57,11 @@ namespace ConsoleFx.Parser
         public Commands Commands => RootCommand.Commands;
 
         /// <summary>
-        /// Parses the given set of tokens based on the rules specified by the <see cref="Arguments"/>, <see cref="Options"/> and <see cref="Commands"/> properties.
+        ///     Parses the given set of tokens based on the rules specified by the <see cref="Arguments" />, <see cref="Options" />
+        ///     and <see cref="Commands" /> properties.
         /// </summary>
         /// <param name="tokens">Token strings to parse.</param>
-        /// <returns>A <see cref="ParseResult"/> instance.</returns>
+        /// <returns>A <see cref="ParseResult" /> instance.</returns>
         public ParseResult Parse(IEnumerable<string> tokens)
         {
             IReadOnlyList<string> tokenList = tokens.ToList();
@@ -142,7 +143,7 @@ namespace ConsoleFx.Parser
             return run;
         }
 
-        private void ProcessOptions(IReadOnlyList<OptionRun> optionRuns)
+        private static void ProcessOptions(IReadOnlyList<OptionRun> optionRuns)
         {
             foreach (OptionRun or in optionRuns)
             {
@@ -205,27 +206,48 @@ namespace ConsoleFx.Parser
             }
         }
 
+        /// <summary>
+        ///     Resolves an <see cref="Option" />'s value based on it's usage details. See the comments on the
+        ///     <see cref="OptionRun.ResolvedValue" /> property for details on how the resolution is done.
+        /// </summary>
+        /// <param name="optionRun">The <see cref="OptionRun" /> instance, whose option to resolve.</param>
+        /// <returns>The value of the option.</returns>
         private static object ResolveOptionParameterValues(OptionRun optionRun)
         {
             Option option = optionRun.Option;
 
+            //If parameters are not allowed on the option...
             if (option.Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
             {
+                //If the option can occur more than once, it's value will be an integer specifying
+                //the number of occurences.
                 if (option.Usage.MaxOccurences > 1)
                     return optionRun.Occurences;
+
+                //If the option can occur not more than once, it's value will be a bool indicating
+                //whether it was specified or not.
                 return optionRun.Occurences > 0;
             }
 
+            //If no type is specified, assume string.
             Type optionType = option.Type ?? typeof(string);
             Converter<string, object> converter = option.TypeConverter;
+
+            //If a custom type converter is not specified and the option's value type is not string,
+            //then attempt to find a default type converter for that type, which can convert from string.
             if (converter == null && optionType != typeof(string))
             {
                 TypeConverter typeConverter = TypeDescriptor.GetConverter(optionType);
+                //If a default converter cannot be found, throw an exception.
                 if (!typeConverter.CanConvertFrom(typeof(string)))
-                    throw new ParserException(-1, $"Unable to find a adequate type converter to convert parameters of the {option.Name} to type {optionType.FullName}.");
+                    throw new ParserException(-1,
+                        $"Unable to find a adequate type converter to convert parameters of the {option.Name} to type {optionType.FullName}.");
                 converter = value => typeConverter.ConvertFromString(value);
             }
 
+            //If the option can have multiple parameter values (either because the MaxParameters usage
+            //is greater than one or because MaxParameters is one but MaxOccurences is greater than
+            //one), then the option's value is an IList<Type>.
             if (option.Usage.MaxParameters > 1 || (option.Usage.MaxParameters == 1 && option.Usage.MaxOccurences > 1))
             {
                 Type listType = typeof(List<>).MakeGenericType(optionType);
@@ -242,7 +264,8 @@ namespace ConsoleFx.Parser
 
             if (option.Usage.MaxParameters == 1 && optionRun.Parameters.Count > 0)
             {
-                string formattedParameter = option.Formatter != null ? option.Formatter(optionRun.Parameters[0]) : optionRun.Parameters[0];
+                string formattedParameter = option.Formatter != null
+                    ? option.Formatter(optionRun.Parameters[0]) : optionRun.Parameters[0];
                 return converter == null ? formattedParameter : converter(formattedParameter);
             }
 
@@ -253,7 +276,8 @@ namespace ConsoleFx.Parser
         ///     Process the specified arguments by verifying their usage, validating them and executing
         ///     their handlers.
         /// </summary>
-        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
+        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments,
+            IReadOnlyList<ArgumentRun> argumentRuns)
         {
             if (argumentRuns.Count == 0)
                 return;
@@ -267,7 +291,8 @@ namespace ConsoleFx.Parser
 
             //Find the number of arguments that are required.
             int requiredArgumentCount = 0;
-            while (requiredArgumentCount < argumentRuns.Count && !argumentRuns[requiredArgumentCount].Argument.IsOptional)
+            while (requiredArgumentCount < argumentRuns.Count &&
+                !argumentRuns[requiredArgumentCount].Argument.IsOptional)
                 requiredArgumentCount++;
 
             //Throw exception if not enough required arguments are specified.
@@ -308,31 +333,5 @@ namespace ConsoleFx.Parser
 
             return new ParseResult(finalCommand, arguments, options);
         }
-
-        //private static ParseResult CreateParseResult(ParseRun run)
-        //{
-        //    var result = new ParseResult();
-
-        //    //TODO: Is there a better predicate logic here?
-        //    IEnumerable<OptionRun> rootOptionRuns = run.Options.Where(option => option.Command.Name == null);
-        //    foreach (OptionRun rootOptionRun in rootOptionRuns)
-        //        result.InternalOptions.Add(rootOptionRun.Option.Name, rootOptionRun.ResolvedValue);
-
-        //    BaseParseResult currentResult = result;
-        //    foreach (Command command in run.Commands)
-        //    {
-        //        var commandResult = new ParseCommandResult(command.Name);
-        //        currentResult.Command = commandResult;
-
-        //        IEnumerable<OptionRun> commandOptionRuns = run.Options.Where(option => option.Command == command);
-        //        foreach (OptionRun commandOptionRun in commandOptionRuns)
-        //            commandResult.InternalOptions.Add(commandOptionRun.Option.Name, commandOptionRun.ResolvedValue);
-        //    }
-
-        //    foreach (ArgumentRun argumentRun in run.Arguments)
-        //        result.InternalArguments.Add(argumentRun.Value);
-
-        //    return result;
-        //}
     }
 }

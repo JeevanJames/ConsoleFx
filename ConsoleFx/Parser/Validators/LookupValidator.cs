@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public sealed class LookupValidator : Validator<string>
+    public sealed class LookupValidator : SingleMessageValidator<string>
     {
         private readonly List<string> _items;
 
@@ -31,7 +31,7 @@ namespace ConsoleFx.Parser.Validators
         {
         }
 
-        public LookupValidator(IEnumerable<string> items)
+        public LookupValidator(IEnumerable<string> items) : base(Messages.Lookup)
         {
             _items = items != null ? new List<string>(items) : new List<string>();
         }
@@ -47,8 +47,6 @@ namespace ConsoleFx.Parser.Validators
         }
 
         public bool CaseSensitive { get; set; }
-
-        public string Message { get; set; } = Messages.Lookup;
 
         protected override string ValidateAsString(string parameterValue)
         {
