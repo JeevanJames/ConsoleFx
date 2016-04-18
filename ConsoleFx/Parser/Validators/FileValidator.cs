@@ -12,7 +12,12 @@ namespace ConsoleFx.Parser.Validators
 
         public string BaseDirectory { get; set; }
 
-        public bool CheckIfExists { get; set; }
+        public bool ShouldExist { get; set; }
+
+        public string InvalidFileNameMessage => Messages.File_NameInvalid;
+        public string PathTooLongMessage => Messages.File_PathTooLong;
+        public string FileMissingMessage => Messages.File_Missing;
+        public string InvalidExtensionMessage => Messages.File_InvalidExtension;
 
         protected override FileInfo ValidateAsString(string parameterValue)
         {
@@ -21,21 +26,21 @@ namespace ConsoleFx.Parser.Validators
                 return new FileInfo(parameterValue);
             } catch (ArgumentException)
             {
-                ValidationFailed(Messages.File_NameInvalid, parameterValue);
+                ValidationFailed(InvalidFileNameMessage, parameterValue);
             } catch (PathTooLongException)
             {
-                ValidationFailed(Messages.File_PathTooLong, parameterValue);
+                ValidationFailed(PathTooLongMessage, parameterValue);
             } catch (NotSupportedException)
             {
-                ValidationFailed(Messages.File_NameInvalid, parameterValue);
+                ValidationFailed(InvalidFileNameMessage, parameterValue);
             }
             throw new NotSupportedException("Should not have reached here.");
         }
 
         protected override void ValidateAsActualType(FileInfo file, string parameterName)
         {
-            if (CheckIfExists && !file.Exists)
-                ValidationFailed(Messages.File_Missing, parameterName);
+            if (ShouldExist && !file.Exists)
+                ValidationFailed(FileMissingMessage, parameterName);
 
             if (AllowedExtensions != null && AllowedExtensions.Count > 0)
             {
@@ -47,7 +52,7 @@ namespace ConsoleFx.Parser.Validators
                             sb.Append(", ");
                         return sb.Append(ext);
                     });
-                    ValidationFailed(Messages.File_InvalidExtension, parameterName, allowedExtensions);
+                    ValidationFailed(InvalidExtensionMessage, parameterName, allowedExtensions);
                 }
             }
         }

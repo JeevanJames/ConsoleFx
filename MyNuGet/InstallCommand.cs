@@ -26,18 +26,8 @@ namespace MyNuGet
         {
             get
             {
-                yield return new Option("Source")
-                    .Description(Install.Source)
-                    .Optional(int.MaxValue)
-                    .ParametersRequired(int.MaxValue)
-                    .ValidateWith(new CompositeValidator("Invalid package source '{0}'. Package sources should be either absolute URLs or local directories.",
-                        new UriValidator(UriKind.Absolute),
-                        new FileValidator {
-                            CheckIfExists = true,
-                            AllowedExtensions = {
-                                "config"
-                            }
-                        }));
+                yield return CommonOptions.Sources
+                    .Description(Install.Source);
 
                 yield return new Option("OutputDirectory")
                     .Description(Install.OutputDirectory);
