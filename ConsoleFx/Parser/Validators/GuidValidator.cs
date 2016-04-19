@@ -21,9 +21,11 @@ using System;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public class GuidValidator : Validator<Guid>
+    public class GuidValidator : SingleMessageValidator<Guid>
     {
-        public string Message { get; set; } = Messages.Guid;
+        public GuidValidator() : base(Messages.Guid)
+        {
+        }
 
         protected override Guid ValidateAsString(string parameterValue)
         {

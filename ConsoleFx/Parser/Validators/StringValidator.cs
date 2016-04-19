@@ -46,9 +46,9 @@ namespace ConsoleFx.Parser.Validators
             return parameterValue;
         }
 
-        public int MaxLength { get; set; }
+        public int MaxLength { get; }
 
-        public int MinLength { get; set; }
+        public int MinLength { get; }
 
         public string MinLengthMessage { get; set; } = Messages.String_MinLength;
 

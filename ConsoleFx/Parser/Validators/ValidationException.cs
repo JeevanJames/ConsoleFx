@@ -21,16 +21,26 @@ using System;
 
 namespace ConsoleFx.Parser.Validators
 {
+    /// <summary>
+    ///     Exception thrown as a result of a validation failure.
+    /// </summary>
     public class ValidationException : ParserException
     {
-        public ValidationException(string message, Type validatorType, string parameterValue) : base(Codes.ValidationFailed, message)
+        public ValidationException(string message, Type validatorType, string parameterValue)
+            : base(Codes.ValidationFailed, message)
         {
             ValidatorType = validatorType;
             ParameterValue = parameterValue;
         }
 
+        /// <summary>
+        ///     Type of validator that caused the validation failure.
+        /// </summary>
         public Type ValidatorType { get; }
 
+        /// <summary>
+        ///     The parameter value that failed the validation.
+        /// </summary>
         public string ParameterValue { get; }
     }
 }

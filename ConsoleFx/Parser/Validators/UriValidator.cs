@@ -21,16 +21,14 @@ using System;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public class UriValidator : Validator<Uri>
+    public class UriValidator : SingleMessageValidator<Uri>
     {
         public UriKind UriKind { get; }
 
-        public UriValidator(UriKind uriKind)
+        public UriValidator(UriKind uriKind) : base(Messages.Uri)
         {
             UriKind = uriKind;
         }
-
-        public string Message { get; set; } = Messages.Uri;
 
         protected override Uri ValidateAsString(string parameterValue)
         {

@@ -22,12 +22,12 @@ using System.Linq;
 
 namespace ConsoleFx.Parser.Validators
 {
-    public class EnumValidator : Validator<string>
+    public class EnumValidator : SingleMessageValidator<string>
     {
         private Type EnumType { get; }
         private bool IgnoreCase { get; }
 
-        public EnumValidator(Type enumType, bool ignoreCase = true)
+        public EnumValidator(Type enumType, bool ignoreCase = true) : base(Messages.Enum)
         {
             if (enumType == null)
                 throw new ArgumentNullException(nameof(enumType));
@@ -36,8 +36,6 @@ namespace ConsoleFx.Parser.Validators
             EnumType = enumType;
             IgnoreCase = ignoreCase;
         }
-
-        public string Message { get; set; } = Messages.Enum;
 
         protected override string ValidateAsString(string parameterValue)
         {
