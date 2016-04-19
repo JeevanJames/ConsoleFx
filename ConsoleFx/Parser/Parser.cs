@@ -186,6 +186,7 @@ namespace ConsoleFx.Parser
 
                 //If the option has been used and it has parameters and validators, then validate
                 //all parameters.
+
                 if (or.Occurences > 0 && or.Parameters.Count > 0 && or.Option.Validators.Count > 0)
                 {
                     for (int i = 0; i < or.Parameters.Count; i++)

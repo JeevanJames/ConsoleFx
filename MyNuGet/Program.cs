@@ -6,6 +6,7 @@ using System.Diagnostics;
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Programs;
+using ConsoleFx.Utilities;
 
 using static System.Console;
 
@@ -15,6 +16,11 @@ namespace MyNuGet
     {
         private static int Main()
         {
+            Palette.Add("title", ConsoleColor.Black, ConsoleColor.Gray);
+            Palette.Add("tag-line", ConsoleColor.DarkGreen, ConsoleColor.Yellow);
+            new Colorizer().Out("MyNuGet NuGet Simulator", "title");
+            ConsoleEx.Write("MyNuGet NuGet Simulator", ConsoleColor.White, ConsoleColor.Magenta);
+            ConsoleEx.WriteLine("Written by Jeevan James", ConsoleColor.Blue, ConsoleColor.Yellow);
             int exitCode = new Program(new WindowsParserStyle()).Run();
             if (Debugger.IsAttached)
                 ReadLine();
