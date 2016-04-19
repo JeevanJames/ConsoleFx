@@ -21,8 +21,17 @@ using System;
 
 namespace ConsoleFx
 {
+    /// <summary>
+    ///     Base class for all exception types in the ConsoleFx library. This class provides an ErrorCode to indicate the
+    ///     specific type of exception that occurred.
+    /// </summary>
     public abstract class ConsoleFxException : Exception
     {
+        /// <summary>
+        ///     Identifies the type of error that occurred so further logic can be applied to handling it.
+        ///     A positive error code denotes a functional error.
+        ///     A negative error code denotes an internal error code, which typically means a bug in the application or framework.
+        /// </summary>
         public int ErrorCode { get; }
 
         protected ConsoleFxException(int errorCode, string message) : base(message)
@@ -30,7 +39,8 @@ namespace ConsoleFx
             ErrorCode = errorCode;
         }
 
-        protected ConsoleFxException(int errorCode, string message, Exception innerException) : base(message, innerException)
+        protected ConsoleFxException(int errorCode, string message, Exception innerException)
+            : base(message, innerException)
         {
             ErrorCode = errorCode;
         }

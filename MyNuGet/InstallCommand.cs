@@ -16,9 +16,10 @@ namespace MyNuGet
             get
             {
                 yield return new Argument()
+                    .Description("package id/config file", "The package ID or path to the packages.config file.")
                     .ValidateWith(new CompositeValidator("'{0}' is not a valid package ID or package config file.",
                         new PackageIdValidator(),
-                        new PathValidator()));
+                        new FileValidator()));
             }
         }
 

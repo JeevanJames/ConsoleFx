@@ -1,7 +1,7 @@
 #region --- License & Copyright Notice ---
 /*
 ConsoleFx CommandLine Processing Library
-Copyright 2015 Jeevan James
+Copyright 2015-2016 Jeevan James
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using System.IO;
 
 namespace ConsoleFx.Parser.Validators
 {
+    [Obsolete("Use the FileValidator for files or DirectoryValidator for directories instead.")]
     public class PathValidator : Validator<string>
     {
         public PathValidator(PathType pathType = PathType.File, bool checkIfExists = true)
@@ -48,6 +49,7 @@ namespace ConsoleFx.Parser.Validators
         }
     }
 
+    [Obsolete("Use the FileValidator for files or DirectoryValidator for directories instead.")]
     public enum PathType
     {
         File,

@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 ConsoleFx CommandLine Processing Library
-Copyright 2015 Jeevan James
+Copyright 2015-2016 Jeevan James
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,18 +26,28 @@ namespace ConsoleFx.Parser.Styles
 {
     public sealed class UnixParserStyle : ParserStyle
     {
-        public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options, IReadOnlyList<Argument> arguments)
+        /// <summary>
+        ///     Single character short names allow certain behaviors like combining multiple parameterless options into a single
+        ///     option.
+        /// </summary>
+        public bool EnforceSingleCharacterShortNames { get; set; } = true;
+
+        public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options,
+            IReadOnlyList<Argument> arguments)
         {
             //Options before arguments will not work if there are any options that do not have a
             //fixed number of parameters (i.e. ExpectedParameters == null). The groupings gets
             //changed to DoesNotMatter.
-            bool optionsHaveVariableParameters = options.Any(option => !option.Usage.ExpectedParameters.HasValue);
-            if (specifiedGrouping == ArgGrouping.OptionsBeforeArguments && optionsHaveVariableParameters)
-                specifiedGrouping = ArgGrouping.DoesNotMatter;
+            if (specifiedGrouping == ArgGrouping.OptionsBeforeArguments)
+            {
+                bool optionsHaveVariableParameters = options.Any(option => !option.Usage.ExpectedParameters.HasValue);
+                if (optionsHaveVariableParameters)
+                    specifiedGrouping = ArgGrouping.DoesNotMatter;
+            }
 
-            //If DoesNotMatter or OptionsBeforeArguments and any option has unlimited parameters,
-            //change to OptionsAfterArguments.
-            bool optionsHaveUnlimitedParameters = options.Any(option => option.Usage.MaxParameters == int.MaxValue);
+            //If any option has unlimited parameters, then options must appear after arguments.
+            bool optionsHaveUnlimitedParameters =
+                options.Any(option => option.Usage.MaxParameters == OptionUsage.Unlimited);
             if (specifiedGrouping != ArgGrouping.OptionsAfterArguments && optionsHaveUnlimitedParameters)
                 specifiedGrouping = ArgGrouping.OptionsAfterArguments;
 
@@ -46,14 +56,18 @@ namespace ConsoleFx.Parser.Styles
 
         public override void ValidateDefinedOptions(IEnumerable<Option> options)
         {
-            Option invalidOption = options.FirstOrDefault(option => !string.IsNullOrEmpty(option.ShortName) && option.ShortName.Length > 1);
-            if (invalidOption != null)
-                throw new ParserException(1000, $"Option '{invalidOption.Name}' has an invalid short name. Short names for the UNIX style parser should be a single character only.");
+            if (EnforceSingleCharacterShortNames)
+            {
+                Option invalidOption = options.FirstOrDefault(option => option.ShortName?.Length != 1);
+                if (invalidOption != null)
+                    throw new ParserException(1000, $"Option '{invalidOption.Name}' has an invalid short name. Short names for the UNIX style parser should be a single character only. Alternatively, set the {nameof(EnforceSingleCharacterShortNames)} property to force to bypass this check and allow multi-character short names.");
+            }
         }
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)(?:=(.+))?");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, IReadOnlyList<OptionRun> options, ArgGrouping grouping)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, IReadOnlyList<OptionRun> options,
+            ArgGrouping grouping)
         {
             OptionRun currentOption = null;
 
@@ -75,18 +89,22 @@ namespace ConsoleFx.Parser.Styles
                     bool isParameterSpecified = !string.IsNullOrEmpty(parameterValue);
 
                     Func<OptionRun, bool> predicate = isShortOption
-                        ? (Func<OptionRun, bool>)(or => or.Option.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase))
+                        ? (Func<OptionRun, bool>)
+                            (or => or.Option.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase))
                         : or => or.Option.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase);
                     OptionRun option = options.FirstOrDefault(predicate);
                     if (option == null)
-                        throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
+                        throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
+                            string.Format(Messages.InvalidOptionSpecified, optionName));
 
                     if (option.Option.CaseSensitive)
                     {
                         if (isShortOption && !option.Option.ShortName.Equals(optionName, StringComparison.Ordinal))
-                            throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
+                            throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
+                                string.Format(Messages.InvalidOptionSpecified, optionName));
                         if (!option.Option.Name.Equals(optionName, StringComparison.Ordinal))
-                            throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, optionName));
+                            throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
+                                string.Format(Messages.InvalidOptionSpecified, optionName));
                     }
 
                     option.Occurences += 1;
@@ -94,8 +112,7 @@ namespace ConsoleFx.Parser.Styles
                     {
                         option.Parameters.Add(parameterValue);
                         currentOption = null;
-                    }
-                    else
+                    } else
                         currentOption = option;
                 } else
                     currentOption.Parameters.Add(arg);

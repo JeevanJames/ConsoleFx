@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 ConsoleFx CommandLine Processing Library
-Copyright 2015 Jeevan James
+Copyright 2015-2016 Jeevan James
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,15 +30,19 @@ namespace ConsoleFx.Parser
     ///     values to be set for common scenarios.
     /// </summary>
     [DebuggerDisplay("{Requirement} | Parameters: {MinParameters} - {MaxParameters}")]
-    public sealed class OptionUsage
+    public sealed partial class OptionUsage
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private int _minOccurences;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int _minOccurences = Defaults.MinOccurences;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private int _maxOccurences = 1;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int _maxOccurences = Defaults.MaxOccurences;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private int _minParameters;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int _minParameters = Defaults.MinParameters;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private int _maxParameters;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int _maxParameters = Defaults.MaxParameters;
 
         /// <summary>
         ///     Specifies the maximum allowed occurences of the option.
@@ -83,8 +87,8 @@ namespace ConsoleFx.Parser
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
-                _minOccurences = value.GetValueOrDefault(0);
-                _maxOccurences = value.GetValueOrDefault(1);
+                _minOccurences = value.GetValueOrDefault(Defaults.MinOccurences);
+                _maxOccurences = value.GetValueOrDefault(Defaults.MaxOccurences);
             }
         }
 
@@ -98,7 +102,7 @@ namespace ConsoleFx.Parser
                 OptionRequirement requirement = MinOccurences > 0
                     ? OptionRequirement.Required
                     : OptionRequirement.Optional;
-                if (MaxOccurences == int.MaxValue)
+                if (MaxOccurences == Unlimited)
                 {
                     if (requirement == OptionRequirement.Required)
                         requirement = OptionRequirement.RequiredUnlimited;
@@ -117,14 +121,14 @@ namespace ConsoleFx.Parser
                         break;
                     case OptionRequirement.OptionalUnlimited:
                         MinOccurences = 0;
-                        MaxOccurences = int.MaxValue;
+                        MaxOccurences = Unlimited;
                         break;
                     case OptionRequirement.Required:
                         MinOccurences = 1;
                         break;
                     case OptionRequirement.RequiredUnlimited:
                         MinOccurences = 1;
-                        MaxOccurences = int.MaxValue;
+                        MaxOccurences = Unlimited;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value));
@@ -181,8 +185,8 @@ namespace ConsoleFx.Parser
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
-                _minParameters = value.GetValueOrDefault(0);
-                _maxParameters = value.GetValueOrDefault(0);
+                _minParameters = value.GetValueOrDefault(Defaults.MinParameters);
+                _maxParameters = value.GetValueOrDefault(Defaults.MaxParameters);
             }
         }
 
@@ -207,5 +211,19 @@ namespace ConsoleFx.Parser
         }
 
         public OptionParameterType ParameterType { get; set; }
+    }
+
+    public sealed partial class OptionUsage
+    {
+        public static class Defaults
+        {
+            public const int MinOccurences = 0;
+            public const int MaxOccurences = 1;
+
+            public const int MinParameters = 0;
+            public const int MaxParameters = 0;
+        }
+
+        public const int Unlimited = int.MaxValue;
     }
 }
