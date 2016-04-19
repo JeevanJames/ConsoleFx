@@ -35,51 +35,11 @@ namespace ConsoleFx.Programs
             return option;
         }
 
-        public static Option Optional(this Option option, int max = 1)
+        public static Option Usage(this Option option, Action<OptionUsage> usageSetter)
         {
-            option.Usage.Requirement = max == int.MaxValue
-                ? OptionRequirement.OptionalUnlimited : OptionRequirement.Optional;
-            return option;
-        }
-
-        public static Option Required(this Option option, int max = 1)
-        {
-            option.Usage.Requirement = max == int.MaxValue
-                ? OptionRequirement.RequiredUnlimited : OptionRequirement.Required;
-            return option;
-        }
-
-        public static Option ExpectedOccurences(this Option option, int expected)
-        {
-            option.Usage.ExpectedOccurences = expected;
-            return option;
-        }
-
-        public static Option NoParameters(this Option option)
-        {
-            option.Usage.ParameterRequirement = OptionParameterRequirement.NotAllowed;
-            return option;
-        }
-
-        //TODO: Does it make sense to have an option that can have optional parameters? How do we handle an occurence where no parameter is specified? Normally for parameters, we either add it to a list (for multiple) or assign it to a value. And for no parameters, we either assign it to a bool (for single occurence) or to a int (for multiple). But how can we mix both scenarios?
-        public static Option ParametersOptional(this Option option, int max = 1)
-        {
-            option.Usage.ParameterRequirement = max == int.MaxValue
-                ? OptionParameterRequirement.OptionalUnlimited : OptionParameterRequirement.Optional;
-            return option;
-        }
-
-        public static Option ParametersRequired(this Option option, int max = 1)
-        {
-            option.Usage.MaxParameters = max;
-            option.Usage.ParameterRequirement = max == int.MaxValue
-                ? OptionParameterRequirement.RequiredUnlimited : OptionParameterRequirement.Required;
-            return option;
-        }
-
-        public static Option ExpectedParameters(this Option option, int expected)
-        {
-            option.Usage.ExpectedParameters = expected;
+            if (usageSetter == null)
+                throw new ArgumentNullException(nameof(usageSetter));
+            usageSetter(option.Usage);
             return option;
         }
 

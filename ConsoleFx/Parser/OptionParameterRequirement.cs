@@ -20,8 +20,9 @@ limitations under the License.
 namespace ConsoleFx.Parser
 {
     /// <summary>
-    ///     Specifies whether the parameters for an option are required, optional or not allowed.
+    ///     Specifies whether the parameters for an option are required or not allowed.
     /// </summary>
+    /// <remarks>There is no such thing as optional parameters.</remarks>
     public enum OptionParameterRequirement
     {
         /// <summary>
@@ -30,24 +31,8 @@ namespace ConsoleFx.Parser
         NotAllowed,
 
         /// <summary>
-        ///     The option allows 0 to 1 parameters.
+        ///     The option requires one or more parameters.
         /// </summary>
-        Optional,
-
-        /// <summary>
-        ///     The option allows 0 to unlimited parameters.
-        /// </summary>
-        //TODO: Should we remove based on the comments on the ValidationExtensions.ParametersOptional method?
-        OptionalUnlimited,
-
-        /// <summary>
-        ///     The option allows 1 parameter.
-        /// </summary>
-        Required,
-
-        /// <summary>
-        ///     The option allows 1 to unlimited parameters.
-        /// </summary>
-        RequiredUnlimited
+        Required
     }
 }

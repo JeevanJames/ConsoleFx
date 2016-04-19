@@ -9,8 +9,10 @@ namespace MyNuGet
     public static class CommonOptions
     {
         public static Option Sources => new Option("Source")
-            .Optional(int.MaxValue)
-            .ParametersRequired(int.MaxValue)
+            .Usage(usage => {
+                usage.Requirement = OptionRequirement.OptionalUnlimited;
+                usage.SetParametersRequired(int.MaxValue);
+            })
             .ValidateWith(new CompositeValidator(Validation.PackageSourceInvalid,
                 new UriValidator(UriKind.Absolute),
                 new FileValidator {
