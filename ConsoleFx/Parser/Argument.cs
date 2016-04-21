@@ -17,6 +17,7 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -43,6 +44,16 @@ namespace ConsoleFx.Parser
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
+
+        public Argument ValidateWith(params Validator[] validators)
+        {
+            foreach (Validator validator in validators)
+                Validators.Add(validator);
+            return this;
+        }
+
+        public Argument ValidateWith(Func<string, bool> customValidator) =>
+            ValidateWith(new CustomValidator(customValidator));
     }
 
     public sealed class Arguments : Collection<Argument>

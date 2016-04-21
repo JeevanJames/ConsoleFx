@@ -8,6 +8,8 @@ using ConsoleFx.Parser.Styles;
 using ConsoleFx.Programs;
 using ConsoleFx.Utilities;
 
+using MyNuGet.Install;
+
 using static System.Console;
 
 namespace MyNuGet

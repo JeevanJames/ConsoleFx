@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyNuGet {
+namespace MyNuGet.Install {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace MyNuGet {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MyNuGet.Install", typeof(Install).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MyNuGet.Install.Install", typeof(Install).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -24,6 +24,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 
+using ConsoleFx.Parser.Validators;
+
 namespace ConsoleFx.Parser
 {
     /// <summary>
@@ -32,7 +34,7 @@ namespace ConsoleFx.Parser
     [DebuggerDisplay("Option: {Name}")]
     public sealed class Option : MetadataObject
     {
-        public Option(string name)
+        public Option(string name, string shortName = null, bool caseSensitive = false, int order = 0, object @default = null)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
@@ -112,6 +114,55 @@ namespace ConsoleFx.Parser
             if (!string.IsNullOrEmpty(ShortName) && name.Equals(ShortName, comparison))
                 return true;
             return false;
+        }
+
+        public Option FormatParamsAs(OptionParameterFormatter formatter)
+        {
+            if (formatter == null)
+                throw new ArgumentNullException(nameof(formatter));
+            Formatter = formatter;
+            return this;
+        }
+
+        public Option FormatParamsAs(string formatStr)
+        {
+            if (string.IsNullOrWhiteSpace(formatStr))
+                throw new ArgumentException(@"The format string cannot be empty or blank.", nameof(formatStr));
+            Formatter = value => string.Format(formatStr, value);
+            return this;
+        }
+
+        public Option ParamsOfType<T>(Converter<string, T> converter = null)
+        {
+            Type = typeof(T);
+            if (converter != null)
+                TypeConverter = value => converter(value);
+            return this;
+        }
+
+        public Option UsedAs(Action<OptionUsage> usageSetter)
+        {
+            if (usageSetter == null)
+                throw new ArgumentNullException(nameof(usageSetter));
+            usageSetter(Usage);
+            return this;
+        }
+
+        public Option ValidateWith(params Validator[] validators)
+        {
+            foreach (Validator validator in validators)
+                Validators.Add(validator);
+            return this;
+        }
+
+        public Option ValidateWith(Func<string, bool> customValidator) =>
+            ValidateWith(new CustomValidator(customValidator));
+
+        public Option ValidateWith(int parameterIndex, params Validator[] validators)
+        {
+            foreach (Validator validator in validators)
+                Validators.Add(parameterIndex, validator);
+            return this;
         }
     }
 

@@ -101,13 +101,13 @@ namespace TestHarness
             {
                 yield return new Option("version") {ShortName = "ver"}
                     .ParamsOfType<int>()
-                    .Usage(usage => {
+                    .UsedAs(usage => {
                         usage.ParameterRequirement = OptionParameterRequirement.Required;
                     });
                 yield return new Option("force") { ShortName = "f" };
                 yield return new Option("format")
                     .FormatParamsAs(v => v.ToUpperInvariant())
-                    .Usage(usage => {
+                    .UsedAs(usage => {
                         usage.Requirement = OptionRequirement.OptionalUnlimited;
                         usage.ParameterRequirement = OptionParameterRequirement.Required;
                     });

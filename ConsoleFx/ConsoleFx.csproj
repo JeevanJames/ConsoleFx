@@ -92,7 +92,6 @@
     <Compile Include="Programs\HelpExtensions.cs" />
     <Compile Include="Programs\UsageBuilders\MetadataUsageBuilder.cs" />
     <Compile Include="Programs\UsageBuilders\UsageBuilder.cs" />
-    <Compile Include="Programs\ValidationExtensions.cs" />
     <Compile Include="Programs\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

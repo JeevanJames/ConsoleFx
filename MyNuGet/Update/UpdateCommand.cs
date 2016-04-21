@@ -4,7 +4,7 @@ using ConsoleFx.Parser;
 using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
 
-namespace MyNuGet
+namespace MyNuGet.Update
 {
     public class UpdateCommand : CommandBuilder
     {

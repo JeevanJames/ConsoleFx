@@ -9,7 +9,7 @@ namespace MyNuGet
     public static class CommonOptions
     {
         public static Option Sources => new Option("Source")
-            .Usage(usage => {
+            .UsedAs(usage => {
                 usage.Requirement = OptionRequirement.OptionalUnlimited;
                 usage.SetParametersRequired(int.MaxValue);
             })

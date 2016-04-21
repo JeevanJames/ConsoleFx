@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
 
-namespace MyNuGet
+namespace MyNuGet.Install
 {
     public sealed class InstallCommand : CommandBuilder
     {
