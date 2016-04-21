@@ -24,48 +24,52 @@ namespace ConsoleFx.Parser
 {
     /// <summary>
     ///     Base class for objects that store ad-hoc metadata.
-    ///     Base class for <see cref="T:ConsoleFx.Parser.Option" /> and <see cref="T:ConsoleFx.Parser.Argument" />.
+    ///     Base class for <see cref="T:ConsoleFx.Parser.Option" />, <see cref="T:ConsoleFx.Parser.Argument" /> and
+    ///     <see cref="Command" />.
     /// </summary>
-    public abstract partial class MetadataObject
+    public abstract class MetadataObject
     {
-        private CustomMetadata _metadata;
+        private Dictionary<string, object> _metadata;
 
         /// <summary>
-        ///     Optional metadata that can be used by ancillary frameworks, such as the usage builders.
-        ///     This is simply a key-value structure.
+        ///     Gets or sets a string metadata value.
         /// </summary>
-        public CustomMetadata Metadata => _metadata ?? (_metadata = new CustomMetadata());
-    }
-
-    public abstract partial class MetadataObject
-    {
-        public sealed class CustomMetadata
+        /// <param name="name">The name of the metadata value.</param>
+        /// <returns>The string value of the metadata.</returns>
+        public string this[string name]
         {
-            private Dictionary<string, object> _metadata;
+            get { return Get<string>(name); }
+            set { Set(name, value); }
+        }
 
-            public string this[string name]
-            {
-                get { return Get<string>(name); }
-                set { Set(name, value); }
-            }
+        /// <summary>
+        ///     Gets a metadata value by name.
+        /// </summary>
+        /// <typeparam name="T">The type of the metadata value.</typeparam>
+        /// <param name="name">The name of the metadata value.</param>
+        /// <returns>The metadata value or the default of T if the value does not exist.</returns>
+        public T Get<T>(string name)
+        {
+            if (_metadata == null)
+                return default(T);
+            object result;
+            return _metadata.TryGetValue(name, out result) ? (T)result : default(T);
+        }
 
-            public T Get<T>(string name)
-            {
-                if (_metadata == null)
-                    return default(T);
-                object result;
-                return _metadata.TryGetValue(name, out result) ? (T)result : default(T);
-            }
-
-            public void Set<T>(string name, T value)
-            {
-                if (_metadata == null)
-                    _metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-                if (_metadata.ContainsKey(name))
-                    _metadata[name] = value;
-                else
-                    _metadata.Add(name, value);
-            }
+        /// <summary>
+        ///     Sets a metadata value by name.
+        /// </summary>
+        /// <typeparam name="T">The type of the metadata value.</typeparam>
+        /// <param name="name">The name of the metadata value.</param>
+        /// <param name="value">The value of the metadata to set.</param>
+        public void Set<T>(string name, T value)
+        {
+            if (_metadata == null)
+                _metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            if (_metadata.ContainsKey(name))
+                _metadata[name] = value;
+            else
+                _metadata.Add(name, value);
         }
     }
 }

@@ -26,20 +26,20 @@ namespace ConsoleFx.Programs.UsageBuilders
             {
                 string fullNameSection = $"  -{option.Name.PadRight(maxOptionNameLength)}  ";
                 string shortName = option.ShortName != null ? $"(short: {option.ShortName}) " : string.Empty;
-                string description = option.Metadata["Description"] ?? string.Empty;
+                string description = option["Description"] ?? string.Empty;
                 Console.Write(fullNameSection);
                 ConsoleEx.WriteIndented($"{shortName}{description}", fullNameSection.Length);
             }
 
             Console.WriteLine();
 
-            int maxArgumentNameLength = parser.Arguments.Max(a => (a.Metadata["Name"] ?? string.Empty).Length);
+            int maxArgumentNameLength = parser.Arguments.Max(a => (a["Name"] ?? string.Empty).Length);
             maxArgumentNameLength = Math.Max(maxArgumentNameLength, "Arg".Length + parser.Arguments.Count);
             for (var i = 0; i < parser.Arguments.Count; i++)
             {
                 Argument argument = parser.Arguments[i];
-                string name = argument.Metadata["Name"] ?? $"Arg{i + 1}";
-                string description = argument.Metadata["Description"] ?? string.Empty;
+                string name = argument["Name"] ?? $"Arg{i + 1}";
+                string description = argument["Description"] ?? string.Empty;
                 Console.WriteLine($"  <{name}>  {description}");
             }
         }
@@ -65,7 +65,7 @@ namespace ConsoleFx.Programs.UsageBuilders
                     usage.Append(" ");
                 if (argument.IsOptional)
                     usage.Append("[");
-                usage.Append($"<{argument.Metadata["Name"] ?? "Arg"}>");
+                usage.Append($"<{argument["Name"] ?? "Arg"}>");
                 if (argument.IsOptional)
                     usage.Append("]");
             }
