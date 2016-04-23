@@ -18,9 +18,12 @@ namespace MyNuGet
     {
         private static int Main()
         {
-            Palette.Add("title", ConsoleColor.Black, ConsoleColor.Gray);
+            WriteLine($"{ForegroundColor} - {BackgroundColor}");
+            Palette.AddForeColor("title", ConsoleColor.Gray);
             Palette.Add("tag-line", ConsoleColor.DarkGreen, ConsoleColor.Yellow);
-            new Colorizer().Out("MyNuGet NuGet Simulator", "title");
+            new Colorizer()
+                .Out("MyNuGet NuGet Simulator", "title").Line()
+                .Out("The best damn nuget out there", "tag-line").Line();
             ConsoleEx.Write("MyNuGet NuGet Simulator", ConsoleColor.White, ConsoleColor.Magenta);
             ConsoleEx.WriteLine("Written by Jeevan James", ConsoleColor.Blue, ConsoleColor.Yellow);
             int exitCode = new Program(new WindowsParserStyle()).Run();

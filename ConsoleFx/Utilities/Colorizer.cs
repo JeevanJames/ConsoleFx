@@ -25,6 +25,12 @@ namespace ConsoleFx.Utilities
 {
     public sealed class Colorizer
     {
+        public Colorizer Line()
+        {
+            Console.WriteLine();
+            return this;
+        }
+
         public Colorizer Out(string text, ConsoleColor foreColor, ConsoleColor backColor) =>
             Out(this, text, foreColor, backColor);
 
@@ -34,10 +40,10 @@ namespace ConsoleFx.Utilities
         {
             if (colorName == null)
                 throw new ArgumentNullException(nameof(colorName));
-            PaletteEntry color = Palette.GetColor(text);
+            PaletteEntry color = Palette.GetColor(colorName);
             if (color == null)
                 throw new ArgumentException($"Could not find palette color named {colorName}. Ensure you add it to the palette using the Palette.AddXXXX methods.", nameof(colorName));
-            return this;
+            return Out(this, text, color.ForeColor, color.BackColor);
         }
 
         private static Colorizer Out(Colorizer colorizer, string text, ConsoleColor? foreColor, ConsoleColor? backColor)
@@ -55,6 +61,21 @@ namespace ConsoleFx.Utilities
     public static class Palette
     {
         private static readonly List<PaletteEntry> _colors = new List<PaletteEntry>();
+
+        static Palette()
+        {
+            //AddForeColor("contrast", CalculateContrastingForeColor());
+        }
+
+        private static ConsoleColor CalculateContrastingForeColor()
+        {
+            return ConsoleColor.Black;
+        }
+
+        private static readonly Dictionary<int, ConsoleColor> ColorMappings = new Dictionary<int, ConsoleColor> {
+            { 0x00000, ConsoleColor.Black },
+            { 0x000FF, ConsoleColor.Blue },
+        };
 
         public static void Add(string name, ConsoleColor foreColor, ConsoleColor backColor)
         {
