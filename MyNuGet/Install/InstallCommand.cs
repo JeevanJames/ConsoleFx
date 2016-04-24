@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Validators;
@@ -30,25 +32,45 @@ namespace MyNuGet.Install
                     .Description(Install.Source);
 
                 yield return new Option("OutputDirectory")
+                    .UsedAsSingleParameter()
+                    .ValidateWith(new DirectoryValidator { ShouldExist = true })
+                    .ParamsOfType<DirectoryInfo>()
                     .Description(Install.OutputDirectory);
                 yield return new Option("ExcludeVersion")
+                    .UsedAsFlag()
                     .Description(Install.ExcludeVersion);
+
                 yield return new Option("Prerelease")
+                    .UsedAsFlag()
                     .Description(Install.Prerelease);
+
                 yield return new Option("NoCache")
+                    .UsedAsFlag()
                     .Description(Install.NoCache);
+
                 yield return new Option("RequireConsent")
+                    .UsedAsFlag()
                     .Description(Install.RequireConsent);
+
                 yield return new Option("SolutionDirectory")
+                    .UsedAsSingleParameter()
+                    .ValidateWith(new DirectoryValidator { ShouldExist = true })
+                    .ParamsOfType<DirectoryInfo>()
                     .Description(Install.SolutionDirectory);
+
                 yield return new Option("Verbosity")
+                    .UsedAsSingleParameter()
+                    .ValidateWith(new EnumValidator<Verbosity>())
                     .Description(Install.Verbosity);
+
                 yield return new Option("NonInteractive")
+                    .UsedAsFlag()
                     .Description(Install.NonInteractive);
+
                 yield return new Option("FileConflictAction")
+                    .UsedAsSingleParameter()
+                    .ValidateWith(new EnumValidator<FileConflictAction>())
                     .Description(Install.FileConflictAction);
-                yield return new Option("ConfigFile")
-                    .Description(Install.ConfigFile);
             }
         }
     }

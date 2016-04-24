@@ -39,6 +39,10 @@ namespace ConsoleFx.Parser
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
             Name = name;
+            ShortName = shortName;
+            CaseSensitive = caseSensitive;
+            Order = order;
+            Default = @default;
             Validators = new OptionParameterValidators(this);
         }
 
@@ -50,19 +54,21 @@ namespace ConsoleFx.Parser
         /// <summary>
         ///     Optional alternative name for the option, normally a shorter version.
         /// </summary>
-        public string ShortName { get; set; }
+        public string ShortName { get; }
 
         /// <summary>
         ///     Specifies whether the option name and short name are case sensitive.
         /// </summary>
-        public bool CaseSensitive { get; set; }
+        public bool CaseSensitive { get; }
 
         /// <summary>
         ///     Priority order for processing the option. Options with higher <see cref="Order" /> values are processed before
         ///     those with lower values.
         /// </summary>
         //TODO: Need to implement this
-        public int Order { get; set; }
+        public int Order { get; }
+
+        public object Default { get; set; }
 
         /// <summary>
         ///     Various usage options for the option and its parameters, including the minimum and maximum allowed occurences of
@@ -132,11 +138,12 @@ namespace ConsoleFx.Parser
             return this;
         }
 
-        public Option ParamsOfType<T>(Converter<string, T> converter = null)
+        public Option ParamsOfType<T>(Converter<string, T> converter = null, T @default = default(T))
         {
             Type = typeof(T);
             if (converter != null)
                 TypeConverter = value => converter(value);
+            Default = @default;
             return this;
         }
 
@@ -145,6 +152,22 @@ namespace ConsoleFx.Parser
             if (usageSetter == null)
                 throw new ArgumentNullException(nameof(usageSetter));
             usageSetter(Usage);
+            return this;
+        }
+
+        public Option UsedAsFlag(bool optional = true)
+        {
+            Usage.SetParametersNotAllowed();
+            Usage.MinOccurences = optional ? 0 : 1;
+            Usage.MaxOccurences = 1;
+            return this;
+        }
+
+        public Option UsedAsSingleParameter(bool optional = true)
+        {
+            Usage.SetParametersRequired();
+            Usage.MinOccurences = optional ? 0 : 1;
+            Usage.MaxOccurences = 1;
             return this;
         }
 

@@ -2,13 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
+using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
 using ConsoleFx.Utilities;
 
 using MyNuGet.Install;
+using MyNuGet.Update;
 
 using static System.Console;
 
@@ -62,6 +65,16 @@ namespace MyNuGet
         protected override IEnumerable<Command> GetCommands()
         {
             yield return new InstallCommand();
+            yield return new UpdateCommand();
+        }
+
+        protected override IEnumerable<Option> GetOptions()
+        {
+            yield return new Option("ConfigFile")
+                .UsedAsSingleParameter()
+                .ValidateWith(new FileValidator { ShouldExist = true })
+                .ParamsOfType(@default: new FileInfo(@"%AppData%\NuGet\NuGet.config"))
+                .Description(Root.ConfigFile);
         }
     }
 }

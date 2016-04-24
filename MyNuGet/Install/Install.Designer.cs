@@ -61,15 +61,6 @@ namespace MyNuGet.Install {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (v2.5) The NuGet configuation file. If not specified, file %AppData%\NuGet\NuGet.config is used as configuration file..
-        /// </summary>
-        internal static string ConfigFile {
-            get {
-                return ResourceManager.GetString("ConfigFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to If set, the destination directory will contain only the package name, not the version number.
         /// </summary>
         internal static string ExcludeVersion {

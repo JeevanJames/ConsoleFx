@@ -60,7 +60,7 @@ namespace TestHarness
 
         protected override IEnumerable<Option> GetOptions()
         {
-            yield return new Option("verbose") {ShortName = "v"};
+            yield return new Option("verbose", "v");
         }
 
         protected override IEnumerable<Command> GetCommands()
@@ -78,7 +78,7 @@ namespace TestHarness
         {
             get
             {
-                yield return new Option("force") { ShortName = "f" };
+                yield return new Option("force", "f");
             }
         }
 
@@ -99,12 +99,12 @@ namespace TestHarness
         {
             get
             {
-                yield return new Option("version") {ShortName = "ver"}
+                yield return new Option("version", "ver")
                     .ParamsOfType<int>()
                     .UsedAs(usage => {
                         usage.ParameterRequirement = OptionParameterRequirement.Required;
                     });
-                yield return new Option("force") { ShortName = "f" };
+                yield return new Option("force", "f");
                 yield return new Option("format")
                     .FormatParamsAs(v => v.ToUpperInvariant())
                     .UsedAs(usage => {

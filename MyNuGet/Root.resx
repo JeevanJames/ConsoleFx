@@ -117,37 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ExcludeVersion" xml:space="preserve">
-    <value>If set, the destination directory will contain only the package name, not the version number</value>
-  </data>
-  <data name="FileConflictAction" xml:space="preserve">
-    <value>(v2.5) The action to take, when asked to overwrite or ignore existing files referenced by the project: Overwrite, Ignore, None.</value>
-  </data>
-  <data name="NoCache" xml:space="preserve">
-    <value>Disable looking up packages from local machine cache.</value>
-  </data>
-  <data name="NonInteractive" xml:space="preserve">
-    <value>Do not prompt for user input or confirmations.</value>
-  </data>
-  <data name="OutputDirectory" xml:space="preserve">
-    <value>Specifies the directory in which packages will be installed. If none specified, uses the current directory.</value>
-  </data>
-  <data name="Prerelease" xml:space="preserve">
-    <value>Allows prerelease packages to be installed. This flag is not required when restoring packages by installing from packages.config.</value>
-  </data>
-  <data name="RequireConsent" xml:space="preserve">
-    <value>Checks if package restore consent is granted before installing a package.</value>
-  </data>
-  <data name="SolutionDirectory" xml:space="preserve">
-    <value>Solution root for package restore.</value>
-  </data>
-  <data name="Source" xml:space="preserve">
-    <value>A list of packages sources to use for the install.</value>
-  </data>
-  <data name="Verbosity" xml:space="preserve">
-    <value>Display this amount of details in the output: normal, quiet, (v2.5) detailed.</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>The version of the package to install.</value>
+  <data name="ConfigFile" xml:space="preserve">
+    <value>(v2.5) The NuGet configuation file. If not specified, file %AppData%\NuGet\NuGet.config is used as configuration file.</value>
   </data>
 </root>

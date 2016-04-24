@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace ConsoleFx.Parser
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
     public sealed class Command : MetadataObject
     {
+        private List<string> _excludedInheritingOptions;
+
         /// <summary>
         ///     Creates the root command, which has no name.
         /// </summary>
@@ -80,6 +83,8 @@ namespace ConsoleFx.Parser
         ///     Collection of <see cref="Command" /> sub-command objects for this command.
         /// </summary>
         public Commands Commands { get; } = new Commands();
+
+        public IList<string> ExcludedInheritingOptions => _excludedInheritingOptions ?? (_excludedInheritingOptions = new List<string>());
     }
 
     /// <summary>
