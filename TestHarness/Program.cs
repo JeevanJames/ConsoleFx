@@ -8,8 +8,12 @@ using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
+using ConsoleFx.Utilities;
 
 using static System.Console;
+using static System.ConsoleColor;
+
+using static ConsoleFx.Utilities.ConsoleEx;
 
 namespace TestHarness
 {
@@ -23,6 +27,11 @@ namespace TestHarness
     {
         private static int Main()
         {
+            WriteLineColor("[Red]Node Package Manager [Gray](npm) [Yellow]by Node.js");
+            WriteLine(@"Copyright (c) 2015-16 Jeevan James");
+            string password = ReadSecret("Enter password: ", hideCursor: false, hideMask: true);
+            string name = Prompt("[blue|white]Enter name: ");
+            WriteLine($"{name} : {password}");
             int exitCode = new NpmProgram(new UnixParserStyle()).Run();
             if (Debugger.IsAttached)
                 ReadLine();

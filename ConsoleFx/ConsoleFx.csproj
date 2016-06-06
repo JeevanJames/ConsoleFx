@@ -107,6 +107,7 @@
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Colorizer.cs" />
+    <Compile Include="Utilities\ColorString.cs" />
     <Compile Include="Utilities\ConsoleEx.cs" />
   </ItemGroup>
   <ItemGroup>

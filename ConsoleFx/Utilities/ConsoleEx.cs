@@ -25,20 +25,15 @@ namespace ConsoleFx.Utilities
 {
     public static class ConsoleEx
     {
-        static ConsoleEx()
-        {
-            SecretMask = '*';
-        }
-
         #region Prompt methods
         /// <summary>
         ///     Displays a message and waits for user input.
         /// </summary>
         /// <param name="message">A composite format string representing the message to be displayed</param>
         /// <returns>The input entered by the user</returns>
-        public static string Prompt(string message)
+        public static string Prompt(ColorString message)
         {
-            Console.Write(message);
+            WriteColor(message);
             return Console.ReadLine();
         }
 
@@ -56,7 +51,7 @@ namespace ConsoleFx.Utilities
         }
         #endregion
 
-        #region ReadSecret methods
+        #region Secret-reading methods
         /// <summary>
         ///     <para>The character to be used when entering a secret value using the ReadSecret methods. The default is '*'.</para>
         ///     <para>Changing this value applies globally.</para>
@@ -71,63 +66,94 @@ namespace ConsoleFx.Utilities
         ///         although the cursor will move with the characters typed.
         ///     </para>
         /// </remarks>
-        public static char SecretMask { get; set; }
+        public static char SecretMask { get; set; } = '*';
 
-        public static string ReadSecret(string prompt, params object[] args)
+        /// <summary>
+        ///     Reads a stream of characters from standard output, but obscures the entered characters with a mask character.
+        /// </summary>
+        /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
+        /// <returns>The entered stream of characters as a string.</returns>
+        public static string ReadSecret(bool hideCursor = false, bool hideMask = false)
         {
-            Console.Write(prompt, args);
+            bool wasCursorVisible = Console.CursorVisible;
+            if (hideCursor)
+                Console.CursorVisible = false;
 
-            var result = new StringBuilder();
-
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-            while (keyInfo.Key != ConsoleKey.Enter)
+            try
             {
-                result.Append(keyInfo.KeyChar);
-                Console.Write(SecretMask);
-                keyInfo = Console.ReadKey(true);
-            }
-            Console.WriteLine();
+                var result = new StringBuilder();
 
-            return result.ToString();
-        }
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                while (keyInfo.Key != ConsoleKey.Enter)
+                {
+                    result.Append(keyInfo.KeyChar);
+                    if (!hideMask)
+                        Console.Write(SecretMask);
+                    //Move the cursor only if hideCursor is false
+                    else if (!hideCursor)
+                        Console.Write(' ');
+                    keyInfo = Console.ReadKey(true);
+                }
+                Console.WriteLine();
 
-        public static string ReadSecret()
-        {
-            return ReadSecret(string.Empty);
-        }
-
-        public static SecureString ReadSecretSecure(string prompt, params object[] args)
-        {
-            Console.WriteLine(prompt, args);
-
-            var secret = new SecureString();
-
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-            while (keyInfo.Key != ConsoleKey.Enter)
+                return result.ToString();
+            } finally
             {
-                if (keyInfo.Key != ConsoleKey.Backspace)
-                {
-                    secret.AppendChar(keyInfo.KeyChar);
-                    Console.Write(SecretMask);
-                }
-                else if (secret.Length > 0)
-                {
-                    secret.RemoveAt(secret.Length - 1);
-                    Console.Write(keyInfo.KeyChar);
-                    Console.Write(" ");
-                    Console.Write(keyInfo.KeyChar);
-                }
-                keyInfo = Console.ReadKey(true);
+                if (hideCursor)
+                    Console.CursorVisible = wasCursorVisible;
             }
-
-            Console.WriteLine();
-            secret.MakeReadOnly();
-            return secret;
         }
 
-        public static SecureString ReadSecretSecure()
+        /// <summary>
+        ///     Displays a text prompt, and then reads a stream of characters from standard output, but obscures the entered
+        ///     characters with a mask character.
+        /// </summary>
+        /// <param name="prompt">The text prompt to display.</param>
+        /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
+        /// <returns>The entered stream of characters as a string.</returns>
+        public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false)
         {
-            return ReadSecretSecure(string.Empty);
+            WriteColor(prompt);
+            return ReadSecret(hideCursor, hideMask);
+        }
+
+        public static SecureString ReadSecretSecure(bool hideCursor = false, bool hideMask = false)
+        {
+            var wasCursorVisible = Console.CursorVisible;
+            if (hideCursor)
+                Console.CursorVisible = false;
+
+            try
+            {
+                var result = new SecureString();
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                while (keyInfo.Key != ConsoleKey.Enter)
+                {
+                    result.AppendChar(keyInfo.KeyChar);
+                    if (!hideMask)
+                        Console.Write(SecretMask);
+                    //Move the cursor only if hideCursor is false
+                    else if (!hideCursor)
+                        Console.Write(' ');
+                    keyInfo = Console.ReadKey(true);
+                }
+                Console.WriteLine();
+
+                return result;
+            } finally
+            {
+                if (hideCursor)
+                    Console.CursorVisible = wasCursorVisible;
+            }
+        }
+
+        public static SecureString ReadSecretSecure(ColorString prompt, bool hideCursor = false, bool hideMask = false)
+        {
+            WriteColor(prompt);
+            return ReadSecretSecure(hideCursor, hideMask);
         }
         #endregion
 
@@ -182,6 +208,25 @@ namespace ConsoleFx.Utilities
         #endregion
 
         #region Write & WriteLine methods
+        public static void WriteColor(ColorString colorStr)
+        {
+            foreach (ColorStringBlock block in colorStr.Blocks)
+            {
+                if (block.ForeColor.HasValue)
+                    Console.ForegroundColor = block.ForeColor.Value;
+                if (block.BackColor.HasValue)
+                    Console.BackgroundColor = block.BackColor.Value;
+                Console.Write(block.Text);
+            }
+            Console.ResetColor();
+        }
+
+        public static void WriteLineColor(ColorString colorStr)
+        {
+            WriteColor(colorStr);
+            Console.WriteLine();
+        }
+
         /// <summary>
         ///     Displays a string on the Console using the specified foreground and background colors. Similar
         ///     to the Console.Write method.
