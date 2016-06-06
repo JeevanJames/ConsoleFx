@@ -262,10 +262,10 @@ namespace ConsoleFx.Utilities
         ///     Writes multiple lines to the console.
         /// </summary>
         /// <param name="lines">The lines to write.</param>
-        public static void WriteLines(params string[] lines)
+        public static void WriteLines(params ColorString[] lines)
         {
-            foreach (string line in lines)
-                Console.WriteLine(line);
+            foreach (ColorString line in lines)
+                WriteLineColor(line);
         }
 
         /// <summary>

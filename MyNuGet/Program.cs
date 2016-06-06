@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,12 +7,14 @@ using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
-using ConsoleFx.Utilities;
 
 using MyNuGet.Install;
 using MyNuGet.Update;
 
 using static System.Console;
+using static System.ConsoleColor;
+
+using static ConsoleFx.Utilities.ConsoleEx;
 
 namespace MyNuGet
 {
@@ -22,13 +23,10 @@ namespace MyNuGet
         private static int Main()
         {
             WriteLine($"{ForegroundColor} - {BackgroundColor}");
-            Palette.AddForeColor("title", ConsoleColor.Gray);
-            Palette.Add("tag-line", ConsoleColor.DarkGreen, ConsoleColor.Yellow);
-            new Colorizer()
-                .Out("MyNuGet NuGet Simulator", "title").Line()
-                .Out("The best damn nuget out there", "tag-line").Line();
-            ConsoleEx.Write("MyNuGet NuGet Simulator", ConsoleColor.White, ConsoleColor.Magenta);
-            ConsoleEx.WriteLine("Written by Jeevan James", ConsoleColor.Blue, ConsoleColor.Yellow);
+            WriteLineColor("[gray]MyNuGet NuGet Simulator");
+            WriteLineColor("[DarkGreen|Yellow]The best damn nuget out there");
+            Write("MyNuGet NuGet Simulator", White, Magenta);
+            WriteLine("Written by Jeevan James", Blue, Yellow);
             int exitCode = new Program(new WindowsParserStyle()).Run();
             if (Debugger.IsAttached)
                 ReadLine();
