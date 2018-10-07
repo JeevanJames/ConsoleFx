@@ -21,6 +21,9 @@ using System.Text;
 
 namespace ConsoleFx.ConsoleExtensions
 {
+    /// <summary>
+    /// Represents a colored text block in a <see cref="ColorString"/> instance.
+    /// </summary>
     public sealed class ColorStringBlock
     {
         internal ColorStringBlock(string text, CColor? foreColor = null, CColor? backColor = null)

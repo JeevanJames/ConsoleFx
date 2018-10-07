@@ -43,6 +43,7 @@ namespace ConsoleFx.ConsoleExtensions
         #endregion
 
         #region Secret-reading methods
+
         /// <summary>
         ///     <para>The character to be used when entering a secret value using the ReadSecret methods. The default is '*'.</para>
         ///     <para>Changing this value applies globally.</para>
@@ -146,9 +147,11 @@ namespace ConsoleFx.ConsoleExtensions
                     Console.CursorVisible = wasCursorVisible;
             }
         }
+
         #endregion
 
         #region WaitForXXXX methods
+
         /// <summary>
         ///     Waits for the user to press the ENTER (RETURN) key
         /// </summary>
@@ -177,7 +180,7 @@ namespace ConsoleFx.ConsoleExtensions
             char key;
             do
             {
-                key = Console.ReadKey(true).KeyChar;
+                key = Console.ReadKey(intercept: true).KeyChar;
             } while (Array.IndexOf(keys, key) < 0);
             return key;
         }
@@ -198,6 +201,7 @@ namespace ConsoleFx.ConsoleExtensions
             } while (keyIndex < 0);
             return keys[keyIndex];
         }
+
         /// <summary>
         ///     Waits for any of a specified set of keys to be pressed by the user.
         /// </summary>
@@ -212,9 +216,15 @@ namespace ConsoleFx.ConsoleExtensions
             } while (Array.IndexOf(keys, key) < 0);
             return key;
         }
+
         #endregion
 
         #region Write & WriteLine methods
+
+        /// <summary>
+        /// Writes a <see cref="ColorString"/> object to the console.
+        /// </summary>
+        /// <param name="message">The <see cref="ColorString"/> object to write.</param>
         public static void WriteColor(ColorString message)
         {
             foreach (ColorStringBlock block in message)
@@ -291,6 +301,7 @@ namespace ConsoleFx.ConsoleExtensions
                 startPos += lineWidth;
             }
         }
+
         #endregion
 
         private static readonly Dictionary<CColor, ConsoleColor> ColorMappings = new Dictionary<CColor, ConsoleColor>
