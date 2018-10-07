@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
-using ConsoleFx.Parser.Validators;
 using ConsoleFx.Programs;
-using ConsoleFx.Utilities;
 
-using static System.Console;
-using static System.ConsoleColor;
-
-using static ConsoleFx.Utilities.ConsoleEx;
+using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
 namespace TestHarness
 {
@@ -27,14 +20,14 @@ namespace TestHarness
     {
         private static int Main()
         {
-            WriteLineColor("[Red]Node Package Manager [Gray](npm) [Yellow]by Node.js");
+            WriteLine("[BgRed]Node Package Manager [BgGray.Black](npm) [BgYellow]by Node.js");
             WriteLine(@"Copyright (c) 2015-16 Jeevan James");
-            string password = ReadSecret("Enter password: ", hideCursor: false, hideMask: true);
-            string name = Prompt("[blue|white]Enter name: ");
+            string password = ReadSecret("Enter password: ", hideCursor: false, hideMask: false);
+            string name = Prompt("[blue.bgwhite]Enter name: ");
             WriteLine($"{name} : {password}");
             int exitCode = new NpmProgram(new UnixParserStyle()).Run();
             if (Debugger.IsAttached)
-                ReadLine();
+                WaitForAnyKey();
             return exitCode;
         }
     }
@@ -60,9 +53,9 @@ namespace TestHarness
                 {
                     foreach (object item in list)
                         Write($"{item?.ToString() ?? "(null)"}, ");
-                    WriteLine();
+                    WriteBlankLine();
                 } else
-                    WriteLine(kvp.Value);
+                    WriteLine(kvp.Value.ToString());
             }
             return 0;
         }

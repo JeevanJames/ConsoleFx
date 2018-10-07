@@ -1,0 +1,39 @@
+﻿namespace ConsoleFx.ConsoleExtensions
+{
+    public enum CColor
+    {
+        Black,
+        Blue,
+        Cyan,
+        DkBlue,
+        DkCyan,
+        DkGray,
+        DkGreen,
+        DkMagenta,
+        DkRed,
+        DkYellow,
+        Gray,
+        Green,
+        Magenta,
+        Red,
+        White,
+        Yellow,
+
+        BgBlack,
+        BgBlue,
+        BgCyan,
+        BgDkBlue,
+        BgDkCyan,
+        BgDkGray,
+        BgDkGreen,
+        BgDkMagenta,
+        BgDkRed,
+        BgDkYellow,
+        BgGray,
+        BgGreen,
+        BgMagenta,
+        BgRed,
+        BgWhite,
+        BgYellow,
+    }
+}

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 
 using ConsoleFx.Parser;
-using ConsoleFx.Utilities;
+using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Programs.UsageBuilders
 {

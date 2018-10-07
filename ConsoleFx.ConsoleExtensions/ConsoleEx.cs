@@ -18,14 +18,16 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Security;
 using System.Text;
 
-namespace ConsoleFx.Utilities
+namespace ConsoleFx.ConsoleExtensions
 {
     public static class ConsoleEx
     {
         #region Prompt methods
+    
         /// <summary>
         ///     Displays a message and waits for user input.
         /// </summary>
@@ -33,22 +35,10 @@ namespace ConsoleFx.Utilities
         /// <returns>The input entered by the user</returns>
         public static string Prompt(ColorString message)
         {
-            WriteColor(message);
+            Write(message);
             return Console.ReadLine();
         }
 
-        /// <summary>
-        ///     Displays a message in the specific foreground and background colors and waits for user input.
-        /// </summary>
-        /// <param name="foreColor">The foreground color to display the message. Specify null to use the default foreground color.</param>
-        /// <param name="backColor">The background color to display the message. Specify null to use the default background color.</param>
-        /// <param name="message">A composite format string representing the message to be displayed</param>
-        /// <returns>The input entered by the user</returns>
-        public static string Prompt(string message, ConsoleColor? foreColor, ConsoleColor? backColor = null)
-        {
-            Write(message, foreColor, backColor);
-            return Console.ReadLine();
-        }
         #endregion
 
         #region Secret-reading methods
@@ -115,7 +105,7 @@ namespace ConsoleFx.Utilities
         /// <returns>The entered stream of characters as a string.</returns>
         public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false)
         {
-            WriteColor(prompt);
+            Write(prompt);
             return ReadSecret(hideCursor, hideMask);
         }
 
@@ -152,7 +142,7 @@ namespace ConsoleFx.Utilities
 
         public static SecureString ReadSecretSecure(ColorString prompt, bool hideCursor = false, bool hideMask = false)
         {
-            WriteColor(prompt);
+            Write(prompt);
             return ReadSecretSecure(hideCursor, hideMask);
         }
         #endregion
@@ -208,45 +198,22 @@ namespace ConsoleFx.Utilities
         #endregion
 
         #region Write & WriteLine methods
-        public static void WriteColor(ColorString colorStr)
+        public static void Write(ColorString message)
         {
-            foreach (ColorStringBlock block in colorStr.Blocks)
+            foreach (ColorStringBlock block in message)
             {
                 if (block.ForeColor.HasValue)
-                    Console.ForegroundColor = block.ForeColor.Value;
+                    Console.ForegroundColor = ColorMappings[block.ForeColor.Value];
                 if (block.BackColor.HasValue)
-                    Console.BackgroundColor = block.BackColor.Value;
+                    Console.BackgroundColor = ColorMappings[block.BackColor.Value];
                 Console.Write(block.Text);
             }
             Console.ResetColor();
         }
 
-        public static void WriteLineColor(ColorString colorStr)
+        public static void WriteLine(ColorString message)
         {
-            WriteColor(colorStr);
-            Console.WriteLine();
-        }
-
-        /// <summary>
-        ///     Displays a string on the Console using the specified foreground and background colors. Similar
-        ///     to the Console.Write method.
-        /// </summary>
-        /// <param name="text">A composite format string representing the message to be displayed</param>
-        /// <param name="foreColor">The foreground color to display the message. Specify null to use the default foreground color.</param>
-        /// <param name="backColor">The background color to display the message. Specify null to use the default background color.</param>
-        public static void Write(string text, ConsoleColor? foreColor = null, ConsoleColor? backColor = null)
-        {
-            if (foreColor.HasValue)
-                Console.ForegroundColor = foreColor.Value;
-            if (backColor.HasValue)
-                Console.BackgroundColor = backColor.Value;
-            Console.Write(text);
-            Console.ResetColor();
-        }
-
-        public static void WriteLine(string text, ConsoleColor? foreColor = null, ConsoleColor? backColor = null)
-        {
-            Write(text, foreColor, backColor);
+            Write(message);
             Console.WriteLine();
         }
 
@@ -265,7 +232,7 @@ namespace ConsoleFx.Utilities
         public static void WriteLines(params ColorString[] lines)
         {
             foreach (ColorString line in lines)
-                WriteLineColor(line);
+                WriteLine(line);
         }
 
         /// <summary>
@@ -308,5 +275,42 @@ namespace ConsoleFx.Utilities
             }
         }
         #endregion
+
+        private static readonly Dictionary<CColor, ConsoleColor> ColorMappings = new Dictionary<CColor, ConsoleColor>
+        {
+            [CColor.Black] = ConsoleColor.Black,
+            [CColor.Blue] = ConsoleColor.Blue,
+            [CColor.Cyan] = ConsoleColor.Cyan,
+            [CColor.DkBlue] = ConsoleColor.DarkBlue,
+            [CColor.DkCyan] = ConsoleColor.DarkCyan,
+            [CColor.DkGray] = ConsoleColor.DarkGray,
+            [CColor.DkGreen] = ConsoleColor.DarkGreen,
+            [CColor.DkMagenta] = ConsoleColor.DarkMagenta,
+            [CColor.DkRed] = ConsoleColor.DarkRed,
+            [CColor.DkYellow] = ConsoleColor.DarkYellow,
+            [CColor.Gray] = ConsoleColor.Gray,
+            [CColor.Green] = ConsoleColor.Green,
+            [CColor.Magenta] = ConsoleColor.Magenta,
+            [CColor.Red] = ConsoleColor.Red,
+            [CColor.White] = ConsoleColor.White,
+            [CColor.Yellow] = ConsoleColor.Yellow,
+
+            [CColor.BgBlack] = ConsoleColor.Black,
+            [CColor.BgBlue] = ConsoleColor.Blue,
+            [CColor.BgCyan] = ConsoleColor.Cyan,
+            [CColor.BgDkBlue] = ConsoleColor.DarkBlue,
+            [CColor.BgDkCyan] = ConsoleColor.DarkCyan,
+            [CColor.BgDkGray] = ConsoleColor.DarkGray,
+            [CColor.BgDkGreen] = ConsoleColor.DarkGreen,
+            [CColor.BgDkMagenta] = ConsoleColor.DarkMagenta,
+            [CColor.BgDkRed] = ConsoleColor.DarkRed,
+            [CColor.BgDkYellow] = ConsoleColor.DarkYellow,
+            [CColor.BgGray] = ConsoleColor.Gray,
+            [CColor.BgGreen] = ConsoleColor.Green,
+            [CColor.BgMagenta] = ConsoleColor.Magenta,
+            [CColor.BgRed] = ConsoleColor.Red,
+            [CColor.BgWhite] = ConsoleColor.White,
+            [CColor.BgYellow] = ConsoleColor.Yellow,
+        };
     }
 }

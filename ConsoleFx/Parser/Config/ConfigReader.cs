@@ -23,7 +23,7 @@ namespace ConsoleFx.Parser.Config
 {
     public abstract class ConfigReader
     {
-        private Dictionary<string, OverrideBehavior> _optionBehaviors;
+        //private Dictionary<string, OverrideBehavior> _optionBehaviors;
 
         private List<SpecifiedOption> _options;
         private List<string> _arguments = new List<string>();

@@ -14,7 +14,7 @@ using MyNuGet.Update;
 using static System.Console;
 using static System.ConsoleColor;
 
-using static ConsoleFx.Utilities.ConsoleEx;
+using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
 namespace MyNuGet
 {
@@ -23,8 +23,8 @@ namespace MyNuGet
         private static int Main()
         {
             WriteLine($"{ForegroundColor} - {BackgroundColor}");
-            WriteLineColor("[gray]MyNuGet NuGet Simulator");
-            WriteLineColor("[DarkGreen|Yellow]The best damn nuget out there");
+            WriteLine("[gray]MyNuGet NuGet Simulator");
+            WriteLine("[DarkGreen|Yellow]The best damn nuget out there");
             Write("MyNuGet NuGet Simulator", White, Magenta);
             WriteLine("Written by Jeevan James", Blue, Yellow);
             int exitCode = new Program(new WindowsParserStyle()).Run();

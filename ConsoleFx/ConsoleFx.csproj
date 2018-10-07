@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConsoleFx</RootNamespace>
     <AssemblyName>ConsoleFx</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -106,8 +107,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\ColorString.cs" />
-    <Compile Include="Utilities\ConsoleEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Parser\Messages.resx">
@@ -131,6 +130,12 @@
     <None Include="ConsoleFx.nuspec">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj">
+      <Project>{6a48eeb2-509b-46e5-9f72-8eff5159cef6}</Project>
+      <Name>ConsoleFx.ConsoleExtensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
