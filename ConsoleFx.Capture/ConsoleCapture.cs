@@ -19,10 +19,9 @@ limitations under the License.
 
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 
-namespace ConsoleFx.Utilities.Capture
+namespace ConsoleFx.Capture
 {
     public sealed class ConsoleCapture
     {

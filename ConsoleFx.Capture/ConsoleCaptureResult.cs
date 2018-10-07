@@ -20,16 +20,12 @@ limitations under the License.
 using System;
 using System.Diagnostics;
 
-namespace ConsoleFx.Utilities.Capture
+namespace ConsoleFx.Capture
 {
     [DebuggerDisplay("Exit code: {ExitCode}")]
     [Serializable]
     public sealed class ConsoleCaptureResult
     {
-        public int ExitCode { get; }
-        public string ErrorMessage { get; }
-        public string OutputMessage { get; }
-
         //Only the ConsoleCapture class can create an instance
         internal ConsoleCaptureResult(int exitCode, string outputMessage, string errorMessage)
         {
@@ -37,5 +33,11 @@ namespace ConsoleFx.Utilities.Capture
             OutputMessage = outputMessage;
             ErrorMessage = errorMessage;
         }
+
+        public int ExitCode { get; }
+
+        public string ErrorMessage { get; }
+
+        public string OutputMessage { get; }
     }
 }

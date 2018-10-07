@@ -47,6 +47,10 @@
     <None Include="config.json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleFx.Capture\ConsoleFx.Capture.csproj">
+      <Project>{4d757c69-82f6-4d94-b9df-54fc4b2866ec}</Project>
+      <Name>ConsoleFx.Capture</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj">
       <Project>{6a48eeb2-509b-46e5-9f72-8eff5159cef6}</Project>
       <Name>ConsoleFx.ConsoleExtensions</Name>

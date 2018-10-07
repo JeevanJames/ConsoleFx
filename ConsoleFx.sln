@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.ConsoleExtensions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.ConsoleExtensions.Tests", "ConsoleFx.ConsoleExtensions.Tests\ConsoleFx.ConsoleExtensions.Tests.csproj", "{557F1F59-D532-4AB1-B73C-CBCEA00B0B33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.Capture", "ConsoleFx.Capture\ConsoleFx.Capture.csproj", "{4D757C69-82F6-4D94-B9DF-54FC4B2866EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{557F1F59-D532-4AB1-B73C-CBCEA00B0B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{557F1F59-D532-4AB1-B73C-CBCEA00B0B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{557F1F59-D532-4AB1-B73C-CBCEA00B0B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D757C69-82F6-4D94-B9DF-54FC4B2866EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D757C69-82F6-4D94-B9DF-54FC4B2866EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D757C69-82F6-4D94-B9DF-54FC4B2866EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D757C69-82F6-4D94-B9DF-54FC4B2866EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

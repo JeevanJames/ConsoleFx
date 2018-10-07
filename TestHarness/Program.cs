@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using ConsoleFx.Capture;
 using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
@@ -20,6 +22,9 @@ namespace TestHarness
     {
         private static int Main()
         {
+            ConsoleCaptureResult capture = ConsoleCapture.Start("dotnet.exe", "--help");
+            Console.WriteLine(capture.OutputMessage);
+
             WriteLineColor("[BgRed]Node Package Manager [BgGray.Black](npm) [BgYellow]by Node.js");
             WriteLineColor(new ColorString()
                 .BgRed("Node Package Manager ")

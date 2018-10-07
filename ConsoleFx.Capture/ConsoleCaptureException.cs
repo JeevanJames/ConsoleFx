@@ -19,19 +19,23 @@ limitations under the License.
 
 using System;
 
-namespace ConsoleFx.Utilities.Capture
+namespace ConsoleFx.Capture
 {
-    public sealed class ConsoleCaptureException : ConsoleFxException
+    public sealed class ConsoleCaptureException : Exception
     {
         public ConsoleCaptureException(int errorCode, string message)
-            : base(errorCode, message)
+            : base(message)
         {
+            ErrorCode = errorCode;
         }
 
         public ConsoleCaptureException(int errorCode, string message, Exception innerException)
-            : base(errorCode, message, innerException)
+            : base(message, innerException)
         {
+            ErrorCode = errorCode;
         }
+
+        public int ErrorCode { get; }
 
         public static class Codes
         {
