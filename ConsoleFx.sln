@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.CmdLineParser.Win
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.CmdLineParser.UnixStyle", "ConsoleFx.CmdLineParser.UnixStyle\ConsoleFx.CmdLineParser.UnixStyle.csproj", "{599D6421-BDE7-419F-92FB-5425A5FA27A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.Art", "ConsoleFx.Art\ConsoleFx.Art.csproj", "{00813947-F1EE-4BBF-87F3-09038B1699A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.Prompter", "ConsoleFx.Prompter\ConsoleFx.Prompter.csproj", "{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{599D6421-BDE7-419F-92FB-5425A5FA27A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{599D6421-BDE7-419F-92FB-5425A5FA27A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{599D6421-BDE7-419F-92FB-5425A5FA27A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00813947-F1EE-4BBF-87F3-09038B1699A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00813947-F1EE-4BBF-87F3-09038B1699A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00813947-F1EE-4BBF-87F3-09038B1699A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00813947-F1EE-4BBF-87F3-09038B1699A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
