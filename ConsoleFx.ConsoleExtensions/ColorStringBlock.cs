@@ -17,6 +17,8 @@ limitations under the License.
 */
 #endregion
 
+using System.Text;
+
 namespace ConsoleFx.ConsoleExtensions
 {
     public sealed class ColorStringBlock
@@ -33,5 +35,24 @@ namespace ConsoleFx.ConsoleExtensions
         public CColor? ForeColor { get; }
 
         public CColor? BackColor { get; }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            if (ForeColor.HasValue || BackColor.HasValue)
+            {
+                sb.Append("[");
+                if (ForeColor.HasValue)
+                    sb.Append(ForeColor.Value);
+                if (ForeColor.HasValue && BackColor.HasValue)
+                    sb.Append(".");
+                if (BackColor.HasValue)
+                    sb.Append(BackColor.Value);
+                sb.Append("]");
+            }
+            if (!string.IsNullOrEmpty(Text))
+                sb.Append(Text);
+            return sb.ToString();
+        }
     }
 }

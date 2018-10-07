@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security;
 using System.Text;
 
@@ -31,11 +32,11 @@ namespace ConsoleFx.ConsoleExtensions
         /// <summary>
         ///     Displays a message and waits for user input.
         /// </summary>
-        /// <param name="message">A composite format string representing the message to be displayed</param>
+        /// <param name="message">A string or color string representing the message to be displayed</param>
         /// <returns>The input entered by the user</returns>
         public static string Prompt(ColorString message)
         {
-            Write(message);
+            WriteColor(message);
             return Console.ReadLine();
         }
 
@@ -46,25 +47,66 @@ namespace ConsoleFx.ConsoleExtensions
         ///     <para>The character to be used when entering a secret value using the ReadSecret methods. The default is '*'.</para>
         ///     <para>Changing this value applies globally.</para>
         /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         You can specify a null character (\x0) to prevent any output from displaying and the cursor
-        ///         from moving as characters are typed.
-        ///     </para>
-        ///     <para>
-        ///         Alternatively, you can specify a space character to prevent any output from displaying,
-        ///         although the cursor will move with the characters typed.
-        ///     </para>
-        /// </remarks>
         public static char SecretMask { get; set; } = '*';
 
         /// <summary>
-        ///     Reads a stream of characters from standard output, but obscures the entered characters with a mask character.
+        ///     Reads a stream of characters from standard output, but obscures the entered characters
+        ///     with a mask character.
         /// </summary>
         /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
         /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
+        /// <param name="needValue">If true, at least one character must be entered.</param>
         /// <returns>The entered stream of characters as a string.</returns>
-        public static string ReadSecret(bool hideCursor = false, bool hideMask = false)
+        public static string ReadSecret(bool hideCursor = false, bool hideMask = false, bool needValue = false)
+        {
+            return ReadSecretCommon(
+                () => new StringBuilder(),
+                (sb, key) => sb.Append(key),
+                sb => sb.Length,
+                sb => sb.ToString(),
+                hideCursor, hideMask, needValue
+            );
+        }
+
+        /// <summary>
+        ///     Displays a text prompt, and then reads a stream of characters from standard output,
+        ///     but obscures the entered characters with a mask character.
+        /// </summary>
+        /// <param name="prompt">The text prompt to display.</param>
+        /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
+        /// <param name="needValue">If true, at least one character must be entered.</param>
+        /// <returns>The entered stream of characters as a string.</returns>
+        public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false, bool needValue = false)
+        {
+            WriteColor(prompt);
+            return ReadSecret(hideCursor, hideMask, needValue);
+        }
+
+        public static SecureString ReadSecretSecure(bool hideCursor = false, bool hideMask = false, bool needValue = false)
+        {
+            return ReadSecretCommon(
+                () => new SecureString(),
+                (acc, key) => acc.AppendChar(key),
+                acc => acc.Length,
+                acc => acc,
+                hideCursor, hideMask, needValue
+            );
+        }
+
+        public static SecureString ReadSecretSecure(ColorString prompt, bool hideCursor = false, bool hideMask = false)
+        {
+            WriteColor(prompt);
+            return ReadSecretSecure(hideCursor, hideMask);
+        }
+
+        private static TResult ReadSecretCommon<TResult, TAccumulator>(
+            Func<TAccumulator> accumulatorFactory,
+            Action<TAccumulator, char> accumulatorAppender,
+            Func<TAccumulator, int> getAccumulatorLength,
+            Func<TAccumulator, TResult> resultExtractor,
+            bool hideCursor, bool hideMask, bool needValue
+        )
         {
             bool wasCursorVisible = Console.CursorVisible;
             if (hideCursor)
@@ -72,78 +114,37 @@ namespace ConsoleFx.ConsoleExtensions
 
             try
             {
-                var result = new StringBuilder();
+                TAccumulator accumulator = accumulatorFactory();
 
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                while (keyInfo.Key != ConsoleKey.Enter)
+                ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
+                bool done = keyInfo.Key == ConsoleKey.Enter &&
+                            ((needValue && getAccumulatorLength(accumulator) > 0) || !needValue);
+                while (!done)
                 {
-                    result.Append(keyInfo.KeyChar);
-                    if (!hideMask)
-                        Console.Write(SecretMask);
-                    //Move the cursor only if hideCursor is false
-                    else if (!hideCursor)
-                        Console.Write(' ');
+                    if (keyInfo.Key != ConsoleKey.Enter)
+                    {
+                        accumulatorAppender(accumulator, keyInfo.KeyChar);
+                        if (!hideMask)
+                            Console.Write(SecretMask);
+                        //Move the cursor only if hideCursor is false
+                        else if (!hideCursor)
+                            Console.Write(' ');
+                    }
+
                     keyInfo = Console.ReadKey(true);
+                    done = keyInfo.Key == ConsoleKey.Enter &&
+                           ((needValue && getAccumulatorLength(accumulator) > 0) || !needValue);
                 }
+
                 Console.WriteLine();
 
-                return result.ToString();
-            } finally
+                return resultExtractor(accumulator);
+            }
+            finally
             {
                 if (hideCursor)
                     Console.CursorVisible = wasCursorVisible;
             }
-        }
-
-        /// <summary>
-        ///     Displays a text prompt, and then reads a stream of characters from standard output, but obscures the entered
-        ///     characters with a mask character.
-        /// </summary>
-        /// <param name="prompt">The text prompt to display.</param>
-        /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
-        /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
-        /// <returns>The entered stream of characters as a string.</returns>
-        public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false)
-        {
-            Write(prompt);
-            return ReadSecret(hideCursor, hideMask);
-        }
-
-        public static SecureString ReadSecretSecure(bool hideCursor = false, bool hideMask = false)
-        {
-            var wasCursorVisible = Console.CursorVisible;
-            if (hideCursor)
-                Console.CursorVisible = false;
-
-            try
-            {
-                var result = new SecureString();
-
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                while (keyInfo.Key != ConsoleKey.Enter)
-                {
-                    result.AppendChar(keyInfo.KeyChar);
-                    if (!hideMask)
-                        Console.Write(SecretMask);
-                    //Move the cursor only if hideCursor is false
-                    else if (!hideCursor)
-                        Console.Write(' ');
-                    keyInfo = Console.ReadKey(true);
-                }
-                Console.WriteLine();
-
-                return result;
-            } finally
-            {
-                if (hideCursor)
-                    Console.CursorVisible = wasCursorVisible;
-            }
-        }
-
-        public static SecureString ReadSecretSecure(ColorString prompt, bool hideCursor = false, bool hideMask = false)
-        {
-            Write(prompt);
-            return ReadSecretSecure(hideCursor, hideMask);
         }
         #endregion
 
@@ -163,7 +164,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>Information about the pressed key</returns>
         public static ConsoleKeyInfo WaitForAnyKey()
         {
-            return Console.ReadKey(true);
+            return Console.ReadKey(intercept: true);
         }
 
         /// <summary>
@@ -184,6 +185,22 @@ namespace ConsoleFx.ConsoleExtensions
         /// <summary>
         ///     Waits for any of a specified set of keys to be pressed by the user.
         /// </summary>
+        /// <param name="keys">An array of characters representing the allowed set of characters.</param>
+        /// <returns>The character pressed by the user</returns>
+        public static char WaitForKeys(bool ignoreCase, params char[] keys)
+        {
+            char[] casedKeys = ignoreCase ? keys.Select(k => char.ToUpperInvariant(k)).ToArray() : keys;
+            int keyIndex;
+            do
+            {
+                char key = char.ToUpperInvariant(Console.ReadKey(intercept: true).KeyChar);
+                keyIndex = Array.IndexOf(casedKeys, key);
+            } while (keyIndex < 0);
+            return keys[keyIndex];
+        }
+        /// <summary>
+        ///     Waits for any of a specified set of keys to be pressed by the user.
+        /// </summary>
         /// <param name="keys">An array of ConsoleKey objects representing the allowed set of keys.</param>
         /// <returns>The key pressed by the user</returns>
         public static ConsoleKey WaitForKeys(params ConsoleKey[] keys)
@@ -198,7 +215,7 @@ namespace ConsoleFx.ConsoleExtensions
         #endregion
 
         #region Write & WriteLine methods
-        public static void Write(ColorString message)
+        public static void WriteColor(ColorString message)
         {
             foreach (ColorStringBlock block in message)
             {
@@ -211,9 +228,9 @@ namespace ConsoleFx.ConsoleExtensions
             Console.ResetColor();
         }
 
-        public static void WriteLine(ColorString message)
+        public static void WriteLineColor(ColorString message)
         {
-            Write(message);
+            WriteColor(message);
             Console.WriteLine();
         }
 
@@ -232,7 +249,7 @@ namespace ConsoleFx.ConsoleExtensions
         public static void WriteLines(params ColorString[] lines)
         {
             foreach (ColorString line in lines)
-                WriteLine(line);
+                WriteLineColor(line);
         }
 
         /// <summary>

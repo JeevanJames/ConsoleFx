@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Parser;
 using ConsoleFx.Parser.Styles;
 using ConsoleFx.Programs;
@@ -20,14 +20,24 @@ namespace TestHarness
     {
         private static int Main()
         {
-            WriteLine("[BgRed]Node Package Manager [BgGray.Black](npm) [BgYellow]by Node.js");
-            WriteLine(@"Copyright (c) 2015-16 Jeevan James");
-            string password = ReadSecret("Enter password: ", hideCursor: false, hideMask: false);
+            WriteLineColor("[BgRed]Node Package Manager [BgGray.Black](npm) [BgYellow]by Node.js");
+            WriteLineColor(new ColorString()
+                .BgRed("Node Package Manager ")
+                .BgGray().Black("(npm) ")
+                .BgYellow("by Node.js")
+            );
+            WriteLineColor(@"Copyright (c) 2015-16 Jeevan James");
+            string password = ReadSecret("Enter password: ", hideCursor: false, hideMask: false, needValue: true);
             string name = Prompt("[blue.bgwhite]Enter name: ");
-            WriteLine($"{name} : {password}");
+            WriteLineColor($"{name} : {password}");
             int exitCode = new NpmProgram(new UnixParserStyle()).Run();
             if (Debugger.IsAttached)
+            {
+                char key = WaitForKeys(ignoreCase: true, 'Y', 'n');
+                WriteLineColor(key.ToString());
                 WaitForAnyKey();
+            }
+
             return exitCode;
         }
     }
@@ -42,20 +52,20 @@ namespace TestHarness
         {
             Command command = result.Command;
             if (command == null)
-                WriteLine(@"Root Command");
+                WriteLineColor(@"Root Command");
             else
-                WriteLine($"Command: {command.Name}");
+                WriteLineColor($"Command: {command.Name}");
             foreach (KeyValuePair<string, object> kvp in result.Options)
             {
-                Write($"Option {kvp.Key}: ");
+                WriteColor($"Option {kvp.Key}: ");
                 var list = kvp.Value as IList;
                 if (list != null)
                 {
                     foreach (object item in list)
-                        Write($"{item?.ToString() ?? "(null)"}, ");
+                        WriteColor($"{item?.ToString() ?? "(null)"}, ");
                     WriteBlankLine();
                 } else
-                    WriteLine(kvp.Value.ToString());
+                    WriteLineColor(kvp.Value.ToString());
             }
             return 0;
         }

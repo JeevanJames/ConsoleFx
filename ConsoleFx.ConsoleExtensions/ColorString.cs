@@ -43,11 +43,11 @@ namespace ConsoleFx.ConsoleExtensions
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CColor? _currentBackColor;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly List<ColorStringBlock> _blocks = new List<ColorStringBlock>();
 
         public ColorString()
         {
-
         }
 
         public ColorString(string initialText)
