@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using ConsoleFx.Parser;
-using ConsoleFx.Parser.Styles;
 
 namespace ConsoleFx.Programs
 {

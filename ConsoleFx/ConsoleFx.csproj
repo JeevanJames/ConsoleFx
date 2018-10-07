@@ -64,9 +64,7 @@
     <Compile Include="Parser\ParseResult.cs" />
     <Compile Include="Parser\ParserException.cs" />
     <Compile Include="Parser\ParseRun.cs" />
-    <Compile Include="Parser\Styles\ParserStyle.cs" />
-    <Compile Include="Parser\Styles\UnixParserStyle.cs" />
-    <Compile Include="Parser\Styles\WindowsParserStyle.cs" />
+    <Compile Include="Parser\ParserStyle.cs" />
     <Compile Include="Parser\Validators\BooleanValidator.cs" />
     <Compile Include="Parser\Validators\CompositeValidator.cs" />
     <Compile Include="Parser\Validators\CustomValidator.cs" />

@@ -22,7 +22,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ConsoleFx.Parser.Styles
+using ConsoleFx.Parser;
+
+namespace ConsoleFx.CmdLineParser.UnixStyle
 {
     public sealed class UnixParserStyle : ParserStyle
     {

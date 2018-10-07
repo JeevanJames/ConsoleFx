@@ -19,12 +19,12 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-namespace ConsoleFx.Parser.Styles
+namespace ConsoleFx.Parser
 {
     public abstract class ParserStyle
     {
         /// <summary>
-        ///     Allows the parser style to override the preferred grouping based on it's rules for the specified options and
+        ///     Allows the parser style to override the preferred grouping based on its rules for the specified options and
         ///     arguments.
         /// </summary>
         /// <param name="specifiedGrouping">The preferred grouping.</param>

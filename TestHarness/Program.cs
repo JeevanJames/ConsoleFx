@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+
 using ConsoleFx.Capture;
+using ConsoleFx.CmdLineParser.UnixStyle;
 using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Parser;
-using ConsoleFx.Parser.Styles;
 using ConsoleFx.Programs;
 
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;

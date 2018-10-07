@@ -68,6 +68,10 @@
     <None Include="Readme.md" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleFx.CmdLineParser.WindowsStyle\ConsoleFx.CmdLineParser.WindowsStyle.csproj">
+      <Project>{0dbee672-cfed-43c9-93c1-51837696091a}</Project>
+      <Name>ConsoleFx.CmdLineParser.WindowsStyle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj">
       <Project>{6a48eeb2-509b-46e5-9f72-8eff5159cef6}</Project>
       <Name>ConsoleFx.ConsoleExtensions</Name>

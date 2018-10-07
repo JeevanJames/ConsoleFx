@@ -1,6 +1,7 @@
 ﻿using System.Resources;
 using System.Reflection;
 using System;
+using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("ConsoleFx")]
 [assembly: AssemblyDescription(@"ConsoleFx is a framework to build command-line applications, with support for command-line argument parsing and handling, including built-in error handling and validation support.
@@ -21,3 +22,6 @@ Visit the project URL for documentation or download the full package to obtain t
 [assembly: AssemblyFileVersion("2.0.0.0")]
 
 [assembly: CLSCompliant(true)]
+
+[assembly: InternalsVisibleTo("ConsoleFx.CmdLineParser.UnixStyle")]
+[assembly: InternalsVisibleTo("ConsoleFx.CmdLineParser.WindowsStyle")]

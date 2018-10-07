@@ -24,7 +24,6 @@ using System.ComponentModel;
 using System.Linq;
 
 using ConsoleFx.Parser.Config;
-using ConsoleFx.Parser.Styles;
 using ConsoleFx.Parser.Validators;
 
 namespace ConsoleFx.Parser
