@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\ConsoleFx.licenseheader" Link="ConsoleFx.licenseheader" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ConsoleFx\ConsoleFx.csproj" />
   </ItemGroup>
 

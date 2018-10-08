@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\ConsoleFx.licenseheader" Link="ConsoleFx.licenseheader" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="ErrorMessages.Designer.cs">
       <DependentUpon>ErrorMessages.resx</DependentUpon>
       <DesignTime>True</DesignTime>

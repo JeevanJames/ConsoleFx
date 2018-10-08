@@ -1,6 +1,6 @@
 ﻿#region --- License & Copyright Notice ---
 /*
-ConsoleFx CommandLine Processing Library
+ConsoleFx CLI Library Suite
 Copyright 2015-2018 Jeevan James
 
 Licensed under the Apache License, Version 2.0 (the "License");
