@@ -2,6 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Jeevan James</Authors>
+    <Company>Jeevan James</Company>
+    <Product>ConsoleFx</Product>
+    <Copyright>Copyright © Jeevan James 2007-2018</Copyright>
+    <PackageProjectUrl>https://github.com/JeevanJames/ConsoleFx</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/JeevanJames/ConsoleFx/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/JeevanJames/ConsoleFx/master/Logo.png</PackageIconUrl>
+    <RepositoryType>Git</RepositoryType>
+    <RepositoryUrl>https://github.com/JeevanJames/ConsoleFx.git</RepositoryUrl>
+    <Version>3.0.0-beta.1</Version>
+    <Description>ConsoleFx is a suite of libraries for building console applications.
+The ConsoleFx.Capture package enables capture of output from an external console application.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
