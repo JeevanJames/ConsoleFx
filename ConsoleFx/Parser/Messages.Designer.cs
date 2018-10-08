@@ -22,7 +22,7 @@ namespace ConsoleFx.Parser {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Messages {
+    public class Messages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ConsoleFx.Parser {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ConsoleFx.Parser.Messages", typeof(Messages).Assembly);
@@ -51,7 +51,7 @@ namespace ConsoleFx.Parser {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to Invalid number of arguments specified.
         /// </summary>
-        internal static string InvalidNumberOfArguments {
+        public static string InvalidNumberOfArguments {
             get {
                 return ResourceManager.GetString("InvalidNumberOfArguments", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to Option &quot;{0}&quot; should be followed by a colon (:) to specify its parameters.
         /// </summary>
-        internal static string InvalidOptionParameterSpecifier {
+        public static string InvalidOptionParameterSpecifier {
             get {
                 return ResourceManager.GetString("InvalidOptionParameterSpecifier", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to Invalid parameter format for option &quot;{0}&quot;.
         /// </summary>
-        internal static string InvalidOptionParametersSpecified {
+        public static string InvalidOptionParametersSpecified {
             get {
                 return ResourceManager.GetString("InvalidOptionParametersSpecified", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to Invalid option was specified: &quot;{0}&quot;.
         /// </summary>
-        internal static string InvalidOptionSpecified {
+        public static string InvalidOptionSpecified {
             get {
                 return ResourceManager.GetString("InvalidOptionSpecified", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to Invalid parameters specified for option &apos;{0}&apos;.
         /// </summary>
-        internal static string InvalidParametersSpecified {
+        public static string InvalidParametersSpecified {
             get {
                 return ResourceManager.GetString("InvalidParametersSpecified", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to Occurence/parameter values cannot be negative.
         /// </summary>
-        internal static string OccurenceParameterValueNegative {
+        public static string OccurenceParameterValueNegative {
             get {
                 return ResourceManager.GetString("OccurenceParameterValueNegative", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to An option by the name &apos;{0}&apos; already exists.
         /// </summary>
-        internal static string OptionAlreadyExists {
+        public static string OptionAlreadyExists {
             get {
                 return ResourceManager.GetString("OptionAlreadyExists", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to The options should be specified after the arguments.
         /// </summary>
-        internal static string OptionsAfterParameters {
+        public static string OptionsAfterParameters {
             get {
                 return ResourceManager.GetString("OptionsAfterParameters", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to The options should be specified before the arguments.
         /// </summary>
-        internal static string OptionsBeforeParameters {
+        public static string OptionsBeforeParameters {
             get {
                 return ResourceManager.GetString("OptionsBeforeParameters", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to Cannot specify required arguments after optional ones.
         /// </summary>
-        internal static string RequiredArgumentsDefinedAfterOptional {
+        public static string RequiredArgumentsDefinedAfterOptional {
             get {
                 return ResourceManager.GetString("RequiredArgumentsDefinedAfterOptional", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to The option &quot;{0}&quot; should be specified.
         /// </summary>
-        internal static string RequiredOptionAbsent {
+        public static string RequiredOptionAbsent {
             get {
                 return ResourceManager.GetString("RequiredOptionAbsent", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to Required parameters absent for option &apos;{0}&apos;.
         /// </summary>
-        internal static string RequiredParametersAbsent {
+        public static string RequiredParametersAbsent {
             get {
                 return ResourceManager.GetString("RequiredParametersAbsent", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to The &apos;{0}&apos; option should be specified at least {1} times..
         /// </summary>
-        internal static string TooFewOptions {
+        public static string TooFewOptions {
             get {
                 return ResourceManager.GetString("TooFewOptions", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace ConsoleFx.Parser {
         /// <summary>
         ///   Looks up a localized string similar to The &apos;{0}&apos; option cannot be specified more than {1} times..
         /// </summary>
-        internal static string TooManyOptions {
+        public static string TooManyOptions {
             get {
                 return ResourceManager.GetString("TooManyOptions", resourceCulture);
             }

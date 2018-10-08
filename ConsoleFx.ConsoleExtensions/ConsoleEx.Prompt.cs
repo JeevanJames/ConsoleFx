@@ -17,42 +17,21 @@ limitations under the License.
 */
 #endregion
 
+using System;
+
 namespace ConsoleFx.ConsoleExtensions
 {
-    public enum CColor
+    public static partial class ConsoleEx
     {
-        Black,
-        Blue,
-        Cyan,
-        DkBlue,
-        DkCyan,
-        DkGray,
-        DkGreen,
-        DkMagenta,
-        DkRed,
-        DkYellow,
-        Gray,
-        Green,
-        Magenta,
-        Red,
-        White,
-        Yellow,
-
-        BgBlack,
-        BgBlue,
-        BgCyan,
-        BgDkBlue,
-        BgDkCyan,
-        BgDkGray,
-        BgDkGreen,
-        BgDkMagenta,
-        BgDkRed,
-        BgDkYellow,
-        BgGray,
-        BgGreen,
-        BgMagenta,
-        BgRed,
-        BgWhite,
-        BgYellow,
+        /// <summary>
+        ///     Displays a message and waits for user input.
+        /// </summary>
+        /// <param name="message">A string or color string representing the message to be displayed</param>
+        /// <returns>The input entered by the user</returns>
+        public static string Prompt(ColorString message)
+        {
+            WriteColor(message);
+            return Console.ReadLine();
+        }
     }
 }
