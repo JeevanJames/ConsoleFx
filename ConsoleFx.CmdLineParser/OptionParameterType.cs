@@ -17,12 +17,21 @@ limitations under the License.
 */
 #endregion
 
-namespace MyNuGet
+namespace ConsoleFx.CmdLineParser
 {
-    public enum FileConflictAction
+    /// <summary>
+    ///     Specify whether the parameters of an option are repeating or individual
+    /// </summary>
+    public enum OptionParameterType
     {
-        Overwrite,
-        Ignore,
-        None
+        /// <summary>
+        ///     The parameters are repeating and have the same meaning
+        /// </summary>
+        Repeating,
+
+        /// <summary>
+        ///     Each parameter is independant, has its own meaning and is at a specific position
+        /// </summary>
+        Individual
     }
 }

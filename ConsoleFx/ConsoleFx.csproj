@@ -41,90 +41,24 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleFxException.cs" />
-    <Compile Include="Parser\MetadataObject.cs" />
-    <Compile Include="Parser\Argument.cs" />
-    <Compile Include="Parser\ArgGrouping.cs" />
-    <Compile Include="Parser\Command.cs" />
-    <Compile Include="Parser\Config\ConfigReader.cs" />
-    <Compile Include="Parser\Config\OverrideBehavior.cs" />
-    <Compile Include="Parser\Messages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Messages.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Parser\Option.cs" />
-    <Compile Include="Parser\OptionParameterRequirement.cs" />
-    <Compile Include="Parser\OptionParameterType.cs" />
-    <Compile Include="Parser\OptionParameterValidators.cs" />
-    <Compile Include="Parser\OptionRequirement.cs" />
-    <Compile Include="Parser\OptionUsage.cs" />
-    <Compile Include="Parser\Parser.cs" />
-    <Compile Include="Parser\ParseResult.cs" />
-    <Compile Include="Parser\ParserException.cs" />
-    <Compile Include="Parser\ParseRun.cs" />
-    <Compile Include="Parser\ParserStyle.cs" />
-    <Compile Include="Parser\Validators\BooleanValidator.cs" />
-    <Compile Include="Parser\Validators\CompositeValidator.cs" />
-    <Compile Include="Parser\Validators\CustomValidator.cs" />
-    <Compile Include="Parser\Validators\DirectoryValidator.cs" />
-    <Compile Include="Parser\Validators\EnumValidator.cs" />
-    <Compile Include="Parser\Validators\FileValidator.cs" />
-    <Compile Include="Parser\Validators\GuidValidator.cs" />
-    <Compile Include="Parser\Validators\IntegerValidator.cs" />
-    <Compile Include="Parser\Validators\LookupValidator.cs" />
-    <Compile Include="Parser\Validators\Messages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Messages.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Parser\Validators\SingleMessageValidator.cs" />
-    <Compile Include="Parser\Validators\ValidationException.cs" />
-    <Compile Include="Parser\Validators\Validator.cs" />
-    <Compile Include="Parser\Validators\PathValidator.cs" />
-    <Compile Include="Parser\Validators\RegexValidator.cs" />
-    <Compile Include="Parser\Validators\StringValidator.cs" />
-    <Compile Include="Parser\Validators\UriValidator.cs" />
-    <Compile Include="Programs\CommandBuilder.cs" />
-    <Compile Include="Programs\ConsoleProgram.cs" />
-    <Compile Include="Programs\HelpExtensions.cs" />
-    <Compile Include="Programs\UsageBuilders\MetadataUsageBuilder.cs" />
-    <Compile Include="Programs\UsageBuilders\UsageBuilder.cs" />
-    <Compile Include="Programs\Messages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Messages.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Parser\Messages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Parser\Validators\Messages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Programs\Messages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\ConsoleFx.licenseheader">
-      <Link>ConsoleFx.licenseheader</Link>
-    </None>
     <None Include="ConsoleFx.nuspec">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleFx.CmdLineParser\ConsoleFx.CmdLineParser.csproj">
+      <Project>{e9afdd7d-0706-4852-bf29-7ca4911bc5df}</Project>
+      <Name>ConsoleFx.CmdLineParser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj">
       <Project>{6a48eeb2-509b-46e5-9f72-8eff5159cef6}</Project>
       <Name>ConsoleFx.ConsoleExtensions</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

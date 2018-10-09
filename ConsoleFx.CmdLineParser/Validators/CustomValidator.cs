@@ -17,15 +17,26 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.CmdLineParser.Validators;
+using System;
 
-namespace MyNuGet
+namespace ConsoleFx.CmdLineParser.Validators
 {
-    public sealed class PackageIdValidator : RegexValidator
+    public sealed class CustomValidator : SingleMessageValidator<string>
     {
-        public PackageIdValidator() : base(@"(\w\.?)+")
+        private readonly Func<string, bool> _validator;
+
+        public CustomValidator(Func<string, bool> validator) : base(Messages.Custom)
         {
-            Message = "'{0}' is not a valid package ID.";
+            if (validator == null)
+                throw new ArgumentNullException(nameof(validator));
+            _validator = validator;
+        }
+
+        protected sealed override string ValidateAsString(string parameterValue)
+        {
+            if (!_validator(parameterValue))
+                ValidationFailed(parameterValue, Message);
+            return parameterValue;
         }
     }
 }

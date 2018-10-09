@@ -17,12 +17,22 @@ limitations under the License.
 */
 #endregion
 
-namespace MyNuGet
+using System;
+
+namespace ConsoleFx.CmdLineParser.Validators
 {
-    public enum FileConflictAction
+    public class GuidValidator : SingleMessageValidator<Guid>
     {
-        Overwrite,
-        Ignore,
-        None
+        public GuidValidator() : base(Messages.Guid)
+        {
+        }
+
+        protected override Guid ValidateAsString(string parameterValue)
+        {
+            Guid guid;
+            if (!Guid.TryParse(parameterValue, out guid))
+                ValidationFailed(parameterValue, Message);
+            return guid;
+        }
     }
 }

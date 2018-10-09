@@ -17,12 +17,25 @@ limitations under the License.
 */
 #endregion
 
-namespace MyNuGet
+using System;
+
+namespace ConsoleFx.CmdLineParser.Validators
 {
-    public enum FileConflictAction
+    public class UriValidator : SingleMessageValidator<Uri>
     {
-        Overwrite,
-        Ignore,
-        None
+        public UriKind UriKind { get; }
+
+        public UriValidator(UriKind uriKind) : base(Messages.Uri)
+        {
+            UriKind = uriKind;
+        }
+
+        protected override Uri ValidateAsString(string parameterValue)
+        {
+            Uri uri;
+            if (!Uri.TryCreate(parameterValue, UriKind, out uri))
+                ValidationFailed(Message, parameterValue);
+            return uri;
+        }
     }
 }

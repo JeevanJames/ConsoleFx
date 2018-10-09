@@ -1,4 +1,4 @@
-﻿#region --- License & Copyright Notice ---
+#region --- License & Copyright Notice ---
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2018 Jeevan James
@@ -17,12 +17,22 @@ limitations under the License.
 */
 #endregion
 
-namespace MyNuGet
+namespace ConsoleFx.CmdLineParser
 {
-    public enum FileConflictAction
+    /// <summary>
+    ///     Specifies whether the parameters for an option are required or not allowed.
+    /// </summary>
+    /// <remarks>There is no such thing as optional parameters.</remarks>
+    public enum OptionParameterRequirement
     {
-        Overwrite,
-        Ignore,
-        None
+        /// <summary>
+        ///     Parameters are not allowed for the option.
+        /// </summary>
+        NotAllowed,
+
+        /// <summary>
+        ///     The option requires one or more parameters.
+        /// </summary>
+        Required
     }
 }

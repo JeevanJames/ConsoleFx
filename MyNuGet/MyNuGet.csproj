@@ -64,6 +64,9 @@
     <Compile Include="Verbosity.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\ConsoleFx.licenseheader">
+      <Link>ConsoleFx.licenseheader</Link>
+    </None>
     <None Include="App.config" />
     <None Include="Readme.md" />
   </ItemGroup>
@@ -72,13 +75,13 @@
       <Project>{0dbee672-cfed-43c9-93c1-51837696091a}</Project>
       <Name>ConsoleFx.CmdLineParser.WindowsStyle</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ConsoleFx.CmdLineParser\ConsoleFx.CmdLineParser.csproj">
+      <Project>{e9afdd7d-0706-4852-bf29-7ca4911bc5df}</Project>
+      <Name>ConsoleFx.CmdLineParser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj">
       <Project>{6a48eeb2-509b-46e5-9f72-8eff5159cef6}</Project>
       <Name>ConsoleFx.ConsoleExtensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ConsoleFx\ConsoleFx.csproj">
-      <Project>{7dc038a5-0ecc-4ec3-8497-7c1504fa0113}</Project>
-      <Name>ConsoleFx</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

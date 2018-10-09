@@ -17,12 +17,17 @@ limitations under the License.
 */
 #endregion
 
-namespace MyNuGet
+using System.IO;
+
+namespace ConsoleFx.CmdLineParser.Validators
 {
-    public enum FileConflictAction
+    public class DirectoryValidator : Validator<DirectoryInfo>
     {
-        Overwrite,
-        Ignore,
-        None
+        public bool ShouldExist { get; set; }
+
+        protected override DirectoryInfo ValidateAsString(string parameterValue)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -1,18 +1,36 @@
-﻿using System.Collections;
+﻿#region --- License & Copyright Notice ---
+/*
+ConsoleFx CLI Library Suite
+Copyright 2015-2018 Jeevan James
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#endregion
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
 using ConsoleFx.CmdLineParser.WindowsStyle;
-using ConsoleFx.Parser;
-using ConsoleFx.Parser.Validators;
-using ConsoleFx.Programs;
+using ConsoleFx.CmdLineParser;
+using ConsoleFx.CmdLineParser.Validators;
+using ConsoleFx.CmdLineParser.Programs;
 
 using MyNuGet.Install;
 using MyNuGet.Update;
 
 using static System.Console;
-using static System.ConsoleColor;
 
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
@@ -23,10 +41,10 @@ namespace MyNuGet
         private static int Main()
         {
             WriteLine($"{ForegroundColor} - {BackgroundColor}");
-            WriteLine("[gray]MyNuGet NuGet Simulator");
-            WriteLine("[DarkGreen|Yellow]The best damn nuget out there");
-            Write("MyNuGet NuGet Simulator", White, Magenta);
-            WriteLine("Written by Jeevan James", Blue, Yellow);
+            WriteLineColor("[gray]MyNuGet NuGet Simulator");
+            WriteLineColor("[DkGreen.BgYellow]The best damn nuget out there");
+            WriteLineColor("[White.BgMagenta]MyNuGet NuGet Simulator");
+            WriteLineColor("[Blue.BgYellow]Written by Jeevan James");
             int exitCode = new Program(new WindowsParserStyle()).Run();
             if (Debugger.IsAttached)
                 ReadLine();

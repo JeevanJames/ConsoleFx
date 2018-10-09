@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleFx\ConsoleFx.csproj" />
+    <ProjectReference Include="..\ConsoleFx.CmdLineParser\ConsoleFx.CmdLineParser.csproj" />
   </ItemGroup>
 
 </Project>

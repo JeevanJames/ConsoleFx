@@ -9,19 +9,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx", "ConsoleFx\Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNuGet", "MyNuGet\MyNuGet.csproj", "{3588ABA2-48EB-4EC9-89B7-4DEFAA60095C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.ConsoleExtensions", "ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj", "{6A48EEB2-509B-46E5-9F72-8EFF5159CEF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.ConsoleExtensions", "ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj", "{6A48EEB2-509B-46E5-9F72-8EFF5159CEF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.ConsoleExtensions.Tests", "ConsoleFx.ConsoleExtensions.Tests\ConsoleFx.ConsoleExtensions.Tests.csproj", "{557F1F59-D532-4AB1-B73C-CBCEA00B0B33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.ConsoleExtensions.Tests", "ConsoleFx.ConsoleExtensions.Tests\ConsoleFx.ConsoleExtensions.Tests.csproj", "{557F1F59-D532-4AB1-B73C-CBCEA00B0B33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.Capture", "ConsoleFx.Capture\ConsoleFx.Capture.csproj", "{4D757C69-82F6-4D94-B9DF-54FC4B2866EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.Capture", "ConsoleFx.Capture\ConsoleFx.Capture.csproj", "{4D757C69-82F6-4D94-B9DF-54FC4B2866EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.CmdLineParser.WindowsStyle", "ConsoleFx.CmdLineParser.WindowsStyle\ConsoleFx.CmdLineParser.WindowsStyle.csproj", "{0DBEE672-CFED-43C9-93C1-51837696091A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.CmdLineParser.WindowsStyle", "ConsoleFx.CmdLineParser.WindowsStyle\ConsoleFx.CmdLineParser.WindowsStyle.csproj", "{0DBEE672-CFED-43C9-93C1-51837696091A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.CmdLineParser.UnixStyle", "ConsoleFx.CmdLineParser.UnixStyle\ConsoleFx.CmdLineParser.UnixStyle.csproj", "{599D6421-BDE7-419F-92FB-5425A5FA27A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.CmdLineParser.UnixStyle", "ConsoleFx.CmdLineParser.UnixStyle\ConsoleFx.CmdLineParser.UnixStyle.csproj", "{599D6421-BDE7-419F-92FB-5425A5FA27A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.Art", "ConsoleFx.Art\ConsoleFx.Art.csproj", "{00813947-F1EE-4BBF-87F3-09038B1699A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.Art", "ConsoleFx.Art\ConsoleFx.Art.csproj", "{00813947-F1EE-4BBF-87F3-09038B1699A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.Prompter", "ConsoleFx.Prompter\ConsoleFx.Prompter.csproj", "{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.Prompter", "ConsoleFx.Prompter\ConsoleFx.Prompter.csproj", "{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.CmdLineParser", "ConsoleFx.CmdLineParser\ConsoleFx.CmdLineParser.csproj", "{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EFA0210-2BAA-4998-9D5D-86B76C43AB44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

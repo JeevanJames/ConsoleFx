@@ -17,15 +17,27 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.CmdLineParser.Validators;
-
-namespace MyNuGet
+namespace ConsoleFx.CmdLineParser.Programs
 {
-    public sealed class PackageIdValidator : RegexValidator
+    public static class HelpExtensions
     {
-        public PackageIdValidator() : base(@"(\w\.?)+")
+        public static Command Description(this Command command, string description)
         {
-            Message = "'{0}' is not a valid package ID.";
+            command["Description"] = description;
+            return command;
+        }
+
+        public static Option Description(this Option option, string description)
+        {
+            option["Description"] = description;
+            return option;
+        }
+
+        public static Argument Description(this Argument argument, string name, string description)
+        {
+            argument["Name"] = name;
+            argument["Description"] = description;
+            return argument;
         }
     }
 }
