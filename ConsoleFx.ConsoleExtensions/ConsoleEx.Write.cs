@@ -41,10 +41,13 @@ namespace ConsoleFx.ConsoleExtensions
             Console.ResetColor();
         }
 
-        public static void WriteLineColor(ColorString message)
+        public static void WriteLineColor(params ColorString[] messages)
         {
-            WriteColor(message);
-            Console.WriteLine();
+            foreach (ColorString message in messages)
+            {
+                WriteColor(message);
+                Console.WriteLine();
+            }
         }
 
         /// <summary>

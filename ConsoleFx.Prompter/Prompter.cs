@@ -62,6 +62,12 @@ namespace ConsoleFx.Prompter
                     continue;
                 }
 
+                if (question.Banner.Count > 0)
+                {
+                    ConsoleEx.WriteBlankLine();
+                    ConsoleEx.WriteLineColor(question.Banner.ToArray());
+                }
+
                 repeat_question:
                 string input = ConsoleEx.Prompt($"[cyan]{question.Message} ");
 

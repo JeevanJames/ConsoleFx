@@ -18,6 +18,8 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
+using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
@@ -28,6 +30,8 @@ namespace ConsoleFx.Prompter
         public string Message { get; }
 
         public bool MustAnswer { get; }
+
+        internal IReadOnlyList<ColorString> Banner { get; } = new List<ColorString>();
 
         internal Func<dynamic, bool> WhenFn { get; set; }
 
@@ -59,6 +63,14 @@ namespace ConsoleFx.Prompter
 
         public static Question Mandatory(string name, string message) =>
             new Question(name, message, mustAnswer: true);
+
+        public Question AddBanner(params ColorString[] text)
+        {
+            if (text == null)
+                throw new ArgumentNullException(nameof(text));
+            ((List<ColorString>) Banner).AddRange(text);
+            return this;
+        }
 
         public Question When(Func<dynamic, bool> when)
         {
