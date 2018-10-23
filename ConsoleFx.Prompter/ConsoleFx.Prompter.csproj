@@ -18,4 +18,12 @@
     <None Include="..\ConsoleFx.licenseheader" Link="ConsoleFx.licenseheader" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj" />
+  </ItemGroup>
+
 </Project>

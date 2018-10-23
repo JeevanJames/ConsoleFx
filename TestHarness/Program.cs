@@ -22,11 +22,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using ConsoleFx.Capture;
-using ConsoleFx.CmdLineParser.UnixStyle;
-using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Programs;
+using ConsoleFx.CmdLineParser.UnixStyle;
+using ConsoleFx.ConsoleExtensions;
+using ConsoleFx.Prompter;
 
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
@@ -42,8 +42,17 @@ namespace TestHarness
     {
         private static int Main()
         {
-            ConsoleCaptureResult capture = ConsoleCapture.Start("dotnet.exe", "--help");
-            Console.WriteLine(capture.OutputMessage);
+            dynamic answers = Prompter.Ask(
+                Question.Mandatory("Name", "What's your name?"),
+                Question.Mandatory("Age", "What's your age?")
+                    .Transform(value => int.Parse(value))
+                    .Validate<int>((value, _) => value > 0),
+                Question.Optional("SeniorCitizen", "Do you consider yourself a senior citizen?", "No")
+                    .When(ans => ans.Age >= 60)
+
+            );
+            Console.WriteLine($"Hi {answers.Name}, who is {answers.Age} years old ({answers.SeniorCitizen})");
+
 
             WriteLineColor("[BgRed]Node Package Manager [BgGray.Black](npm) [BgYellow]by Node.js");
             WriteLineColor(new ColorString()
