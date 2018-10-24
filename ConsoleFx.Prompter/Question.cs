@@ -19,50 +19,110 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class Question
+    public interface IQuestion
     {
+        string Name { get; }
+
+        FunctionOrValue<string> Message { get; }
+
+        FunctionOrValue<bool> MustAnswer { get; }
+
+        FunctionOrValue<IReadOnlyList<ColorString>> Banner { get; }
+
+        Func<dynamic, bool> WhenFn { get; }
+
+        Func<dynamic, object> DefaultValueGetter { get; }
+
+        Func<string, object> Transformer { get; }
+
+        Func<string, dynamic, bool> RawValueValidator { get; }
+
+        Func<object, dynamic, bool> Validator { get; }
+    }
+
+    public sealed class FunctionOrValue<TValue>
+    {
+        internal TValue Value { get; }
+
+        internal Func<dynamic, TValue> Function { get; }
+
+        internal FunctionOrValue(TValue value)
+        {
+            Value = value;
+        }
+
+        internal FunctionOrValue(Func<dynamic, TValue> function)
+        {
+            if (function == null)
+                throw new ArgumentNullException(nameof(function));
+            Function = function;
+        }
+
+        internal TValue Resolve(dynamic answers = null) =>
+            Function != null ? (TValue)Function(answers) : Value;
+
+        public static implicit operator FunctionOrValue<TValue>(TValue value) => new FunctionOrValue<TValue>(value);
+
+        public static implicit operator FunctionOrValue<TValue>(Func<dynamic, TValue> function) => new FunctionOrValue<TValue>(function);
+    }
+
+    public sealed class Question : IQuestion
+    {
+        private readonly FunctionOrValue<string> _message;
+        private FunctionOrValue<bool> _mustAnswer;
+
         public string Name { get; }
 
-        public string Message { get; }
+        FunctionOrValue<string> IQuestion.Message => _message;
 
-        public bool MustAnswer { get; }
+        FunctionOrValue<bool> IQuestion.MustAnswer => _mustAnswer;
 
-        internal IReadOnlyList<ColorString> Banner { get; } = new List<ColorString>();
+        FunctionOrValue<IReadOnlyList<ColorString>> IQuestion.Banner { get; } = new List<ColorString>();
 
-        internal Func<dynamic, bool> WhenFn { get; set; }
+        Func<dynamic, bool> IQuestion.WhenFn { get; private set; }
 
-        internal Func<dynamic, object> DefaultValueGetter { get; set; }
+        Func<dynamic, object> IQuestion.DefaultValueGetter { get; set; }
 
-        internal Func<string, object> Transformer { get; set; }
+        Func<string, object> IQuestion.Transformer { get; set; }
 
-        internal Func<string, dynamic, bool> RawValueValidator { get; set; }
+        Func<string, dynamic, bool> IQuestion.RawValueValidator { get; set; }
 
-        internal Func<object, dynamic, bool> Validator { get; set; }
+        Func<object, dynamic, bool> IQuestion.Validator { get; set; }
 
-        internal Question(string name, string message, bool mustAnswer = false)
+        internal Question(string name, FunctionOrValue<string> message)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Question name must be specified.", nameof(name));
-            if (string.IsNullOrWhiteSpace(message))
-                throw new ArgumentException("Question message must be specified.", nameof(message));
+            if (message == null)
+                throw new ArgumentNullException("Question message must be specified.", nameof(message));
             Name = name;
-            Message = message;
-            MustAnswer = mustAnswer;
+            _message = message;
         }
 
-        public static Question Optional(string name, string message) =>
-            new Question(name, message);
+        public static Question<string> Optional(string name, string message) =>
+            new Question<string>(name, message);
 
-        public static Question Optional(string name, string message, object defaultValue) =>
-            new Question(name, message, mustAnswer: false)
+        public static Question<TValue> Optional<TValue>(string name, string message) =>
+            new Question<TValue>(name, message);
+
+        public static Question<string> Optional(string name, string message, string defaultValue) =>
+            new Question<string>(name, message, mustAnswer: false)
                 .DefaultValue(ans => defaultValue);
 
-        public static Question Mandatory(string name, string message) =>
-            new Question(name, message, mustAnswer: true);
+        public static Question<TValue> Optional<TValue>(string name, string message, TValue defaultValue) =>
+            new Question<TValue>(name, message, mustAnswer: false)
+                .DefaultValue(ans => defaultValue);
+
+        public static Question<string> Mandatory(string name, string message) =>
+            new Question<string>(name, message, mustAnswer: true);
+
+        public static Question<TValue> Mandatory<TValue>(string name, string message) =>
+            new Question<TValue>(name, message, mustAnswer: true);
 
         public Question AddBanner(params ColorString[] text)
         {
@@ -82,26 +142,6 @@ namespace ConsoleFx.Prompter
             return this;
         }
 
-        public Question DefaultValue(Func<dynamic, object> defaultValueGetter)
-        {
-            if (defaultValueGetter == null)
-                throw new ArgumentNullException(nameof(defaultValueGetter));
-            if (DefaultValueGetter != null)
-                throw new ArgumentException($"Default value getter is alread defined for the question {Name}.", nameof(defaultValueGetter));
-            DefaultValueGetter = defaultValueGetter;
-            return this;
-        }
-
-        public Question Transform<T>(Func<string, T> transformer)
-        {
-            if (transformer == null)
-                throw new ArgumentNullException(nameof(transformer));
-            if (Transformer != null)
-                throw new ArgumentException($"Transformer is already defined for the question {Name}.", nameof(transformer));
-            Transformer = value => (object)transformer(value);
-            return this;
-        }
-
         public Question ValidateRawValue(Func<string, dynamic, bool> validator)
         {
             if (validator == null)
@@ -111,8 +151,46 @@ namespace ConsoleFx.Prompter
             RawValueValidator = validator;
             return this;
         }
+    }
 
-        public Question Validate<TValue>(Func<TValue, dynamic, bool> validator)
+    public sealed class Question<TValue> : Question
+    {
+        internal Question(string name, string message, bool mustAnswer = false)
+            : base(name, message, mustAnswer)
+        {
+        }
+
+        public Question<TValue> DefaultValue(Func<dynamic, TValue> defaultValueGetter)
+        {
+            if (defaultValueGetter == null)
+                throw new ArgumentNullException(nameof(defaultValueGetter));
+            if (DefaultValueGetter != null)
+                throw new ArgumentException($"Default value getter is alread defined for the question {Name}.", nameof(defaultValueGetter));
+            DefaultValueGetter = ans => defaultValueGetter(ans);
+            return this;
+        }
+
+        public Question<TValue> Transform(Func<string, TValue> transformer)
+        {
+            if (transformer == null)
+                throw new ArgumentNullException(nameof(transformer));
+            if (Transformer != null)
+                throw new ArgumentException($"Transformer is already defined for the question {Name}.", nameof(transformer));
+            Transformer = value => transformer(value);
+            return this;
+        }
+
+        public Question<TValue> Validate(Func<TValue, bool> validator)
+        {
+            if (validator == null)
+                throw new ArgumentNullException(nameof(validator));
+            if (Validator != null)
+                throw new ArgumentException($"Validator is already defined for the question {Name}.", nameof(validator));
+            Validator = (value, answers) => validator((TValue) value);
+            return this;
+        }
+
+        public Question<TValue> Validate(Func<TValue, dynamic, bool> validator)
         {
             if (validator == null)
                 throw new ArgumentNullException(nameof(validator));
@@ -120,6 +198,14 @@ namespace ConsoleFx.Prompter
                 throw new ArgumentException($"Validator is already defined for the question {Name}.", nameof(validator));
             Validator = (value, answers) => validator((TValue)value, answers);
             return this;
+        }
+    }
+
+    public static class TransformExtensions
+    {
+        public static Question<int> AsInteger(this Question question)
+        {
+
         }
     }
 }
