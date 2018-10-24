@@ -45,7 +45,7 @@ namespace ConsoleFx.Prompter
         Func<object, dynamic, bool> Validator { get; }
     }
 
-    public sealed class FunctionOrValue<TValue>
+    public readonly struct FunctionOrValue<TValue>
     {
         internal TValue Value { get; }
 
@@ -54,6 +54,7 @@ namespace ConsoleFx.Prompter
         internal FunctionOrValue(TValue value)
         {
             Value = value;
+            Function = null;
         }
 
         internal FunctionOrValue(Func<dynamic, TValue> function)
@@ -61,6 +62,7 @@ namespace ConsoleFx.Prompter
             if (function == null)
                 throw new ArgumentNullException(nameof(function));
             Function = function;
+            Value = default;
         }
 
         internal TValue Resolve(dynamic answers = null) =>
@@ -69,6 +71,31 @@ namespace ConsoleFx.Prompter
         public static implicit operator FunctionOrValue<TValue>(TValue value) => new FunctionOrValue<TValue>(value);
 
         public static implicit operator FunctionOrValue<TValue>(Func<dynamic, TValue> function) => new FunctionOrValue<TValue>(function);
+    }
+
+    public readonly struct ValidationResult
+    {
+        internal bool Valid { get; }
+
+        internal string ErrorMessage { get; }
+
+        internal ValidationResult(bool valid)
+        {
+            Valid = valid;
+            ErrorMessage = null;
+        }
+
+        internal ValidationResult(string errorMessage)
+        {
+            Valid = false;
+            ErrorMessage = errorMessage;
+        }
+
+        public static implicit operator ValidationResult(bool valid) =>
+            new ValidationResult(valid);
+
+        public static implicit operator ValidationResult(string errorMessage) =>
+            new ValidationResult(errorMessage);
     }
 
     public sealed class Question : IQuestion
