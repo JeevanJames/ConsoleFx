@@ -54,57 +54,60 @@ namespace ConsoleFx.Prompter
             {
                 if (question is StaticText)
                 {
-                    ColorString staticText = question.StaticText.Resolve(answers);
+                    ColorString staticText = question.StaticTextFn.Resolve(answers);
                     if (staticText != null)
                         ConsoleEx.WriteLineColor(staticText);
-
                     continue;
                 }
 
                 object answer = null;
 
-                if (question.CanAsk != null && !question.CanAsk(answers))
+                if (question.CanAskFn != null && !question.CanAskFn(answers))
                 {
-                    if (question.DefaultValueGetter != null)
-                        answer = question.DefaultValueGetter(answers);
+                    if (question.DefaultValueFn != null)
+                        answer = question.DefaultValueFn(answers);
                     answers.Add(question.Name, answer);
                     continue;
                 }
 
-        repeat_question:
-                string message = question.Message.Resolve(answers);
-                string input = ConsoleEx.Prompt($"[cyan]{message} ");
-
-                bool mustAnswer = question.MustAnswer.Resolve(answers);
-                if (mustAnswer && string.IsNullOrWhiteSpace(input))
-                    goto repeat_question;
-
-                if (question.RawValueValidator != null)
+                bool validAnswer = false;
+                do
                 {
-                    ValidationResult validationResult = question.RawValueValidator(input, answers);
-                    if (!validationResult.Valid)
+                    string input = question.AskerFn(question, answers);
+
+                    bool optional = question.OptionalFn.Resolve(answers);
+                    if (!optional && string.IsNullOrWhiteSpace(input))
+                        continue;
+
+                    if (question.RawValueValidatorFn != null)
                     {
-                        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                            ConsoleEx.WriteLineColor($"[red]{validationResult.ErrorMessage}");
-                        goto repeat_question;
+                        ValidationResult validationResult = question.RawValueValidatorFn(input, answers);
+                        if (!validationResult.Valid)
+                        {
+                            if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                                ConsoleEx.WriteLineColor($"[red]{validationResult.ErrorMessage}");
+                            continue;
+                        }
                     }
-                }
 
-                answer = question.Transformer != null ? question.Transformer(input) : input;
+                    answer = question.TransformerFn != null ? question.TransformerFn(input) : input;
 
-                if (!mustAnswer && string.IsNullOrWhiteSpace(input) && question.DefaultValueGetter != null)
-                    answer = question.DefaultValueGetter(answers);
+                    if (optional && string.IsNullOrWhiteSpace(input) && question.DefaultValueFn != null)
+                        answer = question.DefaultValueFn(answers);
 
-                if (question.Validator != null)
-                {
-                    ValidationResult validationResult = question.Validator(answer, answers);
-                    if (!validationResult.Valid)
+                    if (question.ValidatorFn != null)
                     {
-                        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                            ConsoleEx.WriteLineColor($"[red]{validationResult.ErrorMessage}");
-                        goto repeat_question;
+                        ValidationResult validationResult = question.ValidatorFn(answer, answers);
+                        if (!validationResult.Valid)
+                        {
+                            if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                                ConsoleEx.WriteLineColor($"[red]{validationResult.ErrorMessage}");
+                            continue;
+                        }
                     }
-                }
+
+                    validAnswer = true;
+                } while (!validAnswer);
 
                 answers.Add(question.Name, answer);
             }

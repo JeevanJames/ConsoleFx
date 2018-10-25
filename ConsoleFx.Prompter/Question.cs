@@ -18,57 +18,57 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class Question : IQuestion
+    public sealed partial class Question : IQuestion
     {
         private readonly FunctionOrValue<string> _message;
-        private FunctionOrValue<bool> _mustAnswer;
+        private FunctionOrValue<bool> _optional;
         private AnswersFunc<bool> _canAsk;
         private Validator<string> _rawValueValidator;
         private Func<string, object> _transformer;
+        private readonly AskerFn _asker;
 
         public string Name { get; }
 
-        FunctionOrValue<string> IQuestion.Message => _message;
+        FunctionOrValue<string> IQuestion.MessageFn => _message;
 
-        FunctionOrValue<bool> IQuestion.MustAnswer => _mustAnswer;
+        FunctionOrValue<bool> IQuestion.OptionalFn => _optional;
 
-        AnswersFunc<bool> IQuestion.CanAsk => _canAsk;
+        AnswersFunc<bool> IQuestion.CanAskFn => _canAsk;
 
-        FunctionOrValue<ColorString> IQuestion.StaticText => throw new NotImplementedException();
+        FunctionOrValue<ColorString> IQuestion.StaticTextFn => throw new NotImplementedException();
 
-        AnswersFunc<object> IQuestion.DefaultValueGetter => null;
+        AnswersFunc<object> IQuestion.DefaultValueFn => null;
 
-        Validator<string> IQuestion.RawValueValidator => _rawValueValidator;
+        Validator<string> IQuestion.RawValueValidatorFn => _rawValueValidator;
 
-        Func<string, object> IQuestion.Transformer => _transformer;
+        Func<string, object> IQuestion.TransformerFn => _transformer;
 
-        Validator<object> IQuestion.Validator => null;
+        Validator<object> IQuestion.ValidatorFn => null;
 
-        internal Question(string name, FunctionOrValue<string> message)
+        AskerFn IQuestion.AskerFn => _asker;
+
+        internal Question(string name, FunctionOrValue<string> message, AskerFn asker)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Question name must be specified.", nameof(name));
             Name = name;
             _message = message;
+            _asker = asker;
         }
 
-        public static Question New(string name, FunctionOrValue<string> message) =>
-            new Question(name, message);
-
-        public static Question Mandatory(string name, FunctionOrValue<string> message) =>
-            new Question(name, message).MustAnswer(true);
-
-        public static Question Optional(string name, FunctionOrValue<string> message) =>
-            new Question(name, message).MustAnswer(false);
-
-        public Question MustAnswer(FunctionOrValue<bool> mustAnswer)
+        public Question Optional()
         {
-            _mustAnswer = mustAnswer;
+            _optional = true;
+            return this;
+        }
+
+        public Question Optional(FunctionOrValue<bool> optional)
+        {
+            _optional = optional;
             return this;
         }
 
@@ -101,6 +101,34 @@ namespace ConsoleFx.Prompter
         }
     }
 
+    public sealed partial class Question
+    {
+        public static Question Input(string name, FunctionOrValue<string> message)
+        {
+            AskerFn asker = (q, ans) => ConsoleEx.Prompt(new ColorString().Cyan(q.MessageFn.Resolve(ans)));
+            return new Question(name, message, asker);
+        }
+
+        public static Question Password(string name, FunctionOrValue<string> message)
+        {
+            AskerFn asker = (q, ans) => ConsoleEx.ReadSecret(new ColorString().Cyan(q.MessageFn.Resolve(ans)));
+            return new Question(name, message, asker);
+        }
+
+        public static Question<bool> Confirm(string name, FunctionOrValue<string> message)
+        {
+            AskerFn asker = (q, ans) =>
+            {
+                ConsoleEx.WriteColor(q.MessageFn.Resolve(ans) + "(y/n)");
+                ConsoleKey pressed = ConsoleEx.WaitForKeys(ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
+                ConsoleEx.WriteBlankLine();
+                return pressed.ToString();
+            };
+            return new Question(name, message, asker)
+                .Transform(str => str == ConsoleKey.Enter.ToString() || str == ConsoleKey.Y.ToString());
+        }
+    }
+
     public sealed class Question<TValue> : IQuestion
     {
         private readonly FunctionOrValue<string> _message;
@@ -110,35 +138,39 @@ namespace ConsoleFx.Prompter
         private Validator<string> _rawValueValidator;
         private Func<string, object> _transformer;
         private Validator<object> _validator;
+        private AskerFn _asker;
 
         public string Name { get; }
 
-        FunctionOrValue<string> IQuestion.Message => _message;
+        FunctionOrValue<string> IQuestion.MessageFn => _message;
 
-        FunctionOrValue<bool> IQuestion.MustAnswer => _mustAnswer;
+        FunctionOrValue<bool> IQuestion.OptionalFn => _mustAnswer;
 
-        AnswersFunc<bool> IQuestion.CanAsk => _canAsk;
+        AnswersFunc<bool> IQuestion.CanAskFn => _canAsk;
 
-        FunctionOrValue<ColorString> IQuestion.StaticText => throw new NotImplementedException();
+        FunctionOrValue<ColorString> IQuestion.StaticTextFn => throw new NotImplementedException();
 
-        AnswersFunc<object> IQuestion.DefaultValueGetter => _defaultValueGetter;
+        AnswersFunc<object> IQuestion.DefaultValueFn => _defaultValueGetter;
 
-        Validator<string> IQuestion.RawValueValidator => _rawValueValidator;
+        Validator<string> IQuestion.RawValueValidatorFn => _rawValueValidator;
 
-        Func<string, object> IQuestion.Transformer => _transformer;
+        Func<string, object> IQuestion.TransformerFn => _transformer;
 
-        Validator<object> IQuestion.Validator => _validator;
+        Validator<object> IQuestion.ValidatorFn => _validator;
+
+        AskerFn IQuestion.AskerFn => _asker;
 
         internal Question(IQuestion question)
         {
             Name = question.Name;
-            _message = question.Message;
-            _mustAnswer = question.MustAnswer;
-            _canAsk = question.CanAsk;
-            _defaultValueGetter = question.DefaultValueGetter;
-            _rawValueValidator = question.RawValueValidator;
-            _transformer = question.Transformer;
-            _validator = question.Validator;
+            _message = question.MessageFn;
+            _mustAnswer = question.OptionalFn;
+            _canAsk = question.CanAskFn;
+            _defaultValueGetter = question.DefaultValueFn;
+            _rawValueValidator = question.RawValueValidatorFn;
+            _transformer = question.TransformerFn;
+            _validator = question.ValidatorFn;
+            _asker = question.AskerFn;
         }
 
         public Question<TValue> DefaultValue(AnswersFunc<TValue> defaultValueGetter)

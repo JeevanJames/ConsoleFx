@@ -18,7 +18,6 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
@@ -35,24 +34,28 @@ namespace ConsoleFx.Prompter
         /// If defined as a function, the first parameter will be the current answers hash.
         /// Defaults to the value of name
         /// </summary>
-        FunctionOrValue<string> Message { get; }
+        FunctionOrValue<string> MessageFn { get; }
 
-        FunctionOrValue<bool> MustAnswer { get; }
+        FunctionOrValue<bool> OptionalFn { get; }
 
-        AnswersFunc<bool> CanAsk { get; }
+        AnswersFunc<bool> CanAskFn { get; }
 
-        FunctionOrValue<ColorString> StaticText { get; }
+        FunctionOrValue<ColorString> StaticTextFn { get; }
 
-        AnswersFunc<object> DefaultValueGetter { get; }
+        AnswersFunc<object> DefaultValueFn { get; }
 
-        Func<string, object> Transformer { get; }
+        Func<string, object> TransformerFn { get; }
 
-        Validator<string> RawValueValidator { get; }
+        Validator<string> RawValueValidatorFn { get; }
 
-        Validator<object> Validator { get; }
+        Validator<object> ValidatorFn { get; }
+
+        AskerFn AskerFn { get; }
     }
 
     public delegate TResult AnswersFunc<TResult>(dynamic answers);
 
     public delegate ValidationResult Validator<TValue>(TValue value, dynamic answers);
+
+    public delegate string AskerFn(IQuestion question, dynamic answers);
 }
