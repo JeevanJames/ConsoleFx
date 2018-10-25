@@ -41,7 +41,7 @@ namespace ConsoleFx.Prompter
 
         AnswersFunc<bool> CanAsk { get; }
 
-        FunctionOrValue<IReadOnlyList<ColorString>> Banner { get; }
+        FunctionOrValue<ColorString> StaticText { get; }
 
         AnswersFunc<object> DefaultValueGetter { get; }
 

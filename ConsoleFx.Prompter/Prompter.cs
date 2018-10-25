@@ -52,14 +52,11 @@ namespace ConsoleFx.Prompter
 
             foreach (IQuestion question in Questions)
             {
-                if (question is Banner)
+                if (question is StaticText)
                 {
-                    IReadOnlyList<ColorString> bannerText = question.Banner.Resolve(answers);
-                    if (bannerText?.Count > 0)
-                    {
-                        ConsoleEx.WriteBlankLine();
-                        ConsoleEx.WriteLineColor(bannerText.ToArray());
-                    }
+                    ColorString staticText = question.StaticText.Resolve(answers);
+                    if (staticText != null)
+                        ConsoleEx.WriteLineColor(staticText);
 
                     continue;
                 }

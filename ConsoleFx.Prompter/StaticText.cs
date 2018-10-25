@@ -4,23 +4,20 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class Banner : IQuestion
+    public sealed class StaticText : IQuestion
     {
-        private readonly FunctionOrValue<IReadOnlyList<ColorString>> _banner;
+        private readonly FunctionOrValue<ColorString> _staticText;
 
-        public Banner(params ColorString[] banner)
+        internal StaticText(FunctionOrValue<ColorString> staticText)
         {
-            if (banner == null)
-                throw new ArgumentNullException(nameof(banner));
-            _banner = banner;
+            _staticText = staticText;
         }
 
-        public Banner(Func<dynamic, IReadOnlyList<ColorString>> bannerGetter)
-        {
-            if (bannerGetter == null)
-                throw new ArgumentNullException(nameof(bannerGetter));
-            _banner = bannerGetter;
-        }
+        public static IQuestion Text(FunctionOrValue<ColorString> text) => new StaticText(text);
+
+        public static IQuestion BlankLine() => new StaticText((ColorString)string.Empty);
+
+        public static IQuestion Separator() => new StaticText((ColorString)new string('=', 80));
 
         string IQuestion.Name => throw new NotImplementedException();
 
@@ -30,7 +27,7 @@ namespace ConsoleFx.Prompter
 
         AnswersFunc<bool> IQuestion.CanAsk => throw new NotImplementedException();
 
-        FunctionOrValue<IReadOnlyList<ColorString>> IQuestion.Banner => _banner;
+        FunctionOrValue<ColorString> IQuestion.StaticText => _staticText;
 
         AnswersFunc<object> IQuestion.DefaultValueGetter => throw new NotImplementedException();
 

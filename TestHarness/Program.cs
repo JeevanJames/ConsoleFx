@@ -43,12 +43,15 @@ namespace TestHarness
         private static int Main()
         {
             dynamic answers = Prompter.Ask(
-                new Banner("Please answer the following questions [red]truthfully"),
+                StaticText.Text((ColorString)"Please answer the following questions [red]truthfully"),
                 Question.Mandatory("Name", "What's your name?"),
                 Question.Mandatory("Age", "What's your age?")
                     .AsInteger()
                     .Validate(value => value > 0 ? true : (ValidationResult)"Enter positive age"),
-                new Banner("This question is optional and reflects your opinion.", "We will keep the info private."),
+                StaticText.BlankLine(),
+                StaticText.Separator(),
+                StaticText.Text((ColorString)"This question is optional and reflects your opinion."),
+                StaticText.Text((ColorString)"We will keep the info private."),
                 Question.Mandatory("SeniorCitizen", "Do you consider yourself a senior citizen?")
                     .When(ans => ans.Age >= 60)
             );

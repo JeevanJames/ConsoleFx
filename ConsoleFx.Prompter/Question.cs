@@ -23,7 +23,6 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
-
     public sealed class Question : IQuestion
     {
         private readonly FunctionOrValue<string> _message;
@@ -40,7 +39,7 @@ namespace ConsoleFx.Prompter
 
         AnswersFunc<bool> IQuestion.CanAsk => _canAsk;
 
-        FunctionOrValue<IReadOnlyList<ColorString>> IQuestion.Banner => throw new NotImplementedException();
+        FunctionOrValue<ColorString> IQuestion.StaticText => throw new NotImplementedException();
 
         AnswersFunc<object> IQuestion.DefaultValueGetter => null;
 
@@ -120,7 +119,7 @@ namespace ConsoleFx.Prompter
 
         AnswersFunc<bool> IQuestion.CanAsk => _canAsk;
 
-        FunctionOrValue<IReadOnlyList<ColorString>> IQuestion.Banner => throw new NotImplementedException();
+        FunctionOrValue<ColorString> IQuestion.StaticText => throw new NotImplementedException();
 
         AnswersFunc<object> IQuestion.DefaultValueGetter => _defaultValueGetter;
 
