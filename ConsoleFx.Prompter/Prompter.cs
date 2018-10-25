@@ -26,9 +26,9 @@ namespace ConsoleFx.Prompter
 {
     public sealed class Prompter
     {
-        public IReadOnlyList<Question> Questions { get; }
+        public IReadOnlyList<IQuestion> Questions { get; }
 
-        public Prompter(params Question[] questions)
+        public Prompter(params IQuestion[] questions)
         {
             if (questions == null)
                 throw new ArgumentNullException(nameof(questions));
@@ -37,7 +37,7 @@ namespace ConsoleFx.Prompter
             Questions = questions;
         }
 
-        public Prompter(IEnumerable<Question> questions)
+        public Prompter(IEnumerable<IQuestion> questions)
         {
             if (questions == null)
                 throw new ArgumentNullException(nameof(questions));
@@ -50,11 +50,11 @@ namespace ConsoleFx.Prompter
         {
             var answers = new Answers(Questions.Count);
 
-            foreach (Question question in Questions)
+            foreach (IQuestion question in Questions)
             {
                 object answer = null;
 
-                if (question.WhenFn != null && !question.WhenFn(answers))
+                if (question.CanAsk != null && !question.CanAsk(answers))
                 {
                     if (question.DefaultValueGetter != null)
                         answer = question.DefaultValueGetter(answers);
@@ -62,28 +62,47 @@ namespace ConsoleFx.Prompter
                     continue;
                 }
 
-                if (question.Banner.Count > 0)
+                IReadOnlyList<ColorString> banner = question.Banner.Resolve(answers);
+                if (banner?.Count > 0)
                 {
                     ConsoleEx.WriteBlankLine();
-                    ConsoleEx.WriteLineColor(question.Banner.ToArray());
+                    ConsoleEx.WriteLineColor(banner.ToArray());
                 }
 
-                repeat_question:
-                string input = ConsoleEx.Prompt($"[cyan]{question.Message} ");
+        repeat_question:
+                string message = question.Message.Resolve(answers);
+                string input = ConsoleEx.Prompt($"[cyan]{message} ");
 
-                if (question.MustAnswer && string.IsNullOrWhiteSpace(input))
+                bool mustAnswer = question.MustAnswer.Resolve(answers);
+                if (mustAnswer && string.IsNullOrWhiteSpace(input))
                     goto repeat_question;
 
-                if (question.RawValueValidator != null && !question.RawValueValidator(input, answers))
-                    goto repeat_question;
+                if (question.RawValueValidator != null)
+                {
+                    ValidationResult validationResult = question.RawValueValidator(input, answers);
+                    if (!validationResult.Valid)
+                    {
+                        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                            ConsoleEx.WriteLineColor($"[red]{validationResult.ErrorMessage}");
+                        goto repeat_question;
+                    }
+                }
 
                 answer = question.Transformer != null ? question.Transformer(input) : input;
 
-                if (!question.MustAnswer && string.IsNullOrWhiteSpace(input) && question.DefaultValueGetter != null)
+                if (!mustAnswer && string.IsNullOrWhiteSpace(input) && question.DefaultValueGetter != null)
                     answer = question.DefaultValueGetter(answers);
 
-                if (question.Validator != null && !question.Validator(answer, answers))
-                    goto repeat_question;
+                if (question.Validator != null)
+                {
+                    ValidationResult validationResult = question.Validator(answer, answers);
+                    if (!validationResult.Valid)
+                    {
+                        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                            ConsoleEx.WriteLineColor($"[red]{validationResult.ErrorMessage}");
+                        goto repeat_question;
+                    }
+                }
 
                 answers.Add(question.Name, answer);
             }
@@ -91,7 +110,7 @@ namespace ConsoleFx.Prompter
             return answers;
         }
 
-        public static dynamic Ask(params Question[] questions)
+        public static dynamic Ask(params IQuestion[] questions)
         {
             var prompter = new Prompter(questions);
             return prompter.Ask();
