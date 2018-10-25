@@ -42,20 +42,7 @@ namespace TestHarness
     {
         private static int Main()
         {
-            dynamic answers = Prompter.Ask(
-                StaticText.Text((ColorString)"Please answer the following questions [red]truthfully"),
-                Question.Input("Name", "What's your name?"),
-                Question.Input("Age", "What's your age?")
-                    .AsInteger()
-                    .Validate(value => value > 0 ? true : (ValidationResult)"Enter positive age"),
-                Question.Password("Password", "Enter your password:"),
-                StaticText.BlankLine(),
-                StaticText.Separator(),
-                StaticText.Text((ColorString)"This question is optional and reflects your opinion."),
-                StaticText.Text((ColorString)"We will keep the info private."),
-                Question.Confirm("SeniorCitizen", "Do you consider yourself a senior citizen?")
-            );
-            Console.WriteLine($"Hi {answers.Name}, who is {answers.Age} years old ({answers.SeniorCitizen})");
+            //TestPrompter();
 
 
             WriteLineColor("[BgRed]Node Package Manager [BgGray.Black](npm) [BgYellow]by Node.js");
@@ -64,7 +51,8 @@ namespace TestHarness
                 .BgGray().Black("(npm) ")
                 .BgYellow("by Node.js")
             );
-            WriteLineColor(@"Copyright (c) 2015-16 Jeevan James");
+
+            string jName = Prompt("Enter name starting with J: ", s => s.StartsWith("J"));
             string password = ReadSecret("Enter password: ", hideCursor: false, hideMask: false, needValue: true);
             string name = Prompt("[blue.bgwhite]Enter name: ");
             WriteLineColor($"{name} : {password}");
@@ -77,6 +65,24 @@ namespace TestHarness
             }
 
             return exitCode;
+        }
+
+        private static void TestPrompter()
+        {
+            dynamic answers = Prompter.Ask(
+                StaticText.Text((ColorString) "Please answer the following questions [red]truthfully"),
+                Question.Input("Name", "What's your name?"),
+                Question.Input("Age", "What's your age?")
+                    .AsInteger()
+                    .Validate(value => value > 0 ? true : (ValidationResult) "Enter positive age"),
+                Question.Password("Password", "Enter your password:"),
+                StaticText.BlankLine(),
+                StaticText.Separator(),
+                StaticText.Text((ColorString) "This question is optional and reflects your opinion."),
+                StaticText.Text((ColorString) "We will keep the info private."),
+                Question.Confirm("SeniorCitizen", "Do you consider yourself a senior citizen?")
+            );
+            Console.WriteLine($"Hi {answers.Name}, who is {answers.Age} years old ({answers.SeniorCitizen})");
         }
     }
 

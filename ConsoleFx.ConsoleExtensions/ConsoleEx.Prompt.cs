@@ -33,5 +33,24 @@ namespace ConsoleFx.ConsoleExtensions
             WriteColor(message);
             return Console.ReadLine();
         }
+
+        public static string Prompt(ColorString message, Func<string, bool> validator)
+        {
+            WriteColor(message);
+            (int left, int top) position = (Console.CursorLeft, Console.CursorTop);
+
+            string input = Console.ReadLine();
+            bool isValid = validator(input);
+            while (!isValid)
+            {
+                Console.SetCursorPosition(position.left, position.top);
+                Console.Write(new string(' ', input.Length));
+                Console.SetCursorPosition(position.left, position.top);
+                input = Console.ReadLine();
+                isValid = validator(input);
+            }
+
+            return input;
+        }
     }
 }
