@@ -34,9 +34,8 @@ namespace ConsoleFx.ConsoleExtensions
             return Console.ReadLine();
         }
 
-        public static string Prompt(ColorString message, Func<string, bool> validator)
+        public static string Prompt(Func<string, bool> validator)
         {
-            WriteColor(message);
             (int left, int top) position = (Console.CursorLeft, Console.CursorTop);
 
             string input = Console.ReadLine();
@@ -51,6 +50,12 @@ namespace ConsoleFx.ConsoleExtensions
             }
 
             return input;
+        }
+
+        public static string Prompt(ColorString message, Func<string, bool> validator)
+        {
+            WriteColor(message);
+            return Prompt(validator);
         }
     }
 }
