@@ -52,6 +52,18 @@ namespace ConsoleFx.Prompter
 
             foreach (IQuestion question in Questions)
             {
+                if (question is Banner)
+                {
+                    IReadOnlyList<ColorString> bannerText = question.Banner.Resolve(answers);
+                    if (bannerText?.Count > 0)
+                    {
+                        ConsoleEx.WriteBlankLine();
+                        ConsoleEx.WriteLineColor(bannerText.ToArray());
+                    }
+
+                    continue;
+                }
+
                 object answer = null;
 
                 if (question.CanAsk != null && !question.CanAsk(answers))
@@ -60,13 +72,6 @@ namespace ConsoleFx.Prompter
                         answer = question.DefaultValueGetter(answers);
                     answers.Add(question.Name, answer);
                     continue;
-                }
-
-                IReadOnlyList<ColorString> banner = question.Banner.Resolve(answers);
-                if (banner?.Count > 0)
-                {
-                    ConsoleEx.WriteBlankLine();
-                    ConsoleEx.WriteLineColor(banner.ToArray());
                 }
 
         repeat_question:

@@ -29,7 +29,6 @@ namespace ConsoleFx.Prompter
         private readonly FunctionOrValue<string> _message;
         private FunctionOrValue<bool> _mustAnswer;
         private AnswersFunc<bool> _canAsk;
-        private FunctionOrValue<IReadOnlyList<ColorString>> _bannerGetter;
         private Validator<string> _rawValueValidator;
         private Func<string, object> _transformer;
 
@@ -41,7 +40,7 @@ namespace ConsoleFx.Prompter
 
         AnswersFunc<bool> IQuestion.CanAsk => _canAsk;
 
-        FunctionOrValue<IReadOnlyList<ColorString>> IQuestion.Banner => _bannerGetter;
+        FunctionOrValue<IReadOnlyList<ColorString>> IQuestion.Banner => throw new NotImplementedException();
 
         AnswersFunc<object> IQuestion.DefaultValueGetter => null;
 
@@ -84,22 +83,6 @@ namespace ConsoleFx.Prompter
             return this;
         }
 
-        public Question Banner(params ColorString[] text)
-        {
-            if (text == null)
-                throw new ArgumentNullException(nameof(text));
-            _bannerGetter = new List<ColorString>(text);
-            return this;
-        }
-
-        public Question Banner(Func<dynamic, IReadOnlyList<ColorString>> func)
-        {
-            if (func == null)
-                throw new ArgumentNullException(nameof(func));
-            _bannerGetter = func;
-            return this;
-        }
-
         public Question Validate(Validator<string> validator)
         {
             if (validator == null)
@@ -124,7 +107,6 @@ namespace ConsoleFx.Prompter
         private readonly FunctionOrValue<string> _message;
         private FunctionOrValue<bool> _mustAnswer;
         private AnswersFunc<bool> _canAsk;
-        private FunctionOrValue<IReadOnlyList<ColorString>> _bannerGetter;
         private AnswersFunc<object> _defaultValueGetter;
         private Validator<string> _rawValueValidator;
         private Func<string, object> _transformer;
@@ -138,7 +120,7 @@ namespace ConsoleFx.Prompter
 
         AnswersFunc<bool> IQuestion.CanAsk => _canAsk;
 
-        FunctionOrValue<IReadOnlyList<ColorString>> IQuestion.Banner => _bannerGetter;
+        FunctionOrValue<IReadOnlyList<ColorString>> IQuestion.Banner => throw new NotImplementedException();
 
         AnswersFunc<object> IQuestion.DefaultValueGetter => _defaultValueGetter;
 
@@ -154,7 +136,6 @@ namespace ConsoleFx.Prompter
             _message = question.Message;
             _mustAnswer = question.MustAnswer;
             _canAsk = question.CanAsk;
-            _bannerGetter = question.Banner;
             _defaultValueGetter = question.DefaultValueGetter;
             _rawValueValidator = question.RawValueValidator;
             _transformer = question.Transformer;
