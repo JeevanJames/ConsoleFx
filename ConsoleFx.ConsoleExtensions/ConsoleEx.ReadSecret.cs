@@ -61,7 +61,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>The entered stream of characters as a string.</returns>
         public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false, bool needValue = false)
         {
-            WriteColor(prompt);
+            Print(prompt);
             return ReadSecret(hideCursor, hideMask, needValue);
         }
 
@@ -78,10 +78,23 @@ namespace ConsoleFx.ConsoleExtensions
 
         public static SecureString ReadSecretSecure(ColorString prompt, bool hideCursor = false, bool hideMask = false)
         {
-            WriteColor(prompt);
+            Print(prompt);
             return ReadSecretSecure(hideCursor, hideMask);
         }
 
+        /// <summary>
+        /// Common method used by both the <see cref="ReadSecret(bool,bool,bool)"/> and <see cref="ReadSecretSecure(bool,bool,bool)"/> methods to receive a secret input from the user.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the resultant secret.</typeparam>
+        /// <typeparam name="TAccumulator">The type of the accumulator, used to incrementally build the resultant secret (could be the same type as the result).</typeparam>
+        /// <param name="accumulatorFactory">Function to create the accumulator type.</param>
+        /// <param name="accumulatorAppender">Function to append a single entered character to the accumulator.</param>
+        /// <param name="getAccumulatorLength">Function to retrieve the current length of the accumulator.</param>
+        /// <param name="resultExtractor">Function to extract the final result from the accumulator.</param>
+        /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
+        /// <param name="needValue">If true, at least one character must be entered.</param>
+        /// <returns>The entered data.</returns>
         private static TResult ReadSecretCommon<TResult, TAccumulator>(
             Func<TAccumulator> accumulatorFactory,
             Action<TAccumulator, char> accumulatorAppender,

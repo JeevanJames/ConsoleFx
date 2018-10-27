@@ -40,31 +40,50 @@ namespace TestHarness
 
     public static class Program
     {
-        private static int Main()
+        private static int Main(string[] args)
         {
+            if (args.Length > 0)
+                Console.WriteLine(string.Join(" ", args));
+
             //TestPrompter();
 
+            TestColorOutput();
 
-            WriteLineColor("[BgRed]Node Package Manager [BgGray.Black](npm) [BgYellow]by Node.js");
-            WriteLineColor(new ColorString()
+            TestPrompts();
+
+            TestParser();
+
+            if (Debugger.IsAttached)
+            {
+                Print("Did you enjoy this program?");
+                char key = WaitForKeys(ignoreCase: true, 'Y', 'n');
+                PrintLine(key.ToString());
+                WaitForAnyKey();
+            }
+
+            return 0;
+        }
+
+        private static void TestParser()
+        {
+            int exitCode = new NpmProgram(new UnixParserStyle()).Run();
+        }
+
+        private static void TestPrompts()
+        {
+            string name = Prompt("[blue.bgwhite]Enter name starting with J: ", s => s.StartsWith("J"));
+            string password = ReadSecret("Enter password: ", hideCursor: false, hideMask: false, needValue: true);
+            PrintLine($"{name} : {password}");
+        }
+
+        private static void TestColorOutput()
+        {
+            PrintLine("[BgRed]Node Package Manager [BgGray.Black](npm) [BgYellow]by Node.js");
+            PrintLine(new ColorString()
                 .BgRed("Node Package Manager ")
                 .BgGray().Black("(npm) ")
                 .BgYellow("by Node.js")
             );
-
-            string jName = Prompt("Enter name starting with J: ", s => s.StartsWith("J"));
-            string password = ReadSecret("Enter password: ", hideCursor: false, hideMask: false, needValue: true);
-            string name = Prompt("[blue.bgwhite]Enter name: ");
-            WriteLineColor($"{name} : {password}");
-            int exitCode = new NpmProgram(new UnixParserStyle()).Run();
-            if (Debugger.IsAttached)
-            {
-                char key = WaitForKeys(ignoreCase: true, 'Y', 'n');
-                WriteLineColor(key.ToString());
-                WaitForAnyKey();
-            }
-
-            return exitCode;
         }
 
         private static void TestPrompter()
@@ -96,20 +115,20 @@ namespace TestHarness
         {
             Command command = result.Command;
             if (command == null)
-                WriteLineColor(@"Root Command");
+                PrintLine(@"Root Command");
             else
-                WriteLineColor($"Command: {command.Name}");
+                PrintLine($"Command: {command.Name}");
             foreach (KeyValuePair<string, object> kvp in result.Options)
             {
-                WriteColor($"Option {kvp.Key}: ");
+                Print($"Option {kvp.Key}: ");
                 var list = kvp.Value as IList;
                 if (list != null)
                 {
                     foreach (object item in list)
-                        WriteColor($"{item?.ToString() ?? "(null)"}, ");
-                    WriteBlankLine();
+                        Print($"{item?.ToString() ?? "(null)"}, ");
+                    PrintBlank();
                 } else
-                    WriteLineColor(kvp.Value.ToString());
+                    PrintLine(kvp.Value.ToString());
             }
             return 0;
         }

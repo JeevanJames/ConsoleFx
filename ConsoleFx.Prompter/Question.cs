@@ -119,9 +119,9 @@ namespace ConsoleFx.Prompter
         {
             AskerFn asker = (q, ans) =>
             {
-                ConsoleEx.WriteColor(q.MessageFn.Resolve(ans) + "(y/n)");
+                ConsoleEx.Print(q.MessageFn.Resolve(ans) + "(y/n)");
                 ConsoleKey pressed = ConsoleEx.WaitForKeys(ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
-                ConsoleEx.WriteBlankLine();
+                ConsoleEx.PrintBlank();
                 return pressed.ToString();
             };
             return new Question(name, message, asker)

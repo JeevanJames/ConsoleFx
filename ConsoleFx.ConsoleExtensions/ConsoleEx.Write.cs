@@ -28,7 +28,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// Writes a <see cref="ColorString"/> object to the console.
         /// </summary>
         /// <param name="message">The <see cref="ColorString"/> object to write.</param>
-        public static void WriteColor(ColorString message)
+        public static void Print(ColorString message)
         {
             foreach (ColorStringBlock block in message)
             {
@@ -41,31 +41,27 @@ namespace ConsoleFx.ConsoleExtensions
             Console.ResetColor();
         }
 
-        public static void WriteLineColor(params ColorString[] messages)
+        /// <summary>
+        /// Writes one or more <see cref="ColorString"/> objects to the console.
+        /// </summary>
+        /// <param name="messages">The <see cref="ColorString"/> objects to write.</param>
+        public static void PrintLine(params ColorString[] messages)
         {
             foreach (ColorString message in messages)
             {
-                WriteColor(message);
+                Print(message);
                 Console.WriteLine();
             }
         }
 
         /// <summary>
-        ///     Writes a blank line to the Console. Just a more descriptive way to do a Console.WriteLine().
+        ///     Writes one or more blank lines to the Console.
+        ///     Just a more descriptive way to do a <code>Console.WriteLine()</code>.
         /// </summary>
-        public static void WriteBlankLine()
+        public static void PrintBlank(int count = 1)
         {
-            Console.WriteLine();
-        }
-
-        /// <summary>
-        ///     Writes multiple lines to the console.
-        /// </summary>
-        /// <param name="lines">The lines to write.</param>
-        public static void WriteLines(params ColorString[] lines)
-        {
-            foreach (ColorString line in lines)
-                WriteLineColor(line);
+            for (int i = 0; i < count; i++)
+                Console.WriteLine();
         }
 
         /// <summary>
@@ -73,10 +69,10 @@ namespace ConsoleFx.ConsoleExtensions
         /// </summary>
         /// <param name="indent">The indent to left align each line.</param>
         /// <param name="lines">The lines to write.</param>
-        public static void WriteLines(int indent, params string[] lines)
+        public static void PrintIndented(int indent, params string[] lines)
         {
             foreach (string line in lines)
-                WriteIndented(line, indent, true);
+                PrintIndented(line, indent, true);
         }
 
         /// <summary>
@@ -88,7 +84,7 @@ namespace ConsoleFx.ConsoleExtensions
         ///     Whether the first line should be indented or just written from the current cursor
         ///     position.
         /// </param>
-        public static void WriteIndented(string text, int indent, bool indentFirstLine = false)
+        public static void PrintIndented(string text, int indent, bool indentFirstLine = false)
         {
             if (text == null)
                 throw new ArgumentNullException(nameof(text));

@@ -112,20 +112,7 @@ namespace ConsoleFx.ConsoleExtensions
         {
             var sb = new StringBuilder();
             foreach (ColorStringBlock block in _blocks)
-            {
-                if (block.ForeColor.HasValue || block.BackColor.HasValue)
-                {
-                    sb.Append("[");
-                    if (block.ForeColor.HasValue)
-                        sb.Append(block.ForeColor.Value);
-                    if (block.ForeColor.HasValue && block.BackColor.HasValue)
-                        sb.Append(".");
-                    if (block.BackColor.HasValue)
-                        sb.Append(block.BackColor.Value);
-                    sb.Append("]");
-                }
-                sb.Append(block.Text);
-            }
+                sb.Append(block.ToString());
             return sb.ToString();
         }
 

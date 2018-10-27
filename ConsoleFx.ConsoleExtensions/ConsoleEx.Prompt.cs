@@ -30,21 +30,27 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>The input entered by the user</returns>
         public static string Prompt(ColorString message)
         {
-            WriteColor(message);
+            Print(message);
             return Console.ReadLine();
         }
 
+        /// <summary>
+        /// Accepts user input and validates the input with the specified validator.
+        /// If the input is not valid, the entered text is cleared and user prompted to enter the input again.
+        /// </summary>
+        /// <param name="validator">Function to validate the input text</param>
+        /// <returns>The input entered by the user</returns>
         public static string Prompt(Func<string, bool> validator)
         {
-            (int left, int top) position = (Console.CursorLeft, Console.CursorTop);
+            (int left, int top) = (Console.CursorLeft, Console.CursorTop);
 
             string input = Console.ReadLine();
             bool isValid = validator(input);
             while (!isValid)
             {
-                Console.SetCursorPosition(position.left, position.top);
+                Console.SetCursorPosition(left, top);
                 Console.Write(new string(' ', input.Length));
-                Console.SetCursorPosition(position.left, position.top);
+                Console.SetCursorPosition(left, top);
                 input = Console.ReadLine();
                 isValid = validator(input);
             }
@@ -54,7 +60,7 @@ namespace ConsoleFx.ConsoleExtensions
 
         public static string Prompt(ColorString message, Func<string, bool> validator)
         {
-            WriteColor(message);
+            Print(message);
             return Prompt(validator);
         }
     }

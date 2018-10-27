@@ -56,7 +56,7 @@ namespace ConsoleFx.Prompter
                 {
                     ColorString staticText = question.StaticTextFn.Resolve(answers);
                     if (staticText != null)
-                        ConsoleEx.WriteLineColor(staticText);
+                        ConsoleEx.PrintLine(staticText);
                     continue;
                 }
 
@@ -85,7 +85,7 @@ namespace ConsoleFx.Prompter
                         if (!validationResult.Valid)
                         {
                             if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                                ConsoleEx.WriteLineColor($"[red]{validationResult.ErrorMessage}");
+                                ConsoleEx.PrintLine($"[red]{validationResult.ErrorMessage}");
                             continue;
                         }
                     }
@@ -101,7 +101,7 @@ namespace ConsoleFx.Prompter
                         if (!validationResult.Valid)
                         {
                             if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                                ConsoleEx.WriteLineColor($"[red]{validationResult.ErrorMessage}");
+                                ConsoleEx.PrintLine($"[red]{validationResult.ErrorMessage}");
                             continue;
                         }
                     }

@@ -41,10 +41,10 @@ namespace MyNuGet
         private static int Main()
         {
             WriteLine($"{ForegroundColor} - {BackgroundColor}");
-            WriteLineColor("[gray]MyNuGet NuGet Simulator");
-            WriteLineColor("[DkGreen.BgYellow]The best damn nuget out there");
-            WriteLineColor("[White.BgMagenta]MyNuGet NuGet Simulator");
-            WriteLineColor("[Blue.BgYellow]Written by Jeevan James");
+            PrintLine("[gray]MyNuGet NuGet Simulator");
+            PrintLine("[DkGreen.BgYellow]The best damn nuget out there");
+            PrintLine("[White.BgMagenta]MyNuGet NuGet Simulator");
+            PrintLine("[Blue.BgYellow]Written by Jeevan James");
             int exitCode = new Program(new WindowsParserStyle()).Run();
             if (Debugger.IsAttached)
                 ReadLine();
