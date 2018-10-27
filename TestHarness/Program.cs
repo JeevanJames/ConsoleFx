@@ -42,22 +42,26 @@ namespace TestHarness
     {
         private static int Main(string[] args)
         {
-            if (args.Length > 0)
-                Console.WriteLine(string.Join(" ", args));
-
+            int choice = PromptList(new [] {
+                "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
+            }, new PromptListSettings
+            {
+                SelectedForegroundColor = CColor.Yellow,
+                SelectedBackgroundColor = CColor.BgDkGreen,
+                SelectedPrefix = "> "
+            });
+            Console.WriteLine(choice);
             //TestPrompter();
 
-            TestColorOutput();
+            //TestColorOutput();
 
-            TestPrompts();
+            //TestPrompts();
 
-            TestParser();
+            //TestParser();
 
             if (Debugger.IsAttached)
             {
-                Print("Did you enjoy this program?");
-                char key = WaitForKeys(ignoreCase: true, 'Y', 'n');
-                PrintLine(key.ToString());
+                PrintBlank(3);
                 WaitForAnyKey();
             }
 

@@ -52,57 +52,84 @@ namespace ConsoleFx.ConsoleExtensions
 
         public ColorString(string initialText)
         {
-            SetBlock(initialText, null, null);
+            Text(initialText, null, null);
         }
 
-        public ColorString Text(string text, CColor? foreColor = null, CColor? backColor = null) =>
-            SetBlock(text, foreColor, backColor);
+        /// <summary>
+        /// <para>Adds the text to the color string with the specified foreground and background colors.</para>
+        /// <para>The colors are optional and if not specified, they retain whatever values they were before.</para>
+        /// <para>Unless you want to dynamically specify the colors, prefer using the color-specified methods like <see cref="Red"/>.</para>
+        /// </summary>
+        /// <param name="text">The text to add to the color string.</param>
+        /// <param name="foreColor">Optional foreground color for the text.</param>
+        /// <param name="backColor">Optional background color for the text.</param>
+        /// <returns>The current instance of <see cref="ColorString"/>.</returns>
+        public ColorString Text(string text, CColor? foreColor = null, CColor? backColor = null)
+        {
+            if (foreColor.HasValue)
+                _currentForeColor = foreColor.Value;
+            if (backColor.HasValue)
+                _currentBackColor = backColor.Value;
+            if (!string.IsNullOrEmpty(text))
+                _blocks.Add(new ColorStringBlock(text, _currentForeColor, _currentBackColor));
+            return this;
+        }
 
+        /// <summary>
+        /// Resets the foreground color.
+        /// </summary>
+        /// <param name="text">Optional text to append to the color string after resetting the foreground color.</param>
+        /// <returns>The current instance of <see cref="ColorString"/>.</returns>
         public ColorString Reset(string text = null)
         {
             _currentForeColor = null;
-            return SetBlock(text, null, null);
+            return Text(text, null, null);
         }
 
+        /// <summary>
+        /// Resets the background color.
+        /// </summary>
+        /// <param name="text">Optional text to append to the color string after resetting the background color.</param>
+        /// <returns>The current instance of <see cref="ColorString"/>.</returns>
         public ColorString BgReset(string text = null)
         {
             _currentBackColor = null;
-            return SetBlock(text, null, null);
+            return Text(text, null, null);
         }
 
-        public ColorString Black(string text = null) => SetBlock(text, CColor.Black);
-        public ColorString Blue(string text = null) => SetBlock(text, CColor.Blue);
-        public ColorString Cyan(string text = null) => SetBlock(text, CColor.Cyan);
-        public ColorString DkBlue(string text = null) => SetBlock(text, CColor.DkBlue);
-        public ColorString DkCyan(string text = null) => SetBlock(text, CColor.DkCyan);
-        public ColorString DkGray(string text = null) => SetBlock(text, CColor.DkGray);
-        public ColorString DkGreen(string text = null) => SetBlock(text, CColor.DkGreen);
-        public ColorString DkMagenta(string text = null) => SetBlock(text, CColor.DkMagenta);
-        public ColorString DkRed(string text = null) => SetBlock(text, CColor.DkRed);
-        public ColorString DkYellow(string text = null) => SetBlock(text, CColor.DkYellow);
-        public ColorString Gray(string text = null) => SetBlock(text, CColor.Gray);
-        public ColorString Green(string text = null) => SetBlock(text, CColor.Green);
-        public ColorString Magenta(string text = null) => SetBlock(text, CColor.Magenta);
-        public ColorString Red(string text = null) => SetBlock(text, CColor.Red);
-        public ColorString White(string text = null) => SetBlock(text, CColor.White);
-        public ColorString Yellow(string text = null) => SetBlock(text, CColor.Yellow);
+        public ColorString Black(string text = null) => Text(text, CColor.Black);
+        public ColorString Blue(string text = null) => Text(text, CColor.Blue);
+        public ColorString Cyan(string text = null) => Text(text, CColor.Cyan);
+        public ColorString DkBlue(string text = null) => Text(text, CColor.DkBlue);
+        public ColorString DkCyan(string text = null) => Text(text, CColor.DkCyan);
+        public ColorString DkGray(string text = null) => Text(text, CColor.DkGray);
+        public ColorString DkGreen(string text = null) => Text(text, CColor.DkGreen);
+        public ColorString DkMagenta(string text = null) => Text(text, CColor.DkMagenta);
+        public ColorString DkRed(string text = null) => Text(text, CColor.DkRed);
+        public ColorString DkYellow(string text = null) => Text(text, CColor.DkYellow);
+        public ColorString Gray(string text = null) => Text(text, CColor.Gray);
+        public ColorString Green(string text = null) => Text(text, CColor.Green);
+        public ColorString Magenta(string text = null) => Text(text, CColor.Magenta);
+        public ColorString Red(string text = null) => Text(text, CColor.Red);
+        public ColorString White(string text = null) => Text(text, CColor.White);
+        public ColorString Yellow(string text = null) => Text(text, CColor.Yellow);
 
-        public ColorString BgBlack(string text = null) => SetBlock(text, null, CColor.Black);
-        public ColorString BgBlue(string text = null) => SetBlock(text, null, CColor.Blue);
-        public ColorString BgCyan(string text = null) => SetBlock(text, null, CColor.Cyan);
-        public ColorString BgDkBlue(string text = null) => SetBlock(text, null, CColor.BgDkBlue);
-        public ColorString BgDkCyan(string text = null) => SetBlock(text, null, CColor.BgDkCyan);
-        public ColorString BgDkGray(string text = null) => SetBlock(text, null, CColor.BgDkGray);
-        public ColorString BgDkGreen(string text = null) => SetBlock(text, null, CColor.BgDkGreen);
-        public ColorString BgDkMagenta(string text = null) => SetBlock(text, null, CColor.BgDkMagenta);
-        public ColorString BgDkRed(string text = null) => SetBlock(text, null, CColor.BgDkRed);
-        public ColorString BgDkYellow(string text = null) => SetBlock(text, null, CColor.BgDkYellow);
-        public ColorString BgGray(string text = null) => SetBlock(text, null, CColor.Gray);
-        public ColorString BgGreen(string text = null) => SetBlock(text, null, CColor.Green);
-        public ColorString BgMagenta(string text = null) => SetBlock(text, null, CColor.Magenta);
-        public ColorString BgRed(string text = null) => SetBlock(text, null, CColor.Red);
-        public ColorString BgWhite(string text = null) => SetBlock(text, null, CColor.White);
-        public ColorString BgYellow(string text = null) => SetBlock(text, null, CColor.Yellow);
+        public ColorString BgBlack(string text = null) => Text(text, null, CColor.Black);
+        public ColorString BgBlue(string text = null) => Text(text, null, CColor.Blue);
+        public ColorString BgCyan(string text = null) => Text(text, null, CColor.Cyan);
+        public ColorString BgDkBlue(string text = null) => Text(text, null, CColor.BgDkBlue);
+        public ColorString BgDkCyan(string text = null) => Text(text, null, CColor.BgDkCyan);
+        public ColorString BgDkGray(string text = null) => Text(text, null, CColor.BgDkGray);
+        public ColorString BgDkGreen(string text = null) => Text(text, null, CColor.BgDkGreen);
+        public ColorString BgDkMagenta(string text = null) => Text(text, null, CColor.BgDkMagenta);
+        public ColorString BgDkRed(string text = null) => Text(text, null, CColor.BgDkRed);
+        public ColorString BgDkYellow(string text = null) => Text(text, null, CColor.BgDkYellow);
+        public ColorString BgGray(string text = null) => Text(text, null, CColor.Gray);
+        public ColorString BgGreen(string text = null) => Text(text, null, CColor.Green);
+        public ColorString BgMagenta(string text = null) => Text(text, null, CColor.Magenta);
+        public ColorString BgRed(string text = null) => Text(text, null, CColor.Red);
+        public ColorString BgWhite(string text = null) => Text(text, null, CColor.White);
+        public ColorString BgYellow(string text = null) => Text(text, null, CColor.Yellow);
 
         /// <summary>
         /// Builds a string representing the text blocks defined in the object.
@@ -114,17 +141,6 @@ namespace ConsoleFx.ConsoleExtensions
             foreach (ColorStringBlock block in _blocks)
                 sb.Append(block.ToString());
             return sb.ToString();
-        }
-
-        private ColorString SetBlock(string text, CColor? foreColor = null, CColor? backColor = null)
-        {
-            if (foreColor.HasValue)
-                _currentForeColor = foreColor.Value;
-            if (backColor.HasValue)
-                _currentBackColor = backColor.Value;
-            if (!string.IsNullOrEmpty(text))
-                _blocks.Add(new ColorStringBlock(text, _currentForeColor, _currentBackColor));
-            return this;
         }
 
         #region Interface implementations
@@ -159,16 +175,15 @@ namespace ConsoleFx.ConsoleExtensions
             MatchCollection matches = ColorStringPattern.Matches(cstr);
             if (matches.Count == 0)
             {
-                colorStr.SetBlock(cstr);
+                colorStr.Text(cstr);
                 return true;
             }
 
-            colorStr = new ColorString();
             for (int i = 0; i < matches.Count; i++)
             {
                 int startIndex = i == 0 ? 0 : matches[i - 1].Index + matches[i - 1].Length;
                 int endIndex = matches[i].Index;
-                colorStr.SetBlock(cstr.Substring(startIndex, endIndex - startIndex));
+                colorStr.Text(cstr.Substring(startIndex, endIndex - startIndex));
 
                 // First color is always specified. Figure it out.
                 string color1Str = matches[i].Groups[1].Value;
@@ -206,11 +221,11 @@ namespace ConsoleFx.ConsoleExtensions
                         backColor = color2.Value;
                 }
 
-                colorStr.SetBlock(null, foreColor, backColor);
+                colorStr.Text(null, foreColor, backColor);
             }
 
             Match lastMatch = matches[matches.Count - 1];
-            colorStr.SetBlock(cstr.Substring(lastMatch.Index + lastMatch.Length));
+            colorStr.Text(cstr.Substring(lastMatch.Index + lastMatch.Length));
 
             return true;
         }
