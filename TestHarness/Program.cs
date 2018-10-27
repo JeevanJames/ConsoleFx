@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Programs;
 using ConsoleFx.CmdLineParser.UnixStyle;
@@ -42,15 +42,10 @@ namespace TestHarness
     {
         private static int Main(string[] args)
         {
-            int choice = PromptList(new [] {
+            var choices = SelectMultiple(new [] {
                 "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
-            }, new PromptListSettings
-            {
-                SelectedForegroundColor = CColor.Yellow,
-                SelectedBackgroundColor = CColor.BgDkGreen,
-                SelectedPrefix = "> "
-            });
-            Console.WriteLine(choice);
+            }, SelectMultipleSettings.Default);
+            Console.WriteLine(string.Join(", ", choices));
             //TestPrompter();
 
             //TestColorOutput();
