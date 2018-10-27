@@ -42,9 +42,11 @@ namespace TestHarness
     {
         private static int Main(string[] args)
         {
+            SelectMultipleSettings.Default.CheckedFormat = "{0} [YA]";
+            SelectMultipleSettings.Default.UncheckedFormat = "{0} [NO]";
             var choices = SelectMultiple(new [] {
                 "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
-            }, SelectMultipleSettings.Default);
+            });
             Console.WriteLine(string.Join(", ", choices));
             //TestPrompter();
 
