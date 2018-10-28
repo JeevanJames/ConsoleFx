@@ -26,7 +26,7 @@ namespace ConsoleFx.ConsoleExtensions
     /// </summary>
     public sealed class ColorStringBlock
     {
-        internal ColorStringBlock(string text, CColor? foreColor = null, CColor? backColor = null)
+        internal ColorStringBlock(string text, CColor? foreColor, CColor? backColor)
         {
             Text = text;
             ForeColor = foreColor;

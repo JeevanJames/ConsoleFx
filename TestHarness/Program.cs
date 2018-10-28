@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Programs;
 using ConsoleFx.CmdLineParser.UnixStyle;
@@ -42,6 +42,8 @@ namespace TestHarness
     {
         private static int Main(string[] args)
         {
+            PrintLine($"{Console.ForegroundColor}, {Console.BackgroundColor}");
+
             var choice = SelectSingle(new[] {
                 "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
             });
@@ -49,6 +51,7 @@ namespace TestHarness
                 "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
             }, checkedIndices: new [] { 0, 2 });
             Console.WriteLine(string.Join(", ", choices));
+
             //TestPrompter();
 
             //TestColorOutput();
