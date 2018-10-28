@@ -25,10 +25,7 @@ namespace ConsoleFx.ConsoleExtensions
 {
     public static partial class ConsoleEx
     {
-        public static int SelectSingle(params string[] options) =>
-            SelectSingle(options, SelectSingleSettings.Default);
-
-        public static int SelectSingle(IEnumerable<string> optionsList, SelectSingleSettings settings = null)
+        public static int SelectSingle(IEnumerable<string> optionsList, SelectSingleSettings settings = null, int startingIndex = 0)
         {
             if (optionsList == null)
                 throw new ArgumentNullException(nameof(optionsList));
@@ -39,6 +36,9 @@ namespace ConsoleFx.ConsoleExtensions
 
             settings = settings ?? SelectSingleSettings.Default;
 
+            if (startingIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startingIndex));
+
             ClearCurrentLine();
 
             bool cursorVisible = Console.CursorVisible;
@@ -48,19 +48,19 @@ namespace ConsoleFx.ConsoleExtensions
             {
                 int startLine = Console.CursorTop;
 
-                int selectedChoice = settings.StartingIndex >= 0 && settings.StartingIndex < options.Count
-                    ? settings.StartingIndex : 0;
-                string unselectedPrefix = settings.Unselected.Prefix ?? new string(' ', settings.Selected.Prefix.Length);
+                int selectedChoice = startingIndex >= 0 && startingIndex < options.Count
+                    ? startingIndex : 0;
+                string unselectedPrefix = settings.UnselectedPrefix ?? new string(' ', settings.SelectedPrefix.Length);
 
                 // Print the initial list with the selected value highlighted
                 for (int i = 0; i < options.Count; i++)
                 {
                     if (i == selectedChoice)
-                        PrintLine(new ColorString().Text($"{settings.Selected.Prefix}{options[i]}",
-                            settings.Selected.ForegroundColor, settings.Selected.BackgroundColor));
+                        PrintLine(new ColorString().Text($"{settings.SelectedPrefix}{options[i]}",
+                            settings.SelectedFgColor, settings.SelectedBgColor));
                     else
                         PrintLine(new ColorString().Text($"{unselectedPrefix}{options[i]}",
-                            settings.Unselected.ForegroundColor, settings.Unselected.BackgroundColor));
+                            settings.UnselectedFgColor, settings.UnselectedBgColor));
                 }
 
                 // Repeatedly handle up and down arrow key presses until Enter is pressed
@@ -80,11 +80,11 @@ namespace ConsoleFx.ConsoleExtensions
 
                     Console.SetCursorPosition(0, startLine + oldChoice);
                     Print(new ColorString().Text($"{unselectedPrefix}{options[oldChoice]}",
-                        settings.Unselected.ForegroundColor, settings.Unselected.BackgroundColor));
+                        settings.UnselectedFgColor, settings.UnselectedBgColor));
 
                     Console.SetCursorPosition(0, startLine + selectedChoice);
-                    Print(new ColorString().Text($"{settings.Selected.Prefix}{options[selectedChoice]}",
-                        settings.Selected.ForegroundColor, settings.Selected.BackgroundColor));
+                    Print(new ColorString().Text($"{settings.SelectedPrefix}{options[selectedChoice]}",
+                        settings.SelectedFgColor, settings.SelectedBgColor));
 
                     pressed = WaitForKeys(ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
                 }
@@ -99,10 +99,7 @@ namespace ConsoleFx.ConsoleExtensions
             }
         }
 
-        public static IReadOnlyList<int> SelectMultiple(params string[] options) =>
-            SelectMultiple(options, SelectMultipleSettings.Default);
-
-        public static IReadOnlyList<int> SelectMultiple(IEnumerable<string> optionsList, SelectMultipleSettings settings = null)
+        public static IReadOnlyList<int> SelectMultiple(IEnumerable<string> optionsList, SelectMultipleSettings settings = null, int startingIndex = 0, IEnumerable<int> checkedIndices = null)
         {
             if (optionsList == null)
                 throw new ArgumentNullException(nameof(optionsList));
@@ -113,26 +110,28 @@ namespace ConsoleFx.ConsoleExtensions
 
             settings = settings ?? SelectMultipleSettings.Default;
 
-            if (settings.StartingIndex < 0 || settings.StartingIndex >= options.Count)
+            if (startingIndex < 0 || startingIndex >= options.Count)
                 throw new ArgumentOutOfRangeException("Selected index in settings is out of range.", nameof(settings));
 
-            if (settings.CheckedIndices.Any(c => c < 0 || c >= options.Count))
+            if (checkedIndices == null)
+                checkedIndices = Enumerable.Empty<int>();
+            if (checkedIndices.Any(c => c < 0 || c >= options.Count))
                 throw new ArgumentOutOfRangeException("Checked indices in settings contain out of range values.", nameof(settings));
-
-            ClearCurrentLine();
 
             bool cursorVisible = Console.CursorVisible;
             Console.CursorVisible = false;
 
             try
             {
+                ClearCurrentLine();
+
                 int startLine = Console.CursorTop;
 
-                int selectedChoice = settings.StartingIndex;
+                int selectedChoice = startingIndex;
 
                 List<bool> checkedItems = Enumerable.Repeat(false, options.Count).ToList();
-                for (int i = 0; i < settings.CheckedIndices.Count; i++)
-                    checkedItems[i] = true;
+                foreach (int checkedIndex in checkedIndices)
+                    checkedItems[checkedIndex] = true;
 
                 // Print the initial list with the selected value highlighted
                 for (int i = 0; i < options.Count; i++)
@@ -187,13 +186,13 @@ namespace ConsoleFx.ConsoleExtensions
 
                 Console.SetCursorPosition(0, startLine + options.Count);
 
-                var checkedIndices = new List<int>();
+                var result = new List<int>();
                 for (int i = 0; i < checkedItems.Count; i++)
                 {
                     if (checkedItems[i])
-                        checkedIndices.Add(i);
+                        result.Add(i);
                 }
-                return checkedIndices;
+                return result;
             }
             finally
             {
@@ -204,29 +203,26 @@ namespace ConsoleFx.ConsoleExtensions
 
     public sealed class SelectSingleSettings
     {
-        public int StartingIndex { get; set; } = 0;
+        public string SelectedPrefix { get; set; } = "> ";
 
-        public ListItemSettings Selected { get; } = new ListItemSettings();
+        public CColor? SelectedFgColor { get; set; } = CColor.Cyan;
 
-        public ListItemSettings Unselected { get; } = new ListItemSettings();
+        public CColor? SelectedBgColor { get; set; } = null;
+
+        public string UnselectedPrefix { get; set; } = null;
+
+        public CColor? UnselectedFgColor { get; set; } = null;
+
+        public CColor? UnselectedBgColor { get; set; } = null;
 
         public static SelectSingleSettings Default = new SelectSingleSettings();
     }
 
-    public sealed class ListItemSettings
-    {
-        public string Prefix { get; set; }
-
-        public CColor? ForegroundColor { get; set; }
-
-        public CColor? BackgroundColor { get; set; }
-    }
-
     public sealed class SelectMultipleSettings
     {
-        public int StartingIndex { get; set; } = 0;
+        //public int StartingIndex { get; set; } = 0;
 
-        public IList<int> CheckedIndices { get; } = new List<int>();
+        //public IList<int> CheckedIndices { get; } = new List<int>();
 
         public string CheckedFormat { get; set; } = "[X] {0}";
 
