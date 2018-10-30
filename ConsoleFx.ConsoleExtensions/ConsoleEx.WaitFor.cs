@@ -90,6 +90,13 @@ namespace ConsoleFx.ConsoleExtensions
             return key;
         }
 
+        /// <summary>
+        /// <para>Repeatedly prompts the user for a key press, until any of the specified escape keys are pressed.</para>
+        /// <para>If the pressed key if available in the specified handlers, the corresponding handler is called. If not, it is ignored and the loop continues.</para>
+        /// </summary>
+        /// <param name="handlers">Collection of keys to handle and their handlers.</param>
+        /// <param name="postKeyPress">Optional action to run after any key press, not counting the ignored keys and escape keys.</param>
+        /// <param name="escapeKeys">The keys that will break the loop. If not specified, defaults to the escape key.</param>
         public static void WaitForKeysLoop(IEnumerable<KeyHandler> handlers,
             Action<ConsoleKey> postKeyPress = null, IEnumerable<ConsoleKey> escapeKeys = null)
         {
@@ -98,9 +105,11 @@ namespace ConsoleFx.ConsoleExtensions
             if (!handlers.Any())
                 throw new ArgumentException("Specify at least one handler.", nameof(handlers));
 
+            // If the escapeKeys parameter is not specified, default it to the Escape key.
             if (escapeKeys == null)
                 escapeKeys = new[] {ConsoleKey.Escape};
 
+            // Ensure that none of the escape keys are specified in the handlers.
             if (handlers.Any(h => escapeKeys.Any(k => k == h.Key)))
                 throw new ArgumentException("Specified escape keys should not be specified in the handlers.", nameof(escapeKeys));
 
