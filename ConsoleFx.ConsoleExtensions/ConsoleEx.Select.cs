@@ -99,12 +99,20 @@ namespace ConsoleFx.ConsoleExtensions
             }
         }
 
-        public static IReadOnlyList<int> SelectMultiple(IEnumerable<string> optionsList, SelectMultipleSettings settings = null, int startingIndex = 0, IEnumerable<int> checkedIndices = null)
+        public static IReadOnlyList<int> SelectMultiple<T>(IEnumerable<T> optionsList,
+            SelectMultipleSettings settings = null,
+            int startingIndex = 0,
+            IEnumerable<int> checkedIndices = null,
+            Func<T, string> displaySelector = null,
+            Func<T, string> keySelector = null)
         {
             if (optionsList == null)
                 throw new ArgumentNullException(nameof(optionsList));
 
-            List<string> options = optionsList.ToList();
+            if (displaySelector == null)
+                displaySelector = item => item.ToString();
+
+            List<string> options = optionsList.Select(displaySelector).ToList();
             if (options.Count < 2)
                 throw new ArgumentException("Options list must have more than one item.", nameof(optionsList));
 
