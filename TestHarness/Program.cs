@@ -50,7 +50,9 @@ namespace TestHarness
             {
                 ConsoleKey.LeftArrow.HandledBy(k => value -= 1),
                 ConsoleKey.RightArrow.HandledBy(k => value += 1)
-            }, postKeyPress: k => pb.Update(value));
+            },
+                postKeyPress: k => pb.Update(value),
+                escapeKeys: new []{ConsoleKey.Escape, ConsoleKey.Enter});
 
             //TestSelects();
 

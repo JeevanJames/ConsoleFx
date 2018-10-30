@@ -91,15 +91,21 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         public static void WaitForKeysLoop(IEnumerable<KeyHandler> handlers,
-            Action<ConsoleKey> postKeyPress = null, ConsoleKey escapeKey = ConsoleKey.Escape)
+            Action<ConsoleKey> postKeyPress = null, IEnumerable<ConsoleKey> escapeKeys = null)
         {
             if (handlers == null)
                 throw new ArgumentNullException(nameof(handlers));
             if (!handlers.Any())
                 throw new ArgumentException("Specify at least one handler.", nameof(handlers));
 
+            if (escapeKeys == null)
+                escapeKeys = new[] {ConsoleKey.Escape};
+
+            if (handlers.Any(h => escapeKeys.Any(k => k == h.Key)))
+                throw new ArgumentException("Specified escape keys should not be specified in the handlers.", nameof(escapeKeys));
+
             ConsoleKey key = Console.ReadKey(true).Key;
-            while (key != escapeKey)
+            while (!escapeKeys.Any(k => k == key))
             {
                 KeyHandler handler = handlers.FirstOrDefault(h => h.Key == key);
                 if (handler != null)
@@ -113,21 +119,39 @@ namespace ConsoleFx.ConsoleExtensions
         }
     }
 
+    /// <summary>
+    /// Represents a handler for a key press in the <see cref="ConsoleEx.WaitForKeysLoop"/> method.
+    /// </summary>
     public sealed class KeyHandler
     {
         public KeyHandler(ConsoleKey key, Action<ConsoleKey> action)
         {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
             Key = key;
             Action = action;
         }
 
+        /// <summary>
+        /// The key to handle.
+        /// </summary>
         public ConsoleKey Key { get; }
 
+        /// <summary>
+        /// The handler to call when the key is pressed.
+        /// </summary>
         public Action<ConsoleKey> Action { get; }
     }
 
     public static class ConsoleKeyExtensions
     {
+        /// <summary>
+        /// Provides a fluid way to create a <see cref="KeyHandler"/> instance when using the
+        /// <see cref="ConsoleEx.WaitForKeysLoop"/> method.
+        /// </summary>
+        /// <param name="key">The key to handle.</param>
+        /// <param name="action">The handler to call when the key is pressed.</param>
+        /// <returns>An instance of the <see cref="KeyHandler"/> class.</returns>
         public static KeyHandler HandledBy(this ConsoleKey key, Action<ConsoleKey> action) =>
             new KeyHandler(key, action);
     }
