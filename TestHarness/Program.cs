@@ -43,15 +43,11 @@ namespace TestHarness
         private static int Main(string[] args)
         {
             var pb = new ProgressBar();
-            pb.Update(5);
-
-            var value = 0;
             WaitForKeysLoop(new[] 
             {
-                ConsoleKey.LeftArrow.HandledBy(k => value -= 1),
-                ConsoleKey.RightArrow.HandledBy(k => value += 1)
+                ConsoleKey.LeftArrow.HandledBy(k => pb.Value -= 1),
+                ConsoleKey.RightArrow.HandledBy(k => pb.Value += 1)
             },
-                postKeyPress: k => pb.Update(value),
                 escapeKeys: new []{ConsoleKey.Escape, ConsoleKey.Enter});
 
             //TestSelects();
