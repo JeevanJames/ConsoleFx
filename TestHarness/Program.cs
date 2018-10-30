@@ -42,15 +42,17 @@ namespace TestHarness
     {
         private static int Main(string[] args)
         {
-            PrintLine($"{Console.ForegroundColor}, {Console.BackgroundColor}");
+            var pb = new ProgressBar();
+            pb.Update(5);
 
-            var choice = SelectSingle(new[] {
-                "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
-            });
-            var choices = SelectMultiple(new [] {
-                "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
-            }, checkedIndices: new [] { 0, 2 });
-            Console.WriteLine(string.Join(", ", choices));
+            var value = 0;
+            WaitForKeysLoop(new[] 
+            {
+                ConsoleKey.LeftArrow.HandledBy(k => value -= 1),
+                ConsoleKey.RightArrow.HandledBy(k => value += 1)
+            }, postKeyPress: k => pb.Update(value));
+
+            //TestSelects();
 
             //TestPrompter();
 
@@ -67,6 +69,21 @@ namespace TestHarness
             }
 
             return 0;
+        }
+
+        private static void TestSelects()
+        {
+            PrintLine($"{Console.ForegroundColor}, {Console.BackgroundColor}");
+
+            var choice = SelectSingle(new[]
+            {
+                "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
+            });
+            var choices = SelectMultiple(new[]
+            {
+                "Jeevan James", "Merina Mathew", "Ryan James", "Emma James"
+            }, checkedIndices: new[] {0, 2});
+            Console.WriteLine(string.Join(", ", choices));
         }
 
         private static void TestParser()

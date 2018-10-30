@@ -220,10 +220,6 @@ namespace ConsoleFx.ConsoleExtensions
 
     public sealed class SelectMultipleSettings
     {
-        //public int StartingIndex { get; set; } = 0;
-
-        //public IList<int> CheckedIndices { get; } = new List<int>();
-
         public string CheckedFormat { get; set; } = "[X] {0}";
 
         public string UncheckedFormat { get; set; } = "[ ] {0}";

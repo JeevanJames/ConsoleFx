@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleFx.ConsoleExtensions
@@ -88,5 +89,46 @@ namespace ConsoleFx.ConsoleExtensions
             } while (Array.IndexOf(keys, key) < 0);
             return key;
         }
+
+        public static void WaitForKeysLoop(IEnumerable<KeyHandler> handlers,
+            Action<ConsoleKey> postKeyPress = null, ConsoleKey escapeKey = ConsoleKey.Escape)
+        {
+            if (handlers == null)
+                throw new ArgumentNullException(nameof(handlers));
+            if (!handlers.Any())
+                throw new ArgumentException("Specify at least one handler.", nameof(handlers));
+
+            ConsoleKey key = Console.ReadKey(true).Key;
+            while (key != escapeKey)
+            {
+                KeyHandler handler = handlers.FirstOrDefault(h => h.Key == key);
+                if (handler != null)
+                {
+                    handler.Action?.Invoke(key);
+                    postKeyPress?.Invoke(key);
+                }
+
+                key = Console.ReadKey(true).Key;
+            }
+        }
+    }
+
+    public sealed class KeyHandler
+    {
+        public KeyHandler(ConsoleKey key, Action<ConsoleKey> action)
+        {
+            Key = key;
+            Action = action;
+        }
+
+        public ConsoleKey Key { get; }
+
+        public Action<ConsoleKey> Action { get; }
+    }
+
+    public static class ConsoleKeyExtensions
+    {
+        public static KeyHandler HandledBy(this ConsoleKey key, Action<ConsoleKey> action) =>
+            new KeyHandler(key, action);
     }
 }
