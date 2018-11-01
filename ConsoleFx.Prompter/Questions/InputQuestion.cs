@@ -20,29 +20,33 @@ limitations under the License.
 using System;
 using ConsoleFx.ConsoleExtensions;
 
-namespace ConsoleFx.Prompter
+namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class StaticText : Question
+    public sealed class InputQuestion : TextEntryQuestion
     {
         private readonly AskerFn _askerFn;
 
-        internal StaticText(FunctionOrValue<string> message) : base(Guid.NewGuid().ToString("N"), message)
+        internal InputQuestion(string name, FunctionOrValue<string> message) : base(name, message)
         {
             _askerFn = (q, ans) =>
             {
-                ColorString staticText = q.Message.Resolve(ans);
-                if (staticText != null)
-                    ConsoleEx.PrintLine(staticText);
-                return null;
+                Func<string, bool> validator = str =>
+                {
+                    bool valid = q.RawValueValidator != null ? q.RawValueValidator(str, ans).Valid : true;
+                    var teq = (TextEntryQuestion)q;
+                    if (valid && teq.IsRequired)
+                    {
+                        return teq.AllowWhitespaceOnly
+                            ? !string.IsNullOrEmpty(str)
+                            : !string.IsNullOrWhiteSpace(str);
+                    }
+                    return valid;
+                };
+
+                return ConsoleEx.Prompt(new ColorString().Cyan(q.Message.Resolve(ans)), validator);
             };
         }
 
         internal override AskerFn AskerFn => _askerFn;
-
-        public static StaticText Text(FunctionOrValue<string> text) => new StaticText(text);
-
-        public static StaticText BlankLine() => Text(string.Empty);
-
-        public static StaticText Separator(char separator = '=') => Text(new string(separator, Console.WindowWidth));
     }
 }

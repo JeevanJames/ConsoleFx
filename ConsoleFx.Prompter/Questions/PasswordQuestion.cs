@@ -17,32 +17,38 @@ limitations under the License.
 */
 #endregion
 
-using System;
 using ConsoleFx.ConsoleExtensions;
 
-namespace ConsoleFx.Prompter
+namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class StaticText : Question
+    public sealed class PasswordQuestion : TextEntryQuestion
     {
         private readonly AskerFn _askerFn;
+        private bool _hideCursor;
+        private bool _hideMask;
 
-        internal StaticText(FunctionOrValue<string> message) : base(Guid.NewGuid().ToString("N"), message)
+        internal PasswordQuestion(string name, FunctionOrValue<string> message) : base(name, message)
         {
             _askerFn = (q, ans) =>
             {
-                ColorString staticText = q.Message.Resolve(ans);
-                if (staticText != null)
-                    ConsoleEx.PrintLine(staticText);
-                return null;
+                var pq = (PasswordQuestion) q;
+                return ConsoleEx.ReadSecret(new ColorString().Cyan(q.Message.Resolve(ans)),
+                    hideCursor: pq._hideCursor, hideMask: pq._hideMask);
             };
         }
 
+        public PasswordQuestion HideCursor()
+        {
+            _hideCursor = true;
+            return this;
+        }
+
+        public PasswordQuestion HideMask()
+        {
+            _hideMask = true;
+            return this;
+        }
+
         internal override AskerFn AskerFn => _askerFn;
-
-        public static StaticText Text(FunctionOrValue<string> text) => new StaticText(text);
-
-        public static StaticText BlankLine() => Text(string.Empty);
-
-        public static StaticText Separator(char separator = '=') => Text(new string(separator, Console.WindowWidth));
     }
 }
