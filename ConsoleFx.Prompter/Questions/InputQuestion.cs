@@ -32,7 +32,7 @@ namespace ConsoleFx.Prompter.Questions
             {
                 Func<string, bool> validator = str =>
                 {
-                    bool valid = q.RawValueValidator != null ? q.RawValueValidator(str, ans).Valid : true;
+                    bool valid = q.Validator != null ? q.Validator(str, ans).Valid : true;
                     var teq = (TextEntryQuestion)q;
                     if (valid && teq.IsRequired)
                     {

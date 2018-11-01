@@ -41,9 +41,11 @@ namespace ConsoleFx.Prompter
 
         internal AnswersFunc<bool> CanAskFn { get; set; }
 
-        internal Validator<string> RawValueValidator { get; set; }
-
         internal Validator<object> Validator { get; set; }
+
+        internal Func<object, object> ConverterFn { get; set; }
+
+        internal Validator<object> ConvertedValueValidator { get; set; }
 
         public Question When(AnswersFunc<bool> canAskFn)
         {
@@ -51,10 +53,11 @@ namespace ConsoleFx.Prompter
             return this;
         }
 
-        internal bool CanAsk(dynamic answers)
-        {
-            return CanAskFn != null ? (bool)CanAskFn(answers) : true;
-        }
+        internal bool CanAsk(dynamic answers) =>
+            CanAskFn != null ? (bool)CanAskFn(answers) : true;
+
+        internal object Convert(object value) =>
+            ConverterFn != null ? ConverterFn(value) : value;
     }
 
     public abstract partial class Question

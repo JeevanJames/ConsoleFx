@@ -31,7 +31,7 @@ namespace ConsoleFx.Prompter.Questions
         {
             if (validator == null)
                 throw new ArgumentNullException(nameof(validator));
-            RawValueValidator = (str, _) => validator(str);
+            Validator = (str, _) => validator((string)str);
             return this;
         }
 
@@ -39,7 +39,7 @@ namespace ConsoleFx.Prompter.Questions
         {
             if (validator == null)
                 throw new ArgumentNullException(nameof(validator));
-            RawValueValidator = (str, ans) => validator(str, ans);
+            Validator = (str, ans) => validator((string)str, ans);
             return this;
         }
 
@@ -47,6 +47,14 @@ namespace ConsoleFx.Prompter.Questions
         {
             IsRequired = true;
             AllowWhitespaceOnly = allowWhitespaceOnly;
+            return this;
+        }
+
+        public TextEntryQuestion Convert<T>(Func<string, T> converter)
+        {
+            if (converter == null)
+                throw new ArgumentNullException(nameof(converter));
+            ConverterFn = str => converter((string) str);
             return this;
         }
 

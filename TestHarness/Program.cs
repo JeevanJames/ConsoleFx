@@ -42,6 +42,14 @@ namespace TestHarness
     {
         private static int Main(string[] args)
         {
+            var pressed = Console.ReadKey();
+            while (pressed.Key != ConsoleKey.Escape)
+            {
+                PrintBlank();
+                PrintLine($"[red]{pressed.Key,-5}; [yellow]{(int)pressed.KeyChar,-5}; [green]{pressed.Modifiers}");
+                pressed = Console.ReadKey();
+            }
+
             //var pb = new ProgressBar();
             //WaitForKeysLoop(new[] 
             //{
@@ -52,7 +60,7 @@ namespace TestHarness
 
             //TestSelects();
 
-            TestPrompter();
+            //TestPrompter();
 
             //TestColorOutput();
 
@@ -121,9 +129,14 @@ namespace TestHarness
                     .HideCursor().Required(),
                 Question.Confirm("SavePwd", "Remember password", false),
                 StaticText.Separator(),
+                Question.Input("Age", "Enter your age: ")
+                    .Required()
+                    .Validate(str => int.TryParse(str, out _))
+                    .Convert(str => int.Parse(str)),
                 Question.List("TravelTime", "When do you want to travel?", travelTimes)
             );
-             
+            
+
             PrintLine($"Hi {answers.Name} with password {answers.Password} (Remember: {answers.SavePwd})");
             PrintLine($"Your travel time: {travelTimes[answers.TravelTime]}");
         }

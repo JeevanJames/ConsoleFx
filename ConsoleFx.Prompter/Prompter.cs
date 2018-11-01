@@ -73,10 +73,6 @@ namespace ConsoleFx.Prompter
                 {
                     object input = question.AskerFn(question, answers);
 
-                    //bool optional = question.OptionalFn.Resolve(answers);
-                    //if (!optional && string.IsNullOrWhiteSpace(input))
-                    //    continue;
-
                     //if (question.RawValueValidatorFn != null)
                     //{
                     //    ValidationResult validationResult = question.RawValueValidatorFn(input, answers);
@@ -88,7 +84,7 @@ namespace ConsoleFx.Prompter
                     //    }
                     //}
 
-                    //answer = question.TransformerFn != null ? question.TransformerFn(input) : input;
+                    answer = question.Convert(input);
 
                     //if (optional && string.IsNullOrWhiteSpace(input) && question.DefaultValueFn != null)
                     //    answer = question.DefaultValueFn(answers);
@@ -104,7 +100,6 @@ namespace ConsoleFx.Prompter
                     //    }
                     //}
 
-                    answer = input;
                     validAnswer = true;
                 } while (!validAnswer);
 
