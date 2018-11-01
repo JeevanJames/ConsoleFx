@@ -97,14 +97,7 @@ namespace ConsoleFx.Prompter
         public static StaticText Separator(char separator = '=') => Text(new string(separator, Console.WindowWidth));
     }
 
-    public abstract class Question<T> : Question
-    {
-        internal Question(string name, FunctionOrValue<string> message) : base(name, message)
-        {
-        }
-    }
-
-    public abstract class TextEntryQuestion : Question<string>
+    public abstract class TextEntryQuestion : Question
     {
         protected TextEntryQuestion(string name, FunctionOrValue<string> message) : base(name, message)
         {
@@ -197,7 +190,7 @@ namespace ConsoleFx.Prompter
         internal override AskerFn AskerFn => _askerFn;
     }
 
-    public sealed class ConfirmQuestion : Question<bool>
+    public sealed class ConfirmQuestion : Question
     {
         private readonly AskerFn _askerFn;
         private readonly bool _default;
@@ -224,7 +217,7 @@ namespace ConsoleFx.Prompter
         internal override AskerFn AskerFn => _askerFn;
     }
 
-    public sealed class ListQuestion : Question<int>
+    public sealed class ListQuestion : Question
     {
         private readonly IReadOnlyList<string> _choices;
         private readonly AskerFn _askerFn;

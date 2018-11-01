@@ -27,4 +27,8 @@
     <ProjectReference Include="..\ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Questions\" />
+  </ItemGroup>
+
 </Project>
