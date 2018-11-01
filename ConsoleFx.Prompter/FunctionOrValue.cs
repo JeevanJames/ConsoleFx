@@ -21,10 +21,20 @@ using System;
 
 namespace ConsoleFx.Prompter
 {
+    /// <summary>
+    /// Represents a fixed value or a factory function that can generate the value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
     public readonly struct FunctionOrValue<TValue>
     {
+        /// <summary>
+        /// The fixed value.
+        /// </summary>
         internal TValue Value { get; }
 
+        /// <summary>
+        /// The factory function to generate the value. 
+        /// </summary>
         internal Func<dynamic, TValue> Function { get; }
 
         internal FunctionOrValue(TValue value)
