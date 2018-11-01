@@ -108,6 +108,10 @@ namespace TestHarness
 
         private static void TestPrompter()
         {
+            string[] travelTimes =
+            {
+                "Doesn't Matter", "Morning", "Noon", "Afternoon", "Evening", "Night"
+            };
             dynamic answers = Prompter.Ask(
                 StaticText.Text("Please answer the following questions [red]truthfully"),
                 Question.Input("Name", "What's your name? ")
@@ -115,9 +119,13 @@ namespace TestHarness
                     .Validate(str => char.IsUpper(str[0])),
                 Question.Password("Password", "Enter your password: ")
                     .HideCursor().Required(),
-                Question.Confirm("SavePwd", "Remember password", false)
+                Question.Confirm("SavePwd", "Remember password", false),
+                StaticText.Separator(),
+                Question.List("TravelTime", "When do you want to travel?", travelTimes)
             );
-            Console.WriteLine($"Hi {answers.Name} with password {answers.Password} (Remember: {answers.SavePwd}");
+             
+            PrintLine($"Hi {answers.Name} with password {answers.Password} (Remember: {answers.SavePwd})");
+            PrintLine($"Your travel time: {travelTimes[answers.TravelTime]}");
         }
     }
 

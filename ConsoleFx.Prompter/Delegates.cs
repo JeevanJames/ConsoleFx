@@ -17,9 +17,11 @@ limitations under the License.
 */
 #endregion
 
-using System;
-using ConsoleFx.ConsoleExtensions;
-
 namespace ConsoleFx.Prompter
 {
+    public delegate TResult AnswersFunc<TResult>(dynamic answers);
+
+    public delegate ValidationResult Validator<TValue>(TValue value, dynamic answers);
+
+    public delegate object AskerFn(Question question, dynamic answers);
 }
