@@ -42,14 +42,6 @@ namespace TestHarness
     {
         private static int Main(string[] args)
         {
-            var pressed = Console.ReadKey();
-            while (pressed.Key != ConsoleKey.Escape)
-            {
-                PrintBlank();
-                PrintLine($"[red]{pressed.Key,-5}; [yellow]{(int)pressed.KeyChar,-5}; [green]{pressed.Modifiers}");
-                pressed = Console.ReadKey();
-            }
-
             //var pb = new ProgressBar();
             //WaitForKeysLoop(new[] 
             //{
@@ -60,7 +52,7 @@ namespace TestHarness
 
             //TestSelects();
 
-            //TestPrompter();
+            TestPrompter();
 
             //TestColorOutput();
 
