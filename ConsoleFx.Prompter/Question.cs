@@ -73,5 +73,8 @@ namespace ConsoleFx.Prompter
 
         public static ListQuestion List(string name, FunctionOrValue<string> message, IEnumerable<string> choices) =>
             new ListQuestion(name, message, choices);
+
+        public static CheckboxQuestion Checkbox(string name, FunctionOrValue<string> message, IEnumerable<string> choices) =>
+            new CheckboxQuestion(name, message, choices);
     }
 }

@@ -17,9 +17,33 @@ limitations under the License.
 */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using ConsoleFx.ConsoleExtensions;
+
 namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class CheckboxQuestion
+    public sealed class CheckboxQuestion : Question
     {
+        private readonly IReadOnlyList<string> _choices;
+        private readonly AskerFn _askerFn;
+
+        public CheckboxQuestion(string name, FunctionOrValue<string> message, IEnumerable<string> choices) : base(name, message)
+        {
+            if (choices == null)
+                throw new ArgumentNullException(nameof(choices));
+            _choices = choices.ToList();
+
+            _askerFn = (q, ans) =>
+            {
+                var cq = (CheckboxQuestion) q;
+                ConsoleEx.PrintLine(q.Message.Resolve(ans));
+                return ConsoleEx.SelectMultiple(cq._choices);
+            };
+        }
+
+        internal override AskerFn AskerFn => _askerFn;
     }
 }

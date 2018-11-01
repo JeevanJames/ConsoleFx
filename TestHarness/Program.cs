@@ -125,7 +125,8 @@ namespace TestHarness
                     .Required()
                     .Validate(str => int.TryParse(str, out _))
                     .Convert(str => int.Parse(str)),
-                Question.List("TravelTime", "When do you want to travel?", travelTimes)
+                Question.List("TravelTime", "When do you want to travel?", travelTimes),
+                Question.Checkbox("Showtimes", "Which show times do you wish to attend", travelTimes)
             );
             
 
