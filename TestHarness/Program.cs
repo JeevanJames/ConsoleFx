@@ -42,17 +42,17 @@ namespace TestHarness
     {
         private static int Main(string[] args)
         {
-            var pb = new ProgressBar();
-            WaitForKeysLoop(new[] 
-            {
-                ConsoleKey.LeftArrow.HandledBy(k => pb.Value -= 1),
-                ConsoleKey.RightArrow.HandledBy(k => pb.Value += 1)
-            },
-                escapeKeys: new []{ConsoleKey.Escape, ConsoleKey.Enter});
+            //var pb = new ProgressBar();
+            //WaitForKeysLoop(new[] 
+            //{
+            //    ConsoleKey.LeftArrow.HandledBy(k => pb.Value -= 1),
+            //    ConsoleKey.RightArrow.HandledBy(k => pb.Value += 1)
+            //},
+            //    escapeKeys: new []{ConsoleKey.Escape, ConsoleKey.Enter});
 
             //TestSelects();
 
-            //TestPrompter();
+            TestPrompter();
 
             //TestColorOutput();
 
@@ -109,19 +109,15 @@ namespace TestHarness
         private static void TestPrompter()
         {
             dynamic answers = Prompter.Ask(
-                StaticText.Text((ColorString) "Please answer the following questions [red]truthfully"),
-                Question.Input("Name", "What's your name?"),
-                Question.Input("Age", "What's your age?")
-                    .AsInteger()
-                    .Validate(value => value > 0 ? true : (ValidationResult) "Enter positive age"),
-                Question.Password("Password", "Enter your password:"),
-                StaticText.BlankLine(),
-                StaticText.Separator(),
-                StaticText.Text((ColorString) "This question is optional and reflects your opinion."),
-                StaticText.Text((ColorString) "We will keep the info private."),
-                Question.Confirm("SeniorCitizen", "Do you consider yourself a senior citizen?")
+                StaticText.Text("Please answer the following questions [red]truthfully"),
+                Question.Input("Name", "What's your name? ")
+                    .Required()
+                    .Validate(str => char.IsUpper(str[0])),
+                Question.Password("Password", "Enter your password: ")
+                    .HideCursor().Required(),
+                Question.Confirm("SavePwd", "Remember password", false)
             );
-            Console.WriteLine($"Hi {answers.Name}, who is {answers.Age} years old ({answers.SeniorCitizen})");
+            Console.WriteLine($"Hi {answers.Name} with password {answers.Password} (Remember: {answers.SavePwd}");
         }
     }
 

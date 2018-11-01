@@ -57,5 +57,5 @@ namespace ConsoleFx.Prompter
 
     public delegate ValidationResult Validator<TValue>(TValue value, dynamic answers);
 
-    public delegate string AskerFn(IQuestion question, dynamic answers);
+    public delegate object AskerFn(Question question, dynamic answers);
 }

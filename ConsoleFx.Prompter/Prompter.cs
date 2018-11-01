@@ -26,9 +26,9 @@ namespace ConsoleFx.Prompter
 {
     public sealed class Prompter
     {
-        public IReadOnlyList<IQuestion> Questions { get; }
+        public IReadOnlyList<Question> Questions { get; }
 
-        public Prompter(params IQuestion[] questions)
+        public Prompter(params Question[] questions)
         {
             if (questions == null)
                 throw new ArgumentNullException(nameof(questions));
@@ -37,7 +37,7 @@ namespace ConsoleFx.Prompter
             Questions = questions;
         }
 
-        public Prompter(IEnumerable<IQuestion> questions)
+        public Prompter(IEnumerable<Question> questions)
         {
             if (questions == null)
                 throw new ArgumentNullException(nameof(questions));
@@ -50,62 +50,62 @@ namespace ConsoleFx.Prompter
         {
             var answers = new Answers(Questions.Count);
 
-            foreach (IQuestion question in Questions)
+            foreach (Question question in Questions)
             {
-                if (question is StaticText)
+                object answer = null;
+
+                if (!question.CanAsk(answers))
                 {
-                    ColorString staticText = question.StaticTextFn.Resolve(answers);
-                    if (staticText != null)
-                        ConsoleEx.PrintLine(staticText);
+                    //if (question.DefaultValueFn != null)
+                    //    answer = question.DefaultValueFn(answers);
+                    if (answer != null)
+                        answers.Add(question.Name, answer);
                     continue;
                 }
 
-                object answer = null;
-
-                if (question.CanAskFn != null && !question.CanAskFn(answers))
+                if (question is StaticText)
                 {
-                    if (question.DefaultValueFn != null)
-                        answer = question.DefaultValueFn(answers);
-                    answers.Add(question.Name, answer);
+                    question.AskerFn(question, answers);
                     continue;
                 }
 
                 bool validAnswer = false;
                 do
                 {
-                    string input = question.AskerFn(question, answers);
+                    object input = question.AskerFn(question, answers);
 
-                    bool optional = question.OptionalFn.Resolve(answers);
-                    if (!optional && string.IsNullOrWhiteSpace(input))
-                        continue;
+                    //bool optional = question.OptionalFn.Resolve(answers);
+                    //if (!optional && string.IsNullOrWhiteSpace(input))
+                    //    continue;
 
-                    if (question.RawValueValidatorFn != null)
-                    {
-                        ValidationResult validationResult = question.RawValueValidatorFn(input, answers);
-                        if (!validationResult.Valid)
-                        {
-                            if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                                ConsoleEx.PrintLine($"[red]{validationResult.ErrorMessage}");
-                            continue;
-                        }
-                    }
+                    //if (question.RawValueValidatorFn != null)
+                    //{
+                    //    ValidationResult validationResult = question.RawValueValidatorFn(input, answers);
+                    //    if (!validationResult.Valid)
+                    //    {
+                    //        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                    //            ConsoleEx.PrintLine($"[red]{validationResult.ErrorMessage}");
+                    //        continue;
+                    //    }
+                    //}
 
-                    answer = question.TransformerFn != null ? question.TransformerFn(input) : input;
+                    //answer = question.TransformerFn != null ? question.TransformerFn(input) : input;
 
-                    if (optional && string.IsNullOrWhiteSpace(input) && question.DefaultValueFn != null)
-                        answer = question.DefaultValueFn(answers);
+                    //if (optional && string.IsNullOrWhiteSpace(input) && question.DefaultValueFn != null)
+                    //    answer = question.DefaultValueFn(answers);
 
-                    if (question.ValidatorFn != null)
-                    {
-                        ValidationResult validationResult = question.ValidatorFn(answer, answers);
-                        if (!validationResult.Valid)
-                        {
-                            if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                                ConsoleEx.PrintLine($"[red]{validationResult.ErrorMessage}");
-                            continue;
-                        }
-                    }
+                    //if (question.ValidatorFn != null)
+                    //{
+                    //    ValidationResult validationResult = question.ValidatorFn(answer, answers);
+                    //    if (!validationResult.Valid)
+                    //    {
+                    //        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                    //            ConsoleEx.PrintLine($"[red]{validationResult.ErrorMessage}");
+                    //        continue;
+                    //    }
+                    //}
 
+                    answer = input;
                     validAnswer = true;
                 } while (!validAnswer);
 
@@ -115,7 +115,7 @@ namespace ConsoleFx.Prompter
             return answers;
         }
 
-        public static dynamic Ask(params IQuestion[] questions)
+        public static dynamic Ask(params Question[] questions)
         {
             var prompter = new Prompter(questions);
             return prompter.Ask();
