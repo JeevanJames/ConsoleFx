@@ -17,33 +17,25 @@ limitations under the License.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ConsoleFx.Prompter
 {
     public sealed class Prompter
     {
-        public Prompter(params Question[] questions)
+        private readonly List<Question> _questions;
+
+        public Prompter()
         {
-            if (questions == null)
-                throw new ArgumentNullException(nameof(questions));
-            if (questions.Length == 0)
-                throw new ArgumentException("Specify at least one question.", nameof(questions));
-            Questions = questions;
+            _questions = new List<Question>();
         }
 
-        public Prompter(IEnumerable<Question> questions)
-        {
-            if (questions == null)
-                throw new ArgumentNullException(nameof(questions));
-            if (!questions.Any())
-                throw new ArgumentException("Specify at least one question.", nameof(questions));
-            Questions = questions.ToList();
-        }
+        public IReadOnlyList<Question> Questions => _questions;
 
-        public IReadOnlyList<Question> Questions { get; }
+        public void AddQuestion(Question question)
+        {
+            _questions.Add(question);
+        }
 
         public Answers Ask()
         {
@@ -85,6 +77,9 @@ namespace ConsoleFx.Prompter
 
                     answer = question.Convert(input);
 
+                    //if (answer == null || (answer as string).Length == 0)
+                    //    answer = question.DefaultValue.Resolve(answers);
+
                     //if (optional && string.IsNullOrWhiteSpace(input) && question.DefaultValueFn != null)
                     //    answer = question.DefaultValueFn(answers);
 
@@ -106,12 +101,6 @@ namespace ConsoleFx.Prompter
             }
 
             return answers;
-        }
-
-        public static dynamic Ask(params Question[] questions)
-        {
-            var prompter = new Prompter(questions);
-            return prompter.Ask();
         }
     }
 }

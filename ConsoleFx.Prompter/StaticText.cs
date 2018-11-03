@@ -38,11 +38,5 @@ namespace ConsoleFx.Prompter
         }
 
         internal override AskerFn AskerFn => _askerFn;
-
-        public static StaticText Text(FunctionOrValue<string> text) => new StaticText(text);
-
-        public static StaticText BlankLine() => Text(string.Empty);
-
-        public static StaticText Separator(char separator = '=') => Text(new string(separator, Console.WindowWidth));
     }
 }

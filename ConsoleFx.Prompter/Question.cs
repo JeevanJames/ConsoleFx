@@ -18,12 +18,10 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
-using ConsoleFx.Prompter.Questions;
 
 namespace ConsoleFx.Prompter
 {
-    public abstract partial class Question
+    public abstract class Question
     {
         protected Question(string name, FunctionOrValue<string> message)
         {
@@ -66,23 +64,5 @@ namespace ConsoleFx.Prompter
 
         internal object Convert(object value) =>
             ConverterFn != null ? ConverterFn(value) : value;
-    }
-
-    public abstract partial class Question
-    {
-        public static InputQuestion Input(string name, FunctionOrValue<string> message) =>
-            new InputQuestion(name, message);
-
-        public static PasswordQuestion Password(string name, FunctionOrValue<string> message) =>
-            new PasswordQuestion(name, message);
-
-        public static ConfirmQuestion Confirm(string name, FunctionOrValue<string> message, bool @default = false) =>
-            new ConfirmQuestion(name, message, @default);
-
-        public static ListQuestion List(string name, FunctionOrValue<string> message, IEnumerable<string> choices) =>
-            new ListQuestion(name, message, choices);
-
-        public static CheckboxQuestion Checkbox(string name, FunctionOrValue<string> message, IEnumerable<string> choices) =>
-            new CheckboxQuestion(name, message, choices);
     }
 }

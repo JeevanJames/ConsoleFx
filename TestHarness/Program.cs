@@ -21,7 +21,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Programs;
 using ConsoleFx.CmdLineParser.UnixStyle;
@@ -112,23 +111,25 @@ namespace TestHarness
             {
                 "Doesn't Matter", "Morning", "Noon", "Afternoon", "Evening", "Night"
             };
-            dynamic answers = Prompter.Ask(
-                StaticText.Text("Please answer the following questions [red]truthfully"),
-                Question.Input("Name", "What's your name? ")
-                    .Required()
-                    .Validate(str => char.IsUpper(str[0])),
-                Question.Password("Password", "Enter your password: ")
-                    .HideCursor().Required(),
-                Question.Confirm("SavePwd", "Remember password", false),
-                StaticText.Separator(),
-                Question.Input("Age", "Enter your age: ")
-                    .Required()
-                    .Validate(str => int.TryParse(str, out _))
-                    .Convert(str => int.Parse(str)),
-                Question.List("TravelTime", "When do you want to travel?", travelTimes),
-                Question.Checkbox("Showtimes", "Which show times do you wish to attend", travelTimes)
-            );
-            
+
+            var prompter = new Prompter();
+            prompter.Text("Please answer the following questions [blue]truthfully");
+            prompter.Input("Name", "What's your name? ")
+                .Required()
+                .Validate(str => char.IsUpper(str[0]));
+            prompter.Password("Password", "Enter your password: ")
+                .HideCursor().Required();
+            prompter.Confirm("SavePwd", "Remember password", false);
+            prompter.Separator();
+            prompter.Input("Age", "Enter your age: ")
+                .Required()
+                .Validate(str => int.TryParse(str, out _))
+                .Convert(str => int.Parse(str));
+            prompter.List("TravelTime", "When do you want to travel?", travelTimes);
+            prompter.Checkbox("Showtimes", "Which show times do you wish to attend", travelTimes);
+            dynamic answers = prompter.Ask();
+
+            var d = (IDictionary<string, object>) answers;
 
             PrintLine($"Hi {answers.Name} with password {answers.Password} (Remember: {answers.SavePwd})");
             PrintLine($"Your travel time: {travelTimes[answers.TravelTime]}");
