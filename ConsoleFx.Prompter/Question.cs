@@ -41,6 +41,8 @@ namespace ConsoleFx.Prompter
 
         internal AnswersFunc<bool> CanAskFn { get; set; }
 
+        internal FunctionOrValue<object> DefaultValue { get; set; }
+
         internal Validator<object> Validator { get; set; }
 
         internal Func<object, object> ConverterFn { get; set; }
@@ -50,6 +52,12 @@ namespace ConsoleFx.Prompter
         public Question When(AnswersFunc<bool> canAskFn)
         {
             CanAskFn = canAskFn;
+            return this;
+        }
+
+        public Question DefaultsTo(FunctionOrValue<object> defaultValue)
+        {
+            DefaultValue = defaultValue;
             return this;
         }
 

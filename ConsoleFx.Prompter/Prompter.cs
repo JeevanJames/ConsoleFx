@@ -25,8 +25,6 @@ namespace ConsoleFx.Prompter
 {
     public sealed class Prompter
     {
-        public IReadOnlyList<Question> Questions { get; }
-
         public Prompter(params Question[] questions)
         {
             if (questions == null)
@@ -45,6 +43,8 @@ namespace ConsoleFx.Prompter
             Questions = questions.ToList();
         }
 
+        public IReadOnlyList<Question> Questions { get; }
+
         public Answers Ask()
         {
             var answers = new Answers(Questions.Count);
@@ -55,8 +55,7 @@ namespace ConsoleFx.Prompter
 
                 if (!question.CanAsk(answers))
                 {
-                    //if (question.DefaultValueFn != null)
-                    //    answer = question.DefaultValueFn(answers);
+                    answer = question.DefaultValue.Resolve(answers);
                     if (answer != null)
                         answers.Add(question.Name, answer);
                     continue;

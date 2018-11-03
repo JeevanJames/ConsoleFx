@@ -23,6 +23,9 @@ using System.Dynamic;
 
 namespace ConsoleFx.Prompter
 {
+    /// <summary>
+    /// Represents a hash of the answered values.
+    /// </summary>
     public sealed class Answers : DynamicObject
     {
         private readonly Dictionary<string, object> _answers;
