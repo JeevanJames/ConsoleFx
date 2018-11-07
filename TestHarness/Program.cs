@@ -152,13 +152,13 @@ namespace TestHarness
             foreach (KeyValuePair<string, object> kvp in result.Options)
             {
                 Print($"Option {kvp.Key}: ");
-                var list = kvp.Value as IList;
-                if (list != null)
+                if (kvp.Value is IList list)
                 {
                     foreach (object item in list)
                         Print($"{item?.ToString() ?? "(null)"}, ");
                     PrintBlank();
-                } else
+                }
+                else
                     PrintLine(kvp.Value.ToString());
             }
             return 0;

@@ -39,14 +39,12 @@ namespace ConsoleFx.CmdLineParser
 
         public T OptionAs<T>(string name, T @default = default(T))
         {
-            object value;
-            return Options.TryGetValue(name, out value) ? (T)value : @default;
+            return Options.TryGetValue(name, out object value) ? (T)value : @default;
         }
 
         public IReadOnlyList<T> OptionsAsListOf<T>(string name)
         {
-            object value;
-            return Options.TryGetValue(name, out value) ? (List<T>)value : null;
+            return Options.TryGetValue(name, out object value) ? (List<T>)value : null;
         }
 
         public string Option(string name) => OptionAs<string>(name);
