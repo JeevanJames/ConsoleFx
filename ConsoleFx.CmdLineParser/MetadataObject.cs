@@ -23,9 +23,9 @@ using System.Collections.Generic;
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
-    ///     Base class for objects that store ad-hoc metadata.
-    ///     Base class for <see cref="T:ConsoleFx.CmdLineParser.Option" />, <see cref="T:ConsoleFx.CmdLineParser.Argument" /> and
-    ///     <see cref="Command" />.
+    ///     <para>Base class for objects that store ad-hoc metadata.</para>
+    ///     <para>Base class for <see cref="T:ConsoleFx.CmdLineParser.Option" />, <see cref="T:ConsoleFx.CmdLineParser.Argument" /> and
+    ///     <see cref="Command" />.</para>
     /// </summary>
     public abstract class MetadataObject
     {
@@ -52,8 +52,7 @@ namespace ConsoleFx.CmdLineParser
         {
             if (_metadata == null)
                 return default(T);
-            object result;
-            return _metadata.TryGetValue(name, out result) ? (T)result : default(T);
+            return _metadata.TryGetValue(name, out object result) ? (T)result : default(T);
         }
 
         /// <summary>

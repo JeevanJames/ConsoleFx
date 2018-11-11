@@ -28,9 +28,11 @@ namespace ConsoleFx.CmdLineParser
     internal sealed class ParseRun
     {
         /// <summary>
-        ///     All specified commands.
-        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we want to avoid the
-        ///     duplicate checks, as commands at different levels can have the same name.
+        ///     <para>All specified commands.</para>
+        ///     <para>
+        ///         Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we want to avoid the
+        ///         duplicate checks, as commands at different levels can have the same name.
+        ///     </para>
         /// </summary>
         internal List<Command> Commands { get; } = new List<Command>();
 

@@ -22,8 +22,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using ConsoleFx.CmdLineParser;
-
 namespace ConsoleFx.CmdLineParser.UnixStyle
 {
     public sealed class UnixParserStyle : ParserStyle

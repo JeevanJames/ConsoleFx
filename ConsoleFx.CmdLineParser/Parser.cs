@@ -39,8 +39,8 @@ namespace ConsoleFx.CmdLineParser
         public ParserStyle ParserStyle { get; }
 
         /// <summary>
-        ///     Specifies how the args should be grouped.
-        ///     Note: This can be overridden by the parser style at runtime.
+        ///     <para>Specifies how the args should be grouped.</para>
+        ///     <para>Note: This can be overridden by the parser style at runtime.</para>
         /// </summary>
         public ArgGrouping Grouping { get; set; }
 

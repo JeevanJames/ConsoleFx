@@ -21,6 +21,9 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.CmdLineParser
 {
+    /// <summary>
+    /// Base class that validates the rules for argument grouping.
+    /// </summary>
     public abstract class ParserStyle
     {
         /// <summary>
@@ -35,9 +38,9 @@ namespace ConsoleFx.CmdLineParser
             => specifiedGrouping;
 
         /// <summary>
-        ///     Validate that the defined options are compatible with the parser style.
-        ///     An exception should be thrown if any option is invalid.
-        ///     An example of an invalid option is a short name longer than one character for the UNIX style parser.
+        ///     <para>Validate that the defined options are compatible with the parser style.</para>
+        ///     <para>An exception should be thrown if any option is invalid.</para>
+        ///     <para>An example of an invalid option is a short name longer than one character for the UNIX style parser.</para>
         /// </summary>
         /// <param name="options">List of all the defined options.</param>
         public virtual void ValidateDefinedOptions(IEnumerable<Option> options)
@@ -45,8 +48,8 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Identifies all provided arguments as arguments, options and option parameters.
-        ///     No rules are checked during this phase.
+        ///     <para>Identifies all provided arguments as arguments, options and option parameters.</para>
+        ///     <para>No rules are checked during this phase.</para>
         /// </summary>
         /// <param name="args">The provided arguments to identify.</param>
         /// <param name="options">All defined options.</param>

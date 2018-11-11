@@ -22,8 +22,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using ConsoleFx.CmdLineParser;
-
 namespace ConsoleFx.CmdLineParser.WindowsStyle
 {
     public sealed class WindowsParserStyle : ParserStyle
@@ -81,8 +79,13 @@ namespace ConsoleFx.CmdLineParser.WindowsStyle
             VerifyCommandLineGrouping(previousType, currentType, grouping);
         }
 
-        //This method is used by the code that validates the command-line grouping. It is
-        //called for every iteration of the arguments
+        /// <summary>
+        /// This method is used by the code that validates the command-line grouping. It is
+        /// called for every iteration of the arguments.
+        /// </summary>
+        /// <param name="previousType"></param>
+        /// <param name="currentType"></param>
+        /// <param name="grouping"></param>
         private static void VerifyCommandLineGrouping(ArgumentType previousType, ArgumentType currentType, ArgGrouping grouping)
         {
             if (grouping == ArgGrouping.DoesNotMatter)

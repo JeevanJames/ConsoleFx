@@ -20,7 +20,7 @@ limitations under the License.
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
-    ///     Specifies whether an option is required, optional or not allowed for a program context.
+    ///     Specifies whether an option is required or optional.
     /// </summary>
     public enum OptionRequirement
     {

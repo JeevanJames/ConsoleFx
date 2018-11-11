@@ -21,6 +21,9 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.CmdLineParser
 {
+    /// <summary>
+    /// Represents the results of parsing a set of arguments.
+    /// </summary>
     public sealed class ParseResult
     {
         internal ParseResult(Command command, IReadOnlyList<string> arguments,
@@ -33,23 +36,34 @@ namespace ConsoleFx.CmdLineParser
 
         public Command Command { get; }
 
+        /// <summary>
+        /// List of specified command line arguments.
+        /// </summary>
         public IReadOnlyList<string> Arguments { get; }
 
+        /// <summary>
+        /// List of specified command line options.
+        /// </summary>
         public IReadOnlyDictionary<string, object> Options { get; }
 
-        public T OptionAs<T>(string name, T @default = default(T))
-        {
-            return Options.TryGetValue(name, out object value) ? (T)value : @default;
-        }
+        /// <summary>
+        /// Returns the typed value of the specified option.
+        /// </summary>
+        /// <typeparam name="T">The type of the value to return.</typeparam>
+        /// <param name="name">Name of the specified option.</param>
+        /// <param name="default">Default value to return if the option is not found.</param>
+        /// <returns>The typed value of the specified option.</returns>
+        public T OptionAs<T>(string name, T @default = default(T)) =>
+            Options.TryGetValue(name, out object value) ? (T)value : @default;
 
-        public IReadOnlyList<T> OptionsAsListOf<T>(string name)
-        {
-            return Options.TryGetValue(name, out object value) ? (List<T>)value : null;
-        }
+        public IReadOnlyList<T> OptionsAsListOf<T>(string name) =>
+            Options.TryGetValue(name, out object value) ? (List<T>)value : null;
 
-        public string Option(string name) => OptionAs<string>(name);
+        public string Option(string name) =>
+            OptionAs<string>(name);
 
-        public IReadOnlyList<string> OptionsAsList(string name) => OptionsAsListOf<string>(name);
+        public IReadOnlyList<string> OptionsAsList(string name) =>
+            OptionsAsListOf<string>(name);
     }
 
     //public abstract class BaseParseResult

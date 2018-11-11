@@ -20,6 +20,7 @@ limitations under the License.
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+
 using ConsoleFx.CmdLineParser.Validators;
 
 namespace ConsoleFx.CmdLineParser
@@ -77,8 +78,7 @@ namespace ConsoleFx.CmdLineParser
             if (parameterIndex < -1)
                 parameterIndex = -1;
 
-            ValidatorCollection validatorList;
-            if (!_validators.TryGetValue(parameterIndex, out validatorList))
+            if (!_validators.TryGetValue(parameterIndex, out ValidatorCollection validatorList))
             {
                 validatorList = new ValidatorCollection();
                 _validators.Add(parameterIndex, validatorList);
@@ -99,8 +99,7 @@ namespace ConsoleFx.CmdLineParser
         /// <returns>Total number of validators for the parameter at the specified index.</returns>
         public int? CountOf(int parameterIndex)
         {
-            ValidatorCollection validators;
-            return _validators.TryGetValue(parameterIndex, out validators) ? validators.Count : (int?)null;
+            return _validators.TryGetValue(parameterIndex, out ValidatorCollection validators) ? validators.Count : (int?)null;
         }
 
         /// <summary>
@@ -113,14 +112,12 @@ namespace ConsoleFx.CmdLineParser
         /// <returns></returns>
         internal IEnumerable<Validator> GetValidators(int parameterIndex)
         {
-            ValidatorCollection commonValidators;
-            _validators.TryGetValue(-1, out commonValidators);
+            _validators.TryGetValue(-1, out ValidatorCollection commonValidators);
 
             if (_option.Usage.ParameterType != OptionParameterType.Individual || parameterIndex < 0)
                 return commonValidators ?? Enumerable.Empty<Validator>();
 
-            ValidatorCollection indexValidators;
-            if (!_validators.TryGetValue(parameterIndex, out indexValidators) || indexValidators == null)
+            if (!_validators.TryGetValue(parameterIndex, out ValidatorCollection indexValidators) || indexValidators == null)
                 return commonValidators ?? Enumerable.Empty<Validator>();
 
             return (commonValidators ?? Enumerable.Empty<Validator>()).Concat(indexValidators);
