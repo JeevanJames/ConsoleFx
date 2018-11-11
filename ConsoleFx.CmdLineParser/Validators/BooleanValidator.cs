@@ -28,23 +28,32 @@ namespace ConsoleFx.CmdLineParser.Validators
     /// </summary>
     public class BooleanValidator : SingleMessageValidator<bool>
     {
-        private readonly List<string> _trueStrings = new List<string>();
-        private readonly List<string> _falseStrings = new List<string>();
+        private readonly List<string> _trueStrings;
+        private readonly List<string> _falseStrings;
         private readonly StringComparison _comparison;
 
         public BooleanValidator(string trueString = "true", string falseString = "false", bool caseSensitive = false)
             : base(Messages.Boolean)
         {
+            _trueStrings = new List<string>(1);
             _trueStrings.Add(trueString);
+
+            _falseStrings = new List<string>(1);
             _falseStrings.Add(falseString);
+
             _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
         public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings,
             bool caseSensitive = false) : base(Messages.Boolean)
         {
-            _trueStrings.AddRange(trueStrings);
-            _falseStrings.AddRange(falseStrings);
+            if (trueStrings == null)
+                throw new ArgumentNullException(nameof(trueStrings));
+            if (falseStrings == null)
+                throw new ArgumentNullException(nameof(falseStrings));
+
+            _trueStrings = new List<string>(trueStrings);
+            _falseStrings = new List<string>(falseStrings);
             _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 

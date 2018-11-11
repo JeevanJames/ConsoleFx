@@ -35,4 +35,23 @@ namespace ConsoleFx.CmdLineParser.Validators
             return guid;
         }
     }
+
+    public static class GuidValidatorExtensions
+    {
+        public static Argument ValidateAsGuid(this Argument argument, string message = null)
+        {
+            var validator = new GuidValidator();
+            if (message != null)
+                validator.Message = message;
+            return argument.ValidateWith(validator);
+        }
+
+        public static Option ValidateAsGuid(this Option option, string message = null)
+        {
+            var validator = new GuidValidator();
+            if (message != null)
+                validator.Message = message;
+            return option.ValidateWith(validator);
+        }
+    }
 }

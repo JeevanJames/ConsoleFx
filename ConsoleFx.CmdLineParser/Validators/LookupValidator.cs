@@ -56,4 +56,31 @@ namespace ConsoleFx.CmdLineParser.Validators
             return parameterValue;
         }
     }
+
+    public static class LookupValidatorExtensions
+    {
+        public static Argument ValidateFromList(this Argument argument, params string[] items) =>
+            argument.ValidateWith(new LookupValidator(items));
+
+        public static Argument ValidateFromList(this Argument argument, IEnumerable<string> items,
+            string message = null)
+        {
+            var validator = new LookupValidator(items);
+            if (message != null)
+                validator.Message = message;
+            return argument.ValidateWith(validator);
+        }
+
+        public static Option ValidateFromList(this Option option, params string[] items) =>
+            option.ValidateWith(new LookupValidator(items));
+
+        public static Option ValidateFromList(this Option option, IEnumerable<string> items,
+            string message = null)
+        {
+            var validator = new LookupValidator(items);
+            if (message != null)
+                validator.Message = message;
+            return option.ValidateWith(validator);
+        }
+    }
 }

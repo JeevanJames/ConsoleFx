@@ -35,12 +35,36 @@ namespace ConsoleFx.CmdLineParser.Validators
 
         protected override long ValidateAsString(string parameterValue)
         {
-            long value;
-            if (!long.TryParse(parameterValue, out value))
+            if (!long.TryParse(parameterValue, out long value))
                 ValidationFailed(NotAnIntegerMessage, parameterValue);
             if (value < _minimumValue || value > _maximumValue)
                 ValidationFailed(OutOfRangeMessage, parameterValue);
             return value;
+        }
+    }
+
+    public static class IntegerValidatorExtensions
+    {
+        public static Argument ValidateAsInteger(this Argument argument, long minimumValue = long.MinValue,
+            long maximumValue = long.MaxValue, string notAnIntegerMessage = null, string outOfRangeMessage = null)
+        {
+            var validator = new IntegerValidator(minimumValue, maximumValue);
+            if (notAnIntegerMessage != null)
+                validator.NotAnIntegerMessage = notAnIntegerMessage;
+            if (outOfRangeMessage != null)
+                validator.OutOfRangeMessage = outOfRangeMessage;
+            return argument.ValidateWith(validator);
+        }
+
+        public static Option ValidateAsInteger(this Option option, long minimumValue = long.MinValue,
+            long maximumValue = long.MaxValue, string notAnIntegerMessage = null, string outOfRangeMessage = null)
+        {
+            var validator = new IntegerValidator(minimumValue, maximumValue);
+            if (notAnIntegerMessage != null)
+                validator.NotAnIntegerMessage = notAnIntegerMessage;
+            if (outOfRangeMessage != null)
+                validator.OutOfRangeMessage = outOfRangeMessage;
+            return option.ValidateWith(validator);
         }
     }
 }
