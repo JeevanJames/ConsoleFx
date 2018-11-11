@@ -177,9 +177,6 @@ namespace ConsoleFx.CmdLineParser
             return this;
         }
 
-        public Option ValidateWith(Func<string, bool> customValidator) =>
-            ValidateWith(new CustomValidator(customValidator));
-
         public Option ValidateWith(int parameterIndex, params Validator[] validators)
         {
             foreach (Validator validator in validators)

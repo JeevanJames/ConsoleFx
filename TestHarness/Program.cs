@@ -21,9 +21,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Programs;
 using ConsoleFx.CmdLineParser.UnixStyle;
+using ConsoleFx.CmdLineParser.Validators;
 using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Prompter;
 

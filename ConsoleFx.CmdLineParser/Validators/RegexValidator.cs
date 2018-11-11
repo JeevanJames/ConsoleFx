@@ -47,4 +47,31 @@ namespace ConsoleFx.CmdLineParser.Validators
             return parameterValue;
         }
     }
+
+    public static class RegexValidatorExtensions
+    {
+        public static Argument ValidateWithRegex(this Argument argument, Regex regex) =>
+            argument.ValidateWith(new RegexValidator(regex));
+
+        public static Argument ValidateWithRegex(this Argument argument, Regex regex, string message) =>
+            argument.ValidateWith(new RegexValidator(regex) { Message = message });
+
+        public static Argument ValidateWithRegex(this Argument argument, string pattern) =>
+            argument.ValidateWith(new RegexValidator(pattern));
+
+        public static Argument ValidateWithRegex(this Argument argument, string pattern, string message) =>
+            argument.ValidateWith(new RegexValidator(pattern) { Message = message });
+
+        public static Option ValidateWithRegex(this Option option, Regex regex) =>
+            option.ValidateWith(new RegexValidator(regex));
+
+        public static Option ValidateWithRegex(this Option option, Regex regex, string message) =>
+            option.ValidateWith(new RegexValidator(regex) {Message = message});
+
+        public static Option ValidateWithRegex(this Option option, string pattern) =>
+            option.ValidateWith(new RegexValidator(pattern));
+
+        public static Option ValidateWithRegex(this Option option, string pattern, string message) =>
+            option.ValidateWith(new RegexValidator(pattern) {Message = message});
+    }
 }

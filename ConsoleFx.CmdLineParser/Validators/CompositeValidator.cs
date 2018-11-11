@@ -22,6 +22,9 @@ using System.Linq;
 
 namespace ConsoleFx.CmdLineParser.Validators
 {
+    /// <summary>
+    /// Checks if any one of the specified validators passes.
+    /// </summary>
     public class CompositeValidator : SingleMessageValidator<string>
     {
         private readonly Validator[] _validators;
@@ -59,5 +62,16 @@ namespace ConsoleFx.CmdLineParser.Validators
                 ValidationFailed(Message, parameterValue);
             return parameterValue;
         }
+    }
+
+    public static class CompositeValidatorExtensions
+    {
+        public static Argument ValidateAnyCondition(this Argument argument, string errorMessage,
+            params Validator[] validators) =>
+            argument.ValidateWith(new CompositeValidator(errorMessage, validators));
+
+        public static Option ValidateAnyCondition(this Option option, string errorMessage,
+            params Validator[] validators) =>
+            option.ValidateWith(new CompositeValidator(errorMessage, validators));
     }
 }

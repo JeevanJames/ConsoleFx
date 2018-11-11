@@ -39,4 +39,25 @@ namespace ConsoleFx.CmdLineParser.Validators
             return parameterValue;
         }
     }
+
+    public static class CustomValidatorExtensions
+    {
+        public static Argument ValidateCustom(this Argument argument, Func<string, bool> validator,
+            string message = null)
+        {
+            var val = new CustomValidator(validator);
+            if (message != null)
+                val.Message = message;
+            return argument.ValidateWith(val);
+        }
+
+        public static Option ValidateCustom(this Option option, Func<string, bool> validator,
+            string message = null)
+        {
+            var val = new CustomValidator(validator);
+            if (message != null)
+                val.Message = message;
+            return option.ValidateWith(val);
+        }
+    }
 }
