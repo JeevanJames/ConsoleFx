@@ -21,22 +21,24 @@ using System;
 using System.Linq;
 using System.Text;
 
+using static System.Console;
+
 namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
 {
     public sealed class MetadataUsageBuilder : UsageBuilder
     {
         public override void Display(Parser parser)
         {
-            Console.WriteLine(AssemblyProduct);
-            Console.WriteLine(AssemblyDescription);
-            Console.WriteLine(AssemblyCopyright);
+            WriteLine(AssemblyProduct);
+            WriteLine(AssemblyDescription);
+            WriteLine(AssemblyCopyright);
 
-            Console.WriteLine();
+            WriteLine();
 
-            Console.WriteLine(@"Usage:");
+            WriteLine(@"Usage:");
             //TODO: ConsoleEx.WriteIndented(GetUsage(parser.Options, parser.Arguments), 4, true);
-            Console.WriteLine(GetUsage(parser.Options, parser.Arguments));
-            Console.WriteLine();
+            WriteLine(GetUsage(parser.Options, parser.Arguments));
+            WriteLine();
 
             int maxOptionNameLength = parser.Options.Max(opt => opt.Name.Length);
             foreach (Option option in parser.Options)
@@ -44,12 +46,12 @@ namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
                 string fullNameSection = $"  -{option.Name.PadRight(maxOptionNameLength)}  ";
                 string shortName = option.ShortName != null ? $"(short: {option.ShortName}) " : string.Empty;
                 string description = option["Description"] ?? string.Empty;
-                Console.Write(fullNameSection);
+                Write(fullNameSection);
                 //TODO: ConsoleEx.WriteIndented($"{shortName}{description}", fullNameSection.Length);
-                Console.WriteLine($"{shortName}{description}");
+                WriteLine($"{shortName}{description}");
             }
 
-            Console.WriteLine();
+            WriteLine();
 
             int maxArgumentNameLength = parser.Arguments.Max(a => (a["Name"] ?? string.Empty).Length);
             maxArgumentNameLength = Math.Max(maxArgumentNameLength, "Arg".Length + parser.Arguments.Count);
@@ -58,7 +60,7 @@ namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
                 Argument argument = parser.Arguments[i];
                 string name = argument["Name"] ?? $"Arg{i + 1}";
                 string description = argument["Description"] ?? string.Empty;
-                Console.WriteLine($"  <{name}>  {description}");
+                WriteLine($"  <{name}>  {description}");
             }
         }
 
