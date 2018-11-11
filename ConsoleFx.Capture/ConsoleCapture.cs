@@ -47,6 +47,7 @@ namespace ConsoleFx.Capture
         /// </summary>
         /// <param name="captureError">Indicates whether to capture errors from the app.</param>
         /// <returns>An instance of <see cref="ConsoleCaptureResult"/></returns>
+        /// <exception cref="ConsoleCaptureException">Thrown if the process cannot be started.</exception>
         public ConsoleCaptureResult Start(bool captureError = false)
         {
             using (var process = new Process())
@@ -97,6 +98,7 @@ namespace ConsoleFx.Capture
         /// <param name="outputMessage">The output message captured from the process.</param>
         /// <param name="errorMessage">The error message captured from the process.</param>
         /// <returns>The process exit code.</returns>
+        /// <exception cref="ConsoleCaptureException">Thrown if any of processes fails.</exception>
         private static int CaptureOutputAndError(Process process, out string outputMessage, out string errorMessage)
         {
             Func<string> outputReader = process.StandardOutput.ReadToEnd;
@@ -110,11 +112,15 @@ namespace ConsoleFx.Capture
                 //WaitHandle.WaitAll fails on single-threaded apartments. Poll for completion instead.
                 while (!(outputResult.IsCompleted && errorResult.IsCompleted))
                     Thread.Sleep(100);
-            } else
+            }
+            else
             {
-                var waitHandles = new[] { outputResult.AsyncWaitHandle, errorResult.AsyncWaitHandle };
+                var waitHandles = new[] {outputResult.AsyncWaitHandle, errorResult.AsyncWaitHandle};
                 if (!WaitHandle.WaitAll(waitHandles))
-                    throw new ConsoleCaptureException(ConsoleCaptureException.Codes.ProcessAborted, ErrorMessages.ProcessAborted);
+                {
+                    throw new ConsoleCaptureException(ConsoleCaptureException.Codes.ProcessAborted,
+                        ErrorMessages.ProcessAborted);
+                }
             }
 
             outputMessage = outputReader.EndInvoke(outputResult);
