@@ -34,7 +34,7 @@ namespace ConsoleFx.CmdLineParser.Validators
             if (validators == null)
                 throw new ArgumentNullException(nameof(validators));
             if (validators.Length < 2)
-                throw new ArgumentException("Need to specify at least two validators for a composite validator.", nameof(validators));
+                throw new ArgumentException("Specify at least two validators for a composite validator.", nameof(validators));
             _validators = validators;
         }
 
@@ -73,5 +73,9 @@ namespace ConsoleFx.CmdLineParser.Validators
         public static Option ValidateAnyCondition(this Option option, string errorMessage,
             params Validator[] validators) =>
             option.ValidateWith(new CompositeValidator(errorMessage, validators));
+
+        public static Option ValidateAnyCondition(this Option option, int parameterIndex, string errorMessage,
+            params Validator[] validators) =>
+            option.ValidateWith(parameterIndex, new CompositeValidator(errorMessage, validators));
     }
 }

@@ -52,12 +52,12 @@ namespace ConsoleFx.CmdLineParser.Validators
         }
 
         public static Option ValidateCustom(this Option option, Func<string, bool> validator,
-            string message = null)
+            int parameterIndex = -1, string message = null)
         {
             var val = new CustomValidator(validator);
             if (message != null)
                 val.Message = message;
-            return option.ValidateWith(val);
+            return option.ValidateWith(parameterIndex, val);
         }
     }
 }

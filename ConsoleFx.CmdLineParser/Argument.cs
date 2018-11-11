@@ -50,9 +50,6 @@ namespace ConsoleFx.CmdLineParser
                 Validators.Add(validator);
             return this;
         }
-
-        public Argument ValidateWith(Func<string, bool> customValidator) =>
-            ValidateWith(new CustomValidator(customValidator));
     }
 
     public sealed class Arguments : Collection<Argument>

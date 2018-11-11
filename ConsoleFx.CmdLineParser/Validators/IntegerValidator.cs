@@ -57,14 +57,15 @@ namespace ConsoleFx.CmdLineParser.Validators
         }
 
         public static Option ValidateAsInteger(this Option option, long minimumValue = long.MinValue,
-            long maximumValue = long.MaxValue, string notAnIntegerMessage = null, string outOfRangeMessage = null)
+            long maximumValue = long.MaxValue, int parameterIndex = -1, string notAnIntegerMessage = null,
+            string outOfRangeMessage = null)
         {
             var validator = new IntegerValidator(minimumValue, maximumValue);
             if (notAnIntegerMessage != null)
                 validator.NotAnIntegerMessage = notAnIntegerMessage;
             if (outOfRangeMessage != null)
                 validator.OutOfRangeMessage = outOfRangeMessage;
-            return option.ValidateWith(validator);
+            return option.ValidateWith(parameterIndex, validator);
         }
     }
 }

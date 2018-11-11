@@ -24,14 +24,16 @@ namespace ConsoleFx.CmdLineParser.Validators
     public sealed class StringValidator : Validator<string>
     {
         public StringValidator(int maxLength)
-            : this(0, maxLength)
+            : this(1, maxLength)
         {
         }
 
         public StringValidator(int minLength, int maxLength)
         {
+            if (minLength < 1)
+                throw new ArgumentException("Minimum string length cannot be less than one.");
             if (minLength > maxLength)
-                throw new ArgumentException("Minimum string length cannot be greater than maximum string length");
+                throw new ArgumentException("Minimum string length cannot be greater than maximum string length.");
 
             MinLength = minLength;
             MaxLength = maxLength;
@@ -53,5 +55,30 @@ namespace ConsoleFx.CmdLineParser.Validators
         public string MinLengthMessage { get; set; } = Messages.String_MinLength;
 
         public string MaxLengthMessage { get; set; } = Messages.String_MaxLength;
+    }
+
+    public static class StringValidatorExtensions
+    {
+        public static Argument ValidateAsString(this Argument argument, int minLength, int maxLength,
+            string minLengthMessage = null, string maxLengthMessage = null)
+        {
+            var validator = new StringValidator(minLength, maxLength);
+            if (minLengthMessage != null)
+                validator.MinLengthMessage = minLengthMessage;
+            if (maxLengthMessage != null)
+                validator.MaxLengthMessage = maxLengthMessage;
+            return argument.ValidateWith(validator);
+        }
+
+        public static Option ValidateAsString(this Option option, int minLength, int maxLength, int parameterIndex = -1,
+            string minLengthMessage = null, string maxLengthMessage = null)
+        {
+            var validator = new StringValidator(minLength, maxLength);
+            if (minLengthMessage != null)
+                validator.MinLengthMessage = minLengthMessage;
+            if (maxLengthMessage != null)
+                validator.MaxLengthMessage = maxLengthMessage;
+            return option.ValidateWith(parameterIndex, validator);
+        }
     }
 }

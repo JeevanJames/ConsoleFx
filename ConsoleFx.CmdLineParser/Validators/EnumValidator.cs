@@ -77,21 +77,22 @@ namespace ConsoleFx.CmdLineParser.Validators
         }
 
         public static Option ValidateAsEnum(this Option option, Type enumType, bool ignoreCase = true,
-            string message = null)
+            int parameterIndex = -1, string message = null)
         {
             var validator = new EnumValidator(enumType, ignoreCase);
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(validator);
+            return option.ValidateWith(parameterIndex, validator);
         }
 
-        public static Option ValidateAsEnum<TEnum>(this Option option, bool ignoreCase = true, string message = null)
+        public static Option ValidateAsEnum<TEnum>(this Option option, bool ignoreCase = true, int parameterIndex = -1,
+            string message = null)
             where TEnum : struct, IComparable
         {
             var validator = new EnumValidator<TEnum>(ignoreCase);
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(validator);
+            return option.ValidateWith(parameterIndex, validator);
         }
     }
 }

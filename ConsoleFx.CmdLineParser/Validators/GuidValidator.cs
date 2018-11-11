@@ -29,8 +29,7 @@ namespace ConsoleFx.CmdLineParser.Validators
 
         protected override Guid ValidateAsString(string parameterValue)
         {
-            Guid guid;
-            if (!Guid.TryParse(parameterValue, out guid))
+            if (!Guid.TryParse(parameterValue, out Guid guid))
                 ValidationFailed(parameterValue, Message);
             return guid;
         }
@@ -46,12 +45,12 @@ namespace ConsoleFx.CmdLineParser.Validators
             return argument.ValidateWith(validator);
         }
 
-        public static Option ValidateAsGuid(this Option option, string message = null)
+        public static Option ValidateAsGuid(this Option option, int parameterIndex = -1, string message = null)
         {
             var validator = new GuidValidator();
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(validator);
+            return option.ValidateWith(parameterIndex, validator);
         }
     }
 }

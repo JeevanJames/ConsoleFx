@@ -17,17 +17,23 @@ limitations under the License.
 */
 #endregion
 
+using System;
+
 namespace ConsoleFx.CmdLineParser.Validators
 {
     /// <summary>
     ///     Base class for validators that only have one possible type of validation failure. In this case, the class provides
-    ///     an OOTB Message property.
+    ///     an OOTB Message property with a default value that can be changed.
     /// </summary>
     /// <typeparam name="T">The actual type of the value being validated.</typeparam>
     public abstract class SingleMessageValidator<T> : Validator<T>
     {
         protected SingleMessageValidator(string message)
         {
+            if (message == null)
+                throw new ArgumentNullException(nameof(message));
+            if (message.Trim().Length == 0)
+                throw new ArgumentException("Specify a valid error message.", nameof(message));
             Message = message;
         }
 

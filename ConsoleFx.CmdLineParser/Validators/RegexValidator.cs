@@ -50,28 +50,37 @@ namespace ConsoleFx.CmdLineParser.Validators
 
     public static class RegexValidatorExtensions
     {
-        public static Argument ValidateWithRegex(this Argument argument, Regex regex) =>
-            argument.ValidateWith(new RegexValidator(regex));
+        public static Argument ValidateWithRegex(this Argument argument, Regex regex, string message = null)
+        {
+            var validator = new RegexValidator(regex);
+            if (message != null)
+                validator.Message = message;
+            return argument.ValidateWith(validator);
+        }
 
-        public static Argument ValidateWithRegex(this Argument argument, Regex regex, string message) =>
-            argument.ValidateWith(new RegexValidator(regex) { Message = message });
+        public static Argument ValidateWithRegex(this Argument argument, string pattern, string message = null)
+        {
+            var validator = new RegexValidator(pattern);
+            if (message != null)
+                validator.Message = message;
+            return argument.ValidateWith(validator);
+        }
 
-        public static Argument ValidateWithRegex(this Argument argument, string pattern) =>
-            argument.ValidateWith(new RegexValidator(pattern));
+        public static Option ValidateWithRegex(this Option option, Regex regex, int parameterIndex = -1,
+            string message = null)
+        {
+            var validator = new RegexValidator(regex);
+            if (message != null)
+                validator.Message = message;
+            return option.ValidateWith(parameterIndex, validator);
+        }
 
-        public static Argument ValidateWithRegex(this Argument argument, string pattern, string message) =>
-            argument.ValidateWith(new RegexValidator(pattern) { Message = message });
-
-        public static Option ValidateWithRegex(this Option option, Regex regex) =>
-            option.ValidateWith(new RegexValidator(regex));
-
-        public static Option ValidateWithRegex(this Option option, Regex regex, string message) =>
-            option.ValidateWith(new RegexValidator(regex) {Message = message});
-
-        public static Option ValidateWithRegex(this Option option, string pattern) =>
-            option.ValidateWith(new RegexValidator(pattern));
-
-        public static Option ValidateWithRegex(this Option option, string pattern, string message) =>
-            option.ValidateWith(new RegexValidator(pattern) {Message = message});
+        public static Option ValidateWithRegex(this Option option, string pattern, int parameterIndex = -1, string message = null)
+        {
+            var validator = new RegexValidator(pattern);
+            if (message != null)
+                validator.Message = message;
+            return option.ValidateWith(parameterIndex, validator);
+        }
     }
 }

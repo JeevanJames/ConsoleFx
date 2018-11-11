@@ -63,7 +63,7 @@ namespace ConsoleFx.CmdLineParser.Validators
             argument.ValidateWith(new LookupValidator(items));
 
         public static Argument ValidateFromList(this Argument argument, IEnumerable<string> items,
-            string message = null)
+            bool caseSensitive = false, string message = null)
         {
             var validator = new LookupValidator(items);
             if (message != null)
@@ -74,8 +74,8 @@ namespace ConsoleFx.CmdLineParser.Validators
         public static Option ValidateFromList(this Option option, params string[] items) =>
             option.ValidateWith(new LookupValidator(items));
 
-        public static Option ValidateFromList(this Option option, IEnumerable<string> items,
-            string message = null)
+        public static Option ValidateFromList(this Option option, IEnumerable<string> items, bool caseSensitive = false,
+            int parameterIndex = -1, string message = null)
         {
             var validator = new LookupValidator(items);
             if (message != null)

@@ -32,10 +32,29 @@ namespace ConsoleFx.CmdLineParser.Validators
 
         protected override Uri ValidateAsString(string parameterValue)
         {
-            Uri uri;
-            if (!Uri.TryCreate(parameterValue, UriKind, out uri))
+            if (!Uri.TryCreate(parameterValue, UriKind, out Uri uri))
                 ValidationFailed(Message, parameterValue);
             return uri;
+        }
+    }
+
+    public static class UriValidatorExtensions
+    {
+        public static Argument ValidateAsUri(this Argument argument, UriKind uriKind, string message = null)
+        {
+            var validator = new UriValidator(uriKind);
+            if (message != null)
+                validator.Message = message;
+            return argument.ValidateWith(validator);
+        }
+
+        public static Option ValidateAsUri(this Option option, UriKind uriKind, int parameterIndex = -1,
+            string message = null)
+        {
+            var validator = new UriValidator(uriKind);
+            if (message != null)
+                validator.Message = message;
+            return option.ValidateWith(parameterIndex, validator);
         }
     }
 }

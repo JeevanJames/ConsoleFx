@@ -91,21 +91,22 @@ namespace ConsoleFx.CmdLineParser.Validators
         }
 
         public static Option ValidateAsBoolean(this Option option, string trueString = "true",
-            string falseString = "false", bool caseSensitive = false, string message = null)
+            string falseString = "false", bool caseSensitive = false, int parameterIndex = -1, string message = null)
         {
             var validator = new BooleanValidator(trueString, falseString, caseSensitive);
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(validator);
+            return option.ValidateWith(parameterIndex, validator);
         }
 
         public static Option ValidateAsBoolean(this Option option, IEnumerable<string> trueStrings,
-            IEnumerable<string> falseStrings, bool caseSensitive = false, string message = null)
+            IEnumerable<string> falseStrings, bool caseSensitive = false, int parameterIndex = -1,
+            string message = null)
         {
             var validator = new BooleanValidator(trueStrings, falseStrings, caseSensitive);
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(validator);
+            return option.ValidateWith(parameterIndex, validator);
         }
     }
 }
