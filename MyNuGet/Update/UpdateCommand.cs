@@ -29,28 +29,19 @@ namespace MyNuGet.Update
     {
         protected override string Name => "update";
 
-        protected override IEnumerable<Argument> Arguments
+        protected override IEnumerable<Argument> GetArguments()
         {
-            get
-            {
-                yield return new Argument()
-                    .Description("packages.config|solution", "Either the packages.config file or the solution file")
-                    .ValidateWith(new FileValidator {
-                        ShouldExist = true,
-                        AllowedExtensions = {
-                            "config",
-                            "sln"
-                        }
-                    });
-            }
-        }
-
-        protected override IEnumerable<Option> Options
-        {
-            get
-            {
-                yield break;
-            }
+            yield return new Argument()
+                .Description("packages.config|solution", "Either the packages.config file or the solution file")
+                .ValidateWith(new FileValidator
+                {
+                    ShouldExist = true,
+                    AllowedExtensions =
+                    {
+                        "config",
+                        "sln"
+                    }
+                });
         }
     }
 }

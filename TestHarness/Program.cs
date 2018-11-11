@@ -182,20 +182,14 @@ namespace TestHarness
     {
         protected override string Name => "install";
 
-        protected override IEnumerable<Option> Options
+        protected override IEnumerable<Option> GetOptions()
         {
-            get
-            {
-                yield return new Option("force", "f");
-            }
+            yield return new Option("force", "f");
         }
 
-        protected override IEnumerable<Argument> Arguments
+        protected override IEnumerable<Argument> GetArguments()
         {
-            get
-            {
-                yield return new Argument();
-            }
+            yield return new Argument();
         }
     }
 
@@ -203,31 +197,24 @@ namespace TestHarness
     {
         protected override string Name => "update";
 
-        protected override IEnumerable<Option> Options
+        protected override IEnumerable<Option> GetOptions()
         {
-            get
-            {
-                yield return new Option("version", "ver")
-                    .ParamsOfType<int>()
-                    .UsedAs(usage => {
-                        usage.ParameterRequirement = OptionParameterRequirement.Required;
-                    });
-                yield return new Option("force", "f");
-                yield return new Option("format")
-                    .FormatParamsAs(v => v.ToUpperInvariant())
-                    .UsedAs(usage => {
-                        usage.Requirement = OptionRequirement.OptionalUnlimited;
-                        usage.ParameterRequirement = OptionParameterRequirement.Required;
-                    });
-            }
+            yield return new Option("version", "ver")
+                .ParamsOfType<int>()
+                .UsedAs(usage => { usage.ParameterRequirement = OptionParameterRequirement.Required; });
+            yield return new Option("force", "f");
+            yield return new Option("format")
+                .FormatParamsAs(v => v.ToUpperInvariant())
+                .UsedAs(usage =>
+                {
+                    usage.Requirement = OptionRequirement.OptionalUnlimited;
+                    usage.ParameterRequirement = OptionParameterRequirement.Required;
+                });
         }
 
-        protected override IEnumerable<Argument> Arguments
+        protected override IEnumerable<Argument> GetArguments()
         {
-            get
-            {
-                yield return new Argument();
-            }
+            yield return new Argument();
         }
     }
 }

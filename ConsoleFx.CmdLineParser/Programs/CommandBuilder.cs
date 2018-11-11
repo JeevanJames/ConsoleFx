@@ -42,25 +42,25 @@ namespace ConsoleFx.CmdLineParser.Programs
         ///     Override this method to return the arguments available to this command.
         ///     Remember that optional arguments must be after required arguments.
         /// </summary>
-        protected virtual IEnumerable<Argument> Arguments
+        protected virtual IEnumerable<Argument> GetArguments()
         {
-            get { yield break; }
+            yield break;
         }
 
         /// <summary>
         ///     Override this method to return the options available to this command.
         /// </summary>
-        protected virtual IEnumerable<Option> Options
+        protected virtual IEnumerable<Option> GetOptions()
         {
-            get { yield break; }
+            yield break;
         }
 
         /// <summary>
         ///     Override this method to return the sub-commands available to this command.
         /// </summary>
-        protected virtual IEnumerable<Command> Commands
+        protected virtual IEnumerable<Command> GetCommands()
         {
-            get { yield break; }
+            yield break;
         }
 
         /// <summary>
@@ -70,11 +70,14 @@ namespace ConsoleFx.CmdLineParser.Programs
         public Command ToCommand()
         {
             var command = new Command(Name);
-            foreach (Argument argument in Arguments)
+            IEnumerable<Argument> arguments = GetArguments();
+            foreach (Argument argument in arguments)
                 command.Arguments.Add(argument);
-            foreach (Option option in Options)
+            IEnumerable<Option> options = GetOptions();
+            foreach (Option option in options)
                 command.Options.Add(option);
-            foreach (Command subcommand in Commands)
+            IEnumerable<Command> commands = GetCommands();
+            foreach (Command subcommand in commands)
                 command.Commands.Add(subcommand);
             if (!string.IsNullOrWhiteSpace(Description))
                 command.Description(Description);
