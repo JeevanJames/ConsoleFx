@@ -17,20 +17,35 @@ limitations under the License.
 */
 #endregion
 
+using System.Collections.Generic;
 using Xunit;
 
 namespace ConsoleFx.ConsoleExtensions.Tests
 {
     public sealed class ColorStringTests
     {
-        [Fact]
-        public void ToString_builds_color_string()
+        [Theory]
+        [MemberData(nameof(Get_ToString_Builds_color_string_Data))]
+        public void ToString_Builds_color_string(ColorString cs, string expectedString)
         {
-            var cs = new ColorString();
-            string cstr = cs.ToString();
+            string colorString = cs.ToString();
+            Assert.Equal(expectedString, colorString);
+        }
 
-            Assert.NotNull(cstr);
-            Assert.NotEmpty(cstr);
+        public static IEnumerable<object[]> Get_ToString_Builds_color_string_Data()
+        {
+            var cs1 = new ColorString("ConsoleFx ")
+                .Green("CLI ")
+                .BgBlue("Library ")
+                .Yellow().BgBlack("Suite");
+            yield return new object[] {cs1, "ConsoleFx [Green]CLI [Green.Blue]Library [Yellow.Black]Suite"};
+
+            var cs2 = new ColorString()
+                .Text("ConsoleFx ")
+                .Green("CLI ")
+                .Reset().BgBlue("Library ")
+                .Yellow().BgBlack("Suite");
+            yield return new object[] {cs2, "ConsoleFx [Green]CLI [Blue]Library [Yellow.Black]Suite"};
         }
     }
 }
