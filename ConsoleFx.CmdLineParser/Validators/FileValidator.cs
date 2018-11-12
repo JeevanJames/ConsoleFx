@@ -46,6 +46,7 @@ namespace ConsoleFx.CmdLineParser.Validators
 
         public IList<string> AllowedExtensions { get; }
 
+        //TODO: Implement
         public string BaseDirectory { get; }
 
         public bool ShouldExist { get; set; }
