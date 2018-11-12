@@ -27,8 +27,11 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
     public sealed class UnixParserStyle : ParserStyle
     {
         /// <summary>
-        ///     Single character short names allow certain behaviors like combining multiple parameterless options into a single
-        ///     option.
+        ///     <para>
+        ///         Single character short names allow certain behaviors like combining multiple parameterless options
+        ///         into a single option.
+        ///     </para>
+        ///     <para>For example, "-w -v -d" can be specified as "-wvd"</para>
         /// </summary>
         public bool EnforceSingleCharacterShortNames { get; set; } = true;
 

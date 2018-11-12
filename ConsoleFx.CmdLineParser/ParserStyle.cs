@@ -51,10 +51,10 @@ namespace ConsoleFx.CmdLineParser
         ///     <para>Identifies all provided arguments as arguments, options and option parameters.</para>
         ///     <para>No rules are checked during this phase.</para>
         /// </summary>
-        /// <param name="args">The provided arguments to identify.</param>
+        /// <param name="args">All the specified arguments</param>
         /// <param name="options">All defined options.</param>
         /// <param name="grouping"></param>
-        /// <returns></returns>
+        /// <returns>A collection of all the identified arguments.</returns>
         public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> args, IReadOnlyList<OptionRun> options, ArgGrouping grouping);
     }
 }
