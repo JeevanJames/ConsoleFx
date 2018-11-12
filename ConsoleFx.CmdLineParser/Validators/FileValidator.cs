@@ -27,9 +27,26 @@ namespace ConsoleFx.CmdLineParser.Validators
 {
     public class FileValidator : Validator<FileInfo>
     {
-        public IList<string> AllowedExtensions { get; } = new List<string>();
+        public FileValidator()
+        {
+            AllowedExtensions = new List<string>();
+        }
 
-        public string BaseDirectory { get; set; }
+        public FileValidator(params string[] allowedExtensions) : this(false, allowedExtensions)
+        {
+        }
+
+        public FileValidator(bool shouldExist, IEnumerable<string> allowedExtensions)
+        {
+            if (allowedExtensions == null)
+                throw new ArgumentNullException(nameof(allowedExtensions));
+            ShouldExist = shouldExist;
+            AllowedExtensions = new List<string>(allowedExtensions);
+        }
+
+        public IList<string> AllowedExtensions { get; }
+
+        public string BaseDirectory { get; }
 
         public bool ShouldExist { get; set; }
 
@@ -43,16 +60,20 @@ namespace ConsoleFx.CmdLineParser.Validators
             try
             {
                 return new FileInfo(parameterValue);
-            } catch (ArgumentException)
-            {
-                ValidationFailed(InvalidFileNameMessage, parameterValue);
-            } catch (PathTooLongException)
-            {
-                ValidationFailed(PathTooLongMessage, parameterValue);
-            } catch (NotSupportedException)
+            }
+            catch (ArgumentException)
             {
                 ValidationFailed(InvalidFileNameMessage, parameterValue);
             }
+            catch (PathTooLongException)
+            {
+                ValidationFailed(PathTooLongMessage, parameterValue);
+            }
+            catch (NotSupportedException)
+            {
+                ValidationFailed(InvalidFileNameMessage, parameterValue);
+            }
+
             throw new NotSupportedException("Should not have reached here.");
         }
 
@@ -75,5 +96,16 @@ namespace ConsoleFx.CmdLineParser.Validators
                 }
             }
         }
+    }
+
+    public static class FileValidatorExtensions
+    {
+        public static Argument ValidateAsFile(this Argument argument, bool shouldExist,
+            IEnumerable<string> allowedExtensions) =>
+            argument.ValidateWith(new FileValidator(shouldExist, allowedExtensions));
+
+        public static Option ValidateAsFile(this Option option, bool shouldExist, IEnumerable<string> allowedExtensions,
+            int parameterIndex = -1) =>
+            option.ValidateWith(parameterIndex, new FileValidator(shouldExist, allowedExtensions));
     }
 }

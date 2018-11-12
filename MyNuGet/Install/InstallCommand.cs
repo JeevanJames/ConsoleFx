@@ -46,7 +46,7 @@ namespace MyNuGet.Install
 
             yield return new Option("OutputDirectory")
                 .UsedAsSingleParameter()
-                .ValidateWith(new DirectoryValidator {ShouldExist = true})
+                .ValidateAsDirectory(true)
                 .ParamsOfType<DirectoryInfo>()
                 .Description(Install.OutputDirectory);
             yield return new Option("ExcludeVersion")
@@ -67,13 +67,13 @@ namespace MyNuGet.Install
 
             yield return new Option("SolutionDirectory")
                 .UsedAsSingleParameter()
-                .ValidateWith(new DirectoryValidator {ShouldExist = true})
+                .ValidateAsDirectory(true)
                 .ParamsOfType<DirectoryInfo>()
                 .Description(Install.SolutionDirectory);
 
             yield return new Option("Verbosity")
                 .UsedAsSingleParameter()
-                .ValidateWith(new EnumValidator<Verbosity>())
+                .ValidateAsEnum<Verbosity>()
                 .Description(Install.Verbosity);
 
             yield return new Option("NonInteractive")
@@ -82,7 +82,7 @@ namespace MyNuGet.Install
 
             yield return new Option("FileConflictAction")
                 .UsedAsSingleParameter()
-                .ValidateWith(new EnumValidator<FileConflictAction>())
+                .ValidateAsEnum<FileConflictAction>()
                 .Description(Install.FileConflictAction);
         }
     }

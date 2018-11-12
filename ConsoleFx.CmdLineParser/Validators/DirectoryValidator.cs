@@ -17,17 +17,64 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.IO;
 
 namespace ConsoleFx.CmdLineParser.Validators
 {
     public class DirectoryValidator : Validator<DirectoryInfo>
     {
-        public bool ShouldExist { get; set; }
+        public DirectoryValidator()
+        {
+        }
+
+        public DirectoryValidator(bool shouldExist)
+        {
+            ShouldExist = shouldExist;
+        }
+
+        public bool ShouldExist { get; }
+
+        public string InvalidDirectoryNameMessage => Messages.Directory_NameInvalid;
+        public string PathTooLongMessage => Messages.Directory_PathTooLong;
+        public string DirectoryMissingMessage => Messages.Directory_Missing;
 
         protected override DirectoryInfo ValidateAsString(string parameterValue)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return new DirectoryInfo(parameterValue);
+            }
+            catch (ArgumentException)
+            {
+                ValidationFailed(InvalidDirectoryNameMessage, parameterValue);
+            }
+            catch (PathTooLongException)
+            {
+                ValidationFailed(PathTooLongMessage, parameterValue);
+            }
+            catch (NotSupportedException)
+            {
+                ValidationFailed(InvalidDirectoryNameMessage, parameterValue);
+            }
+
+            throw new NotSupportedException("Should not have reached here.");
         }
+
+        protected override void ValidateAsActualType(DirectoryInfo directory, string parameterName)
+        {
+            if (ShouldExist && !directory.Exists)
+                ValidationFailed(DirectoryMissingMessage, parameterName);
+        }
+    }
+
+    public static class DirectoryValidatorExtensions
+    {
+        public static Argument ValidateAsDirectory(this Argument argument, bool shouldExist = false) =>
+            argument.ValidateWith(new DirectoryValidator(shouldExist));
+
+        public static Option ValidateAsDirectory(this Option option, bool shouldExist = false,
+            int parameterIndex = -1) =>
+            option.ValidateWith(parameterIndex, new DirectoryValidator(shouldExist));
     }
 }

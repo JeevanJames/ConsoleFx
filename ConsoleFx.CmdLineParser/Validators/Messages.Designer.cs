@@ -79,6 +79,33 @@ namespace ConsoleFx.CmdLineParser.Validators {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The directory &apos;{0}&apos; does not exist or you do not have sufficient permissions to access it..
+        /// </summary>
+        internal static string Directory_Missing {
+            get {
+                return ResourceManager.GetString("Directory_Missing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid directory name..
+        /// </summary>
+        internal static string Directory_NameInvalid {
+            get {
+                return ResourceManager.GetString("Directory_NameInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The directory name you specified &apos;{0}&apos; exceeds the system-defined maximum length..
+        /// </summary>
+        internal static string Directory_PathTooLong {
+            get {
+                return ResourceManager.GetString("Directory_PathTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The parameter you specified &quot;{0}&quot; does not match any of the allowed values.
         /// </summary>
         internal static string Enum {

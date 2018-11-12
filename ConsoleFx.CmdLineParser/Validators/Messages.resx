@@ -123,6 +123,15 @@
   <data name="Custom" xml:space="preserve">
     <value>Custom validation failed</value>
   </data>
+  <data name="Directory_Missing" xml:space="preserve">
+    <value>The directory '{0}' does not exist or you do not have sufficient permissions to access it.</value>
+  </data>
+  <data name="Directory_NameInvalid" xml:space="preserve">
+    <value>The parameter you specified '{0}' is not a valid directory name.</value>
+  </data>
+  <data name="Directory_PathTooLong" xml:space="preserve">
+    <value>The directory name you specified '{0}' exceeds the system-defined maximum length.</value>
+  </data>
   <data name="Enum" xml:space="preserve">
     <value>The parameter you specified "{0}" does not match any of the allowed values</value>
   </data>
