@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.Prompter", "Conso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.CmdLineParser", "ConsoleFx.CmdLineParser\ConsoleFx.CmdLineParser.csproj", "{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx.CmdLineParser.Tests", "ConsoleFx.CmdLineParser.Tests\ConsoleFx.CmdLineParser.Tests.csproj", "{3A3CACA0-05DC-47F3-9AE4-7A803A7ABB9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9AFDD7D-0706-4852-BF29-7CA4911BC5DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A3CACA0-05DC-47F3-9AE4-7A803A7ABB9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A3CACA0-05DC-47F3-9AE4-7A803A7ABB9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A3CACA0-05DC-47F3-9AE4-7A803A7ABB9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A3CACA0-05DC-47F3-9AE4-7A803A7ABB9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

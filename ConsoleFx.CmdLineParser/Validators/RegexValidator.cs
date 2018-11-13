@@ -43,7 +43,7 @@ namespace ConsoleFx.CmdLineParser.Validators
         protected override string ValidateAsString(string parameterValue)
         {
             if (!Regex.IsMatch(parameterValue))
-                ValidationFailed(parameterValue, Message);
+                ValidationFailed(Message, parameterValue);
             return parameterValue;
         }
     }
