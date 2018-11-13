@@ -56,17 +56,21 @@ namespace ConsoleFx.CmdLineParser.Programs
         public int Run()
         {
             var parser = new Parser(_parserStyle, Grouping);
-            foreach (Argument argument in GetArguments())
+            IEnumerable<Argument> arguments = GetArguments();
+            foreach (Argument argument in arguments)
                 parser.Arguments.Add(argument);
-            foreach (Option option in GetOptions())
+            IEnumerable<Option> options = GetOptions();
+            foreach (Option option in options)
                 parser.Options.Add(option);
-            foreach (Command command in GetCommands())
+            IEnumerable<Command> commands = GetCommands();
+            foreach (Command command in commands)
                 parser.Commands.Add(command);
             try
             {
                 ParseResult result = parser.Parse(Environment.GetCommandLineArgs().Skip(1));
                 return Handle(result);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return -1;

@@ -32,15 +32,16 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
         ///         into a single option.
         ///     </para>
         ///     <para>For example, "-w -v -d" can be specified as "-wvd"</para>
+        ///     <para>If this is true, then it will be validated in the <see cref="ValidateDefinedOptions"/> method.</para>
         /// </summary>
         public bool EnforceSingleCharacterShortNames { get; set; } = true;
 
+        /// <inheritdoc/>
         public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options,
             IReadOnlyList<Argument> arguments)
         {
-            //Options before arguments will not work if there are any options that do not have a
-            //fixed number of parameters (i.e. ExpectedParameters == null). The groupings gets
-            //changed to DoesNotMatter.
+            //If any option has variable number of parameters (i.e. ExpectedParameters = null),
+            //then the groupings is changed DoesNotMatter.
             if (specifiedGrouping == ArgGrouping.OptionsBeforeArguments)
             {
                 bool optionsHaveVariableParameters = options.Any(option => !option.Usage.ExpectedParameters.HasValue);
@@ -69,18 +70,18 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)(?:=(.+))?");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> args, IReadOnlyList<OptionRun> options,
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping)
         {
             OptionRun currentOption = null;
 
-            foreach (string arg in args)
+            foreach (string token in tokens)
             {
-                Match optionMatch = OptionPattern.Match(arg);
+                Match optionMatch = OptionPattern.Match(token);
 
                 if (!optionMatch.Success && currentOption == null)
                 {
-                    yield return arg;
+                    yield return token;
                     continue;
                 }
 
@@ -97,8 +98,10 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
                         : or => or.Option.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase);
                     OptionRun option = options.FirstOrDefault(predicate);
                     if (option == null)
+                    {
                         throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
                             string.Format(Messages.InvalidOptionSpecified, optionName));
+                    }
 
                     if (option.Option.CaseSensitive)
                     {
@@ -115,10 +118,12 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
                     {
                         option.Parameters.Add(parameterValue);
                         currentOption = null;
-                    } else
+                    }
+                    else
                         currentOption = option;
-                } else
-                    currentOption.Parameters.Add(arg);
+                }
+                else
+                    currentOption.Parameters.Add(token);
 
                 //If we're on an option (currentOption != null) and the number of parameters has
                 //reached the maximum allowed, then we can stop handling that option by setting

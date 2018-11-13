@@ -28,7 +28,7 @@ namespace ConsoleFx.CmdLineParser
     internal sealed class ParseRun
     {
         /// <summary>
-        ///     <para>All specified commands.</para>
+        ///     <para>All specified commands and subcommands.</para>
         ///     <para>
         ///         Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we want to avoid the
         ///         duplicate checks, as commands at different levels can have the same name.
@@ -74,6 +74,9 @@ namespace ConsoleFx.CmdLineParser
 
         internal Option Option { get; }
 
+        /// <summary>
+        /// The <see cref="Command"/> instance to which this option belongs.
+        /// </summary>
         internal Command Command { get; }
 
         internal int Occurences { get; set; }

@@ -65,6 +65,8 @@ namespace ConsoleFx.CmdLineParser
         {
             IReadOnlyList<string> tokenList = tokens.ToList();
 
+            //Creates a ParseRun instance, which specifies the sequence of commands specified and
+            //the tokens and any options and arguments that apply to the specified commands.
             ParseRun run = CreateRun(tokenList);
 
             //Extract out just the option and argument objects from their respective run collections.
@@ -109,6 +111,8 @@ namespace ConsoleFx.CmdLineParser
             {
                 string token = tokens[i];
 
+                //All options for the current command are considered. So, add them all.
+                //This is not the case for arguments. Only the arguments for the innermost command are considered.
                 run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o, currentCommand)));
 
                 //Check if subcommand exists under the current command with the token as a name.
@@ -119,8 +123,13 @@ namespace ConsoleFx.CmdLineParser
                     //Add the command and move to the next command level.
                     run.Commands.Add(subcommand);
                     currentCommand = subcommand;
-                } else
+                }
+                else
                 {
+                    //This is the innermost command. Add any arguments from this command to the run
+                    //and then add all the remaining tokens to the run's Token collection and exit
+                    //the loop.
+
                     //Only add the arguments from the current command to the run if a subcommand is not specified.
                     //Arguments from the innermost command can only be used for a run. If arguments
                     //from different levels of commands are used, then the correct order of the commands is ambiguous.
@@ -132,13 +141,15 @@ namespace ConsoleFx.CmdLineParser
                     for (int j = i; j < tokens.Count; j++)
                         run.Tokens.Add(tokens[j]);
 
-                    //We're done with subcommands. Break out of this look.
+                    //We're done with subcommands. Break out of this loop.
                     break;
                 }
             }
 
+            //To avoid null-ref exceptions, assign run.Tokens if it is null.
             if (run.Tokens == null)
                 run.Tokens = new List<string>(0);
+
             return run;
         }
 
