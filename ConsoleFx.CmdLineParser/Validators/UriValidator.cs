@@ -23,12 +23,12 @@ namespace ConsoleFx.CmdLineParser.Validators
 {
     public class UriValidator : SingleMessageValidator<Uri>
     {
-        public UriKind UriKind { get; }
-
-        public UriValidator(UriKind uriKind) : base(Messages.Uri)
+        public UriValidator(UriKind uriKind = UriKind.RelativeOrAbsolute) : base(Messages.Uri)
         {
             UriKind = uriKind;
         }
+
+        public UriKind UriKind { get; }
 
         protected override Uri ValidateAsString(string parameterValue)
         {
@@ -40,7 +40,8 @@ namespace ConsoleFx.CmdLineParser.Validators
 
     public static class UriValidatorExtensions
     {
-        public static Argument ValidateAsUri(this Argument argument, UriKind uriKind, string message = null)
+        public static Argument ValidateAsUri(this Argument argument, UriKind uriKind = UriKind.RelativeOrAbsolute,
+            string message = null)
         {
             var validator = new UriValidator(uriKind);
             if (message != null)
@@ -48,8 +49,8 @@ namespace ConsoleFx.CmdLineParser.Validators
             return argument.ValidateWith(validator);
         }
 
-        public static Option ValidateAsUri(this Option option, UriKind uriKind, int parameterIndex = -1,
-            string message = null)
+        public static Option ValidateAsUri(this Option option, UriKind uriKind = UriKind.RelativeOrAbsolute,
+            int parameterIndex = -1, string message = null)
         {
             var validator = new UriValidator(uriKind);
             if (message != null)

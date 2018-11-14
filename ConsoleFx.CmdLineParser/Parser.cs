@@ -266,21 +266,30 @@ namespace ConsoleFx.CmdLineParser
 
                 foreach (string parameter in optionRun.Parameters)
                 {
-                    string formattedParameter = option.Formatter != null ? option.Formatter(parameter) : parameter;
-                    list.Add(converter == null ? formattedParameter : converter(formattedParameter));
+                    list.Add(GetConvertedValue(parameter, option, converter));
+                    //string formattedParameter = option.Formatter != null ? option.Formatter(parameter) : parameter;
+                    //list.Add(converter == null ? formattedParameter : converter(formattedParameter));
                 }
 
                 return list;
             }
 
+            //If the option only has one parameter specified, then the option's value is a string.
             if (option.Usage.MaxParameters == 1 && optionRun.Parameters.Count > 0)
             {
-                string formattedParameter = option.Formatter != null
-                    ? option.Formatter(optionRun.Parameters[0]) : optionRun.Parameters[0];
-                return converter == null ? formattedParameter : converter(formattedParameter);
+                return GetConvertedValue(optionRun.Parameters[0], option, converter);
+                //string formattedParameter = option.Formatter != null
+                //    ? option.Formatter(optionRun.Parameters[0]) : optionRun.Parameters[0];
+                //return converter == null ? formattedParameter : converter(formattedParameter);
             }
 
             throw new InvalidOperationException("Should never reach here");
+
+            object GetConvertedValue(string param, Option opt, Converter<string, object> conv)
+            {
+                string formattedParameter = opt.Formatter != null ? opt.Formatter(param) : param;
+                return conv == null ? formattedParameter : conv(formattedParameter);
+            }
         }
 
         /// <summary>

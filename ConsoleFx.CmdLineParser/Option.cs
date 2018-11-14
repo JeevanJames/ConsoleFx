@@ -23,17 +23,19 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+
 using ConsoleFx.CmdLineParser.Validators;
 
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
-    ///     Represents a commandline switch parameter.
+    ///     Represents an options arg.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
     public sealed class Option : MetadataObject
     {
-        public Option(string name, string shortName = null, bool caseSensitive = false, int order = 0, object @default = null)
+        public Option(string name, string shortName = null, bool caseSensitive = false, int order = 0,
+            object @default = null)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
@@ -121,6 +123,13 @@ namespace ConsoleFx.CmdLineParser
             return false;
         }
 
+        /// <summary>
+        ///     Assigns a parameter formatter delegate to the option, which can be used to format the
+        ///     option's parameter value.
+        /// </summary>
+        /// <param name="formatter">Parameter formatter delegate</param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the parameter formatter delegate is null.</exception>
         public Option FormatParamsAs(OptionParameterFormatter formatter)
         {
             if (formatter == null)
@@ -129,14 +138,32 @@ namespace ConsoleFx.CmdLineParser
             return this;
         }
 
+        /// <summary>
+        ///     Assigns a format string to the option, which will be used to format the option's
+        ///     parameter value.
+        /// </summary>
+        /// <param name="formatStr">The format string, where the first format placeholder ({0}) represents the parameter value.</param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the format string is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if the format string does not contain a format placeholder ({0}).</exception>
         public Option FormatParamsAs(string formatStr)
         {
-            if (string.IsNullOrWhiteSpace(formatStr))
-                throw new ArgumentException(@"The format string cannot be empty or blank.", nameof(formatStr));
+            if (formatStr == null)
+                throw new ArgumentNullException(nameof(formatStr));
+            if (!formatStr.Contains("{0}"))
+                throw new ArgumentException("The specified format string should contain a format placeholder ({0}) to specify where the parameter value is inserted.", nameof(formatStr));
             Formatter = value => string.Format(formatStr, value);
             return this;
         }
 
+        /// <summary>
+        ///     Specifies the type to convert the option parameters, with an optional custom converter.
+        ///     If a custom converter is not specified, the type's type converter will be used.
+        /// </summary>
+        /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
+        /// <param name="converter">Optional custom converter.</param>
+        /// <param name="default">Optional default value for the parameter.</param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
         public Option ParamsOfType<T>(Converter<string, T> converter = null, T @default = default(T))
         {
             Type = typeof(T);
@@ -146,6 +173,13 @@ namespace ConsoleFx.CmdLineParser
             return this;
         }
 
+        /// <summary>
+        ///     Specifies the rules of how the option is to be used - minimum and maximum number of
+        ///     occurences, minimum and maximum number of parameters allowed, etc.
+        /// </summary>
+        /// <param name="usageSetter">Delegate that is used to specify the option usage rules.</param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the specified delegate is null.</exception>
         public Option UsedAs(Action<OptionUsage> usageSetter)
         {
             if (usageSetter == null)
@@ -154,6 +188,12 @@ namespace ConsoleFx.CmdLineParser
             return this;
         }
 
+        /// <summary>
+        ///     Specifies that the option is to be used as a flag. If the option is specified, then
+        ///     its value is <c>true</c>, otherwise it is <c>false</c>.
+        /// </summary>
+        /// <param name="optional"></param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
         public Option UsedAsFlag(bool optional = true)
         {
             Usage.SetParametersNotAllowed();
@@ -162,6 +202,12 @@ namespace ConsoleFx.CmdLineParser
             return this;
         }
 
+        /// <summary>
+        ///     Specifies that the option is to have only a single parameter. This means that not more
+        ///     than one occurence of the option and only one parameter for the option.
+        /// </summary>
+        /// <param name="optional">If <c>true</c>, then the option does not need to be specified.</param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
         public Option UsedAsSingleParameter(bool optional = true)
         {
             Usage.SetParametersRequired();
@@ -170,17 +216,51 @@ namespace ConsoleFx.CmdLineParser
             return this;
         }
 
+        /// <summary>
+        /// Specifies one or more validators that will be used to validate the option's parameter values.
+        /// </summary>
+        /// <param name="validators">One or more validators.</param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the specified validators array is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
         public Option ValidateWith(params Validator[] validators)
         {
-            foreach (Validator validator in validators)
+            if (validators == null)
+                throw new ArgumentNullException(nameof(validators));
+            if (validators.Length == 0)
+                throw new ArgumentException("Specify at least one validator.", nameof(validators));
+            for (int i = 0; i < validators.Length; i++)
+            {
+                Validator validator = validators[i];
+                if (validator == null)
+                    throw new ArgumentException($"Validator at index {i} is null.", nameof(validators));
                 Validators.Add(validator);
+            }
             return this;
         }
 
+        /// <summary>
+        ///     Specifies one or more validators that will be used to validate the option's parameter
+        ///     at the specified index.
+        /// </summary>
+        /// <param name="parameterIndex">The index of the option parameter to validate.</param>
+        /// <param name="validators">One or more validators.</param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the specified validators array is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
         public Option ValidateWith(int parameterIndex, params Validator[] validators)
         {
-            foreach (Validator validator in validators)
+            if (validators == null)
+                throw new ArgumentNullException(nameof(validators));
+            if (validators.Length == 0)
+                throw new ArgumentException("Specify at least one validator.", nameof(validators));
+            for (int i = 0; i < validators.Length; i++)
+            {
+                Validator validator = validators[i];
+                if (validator == null)
+                    throw new ArgumentException($"Validator at index {i} is null.", nameof(validators));
                 Validators.Add(parameterIndex, validator);
+            }
             return this;
         }
     }
@@ -220,6 +300,7 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         /// <param name="index">Location to insert the new option.</param>
         /// <param name="item">Option to insert.</param>
+        /// <exception cref="ArgumentException">Thrown if the option is already specified in the collection.</exception>
         protected override void InsertItem(int index, Option item)
         {
             if (this.Any(DuplicateCheck(item)))
@@ -235,6 +316,7 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         /// <param name="index">Location to set the new option.</param>
         /// <param name="item">Option to set.</param>
+        /// <exception cref="ArgumentException">Thrown if the option is already specified in the collection.</exception>
         protected override void SetItem(int index, Option item)
         {
             if (this.Any(DuplicateCheck(item)))
@@ -252,6 +334,7 @@ namespace ConsoleFx.CmdLineParser
         /// <param name="option">Option that is being set.</param>
         /// <returns>True if the option already exists in the collection. Otherwise false.</returns>
         //TODO: Check if this method is being used.
-        private static Func<Option, bool> DuplicateCheck(Option option) => opt => opt.HasName(option.Name);
+        private static Func<Option, bool> DuplicateCheck(Option option) =>
+            opt => opt.HasName(option.Name);
     }
 }

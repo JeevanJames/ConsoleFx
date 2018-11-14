@@ -44,7 +44,7 @@ namespace ConsoleFx.CmdLineParser.Validators
         /// <param name="args">Optional arguments to the message.</param>
         protected void ValidationFailed(string message, string parameterValue, params object[] args)
         {
-            object[] formatArgs = new object[] { parameterValue }.Concat(args).ToArray();
+            object[] formatArgs = new object[] {parameterValue}.Concat(args).ToArray();
             throw new ValidationException(string.Format(CultureInfo.CurrentCulture, message, formatArgs),
                 GetType(), parameterValue);
         }
@@ -56,9 +56,14 @@ namespace ConsoleFx.CmdLineParser.Validators
     ///     This class breaks the validation into 2 parts - validation of the string parameter value and validation of the
     ///     converted typed value.
     /// </summary>
-    //TODO: The conversion performed by this class seems redundant considering the type conversion details specified by the option itself (using its Type and TypeConverter properties). Can we perform the conversion once and then pass the converted value into this class for the typed validation. Also, consider that the conversion logic for validators and that for the option could be different, leading to inconsistencies.
+    //TODO: The conversion performed by this class seems redundant considering the type conversion
+    //details specified by the option itself (using its Type and TypeConverter properties). Can we
+    //perform the conversion once and then pass the converted value into this class for the typed
+    //validation. Also, consider that the conversion logic for validators and that for the option
+    //could be different, leading to inconsistencies.
     public abstract class Validator<T> : Validator
     {
+        /// <inheritdoc/>
         public sealed override void Validate(string parameterValue)
         {
             T value = ValidateAsString(parameterValue);

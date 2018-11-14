@@ -105,7 +105,7 @@ namespace ConsoleFx.CmdLineParser
         ///         </item>
         ///         <item>
         ///             <description>
-        ///                 an <see cref="bool" /> which is true if the option was specified otherwise false (if it allows
+        ///                 a <see cref="bool" /> which is true if the option was specified otherwise false (if it allows
         ///                 only one occurence).
         ///             </description>
         ///         </item>

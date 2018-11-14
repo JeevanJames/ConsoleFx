@@ -38,7 +38,7 @@ namespace ConsoleFx.CmdLineParser
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Dictionary<int, ValidatorCollection> _validators = new Dictionary<int, ValidatorCollection>();
 
-        public OptionParameterValidators(Option option)
+        internal OptionParameterValidators(Option option)
         {
             _option = option;
         }

@@ -22,7 +22,7 @@ using System.Collections.Generic;
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
-    /// Represents the results of parsing a set of arguments.
+    ///     Represents the results of parsing a set of arguments.
     /// </summary>
     public sealed class ParseResult
     {
@@ -37,17 +37,17 @@ namespace ConsoleFx.CmdLineParser
         public Command Command { get; }
 
         /// <summary>
-        /// List of specified command line arguments.
+        ///     List of specified command line arguments.
         /// </summary>
         public IReadOnlyList<string> Arguments { get; }
 
         /// <summary>
-        /// List of specified command line options.
+        ///     List of specified command line options.
         /// </summary>
         public IReadOnlyDictionary<string, object> Options { get; }
 
         /// <summary>
-        /// Returns the typed value of the specified option.
+        ///     Returns the typed value of the specified option.
         /// </summary>
         /// <typeparam name="T">The type of the value to return.</typeparam>
         /// <param name="name">Name of the specified option.</param>

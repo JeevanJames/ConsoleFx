@@ -49,7 +49,7 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         public int MaxOccurences
         {
-            get { return _maxOccurences; }
+            get => _maxOccurences;
             set
             {
                 //An option should allow at least one occurence.
@@ -66,7 +66,7 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         public int MinOccurences
         {
-            get { return _minOccurences; }
+            get => _minOccurences;
             set
             {
                 if (value < 0)
@@ -82,7 +82,7 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         public int? ExpectedOccurences
         {
-            get { return MinOccurences == MaxOccurences ? MinOccurences : (int?) null; }
+            get => MinOccurences == MaxOccurences ? MinOccurences : (int?)null;
             set
             {
                 if (value < 0)
@@ -151,12 +151,8 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         public OptionParameterRequirement ParameterRequirement
         {
-            get
-            {
-                return MinParameters == 0 && MaxParameters == 0
-                    ? OptionParameterRequirement.NotAllowed
-                    : OptionParameterRequirement.Required;
-            }
+            get => MinParameters == 0 && MaxParameters == 0
+                ? OptionParameterRequirement.NotAllowed : OptionParameterRequirement.Required;
             set
             {
                 switch (value)
@@ -174,13 +170,13 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Shortcut to get/set both min and max parameter values.
-        ///     If min and max values are different, returns null.
-        ///     If set to null, then the defaults of 0 (min) and 0 (max) are set.
+        ///     <para>Shortcut to get/set both min and max parameter values.</para>
+        ///     <para>If min and max values are different, returns null.</para>
+        ///     <para>If set to null, then the defaults of 0 (min) and 0 (max) are set.</para>
         /// </summary>
         public int? ExpectedParameters
         {
-            get { return MinParameters == MaxParameters ? MinParameters : (int?) null; }
+            get => MinParameters == MaxParameters ? MinParameters : (int?)null;
             set
             {
                 if (value < 0)
@@ -190,19 +186,30 @@ namespace ConsoleFx.CmdLineParser
             }
         }
 
+        /// <summary>
+        ///     Disallows parameters for the option.
+        /// </summary>
         public void SetParametersNotAllowed()
         {
             _minParameters = _maxParameters = 0;
         }
 
+        /// <summary>
+        ///     <para>Enforces that parameters should be specified for an option.</para>
+        ///     <para>
+        ///         By default, only one parameter is required, but this can be customized by specifying
+        ///         the <see cref="min"/> and <see cref="max"/> parameters.
+        ///     </para>
+        /// </summary>
+        /// <param name="max">The maximum number of option parameters allowed.</param>
+        /// <param name="min">The minimum number of option parameters required.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the <see cref="min"/> parameter is less than zero.</exception>
+        /// <exception cref="ArgumentException">Thrown if the <see cref="min"/> parameter is greater than the <see cref="max"/> parameter.</exception>
         public void SetParametersRequired(int max = 1, int min = 1)
         {
             if (min < 1)
                 throw new ArgumentOutOfRangeException(nameof(min),
                     "Minimum parameters has to be one or more if they are required.");
-            if (max < 0)
-                throw new ArgumentOutOfRangeException(nameof(min),
-                    "Maximum parameters has to be one or more if they are required.");
             if (min > max)
                 throw new ArgumentException(
                     $"Minimum parameter usage ({min}) cannot be larger than the maximum ({max}).", nameof(min));
@@ -210,6 +217,10 @@ namespace ConsoleFx.CmdLineParser
             _maxParameters = max;
         }
 
+        /// <summary>
+        ///     Specifies whether the parameters of the option are repeating (all have the same meaning)
+        ///     or individual (each is different and can have separate validators).
+        /// </summary>
         public OptionParameterType ParameterType { get; set; }
     }
 
