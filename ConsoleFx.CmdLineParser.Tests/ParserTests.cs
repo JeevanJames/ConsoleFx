@@ -17,12 +17,11 @@ limitations under the License.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineParser.Validators;
+using ConsoleFx.CmdLineParser.Tests.Commands;
+using ConsoleFx.CmdLineParser.UnixStyle;
 using ConsoleFx.CmdLineParser.WindowsStyle;
-
 using Xunit;
 
 namespace ConsoleFx.CmdLineParser.Tests
@@ -35,14 +34,7 @@ namespace ConsoleFx.CmdLineParser.Tests
         {
             _parser = new Parser(new WindowsParserStyle());
             _parser.Options.Add(new Option("verbose", "v").UsedAsFlag(true));
-
-            var installCommand = new Command("install");
-            installCommand.Options.Add(new Option("version", "ver")
-                .UsedAsSingleParameter()
-                .ValidateWithRegex(@"^\d+\.\d+\.\d+(?:\.\d+)?$", message: "Invalid version specified: {0}"));
-            installCommand.Arguments.Add(new Argument()
-                .ValidateWithRegex(@"^\w+$"));
-            _parser.Commands.Add(installCommand);
+            _parser.Commands.Add(new InstallCommand());
         }
 
         [Theory, MemberData(nameof(Parse_Parses_windows_style_args_Data))]
@@ -54,7 +46,7 @@ namespace ConsoleFx.CmdLineParser.Tests
 
         public static IEnumerable<object[]> Parse_Parses_windows_style_args_Data()
         {
-            string[] tokens1 = { "install", "packageName", "/verbose", "/ver:1.2" };
+            string[] tokens1 = { "install", "packageName", "/verbose", "/save-dev" };
             yield return new object[] { tokens1 };
         }
     }

@@ -68,7 +68,7 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
             }
         }
 
-        private static readonly Regex OptionPattern = new Regex(@"(--?)(\w+)(?:=(.+))?");
+        private static readonly Regex OptionPattern = new Regex(@"(--?)(\w[\w-_]+)(?:=(.+))?");
 
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping)
@@ -94,7 +94,7 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
 
                     Func<OptionRun, bool> predicate = isShortOption
                         ? (Func<OptionRun, bool>)
-                            (or => or.Option.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase))
+                            (or => or.Option.ShortName != null && or.Option.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase))
                         : or => or.Option.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase);
                     OptionRun option = options.FirstOrDefault(predicate);
                     if (option == null)

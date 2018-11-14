@@ -26,7 +26,7 @@ namespace ConsoleFx.CmdLineParser.WindowsStyle
 {
     public sealed class WindowsParserStyle : ParserStyle
     {
-        private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?]+)");
+        private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?][\w-_\?]+)");
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options, ArgGrouping grouping)

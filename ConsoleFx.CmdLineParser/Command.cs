@@ -18,7 +18,6 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -29,15 +28,21 @@ namespace ConsoleFx.CmdLineParser
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
     public sealed class Command : MetadataObject
     {
-        private List<string> _excludedInheritingOptions;
-
         /// <summary>
-        ///     Creates the root command, which has no name.
+        ///     <para>Initializes a new instance of the <see cref="Command"/> object.</para>
+        ///     <para>This constructor is used internally to create root commands.</para>
         /// </summary>
         internal Command()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Command"/> object.
+        /// </summary>
+        /// <param name="name">Name of the command.</param>
+        /// <param name="caseSensitive">Indicates whether the command name is case sensitive.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the command name is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if the command name is not valid.</exception>
         public Command(string name, bool caseSensitive = false)
         {
             if (name == null)
@@ -83,16 +88,23 @@ namespace ConsoleFx.CmdLineParser
         ///     Collection of <see cref="Command" /> sub-command objects for this command.
         /// </summary>
         public Commands Commands { get; } = new Commands();
-
-        public IList<string> ExcludedInheritingOptions => _excludedInheritingOptions ?? (_excludedInheritingOptions = new List<string>());
     }
 
     /// <summary>
-    ///     Collection of <see cref="Command" /> objects. This collection adds special behavior to prevent duplicate command
-    ///     names in the collection as well as the ability to retrieve sub-commands based on the correct case-sensivity.
+    ///     <para>Collection of <see cref="Command" /> objects.</para>
+    ///     <para>
+    ///         This collection adds special behavior to prevent duplicate command names in the
+    ///         collection as well as the ability to retrieve sub-commands based on the correct
+    ///         case-sensivity.
+    ///     </para>
     /// </summary>
     public sealed class Commands : Collection<Command>
     {
+        /// <summary>
+        ///     Gets a <see cref="Command"/> instance from the collection, given the name.
+        /// </summary>
+        /// <param name="name">Name of the command to search for.</param>
+        /// <returns>The <see cref="Command"/> instance, if found. Otherwise <c>null</c>.</returns>
         public Command this[string name] =>
             this.FirstOrDefault(command => command.Name.Equals(name, command.NameComparison));
 
@@ -117,7 +129,7 @@ namespace ConsoleFx.CmdLineParser
                 if (this[i].Name.Equals(command.Name, this[i].NameComparison))
                 {
                     throw new ArgumentException(
-                        $"Command named '{command.Name}' already exists in the command collection.");
+                        $"Command named '{command.Name}' already exists in the command collection.", nameof(command));
                 }
             }
         }

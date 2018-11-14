@@ -36,12 +36,10 @@ namespace ConsoleFx.CmdLineParser.Validators
         {
         }
 
-        public FileValidator(bool shouldExist, IEnumerable<string> allowedExtensions)
+        public FileValidator(bool shouldExist = false, IEnumerable<string> allowedExtensions = null)
         {
-            if (allowedExtensions == null)
-                throw new ArgumentNullException(nameof(allowedExtensions));
             ShouldExist = shouldExist;
-            AllowedExtensions = new List<string>(allowedExtensions);
+            AllowedExtensions = allowedExtensions != null ? new List<string>(allowedExtensions) : new List<string>();
         }
 
         public IList<string> AllowedExtensions { get; }

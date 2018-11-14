@@ -18,7 +18,6 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -265,12 +264,6 @@ namespace ConsoleFx.CmdLineParser
         }
     }
 
-    /// <summary>
-    ///     Delegate that is executed for every option that is specified on the command line.
-    /// </summary>
-    /// <param name="parameters">The list of parameters specified for the option.</param>
-    public delegate void OptionHandler(IReadOnlyList<string> parameters);
-
     public delegate string OptionParameterFormatter(string value);
 
     /// <summary>
@@ -279,13 +272,20 @@ namespace ConsoleFx.CmdLineParser
     /// </summary>
     public sealed class Options : Collection<Option>
     {
+        /// <summary>
+        ///     Gets an option from the collection given either the name or short name.
+        /// </summary>
+        /// <param name="name">The name or short name of the option to find.</param>
+        /// <returns>The <see cref="Option"/> instance, if found. Otherwise <c>null</c>.</returns>
         public Option this[string name]
         {
             get
             {
-                return this.FirstOrDefault(option => {
+                return this.FirstOrDefault(option =>
+                {
                     StringComparison comparison = option.CaseSensitive
-                        ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+                        ? StringComparison.Ordinal
+                        : StringComparison.OrdinalIgnoreCase;
                     if (name.Equals(option.Name, comparison))
                         return true;
                     if (!string.IsNullOrEmpty(option.ShortName) && name.Equals(option.ShortName, comparison))
