@@ -32,11 +32,13 @@ namespace ConsoleFx.CmdLineParser.Tests.Commands
 
         protected override IEnumerable<Argument> GetArguments()
         {
-            yield return new Argument()
+            yield return new Argument("package-name")
                 .Description("package-name", "Name of the package to install")
                 .ValidateAnyCondition("Invalid package name",
                     new UriValidator(),
                     new FileValidator(true, null));
+            yield return new Argument("source", isOptional: true)
+                .Description("source", "Location of the package.");
         }
 
         protected override IEnumerable<Command> GetCommands()

@@ -32,11 +32,16 @@ namespace ConsoleFx.CmdLineParser
     {
         private ValidatorCollection _validators;
 
+        public Argument(string name, bool isOptional = false) : base(name)
+        {
+            IsOptional = isOptional;
+        }
+
         /// <summary>
         ///     Indicates whether the argument is optional. Like C# optional parameters, then can only
         ///     be specified after all the required arguments.
         /// </summary>
-        public bool IsOptional { get; set; }
+        public bool IsOptional { get; }
 
         /// <summary>
         ///     Validators for this argument.

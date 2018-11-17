@@ -46,6 +46,7 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         public IReadOnlyDictionary<string, object> Options { get; }
 
+
         /// <summary>
         ///     Returns the typed value of the specified option.
         /// </summary>

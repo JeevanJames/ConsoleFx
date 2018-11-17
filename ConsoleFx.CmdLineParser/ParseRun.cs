@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ConsoleFx.CmdLineParser
 {
@@ -64,6 +65,7 @@ namespace ConsoleFx.CmdLineParser
         internal string Value { get; set; }
     }
 
+    [DebuggerDisplay("{Command} {Option}")]
     public sealed class OptionRun
     {
         internal OptionRun(Option option, Command command)

@@ -188,7 +188,7 @@ namespace TestHarness
 
         protected override IEnumerable<Argument> GetArguments()
         {
-            yield return new Argument();
+            yield return new Argument("package-name");
         }
     }
 
@@ -213,7 +213,7 @@ namespace TestHarness
 
         protected override IEnumerable<Argument> GetArguments()
         {
-            yield return new Argument();
+            yield return new Argument("arg-name");
         }
     }
 }

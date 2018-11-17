@@ -19,6 +19,8 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ConsoleFx.CmdLineParser
 {
@@ -30,6 +32,31 @@ namespace ConsoleFx.CmdLineParser
     public abstract class MetadataObject
     {
         private Dictionary<string, object> _metadata;
+
+        protected MetadataObject()
+        {
+            Name = null;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MetadataObject"/> object.
+        /// </summary>
+        /// <param name="name">Name of the object.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the name is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the name is empty or has only whitespace.</exception>
+        protected MetadataObject(string name)
+        {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            if (name.Trim().Length == 0)
+                throw new ArgumentException("Specify valid name", nameof(name));
+            Name = name;
+        }
+
+        /// <summary>
+        ///     Name of the metadata object.
+        /// </summary>
+        public string Name { get; }
 
         /// <summary>
         ///     Gets or sets a string metadata value.
@@ -70,5 +97,14 @@ namespace ConsoleFx.CmdLineParser
             else
                 _metadata.Add(name, value);
         }
+    }
+
+    public abstract class MetadataObjects<T> : Collection<T>
+        where T : MetadataObject
+    {
+        public T this[string name] =>
+            this.FirstOrDefault(item => NamesMatch(name, item));
+
+        protected abstract bool NamesMatch(string name, T item);
     }
 }

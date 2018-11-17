@@ -34,22 +34,14 @@ namespace ConsoleFx.CmdLineParser
     public sealed class Option : MetadataObject
     {
         public Option(string name, string shortName = null, bool caseSensitive = false, int order = 0,
-            object @default = null)
+            object @default = null) : base(name)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
-            Name = name;
             ShortName = shortName;
             CaseSensitive = caseSensitive;
             Order = order;
             Default = @default;
             Validators = new OptionParameterValidators(this);
         }
-
-        /// <summary>
-        ///     Name of the option.
-        /// </summary>
-        public string Name { get; }
 
         /// <summary>
         ///     Optional alternative name for the option, normally a shorter version.

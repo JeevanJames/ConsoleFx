@@ -37,32 +37,24 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Command"/> object.
+        ///     Initializes a new instance of the <see cref="Command"/> object.
         /// </summary>
         /// <param name="name">Name of the command.</param>
         /// <param name="caseSensitive">Indicates whether the command name is case sensitive.</param>
         /// <exception cref="ArgumentNullException">Thrown if the command name is null.</exception>
         /// <exception cref="ArgumentException">Thrown if the command name is not valid.</exception>
-        public Command(string name, bool caseSensitive = false)
+        public Command(string name, bool caseSensitive = false) : base(name)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
             if (!NamePattern.IsMatch(name))
             {
                 throw new ArgumentException(
                     $"'{name}' is not a valid command name. Command names should only consist of alphanumeric characters.",
                     nameof(name));
             }
-            Name = name;
             NameComparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
         private static readonly Regex NamePattern = new Regex(@"^\w+$", RegexOptions.Compiled);
-
-        /// <summary>
-        ///     Gets the name of the command.
-        /// </summary>
-        public string Name { get; }
 
         /// <summary>
         ///     Specifies whether the command name is case-sensitive.

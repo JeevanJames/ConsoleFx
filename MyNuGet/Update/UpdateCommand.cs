@@ -31,7 +31,7 @@ namespace MyNuGet.Update
 
         protected override IEnumerable<Argument> GetArguments()
         {
-            yield return new Argument()
+            yield return new Argument("config")
                 .Description("packages.config|solution", "Either the packages.config file or the solution file")
                 .ValidateWith(new FileValidator
                 {

@@ -32,7 +32,7 @@ namespace MyNuGet.Install
 
         protected override IEnumerable<Argument> GetArguments()
         {
-            yield return new Argument()
+            yield return new Argument("package-id")
                 .Description("package id/config file", "The package ID or path to the packages.config file.")
                 .ValidateWith(new CompositeValidator("'{0}' is not a valid package ID or package config file.",
                     new PackageIdValidator(),

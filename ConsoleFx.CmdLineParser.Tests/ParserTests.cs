@@ -46,7 +46,7 @@ namespace ConsoleFx.CmdLineParser.Tests
 
         public static IEnumerable<object[]> Parse_Parses_windows_style_args_Data()
         {
-            string[] tokens1 = { "install", "packageName", "/verbose", "/save-dev" };
+            string[] tokens1 = { "install", "/verbose", "/save-dev" };
             yield return new object[] { tokens1 };
         }
     }
