@@ -90,40 +90,57 @@ namespace ConsoleFx.CmdLineParser
     ///         case-sensivity.
     ///     </para>
     /// </summary>
-    public sealed class Commands : Collection<Command>
+    public sealed class Commands : MetadataObjects<Command>
     {
-        /// <summary>
-        ///     Gets a <see cref="Command"/> instance from the collection, given the name.
-        /// </summary>
-        /// <param name="name">Name of the command to search for.</param>
-        /// <returns>The <see cref="Command"/> instance, if found. Otherwise <c>null</c>.</returns>
-        public Command this[string name] =>
-            this.FirstOrDefault(command => command.Name.Equals(name, command.NameComparison));
+        protected override bool NamesMatch(string name, Command item) =>
+            item.Name.Equals(name, item.NameComparison);
 
-        protected override void InsertItem(int index, Command command)
-        {
-            CheckDuplicates(command, -1);
-            base.InsertItem(index, command);
-        }
-
-        protected override void SetItem(int index, Command command)
-        {
-            CheckDuplicates(command, index);
-            base.SetItem(index, command);
-        }
-
-        private void CheckDuplicates(Command command, int index)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                if (i == index)
-                    continue;
-                if (this[i].Name.Equals(command.Name, this[i].NameComparison))
-                {
-                    throw new ArgumentException(
-                        $"Command named '{command.Name}' already exists in the command collection.", nameof(command));
-                }
-            }
-        }
+        protected override string GetDuplicateErrorMessage(string name) =>
+            $"Command named '{name}' already exists in the command collection.";
     }
+
+    /// <summary>
+    ///     <para>Collection of <see cref="Command" /> objects.</para>
+    ///     <para>
+    ///         This collection adds special behavior to prevent duplicate command names in the
+    ///         collection as well as the ability to retrieve sub-commands based on the correct
+    ///         case-sensivity.
+    ///     </para>
+    /// </summary>
+    //public sealed class Commands : Collection<Command>
+    //{
+    //    /// <summary>
+    //    ///     Gets a <see cref="Command"/> instance from the collection, given the name.
+    //    /// </summary>
+    //    /// <param name="name">Name of the command to search for.</param>
+    //    /// <returns>The <see cref="Command"/> instance, if found. Otherwise <c>null</c>.</returns>
+    //    public Command this[string name] =>
+    //        this.FirstOrDefault(command => command.Name.Equals(name, command.NameComparison));
+
+    //    protected override void InsertItem(int index, Command command)
+    //    {
+    //        CheckDuplicates(command, -1);
+    //        base.InsertItem(index, command);
+    //    }
+
+    //    protected override void SetItem(int index, Command command)
+    //    {
+    //        CheckDuplicates(command, index);
+    //        base.SetItem(index, command);
+    //    }
+
+    //    private void CheckDuplicates(Command command, int index)
+    //    {
+    //        for (int i = 0; i < Count; i++)
+    //        {
+    //            if (i == index)
+    //                continue;
+    //            if (this[i].Name.Equals(command.Name, this[i].NameComparison))
+    //            {
+    //                throw new ArgumentException(
+    //                    $"Command named '{command.Name}' already exists in the command collection.", nameof(command));
+    //            }
+    //        }
+    //    }
+    //}
 }

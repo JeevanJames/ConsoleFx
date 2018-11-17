@@ -18,10 +18,8 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 
 using ConsoleFx.CmdLineParser.Validators;
 
@@ -262,71 +260,15 @@ namespace ConsoleFx.CmdLineParser
     ///     Represents a collection of options. Note: This is not a keyed collection because the key
     ///     can be either the name or short name.
     /// </summary>
-    public sealed class Options : Collection<Option>
+    public sealed class Options : MetadataObjects<Option>
     {
-        /// <summary>
-        ///     Gets an option from the collection given either the name or short name.
-        /// </summary>
-        /// <param name="name">The name or short name of the option to find.</param>
-        /// <returns>The <see cref="Option"/> instance, if found. Otherwise <c>null</c>.</returns>
-        public Option this[string name]
-        {
-            get
-            {
-                return this.FirstOrDefault(option =>
-                {
-                    StringComparison comparison = option.CaseSensitive
-                        ? StringComparison.Ordinal
-                        : StringComparison.OrdinalIgnoreCase;
-                    if (name.Equals(option.Name, comparison))
-                        return true;
-                    if (!string.IsNullOrEmpty(option.ShortName) && name.Equals(option.ShortName, comparison))
-                        return true;
-                    return false;
-                });
-            }
-        }
+        protected override bool ObjectsMatch(Option obj1, Option obj2) =>
+            obj1.HasName(obj2.Name) || obj1.HasName(obj2.ShortName);
 
-        /// <summary>
-        ///     Prevents duplicate options from being inserted.
-        /// </summary>
-        /// <param name="index">Location to insert the new option.</param>
-        /// <param name="item">Option to insert.</param>
-        /// <exception cref="ArgumentException">Thrown if the option is already specified in the collection.</exception>
-        protected override void InsertItem(int index, Option item)
-        {
-            if (this.Any(DuplicateCheck(item)))
-            {
-                throw new ArgumentException(
-                    string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, item.Name), nameof(item));
-            }
-            base.InsertItem(index, item);
-        }
+        protected override bool NamesMatch(string name, Option item) =>
+            item.HasName(name);
 
-        /// <summary>
-        ///     Prevents duplicate options from being set.
-        /// </summary>
-        /// <param name="index">Location to set the new option.</param>
-        /// <param name="item">Option to set.</param>
-        /// <exception cref="ArgumentException">Thrown if the option is already specified in the collection.</exception>
-        protected override void SetItem(int index, Option item)
-        {
-            if (this.Any(DuplicateCheck(item)))
-            {
-                throw new ArgumentException(
-                    string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, item.Name), nameof(item));
-            }
-            base.SetItem(index, item);
-        }
-
-        /// <summary>
-        ///     Returns a delegate that can check whether the passed option is already available in the
-        ///     collection. Used whenever options are added or set in the collection.
-        /// </summary>
-        /// <param name="option">Option that is being set.</param>
-        /// <returns>True if the option already exists in the collection. Otherwise false.</returns>
-        //TODO: Check if this method is being used.
-        private static Func<Option, bool> DuplicateCheck(Option option) =>
-            opt => opt.HasName(option.Name);
+        protected override string GetDuplicateErrorMessage(string name) =>
+            string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, name);
     }
 }

@@ -20,8 +20,8 @@ limitations under the License.
 using System.Collections.Generic;
 
 using ConsoleFx.CmdLineParser.Tests.Commands;
-using ConsoleFx.CmdLineParser.UnixStyle;
 using ConsoleFx.CmdLineParser.WindowsStyle;
+
 using Xunit;
 
 namespace ConsoleFx.CmdLineParser.Tests
@@ -46,7 +46,7 @@ namespace ConsoleFx.CmdLineParser.Tests
 
         public static IEnumerable<object[]> Parse_Parses_windows_style_args_Data()
         {
-            string[] tokens1 = { "install", "/verbose", "/save-dev" };
+            string[] tokens1 = { "install", "package-name", "/verbose", "/save-dev" };
             yield return new object[] { tokens1 };
         }
     }

@@ -102,9 +102,59 @@ namespace ConsoleFx.CmdLineParser
     public abstract class MetadataObjects<T> : Collection<T>
         where T : MetadataObject
     {
+        /// <summary>
+        ///     Gets an object from the collection given either the name.
+        /// </summary>
+        /// <param name="name">The name of the object to find.</param>
+        /// <returns>The object, if found. Otherwise <c>null</c>.</returns>
         public T this[string name] =>
             this.FirstOrDefault(item => NamesMatch(name, item));
 
-        protected abstract bool NamesMatch(string name, T item);
+        protected virtual bool ObjectsMatch(T obj1, T obj2) =>
+            NamesMatch(obj1.Name, obj2);
+
+        protected virtual bool NamesMatch(string name, T obj) =>
+            name.Equals(obj.Name);
+
+        /// <summary>
+        ///     Prevents duplicate objects from being inserted.
+        /// </summary>
+        /// <param name="index">Index to insert the new object.</param>
+        /// <param name="item">Object to insert.</param>
+        protected override void InsertItem(int index, T obj)
+        {
+            CheckDuplicates(obj, -1);
+            base.InsertItem(index, obj);
+        }
+
+        /// <summary>
+        ///     Prevents duplicate objects from being set in the collection.
+        /// </summary>
+        /// <param name="index">index to set the new option.</param>
+        /// <param name="item">Object to set.</param>
+        protected override void SetItem(int index, T obj)
+        {
+            CheckDuplicates(obj, index);
+            base.SetItem(index, obj);
+        }
+
+        /// <summary>
+        ///     Checks whether the specified object exists in the collection.
+        /// </summary>
+        /// <param name="obj">The object to check.</param>
+        /// <param name="index">The index in the collection at which the object is being inserted.</param>
+        /// <exception cref="ArgumentException">Thrown if the object is already specified in the collection.</exception>
+        private void CheckDuplicates(T obj, int index)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if (i == index)
+                    continue;
+                if (ObjectsMatch(obj, this[i]))
+                    throw new ArgumentException(GetDuplicateErrorMessage(obj.Name), nameof(obj));
+            }
+        }
+
+        protected abstract string GetDuplicateErrorMessage(string name);
     }
 }
