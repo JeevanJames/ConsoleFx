@@ -75,8 +75,8 @@ namespace ConsoleFx.CmdLineParser
             $"Argument named '{name}' already exists in the argument collection.";
 
         /// <summary>
-        ///     Called whenever an argument is added or set in the collection to verify that optional arguments are specified only
-        ///     after the required ones.
+        ///     Called whenever an argument is added or set in the collection to verify that
+        ///     optional arguments are specified only after the required ones.
         /// </summary>
         private void VerifyOptionalArgumentsAtEnd()
         {
