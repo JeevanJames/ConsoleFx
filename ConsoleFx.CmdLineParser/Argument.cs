@@ -27,7 +27,7 @@ namespace ConsoleFx.CmdLineParser
     /// <summary>
     ///     Represents a non-option command-line parameter.
     /// </summary>
-    [DebuggerDisplay("Argument [{Validators.Count} validators]")]
+    [DebuggerDisplay("Argument {Name} [{Validators.Count} validators]")]
     public sealed class Argument : MetadataObject
     {
         private ValidatorCollection _validators;
@@ -57,7 +57,7 @@ namespace ConsoleFx.CmdLineParser
         }
     }
 
-    public sealed class Arguments : Collection<Argument>
+    public sealed class Arguments : MetadataObjects<Argument>
     {
         protected override void InsertItem(int index, Argument argument)
         {
@@ -70,6 +70,9 @@ namespace ConsoleFx.CmdLineParser
             base.SetItem(index, argument);
             VerifyOptionalArgumentsAtEnd();
         }
+
+        protected override string GetDuplicateErrorMessage(string name) =>
+            $"Argument named '{name}' already exists in the argument collection.";
 
         /// <summary>
         ///     Called whenever an argument is added or set in the collection to verify that optional arguments are specified only
