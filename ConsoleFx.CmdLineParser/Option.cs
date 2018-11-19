@@ -262,6 +262,11 @@ namespace ConsoleFx.CmdLineParser
     /// </summary>
     public sealed class Options : MetadataObjects<Option>
     {
+        /// <summary>
+        ///     Performs all combinations of comparisons between the <see cref="MetadataObject.Name"/>
+        ///     and <see cref="Option.ShortName"/>.
+        /// </summary>
+        /// <inheritdoc/>
         protected override bool ObjectsMatch(Option obj1, Option obj2) =>
             obj1.HasName(obj2.Name) || obj1.HasName(obj2.ShortName);
 
