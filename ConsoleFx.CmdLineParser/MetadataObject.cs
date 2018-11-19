@@ -99,6 +99,15 @@ namespace ConsoleFx.CmdLineParser
         }
     }
 
+    /// <summary>
+    ///     <para>Base class for collections of objects derived from <see cref="MetadataObject"/>.</para>
+    ///     <para>
+    ///         Collections deriving from this class provide an additional indexer that can retrieve
+    ///         an object my its name. They also prevent duplicate objects from being inserted or
+    ///         set on the collection.
+    ///     </para>
+    /// </summary>
+    /// <typeparam name="T">The specific type of <see cref="MetadataObject"/> that the collection will hold.</typeparam>
     public abstract class MetadataObjects<T> : Collection<T>
         where T : MetadataObject
     {
@@ -110,9 +119,22 @@ namespace ConsoleFx.CmdLineParser
         public T this[string name] =>
             this.FirstOrDefault(item => NamesMatch(name, item));
 
+        /// <summary>
+        ///     Compares two objects for equality. The default behavior is to compare their Name
+        ///     properties, but deriving classes can override this behavior.
+        /// </summary>
+        /// <param name="obj1">The first object to compare.</param>
+        /// <param name="obj2">The second object to compare.</param>
+        /// <returns><c>true</c>, if the objects are equal, otherwise <c>false</c>.</returns>
         protected virtual bool ObjectsMatch(T obj1, T obj2) =>
             NamesMatch(obj1.Name, obj2);
 
+        /// <summary>
+        ///     Checks whether the specified object can be identified by the given name.
+        /// </summary>
+        /// <param name="name">The name to check against.</param>
+        /// <param name="obj">The object, whose identity to check against the name.</param>
+        /// <returns><c>true</c>, if the object can be identified by the given name, otherwise <c>false</c>.</returns>
         protected virtual bool NamesMatch(string name, T obj) =>
             name.Equals(obj.Name);
 
@@ -139,7 +161,7 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Checks whether the specified object exists in the collection.
+        ///     Checks whether the specified object already exists in the collection.
         /// </summary>
         /// <param name="obj">The object to check.</param>
         /// <param name="index">The index in the collection at which the object is being inserted.</param>
@@ -155,6 +177,15 @@ namespace ConsoleFx.CmdLineParser
             }
         }
 
+        /// <summary>
+        ///     Gets the error message of the exception that is thrown if a duplicate item is
+        ///     inserted or set in the collection.
+        /// </summary>
+        /// <param name="name">
+        ///     The name of the duplicate item that is being inserted or set in the collection,
+        ///     usually the <c>Name</c> property.
+        /// </param>
+        /// <returns>The error message string for the exception.</returns>
         protected abstract string GetDuplicateErrorMessage(string name);
     }
 }

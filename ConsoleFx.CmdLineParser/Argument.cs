@@ -17,7 +17,6 @@ limitations under the License.
 */
 #endregion
 
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 using ConsoleFx.CmdLineParser.Validators;
