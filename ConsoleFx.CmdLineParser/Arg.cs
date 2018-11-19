@@ -20,43 +20,93 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
-    ///     <para>Base class for objects that store ad-hoc metadata.</para>
+    ///     <para>Base class for command-line args, such as commands, arguments and options.</para>
     ///     <para>Base class for <see cref="T:ConsoleFx.CmdLineParser.Option" />, <see cref="T:ConsoleFx.CmdLineParser.Argument" /> and
     ///     <see cref="Command" />.</para>
     /// </summary>
-    public abstract class MetadataObject
+    public abstract class Arg
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Dictionary<string, bool> _names;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Dictionary<string, object> _metadata;
 
-        protected MetadataObject()
+        protected Arg()
         {
-            Name = null;
+            _names = new Dictionary<string, bool>();
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MetadataObject"/> object.
+        ///     Initializes a new instance of the <see cref="Arg"/> object.
         /// </summary>
         /// <param name="name">Name of the object.</param>
         /// <exception cref="ArgumentNullException">Thrown if the name is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown if the name is empty or has only whitespace.</exception>
-        protected MetadataObject(string name)
+        protected Arg(IDictionary<string, bool> names)
+        {
+            if (names == null)
+                throw new ArgumentNullException(nameof(names));
+            if (names.Count == 0)
+                throw new ArgumentException("Specify at least one name", nameof(names));
+            foreach (var kvp in names)
+            {
+                if (kvp.Key == null)
+                    throw new ArgumentException("Name specified cannot be null", nameof(names));
+                if (!NamePattern.IsMatch(kvp.Key))
+                    throw new ArgumentException($"Name {kvp.Key} is not a valid name.", nameof(names));
+            }
+            _names = new Dictionary<string, bool>(names);
+        }
+
+        public Arg AddName(string name, bool caseSensitive = false)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
-            if (name.Trim().Length == 0)
-                throw new ArgumentException("Specify valid name", nameof(name));
-            Name = name;
+            if (!NamePattern.IsMatch(name))
+                throw new ArgumentException($"Name {name} is not a valid name.", nameof(name));
+            _names.Add(name, caseSensitive);
+            return this;
         }
 
         /// <summary>
-        ///     Name of the metadata object.
+        ///     Returns whether any of the arg's names matches the specified name.
         /// </summary>
-        public string Name { get; }
+        /// <param name="name">The name to check against.</param>
+        /// <returns><c>true</c>, if the specified name matches any of the arg's names, otherwise <c>false</c>.</returns>
+        public bool HasName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+            return _names.Any(kvp =>
+            {
+                StringComparison comparison = kvp.Value
+                    ? StringComparison.Ordinal
+                    : StringComparison.OrdinalIgnoreCase;
+                return name.Equals(kvp.Key, comparison);
+            });
+        }
+
+        /// <summary>
+        ///     Gets the first name from all the assigned names for this arg.
+        /// </summary>
+        public string Name => _names.First().Key;
+
+        /// <summary>
+        ///     Gets all the secondary names for the arg.
+        /// </summary>
+        public IEnumerable<string> AlternateNames => _names.Skip(1).Select(kvp => kvp.Key);
+
+        protected IDictionary<string, bool> Names => _names;
+
+        protected virtual Regex NamePattern { get; } = new Regex(@"^\w[\w_-]*$");
 
         /// <summary>
         ///     Gets or sets a string metadata value.
@@ -100,16 +150,16 @@ namespace ConsoleFx.CmdLineParser
     }
 
     /// <summary>
-    ///     <para>Base class for collections of objects derived from <see cref="MetadataObject"/>.</para>
+    ///     <para>Base class for collections of objects derived from <see cref="Arg"/>.</para>
     ///     <para>
     ///         Collections deriving from this class provide an additional indexer that can retrieve
     ///         an object my its name. They also prevent duplicate objects from being inserted or
     ///         set on the collection.
     ///     </para>
     /// </summary>
-    /// <typeparam name="T">The specific type of <see cref="MetadataObject"/> that the collection will hold.</typeparam>
-    public abstract class MetadataObjects<T> : Collection<T>
-        where T : MetadataObject
+    /// <typeparam name="T">The specific type of <see cref="Arg"/> that the collection will hold.</typeparam>
+    public abstract class Args<T> : Collection<T>
+        where T : Arg
     {
         /// <summary>
         ///     Gets an object from the collection given either the name.

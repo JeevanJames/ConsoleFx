@@ -58,15 +58,15 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
             return specifiedGrouping;
         }
 
-        public override void ValidateDefinedOptions(IEnumerable<Option> options)
-        {
-            if (EnforceSingleCharacterShortNames)
-            {
-                Option invalidOption = options.FirstOrDefault(option => option.ShortName?.Length != 1);
-                if (invalidOption != null)
-                    throw new ParserException(1000, $"Option '{invalidOption.Name}' has an invalid short name. Short names for the UNIX style parser should be a single character only. Alternatively, set the {nameof(EnforceSingleCharacterShortNames)} property to force to bypass this check and allow multi-character short names.");
-            }
-        }
+        //public override void ValidateDefinedOptions(IEnumerable<Option> options)
+        //{
+        //    if (EnforceSingleCharacterShortNames)
+        //    {
+        //        Option invalidOption = options.FirstOrDefault(option => option.ShortName?.Length != 1);
+        //        if (invalidOption != null)
+        //            throw new ParserException(1000, $"Option '{invalidOption.Name}' has an invalid short name. Short names for the UNIX style parser should be a single character only. Alternatively, set the {nameof(EnforceSingleCharacterShortNames)} property to force to bypass this check and allow multi-character short names.");
+        //    }
+        //}
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w[\w-_]+)(?:=(.+))?");
 

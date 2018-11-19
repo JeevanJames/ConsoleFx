@@ -48,7 +48,7 @@ namespace ConsoleFx.CmdLineParser.Tests.Commands
 
         protected override IEnumerable<Option> GetOptions()
         {
-            yield return new Option("save-prod", "p").UsedAsFlag(true);
+            yield return new Option("save-prod").AddName("p").UsedAsFlag(true);
             yield return new Option("save-dev", "d").UsedAsFlag(true);
             yield return new Option("save-optional", "o").UsedAsFlag(true);
             yield return new Option("no-save").UsedAsFlag(true);
