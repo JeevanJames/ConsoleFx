@@ -41,7 +41,7 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
             IReadOnlyList<Argument> arguments)
         {
             //If any option has variable number of parameters (i.e. ExpectedParameters = null),
-            //then the groupings is changed DoesNotMatter.
+            //then the groupings is changed to DoesNotMatter.
             if (specifiedGrouping == ArgGrouping.OptionsBeforeArguments)
             {
                 bool optionsHaveVariableParameters = options.Any(option => !option.Usage.ExpectedParameters.HasValue);
@@ -70,6 +70,7 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w[\w-_]+)(?:=(.+))?");
 
+        /// <inheritdoc/>
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping)
         {
@@ -79,6 +80,8 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
             {
                 Match optionMatch = OptionPattern.Match(token);
 
+                //If the token is not an option and we are not iterating over the parameters of an
+                //option, then the token is an argument.
                 if (!optionMatch.Success && currentOption == null)
                 {
                     yield return token;
