@@ -26,16 +26,6 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
 {
     public sealed class UnixParserStyle : ParserStyle
     {
-        /// <summary>
-        ///     <para>
-        ///         Single character short names allow certain behaviors like combining multiple parameterless options
-        ///         into a single option.
-        ///     </para>
-        ///     <para>For example, "-w -v -d" can be specified as "-wvd"</para>
-        ///     <para>If this is true, then it will be validated in the <see cref="ValidateDefinedOptions"/> method.</para>
-        /// </summary>
-        public bool EnforceSingleCharacterShortNames { get; set; } = true;
-
         /// <inheritdoc/>
         public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options,
             IReadOnlyList<Argument> arguments)
@@ -57,16 +47,6 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
 
             return specifiedGrouping;
         }
-
-        //public override void ValidateDefinedOptions(IEnumerable<Option> options)
-        //{
-        //    if (EnforceSingleCharacterShortNames)
-        //    {
-        //        Option invalidOption = options.FirstOrDefault(option => option.ShortName?.Length != 1);
-        //        if (invalidOption != null)
-        //            throw new ParserException(1000, $"Option '{invalidOption.Name}' has an invalid short name. Short names for the UNIX style parser should be a single character only. Alternatively, set the {nameof(EnforceSingleCharacterShortNames)} property to force to bypass this check and allow multi-character short names.");
-        //    }
-        //}
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w[\w-_]+)(?:=(.+))?");
 
@@ -94,6 +74,14 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
                     string optionName = optionMatch.Groups[2].Value;
                     string parameterValue = optionMatch.Groups[3].Value;
                     bool isParameterSpecified = !string.IsNullOrEmpty(parameterValue);
+
+                    //If multiple short options are specified as a single combined option, then
+                    //none of them can have parameters.
+                    if (isShortOption && optionName.Length > 1 && isParameterSpecified)
+                        throw new ParserException(-1, $"Cannot specify a parameter for the combined option {optionName}.");
+
+                    string[] optionNames = isShortOption && optionName.Length > 1
+                        ? optionName.Split() : (new[] {optionName});
 
                     Func<OptionRun, bool> predicate = isShortOption
                         ? (Func<OptionRun, bool>)
@@ -130,7 +118,7 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
 
                 //If we're on an option (currentOption != null) and the number of parameters has
                 //reached the maximum allowed, then we can stop handling that option by setting
-                //currentOption to null so that the next arg  will be treated as a new option or
+                //currentOption to null so that the next arg will be treated as a new option or
                 //argument.
                 if (currentOption != null && currentOption.Parameters.Count > currentOption.Option.Usage.MaxParameters)
                     currentOption = null;

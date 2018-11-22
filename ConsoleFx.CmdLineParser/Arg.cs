@@ -106,6 +106,8 @@ namespace ConsoleFx.CmdLineParser
 
         protected IDictionary<string, bool> Names => _names;
 
+        internal IEnumerable<string> AllNames => _names.Select(kvp => kvp.Key);
+
         protected virtual Regex NamePattern { get; } = new Regex(@"^\w[\w_-]*$");
 
         /// <summary>
