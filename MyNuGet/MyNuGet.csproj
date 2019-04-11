@@ -79,10 +79,6 @@
       <Project>{e9afdd7d-0706-4852-bf29-7ca4911bc5df}</Project>
       <Name>ConsoleFx.CmdLineParser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ConsoleFx.ConsoleExtensions\ConsoleFx.ConsoleExtensions.csproj">
-      <Project>{6a48eeb2-509b-46e5-9f72-8eff5159cef6}</Project>
-      <Name>ConsoleFx.ConsoleExtensions</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Install\Install.resx">

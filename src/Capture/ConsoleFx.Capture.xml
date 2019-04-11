@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ConsoleFx.Capture</name>
+    </assembly>
+    <members>
+        <member name="M:ConsoleFx.Capture.ConsoleCapture.Start(System.Boolean)">
+            <summary>
+            Starts the specified application as a console app and captures the output and
+            (optionally) the error output.
+            </summary>
+            <param name="captureError">Indicates whether to capture errors from the app.</param>
+            <returns>An instance of <see cref="T:ConsoleFx.Capture.ConsoleCaptureResult"/></returns>
+            <exception cref="T:ConsoleFx.Capture.ConsoleCaptureException">Thrown if the process cannot be started.</exception>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCapture.CaptureOutput(System.Diagnostics.Process,System.String@)">
+            <summary>
+            Used to capture output if error output is not required
+            </summary>
+            <param name="process">The process to capture output from.</param>
+            <param name="outputMessage">The output message captured from the process.</param>
+            <returns>The process exit code.</returns>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCapture.CaptureOutputAndError(System.Diagnostics.Process,System.String@,System.String@)">
+            <summary>
+            Used to capture both output and error output. This code is more complicated and is
+            based on the CodeProject article by Andrew Tweddle:
+            http://www.codeproject.com/KB/string/CommandLineHelper.aspx
+            </summary>
+            <param name="process">The process to capture output from.</param>
+            <param name="outputMessage">The output message captured from the process.</param>
+            <param name="errorMessage">The error message captured from the process.</param>
+            <returns>The process exit code.</returns>
+            <exception cref="T:ConsoleFx.Capture.ConsoleCaptureException">Thrown if any of processes fails.</exception>
+        </member>
+        <member name="T:ConsoleFx.Capture.ErrorMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ErrorMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ErrorMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ErrorMessages.Arg_FileNotExists">
+            <summary>
+              Looks up a localized string similar to The file &apos;{0}&apos; does not exist..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ErrorMessages.ProcessAborted">
+            <summary>
+              Looks up a localized string similar to The process was aborted..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ErrorMessages.ProcessStartFailed">
+            <summary>
+              Looks up a localized string similar to Could not start the process with file name &apos;{0}&apos;..
+            </summary>
+        </member>
+    </members>
+</doc>
