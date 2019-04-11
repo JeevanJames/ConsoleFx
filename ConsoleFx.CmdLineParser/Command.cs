@@ -18,13 +18,14 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace ConsoleFx.CmdLineParser
 {
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
-    public sealed class Command : MetadataObject
+    public sealed class Command : Arg
     {
         /// <summary>
         ///     <para>Initializes a new instance of the <see cref="Command"/> object.</para>
@@ -41,7 +42,10 @@ namespace ConsoleFx.CmdLineParser
         /// <param name="caseSensitive">Indicates whether the command name is case sensitive.</param>
         /// <exception cref="ArgumentNullException">Thrown if the command name is null.</exception>
         /// <exception cref="ArgumentException">Thrown if the command name is not valid.</exception>
-        public Command(string name, bool caseSensitive = false) : base(name)
+        public Command(string name, bool caseSensitive = false) : base(new Dictionary<string, bool>
+        {
+            [name] = caseSensitive
+        })
         {
             if (!NamePattern.IsMatch(name))
             {
@@ -51,8 +55,6 @@ namespace ConsoleFx.CmdLineParser
             }
             NameComparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
-
-        private static readonly Regex NamePattern = new Regex(@"^\w+$", RegexOptions.Compiled);
 
         /// <summary>
         ///     Specifies whether the command name is case-sensitive.
@@ -88,7 +90,7 @@ namespace ConsoleFx.CmdLineParser
     ///         case-sensivity.
     ///     </para>
     /// </summary>
-    public sealed class Commands : MetadataObjects<Command>
+    public sealed class Commands : Args<Command>
     {
         protected override bool NamesMatch(string name, Command item) =>
             item.Name.Equals(name, item.NameComparison);

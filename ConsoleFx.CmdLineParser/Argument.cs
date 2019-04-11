@@ -17,8 +17,9 @@ limitations under the License.
 */
 #endregion
 
+using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Text.RegularExpressions;
 using ConsoleFx.CmdLineParser.Validators;
 
 namespace ConsoleFx.CmdLineParser
@@ -27,11 +28,14 @@ namespace ConsoleFx.CmdLineParser
     ///     Represents a non-option command-line parameter.
     /// </summary>
     [DebuggerDisplay("Argument {Name} [{Validators.Count} validators]")]
-    public sealed class Argument : MetadataObject
+    public sealed class Argument : Arg
     {
         private ValidatorCollection _validators;
 
-        public Argument(string name, bool isOptional = false) : base(name)
+        public Argument(string name, bool isOptional = false) : base(new Dictionary<string, bool>
+        {
+            [name] = false
+        })
         {
             IsOptional = isOptional;
         }
@@ -56,7 +60,7 @@ namespace ConsoleFx.CmdLineParser
         }
     }
 
-    public sealed class Arguments : MetadataObjects<Argument>
+    public sealed class Arguments : Args<Argument>
     {
         protected override void InsertItem(int index, Argument argument)
         {

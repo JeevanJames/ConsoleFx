@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -29,36 +30,21 @@ namespace ConsoleFx.CmdLineParser
     ///     Represents an options arg.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
-    public sealed class Option : MetadataObject
+    public sealed class Option : Arg
     {
-        public Option(string name, string shortName = null, bool caseSensitive = false, int order = 0,
-            object @default = null) : base(name)
+        public Option(params string[] names)
         {
-            ShortName = shortName;
-            CaseSensitive = caseSensitive;
-            Order = order;
-            Default = @default;
+            foreach (string name in names)
+                AddName(name);
             Validators = new OptionParameterValidators(this);
         }
 
-        /// <summary>
-        ///     Optional alternative name for the option, normally a shorter version.
-        /// </summary>
-        public string ShortName { get; }
-
-        /// <summary>
-        ///     Specifies whether the option name and short name are case sensitive.
-        /// </summary>
-        public bool CaseSensitive { get; }
-
-        /// <summary>
-        ///     Priority order for processing the option. Options with higher <see cref="Order" /> values are processed before
-        ///     those with lower values.
-        /// </summary>
-        //TODO: Need to implement this
-        public int Order { get; }
-
-        public object Default { get; set; }
+        public Option(bool caseSensitive, params string[] names)
+        {
+            foreach (string name in names)
+                AddName(name, caseSensitive);
+            Validators = new OptionParameterValidators(this);
+        }
 
         /// <summary>
         ///     Various usage options for the option and its parameters, including the minimum and maximum allowed occurences of
@@ -93,24 +79,6 @@ namespace ConsoleFx.CmdLineParser
         ///     Optional converter to convert a string parameter value to the actual <see cref="Type" />.
         /// </summary>
         public Converter<string, object> TypeConverter { get; set; }
-
-        /// <summary>
-        ///     Returns whether the option's name or short name matches the specified name.
-        /// </summary>
-        /// <param name="name">The name to check against.</param>
-        /// <returns>True, if either the name or short name matches.</returns>
-        public bool HasName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                return false;
-            StringComparison comparison = CaseSensitive
-                ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-            if (name.Equals(Name, comparison))
-                return true;
-            if (!string.IsNullOrEmpty(ShortName) && name.Equals(ShortName, comparison))
-                return true;
-            return false;
-        }
 
         /// <summary>
         ///     Assigns a parameter formatter delegate to the option, which can be used to format the
@@ -151,14 +119,12 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
         /// <param name="converter">Optional custom converter.</param>
-        /// <param name="default">Optional default value for the parameter.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
-        public Option ParamsOfType<T>(Converter<string, T> converter = null, T @default = default(T))
+        public Option ParamsOfType<T>(Converter<string, T> converter = null)
         {
             Type = typeof(T);
             if (converter != null)
                 TypeConverter = value => converter(value);
-            Default = @default;
             return this;
         }
 
@@ -260,15 +226,15 @@ namespace ConsoleFx.CmdLineParser
     ///     Represents a collection of options. Note: This is not a keyed collection because the key
     ///     can be either the name or short name.
     /// </summary>
-    public sealed class Options : MetadataObjects<Option>
+    public sealed class Options : Args<Option>
     {
         /// <summary>
-        ///     Performs all combinations of comparisons between the <see cref="MetadataObject.Name"/>
+        ///     Performs all combinations of comparisons between the <see cref="Arg.Name"/>
         ///     and <see cref="Option.ShortName"/>.
         /// </summary>
         /// <inheritdoc/>
         protected override bool ObjectsMatch(Option obj1, Option obj2) =>
-            obj1.HasName(obj2.Name) || obj1.HasName(obj2.ShortName);
+            obj1.HasName(obj2.Name);
 
         protected override bool NamesMatch(string name, Option item) =>
             item.HasName(name);

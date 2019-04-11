@@ -10,3 +10,4 @@
 [ ] Add developer notes
 [ ]		Validations
 [ ] Add support for alternative names for options and commands. Generalize the concept, instead of having a ShortName concept.
+[ ] Implement default and order for options

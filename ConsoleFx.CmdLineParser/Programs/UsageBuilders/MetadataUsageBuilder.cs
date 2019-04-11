@@ -44,11 +44,10 @@ namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
             foreach (Option option in parser.Options)
             {
                 string fullNameSection = $"  -{option.Name.PadRight(maxOptionNameLength)}  ";
-                string shortName = option.ShortName != null ? $"(short: {option.ShortName}) " : string.Empty;
                 string description = option["Description"] ?? string.Empty;
                 Write(fullNameSection);
                 //TODO: ConsoleEx.WriteIndented($"{shortName}{description}", fullNameSection.Length);
-                WriteLine($"{shortName}{description}");
+                WriteLine(description);
             }
 
             WriteLine();

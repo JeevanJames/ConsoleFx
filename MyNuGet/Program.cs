@@ -89,7 +89,6 @@ namespace MyNuGet
             yield return new Option("ConfigFile")
                 .UsedAsSingleParameter()
                 .ValidateWith(new FileValidator { ShouldExist = true })
-                .ParamsOfType(@default: new FileInfo(@"%AppData%\NuGet\NuGet.config"))
                 .Description(Root.ConfigFile);
         }
     }
