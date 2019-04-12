@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>ConsoleFx.CmdLineParser.WindowsStyle</AssemblyName>
-    <RootNamespace>ConsoleFx.CmdLineParser.WindowsStyle</RootNamespace>
-    <LangVersion>latest</LangVersion>
+    <AssemblyName>ConsoleFx.Prompter</AssemblyName>
+    <RootNamespace>ConsoleFx.Prompter</RootNamespace>
+    <LangVersion>7.3</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0.0.1</Version>
     <Authors>Jeevan James</Authors>
@@ -13,7 +13,7 @@
     <Description>
       ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
 
-      The ConsoleFx.CmdLineParser.WindowsStyle package provides support parsing of Windows style command-line arguments.
+      The ConsoleFx.Prompter package provides support for creating interactive experiences on the command-line.
     </Description>
     <Copyright>Copyright (c) 2006-2019 Jeevan James</Copyright>
     <PackageProjectUrl>https://github.com/JeevanJames/ConsoleFx/</PackageProjectUrl>
@@ -28,21 +28,26 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.CmdLineParser.WindowsStyle.xml</DocumentationFile>
+    <DocumentationFile>ConsoleFx.Prompter.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.CmdLineParser.WindowsStyle.xml</DocumentationFile>
+    <DocumentationFile>ConsoleFx.Prompter.xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\ConsoleFx.licenseheader" Link="ConsoleFx.licenseheader" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.12.0.8217">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
