@@ -1056,6 +1056,7 @@
                 This class breaks the validation into 2 parts - validation of the string parameter value and validation of the
                 converted typed value.
             </summary>
+            <typeparam name="T">The type of the data being validated.</typeparam>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Validators.Validator`1.Validate(System.String)">
             <inheritdoc/>

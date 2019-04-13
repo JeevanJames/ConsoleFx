@@ -56,6 +56,7 @@ namespace ConsoleFx.CmdLineParser.Validators
     ///     This class breaks the validation into 2 parts - validation of the string parameter value and validation of the
     ///     converted typed value.
     /// </summary>
+    /// <typeparam name="T">The type of the data being validated.</typeparam>
     //TODO: The conversion performed by this class seems redundant considering the type conversion
     //details specified by the option itself (using its Type and TypeConverter properties). Can we
     //perform the conversion once and then pass the converted value into this class for the typed
