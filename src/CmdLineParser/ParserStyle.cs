@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2018 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ using System.Collections.Generic;
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
-    /// Base class that validates the rules for argument grouping.
+    ///     Base class that validates the rules for argument grouping.
     /// </summary>
     public abstract class ParserStyle
     {
@@ -34,8 +36,11 @@ namespace ConsoleFx.CmdLineParser
         /// <param name="options">The list of allowed options.</param>
         /// <param name="arguments">The list of allowed arguments.</param>
         /// <returns>The final grouping for the specified options and arguments.</returns>
-        public virtual ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options, IReadOnlyList<Argument> arguments)
-            => specifiedGrouping;
+        public virtual ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options,
+            IReadOnlyList<Argument> arguments)
+        {
+            return specifiedGrouping;
+        }
 
         /// <summary>
         ///     <para>Validate that the defined options are compatible with the parser style.</para>
@@ -55,6 +60,7 @@ namespace ConsoleFx.CmdLineParser
         /// <param name="options">All available options. If any of the tokens match, add its details to this parameter.</param>
         /// <param name="grouping">The expected arg grouping to validate.</param>
         /// <returns>A collection of all the identified arguments.</returns>
-        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options, ArgGrouping grouping);
+        public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
+            ArgGrouping grouping);
     }
 }
