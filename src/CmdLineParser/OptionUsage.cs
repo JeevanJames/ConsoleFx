@@ -105,10 +105,9 @@ namespace ConsoleFx.CmdLineParser
                     : OptionRequirement.Optional;
                 if (MaxOccurrences == Unlimited)
                 {
-                    if (requirement == OptionRequirement.Required)
-                        requirement = OptionRequirement.RequiredUnlimited;
-                    else if (requirement == OptionRequirement.Optional)
-                        requirement = OptionRequirement.OptionalUnlimited;
+                    requirement = requirement == OptionRequirement.Required
+                        ? OptionRequirement.RequiredUnlimited
+                        : OptionRequirement.OptionalUnlimited;
                 }
 
                 return requirement;

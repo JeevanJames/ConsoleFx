@@ -23,7 +23,8 @@ namespace ConsoleFx.CmdLineParser.Validators
 {
     public class UriValidator : SingleMessageValidator<Uri>
     {
-        public UriValidator(UriKind uriKind = UriKind.RelativeOrAbsolute) : base(Messages.Uri)
+        public UriValidator(UriKind uriKind = UriKind.RelativeOrAbsolute)
+            : base(Messages.Uri)
         {
             UriKind = uriKind;
         }

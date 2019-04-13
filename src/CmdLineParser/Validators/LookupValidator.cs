@@ -27,11 +27,13 @@ namespace ConsoleFx.CmdLineParser.Validators
     {
         private readonly List<string> _items;
 
-        public LookupValidator(params string[] items) : this((IEnumerable<string>)items)
+        public LookupValidator(params string[] items)
+            : this((IEnumerable<string>)items)
         {
         }
 
-        public LookupValidator(IEnumerable<string> items) : base(Messages.Lookup)
+        public LookupValidator(IEnumerable<string> items)
+            : base(Messages.Lookup)
         {
             _items = items != null ? new List<string>(items) : new List<string>();
         }

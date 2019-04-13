@@ -24,14 +24,16 @@ namespace ConsoleFx.CmdLineParser.Validators
 {
     public class RegexValidator : SingleMessageValidator<string>
     {
-        public RegexValidator(Regex regex) : base(Messages.Regex)
+        public RegexValidator(Regex regex)
+            : base(Messages.Regex)
         {
             if (regex == null)
                 throw new ArgumentNullException(nameof(regex));
             Regex = regex;
         }
 
-        public RegexValidator(string pattern) : base(Messages.Regex)
+        public RegexValidator(string pattern)
+            : base(Messages.Regex)
         {
             if (string.IsNullOrEmpty(pattern))
                 throw new ArgumentException("Value cannot be null or empty.", nameof(pattern));
