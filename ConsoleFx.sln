@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\TestHarness.csproj", "{E56434B6-A674-4EE0-B315-2A1711A1CBFE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx.CmdLineParser.Tests", "ConsoleFx.CmdLineParser.Tests\ConsoleFx.CmdLineParser.Tests.csproj", "{3A3CACA0-05DC-47F3-9AE4-7A803A7ABB9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CmdLineParser.Tests", "ConsoleFx.CmdLineParser.Tests\CmdLineParser.Tests.csproj", "{3A3CACA0-05DC-47F3-9AE4-7A803A7ABB9F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A663F470-1C59-42D2-B32E-AB3436EB39DD}"
 EndProject

@@ -29,7 +29,8 @@ namespace ConsoleFx.CmdLineParser.Validators
     {
         private readonly Validator[] _validators;
 
-        public CompositeValidator(string errorMessage, params Validator[] validators) : base(errorMessage)
+        public CompositeValidator(string errorMessage, params Validator[] validators)
+            : base(errorMessage)
         {
             if (validators == null)
                 throw new ArgumentNullException(nameof(validators));
@@ -38,16 +39,18 @@ namespace ConsoleFx.CmdLineParser.Validators
             _validators = validators;
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Validates the parameter value as a string. Converts to the actual type if the validation succeeds and returns that
         ///     value. This method must be overridden in derived classes.
         /// </summary>
         /// <param name="parameterValue">The parameter value as a string</param>
         /// <returns>The parameter value converted to its actual type.</returns>
-        /// <exception cref="ValidationException">Thrown if the validation fails.</exception>
+        /// <exception cref="T:ConsoleFx.CmdLineParser.Validators.ValidationException">Thrown if the validation fails.</exception>
         protected override string ValidateAsString(string parameterValue)
         {
-            bool anyValidatorPassed = _validators.Any(validator => {
+            bool anyValidatorPassed = _validators.Any(validator =>
+            {
                 try
                 {
                     validator.Validate(parameterValue);
@@ -55,8 +58,8 @@ namespace ConsoleFx.CmdLineParser.Validators
                 }
                 catch (ValidationException)
                 {
+                    return false;
                 }
-                return false;
             });
             if (!anyValidatorPassed)
                 ValidationFailed(Message, parameterValue);

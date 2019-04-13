@@ -25,7 +25,8 @@ namespace ConsoleFx.CmdLineParser.Validators
     {
         private readonly Func<string, bool> _validator;
 
-        public CustomValidator(Func<string, bool> validator) : base(Messages.Custom)
+        public CustomValidator(Func<string, bool> validator)
+            : base(Messages.Custom)
         {
             if (validator == null)
                 throw new ArgumentNullException(nameof(validator));

@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>ConsoleFx.Prompter</AssemblyName>
-    <RootNamespace>ConsoleFx.Prompter</RootNamespace>
+    <AssemblyName>ConsoleFx.CmdLineParser</AssemblyName>
+    <RootNamespace>ConsoleFx.CmdLineParser</RootNamespace>
     <LangVersion>7.3</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0.0.1</Version>
@@ -13,7 +13,7 @@
     <Description>
       ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
 
-      The ConsoleFx.Prompter package provides support for creating interactive experiences on the command-line.
+      The ConsoleFx.CmdLineParser package provides a sophisticated command-line arguments parser.
     </Description>
     <Copyright>Copyright (c) 2006-2019 Jeevan James</Copyright>
     <PackageProjectUrl>https://github.com/JeevanJames/ConsoleFx/</PackageProjectUrl>
@@ -28,14 +28,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Prompter.xml</DocumentationFile>
+    <DocumentationFile>ConsoleFx.CmdLineParser.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Prompter.xml</DocumentationFile>
+    <DocumentationFile>ConsoleFx.CmdLineParser.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

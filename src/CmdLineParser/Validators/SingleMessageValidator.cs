@@ -38,7 +38,7 @@ namespace ConsoleFx.CmdLineParser.Validators
         }
 
         /// <summary>
-        /// The error message to be displayed if the validation fails.
+        /// Gets or sets the error message to be displayed if the validation fails.
         /// </summary>
         public string Message { get; set; }
     }

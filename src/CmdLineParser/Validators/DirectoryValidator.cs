@@ -36,7 +36,9 @@ namespace ConsoleFx.CmdLineParser.Validators
         public bool ShouldExist { get; }
 
         public string InvalidDirectoryNameMessage => Messages.Directory_NameInvalid;
+
         public string PathTooLongMessage => Messages.Directory_PathTooLong;
+
         public string DirectoryMissingMessage => Messages.Directory_Missing;
 
         protected override DirectoryInfo ValidateAsString(string parameterValue)

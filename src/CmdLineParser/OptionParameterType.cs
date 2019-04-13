@@ -30,7 +30,7 @@ namespace ConsoleFx.CmdLineParser
         Repeating,
 
         /// <summary>
-        ///     Each parameter is independant, has its own meaning and is at a specific position
+        ///     Each parameter is independent, has its own meaning and is at a specific position
         /// </summary>
         Individual
     }

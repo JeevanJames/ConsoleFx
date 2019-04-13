@@ -23,7 +23,8 @@ namespace ConsoleFx.CmdLineParser.Validators
 {
     public class GuidValidator : SingleMessageValidator<Guid>
     {
-        public GuidValidator() : base(Messages.Guid)
+        public GuidValidator()
+            : base(Messages.Guid)
         {
         }
 

@@ -39,20 +39,23 @@ namespace ConsoleFx.CmdLineParser
         public ParserStyle ParserStyle { get; }
 
         /// <summary>
-        ///     <para>Specifies how the args should be grouped.</para>
-        ///     <para>Note: This can be overridden by the parser style at runtime.</para>
+        ///     Gets or sets how the args should be grouped.
+        ///     <para/>
+        ///     Note: This can be overridden by the parser style at runtime.
         /// </summary>
         public ArgGrouping Grouping { get; set; }
 
         public ConfigReader ConfigReader { get; set; }
 
         /// <summary>
-        ///     The implicit <see cref="Command" /> instance that is the root of all commands and args.
+        ///     Gets the implicit <see cref="Command" /> instance that is the root of all commands and args.
         /// </summary>
         private Command RootCommand { get; } = new Command();
 
         public Arguments Arguments => RootCommand.Arguments;
+
         public Options Options => RootCommand.Options;
+
         public Commands Commands => RootCommand.Commands;
 
         /// <summary>
@@ -158,34 +161,34 @@ namespace ConsoleFx.CmdLineParser
             foreach (OptionRun or in optionRuns)
             {
                 //If the option is required, but is not specified.
-                if (or.Option.Usage.MinOccurences > 0 && or.Occurences == 0)
+                if (or.Option.Usage.MinOccurrences > 0 && or.Occurrences == 0)
                 {
                     throw new ParserException(ParserException.Codes.RequiredOptionAbsent,
                         string.Format(Messages.RequiredOptionAbsent, or.Option.Name));
                 }
 
                 //If the option is specified less times than the minimum expected number of times.
-                if (or.Occurences < or.Option.Usage.MinOccurences)
+                if (or.Occurrences < or.Option.Usage.MinOccurrences)
                 {
                     throw new ParserException(ParserException.Codes.TooFewOptions,
-                        string.Format(Messages.TooFewOptions, or.Option.Name, or.Option.Usage.MinOccurences));
+                        string.Format(Messages.TooFewOptions, or.Option.Name, or.Option.Usage.MinOccurrences));
                 }
 
                 //If the option is specified more times than the maximum allowed number of times.
-                if (or.Occurences > or.Option.Usage.MaxOccurences)
+                if (or.Occurrences > or.Option.Usage.MaxOccurrences)
                 {
                     throw new ParserException(ParserException.Codes.TooManyOptions,
-                        string.Format(Messages.TooManyOptions, or.Option.Name, or.Option.Usage.MaxOccurences));
+                        string.Format(Messages.TooManyOptions, or.Option.Name, or.Option.Usage.MaxOccurrences));
                 }
 
                 //If the option with required parameters is specified, but no parameters are.
-                if (or.Occurences > 0 && or.Option.Usage.MinParameters > 0 && or.Parameters.Count == 0)
+                if (or.Occurrences > 0 && or.Option.Usage.MinParameters > 0 && or.Parameters.Count == 0)
                 {
                     throw new ParserException(ParserException.Codes.RequiredParametersAbsent,
                         string.Format(Messages.RequiredParametersAbsent, or.Option.Name));
                 }
 
-                if (or.Occurences > 0 && or.Option.Usage.MinParameters == 0 && or.Option.Usage.MaxParameters == 0 &&
+                if (or.Occurrences > 0 && or.Option.Usage.MinParameters == 0 && or.Option.Usage.MaxParameters == 0 &&
                     or.Parameters.Count > 0)
                 {
                     throw new ParserException(ParserException.Codes.InvalidParametersSpecified,
@@ -194,10 +197,9 @@ namespace ConsoleFx.CmdLineParser
 
                 //TODO: Check against MinParameters and MaxParameters
 
-                //If the option has been used and it has parameters and validators, then validate
-                //all parameters.
-
-                if (or.Occurences > 0 && or.Parameters.Count > 0 && or.Option.Validators.Count > 0)
+                // If the option has been used and it has parameters and validators, then validate
+                // all parameters.
+                if (or.Occurrences > 0 && or.Parameters.Count > 0 && or.Option.Validators.Count > 0)
                 {
                     for (int i = 0; i < or.Parameters.Count; i++)
                     {
@@ -212,7 +214,7 @@ namespace ConsoleFx.CmdLineParser
                     }
                 }
 
-                if (or.Occurences > 0)
+                if (or.Occurrences > 0)
                     or.ResolvedValue = ResolveOptionParameterValues(or);
             }
         }
@@ -232,12 +234,12 @@ namespace ConsoleFx.CmdLineParser
             {
                 //If the option can occur more than once, it's value will be an integer specifying
                 //the number of occurences.
-                if (option.Usage.MaxOccurences > 1)
-                    return optionRun.Occurences;
+                if (option.Usage.MaxOccurrences > 1)
+                    return optionRun.Occurrences;
 
                 //If the option can occur not more than once, it's value will be a bool indicating
                 //whether it was specified or not.
-                return optionRun.Occurences > 0;
+                return optionRun.Occurrences > 0;
             }
 
             //If no type is specified, assume string.
@@ -249,17 +251,21 @@ namespace ConsoleFx.CmdLineParser
             if (converter == null && optionType != typeof(string))
             {
                 TypeConverter typeConverter = TypeDescriptor.GetConverter(optionType);
-                //If a default converter cannot be found, throw an exception.
+
+                // If a default converter cannot be found, throw an exception.
                 if (!typeConverter.CanConvertFrom(typeof(string)))
+                {
                     throw new ParserException(-1,
                         $"Unable to find a adequate type converter to convert parameters of the {option.Name} to type {optionType.FullName}.");
+                }
+
                 converter = value => typeConverter.ConvertFromString(value);
             }
 
             //If the option can have multiple parameter values (either because the MaxParameters usage
             //is greater than one or because MaxParameters is one but MaxOccurences is greater than
             //one), then the option's value is an IList<Type>.
-            if (option.Usage.MaxParameters > 1 || (option.Usage.MaxParameters == 1 && option.Usage.MaxOccurences > 1))
+            if (option.Usage.MaxParameters > 1 || (option.Usage.MaxParameters == 1 && option.Usage.MaxOccurrences > 1))
             {
                 Type listType = typeof(List<>).MakeGenericType(optionType);
                 var list = (IList)Activator.CreateInstance(listType, optionRun.Parameters.Count);
@@ -267,6 +273,7 @@ namespace ConsoleFx.CmdLineParser
                 foreach (string parameter in optionRun.Parameters)
                 {
                     list.Add(GetConvertedValue(parameter, option, converter));
+
                     //string formattedParameter = option.Formatter != null ? option.Formatter(parameter) : parameter;
                     //list.Add(converter == null ? formattedParameter : converter(formattedParameter));
                 }
@@ -278,6 +285,7 @@ namespace ConsoleFx.CmdLineParser
             if (option.Usage.MaxParameters == 1 && optionRun.Parameters.Count > 0)
             {
                 return GetConvertedValue(optionRun.Parameters[0], option, converter);
+
                 //string formattedParameter = option.Formatter != null
                 //    ? option.Formatter(optionRun.Parameters[0]) : optionRun.Parameters[0];
                 //return converter == null ? formattedParameter : converter(formattedParameter);
@@ -296,8 +304,9 @@ namespace ConsoleFx.CmdLineParser
         ///     Process the specified arguments by verifying their usage, validating them and executing
         ///     their handlers.
         /// </summary>
-        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments,
-            IReadOnlyList<ArgumentRun> argumentRuns)
+        /// <param name="specifiedArguments">The list of specified arguments.</param>
+        /// <param name="argumentRuns">The argument run details.</param>
+        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
         {
             if (argumentRuns.Count == 0)
                 return;

@@ -36,6 +36,7 @@ namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
             WriteLine();
 
             WriteLine(@"Usage:");
+
             //TODO: ConsoleEx.WriteIndented(GetUsage(parser.Options, parser.Arguments), 4, true);
             WriteLine(GetUsage(parser.Options, parser.Arguments));
             WriteLine();
@@ -46,6 +47,7 @@ namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
                 string fullNameSection = $"  -{option.Name.PadRight(maxOptionNameLength)}  ";
                 string description = option["Description"] ?? string.Empty;
                 Write(fullNameSection);
+
                 //TODO: ConsoleEx.WriteIndented($"{shortName}{description}", fullNameSection.Length);
                 WriteLine(description);
             }
@@ -59,25 +61,26 @@ namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
                 Argument argument = parser.Arguments[i];
                 string name = argument["Name"] ?? $"Arg{i + 1}";
                 string description = argument["Description"] ?? string.Empty;
-                WriteLine($"  <{name}>  {description}");
+                WriteLine($"  <{name.PadRight(maxArgumentNameLength)}>  {description}");
             }
         }
 
-        private string GetUsage(Options options, Arguments arguments)
+        private static string GetUsage(Options options, Arguments arguments)
         {
             var usage = new StringBuilder();
             foreach (Option option in options)
             {
                 if (usage.Length > 0)
                     usage.Append(" ");
-                if (option.Usage.MinOccurences == 0)
+                if (option.Usage.MinOccurrences == 0)
                     usage.Append("[");
                 usage.Append($"-{option.Name}");
                 if (option.Usage.MaxParameters > 0)
                     usage.Append(":(params)");
-                if (option.Usage.MinOccurences == 0)
+                if (option.Usage.MinOccurrences == 0)
                     usage.Append("]");
             }
+
             foreach (Argument argument in arguments)
             {
                 if (usage.Length > 0)
@@ -88,6 +91,7 @@ namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
                 if (argument.IsOptional)
                     usage.Append("]");
             }
+
             return usage.ToString();
         }
     }

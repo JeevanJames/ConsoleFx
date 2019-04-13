@@ -27,8 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleFx.CmdLineParser.UnixStyle\ConsoleFx.CmdLineParser.UnixStyle.csproj" />
-    <ProjectReference Include="..\ConsoleFx.CmdLineParser.WindowsStyle\ConsoleFx.CmdLineParser.WindowsStyle.csproj" />
+    <ProjectReference Include="..\src\CmdLineParser\CmdLineParser.csproj" />
   </ItemGroup>
 
 </Project>

@@ -31,6 +31,7 @@ namespace ConsoleFx.CmdLineParser.Validators
         }
 
         public string NotAnIntegerMessage { get; set; } = Messages.Integer_NotAnInteger;
+
         public string OutOfRangeMessage { get; set; } = Messages.Integer_OutOfRange;
 
         protected override long ValidateAsString(string parameterValue)

@@ -35,17 +35,21 @@ namespace ConsoleFx.CmdLineParser.Validators
         public BooleanValidator(string trueString = "true", string falseString = "false", bool caseSensitive = false)
             : base(Messages.Boolean)
         {
-            _trueStrings = new List<string>(1);
-            _trueStrings.Add(trueString);
+            _trueStrings = new List<string>(1)
+            {
+                trueString
+            };
 
-            _falseStrings = new List<string>(1);
-            _falseStrings.Add(falseString);
+            _falseStrings = new List<string>(1)
+            {
+                falseString
+            };
 
             _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings,
-            bool caseSensitive = false) : base(Messages.Boolean)
+        public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings, bool caseSensitive = false)
+            : base(Messages.Boolean)
         {
             if (trueStrings == null)
                 throw new ArgumentNullException(nameof(trueStrings));

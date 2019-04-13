@@ -27,8 +27,9 @@ using System.Text.RegularExpressions;
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
-    ///     <para>Base class for command-line args, such as commands, arguments and options.</para>
-    ///     <para>Base class for <see cref="T:ConsoleFx.CmdLineParser.Option" />, <see cref="T:ConsoleFx.CmdLineParser.Argument" /> and
+    ///     Base class for command-line args, such as commands, arguments and options.
+    ///     <para>
+    ///     Base class for <see cref="T:ConsoleFx.CmdLineParser.Option" />, <see cref="T:ConsoleFx.CmdLineParser.Argument" /> and
     ///     <see cref="Command" />.</para>
     /// </summary>
     public abstract class Arg
@@ -45,11 +46,11 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Arg"/> object.
+        ///     Initializes a new instance of the <see cref="Arg"/> class.
         /// </summary>
-        /// <param name="name">Name of the object.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the name is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the name is empty or has only whitespace.</exception>
+        /// <param name="names">Name of the object.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="names"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the <paramref name="names"/> is empty or has only whitespace.</exception>
         protected Arg(IDictionary<string, bool> names)
         {
             if (names == null)
@@ -57,12 +58,8 @@ namespace ConsoleFx.CmdLineParser
             if (names.Count == 0)
                 throw new ArgumentException("Specify at least one name", nameof(names));
             foreach (var kvp in names)
-            {
-                if (kvp.Key == null)
-                    throw new ArgumentException("Name specified cannot be null", nameof(names));
-                if (!NamePattern.IsMatch(kvp.Key))
-                    throw new ArgumentException($"Name {kvp.Key} is not a valid name.", nameof(names));
-            }
+                AddName(kvp.Key, kvp.Value);
+
             _names = new Dictionary<string, bool>(names);
         }
 
@@ -77,10 +74,10 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Returns whether any of the arg's names matches the specified name.
+        ///     Returns whether any of the args' names matches the specified name.
         /// </summary>
         /// <param name="name">The name to check against.</param>
-        /// <returns><c>true</c>, if the specified name matches any of the arg's names, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c>, if the specified name matches any of the args' names, otherwise <c>false</c>.</returns>
         public bool HasName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -117,8 +114,8 @@ namespace ConsoleFx.CmdLineParser
         /// <returns>The string value of the metadata.</returns>
         public string this[string name]
         {
-            get { return Get<string>(name); }
-            set { Set(name, value); }
+            get => Get<string>(name);
+            set => Set(name, value);
         }
 
         /// <summary>
@@ -130,8 +127,8 @@ namespace ConsoleFx.CmdLineParser
         public T Get<T>(string name)
         {
             if (_metadata == null)
-                return default(T);
-            return _metadata.TryGetValue(name, out object result) ? (T)result : default(T);
+                return default;
+            return _metadata.TryGetValue(name, out object result) ? (T)result : default;
         }
 
         /// <summary>
@@ -151,15 +148,16 @@ namespace ConsoleFx.CmdLineParser
         }
     }
 
+    /// <inheritdoc />
     /// <summary>
-    ///     <para>Base class for collections of objects derived from <see cref="Arg"/>.</para>
+    ///     <para>Base class for collections of objects derived from <see cref="T:ConsoleFx.CmdLineParser.Arg" />.</para>
     ///     <para>
     ///         Collections deriving from this class provide an additional indexer that can retrieve
     ///         an object my its name. They also prevent duplicate objects from being inserted or
     ///         set on the collection.
     ///     </para>
     /// </summary>
-    /// <typeparam name="T">The specific type of <see cref="Arg"/> that the collection will hold.</typeparam>
+    /// <typeparam name="T">The specific type of <see cref="T:ConsoleFx.CmdLineParser.Arg" /> that the collection will hold.</typeparam>
     public abstract class Args<T> : Collection<T>
         where T : Arg
     {
@@ -195,10 +193,10 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         /// <param name="index">Index to insert the new object.</param>
         /// <param name="item">Object to insert.</param>
-        protected override void InsertItem(int index, T obj)
+        protected override void InsertItem(int index, T item)
         {
-            CheckDuplicates(obj, -1);
-            base.InsertItem(index, obj);
+            CheckDuplicates(item, -1);
+            base.InsertItem(index, item);
         }
 
         /// <summary>
@@ -206,10 +204,10 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         /// <param name="index">index to set the new option.</param>
         /// <param name="item">Object to set.</param>
-        protected override void SetItem(int index, T obj)
+        protected override void SetItem(int index, T item)
         {
-            CheckDuplicates(obj, index);
-            base.SetItem(index, obj);
+            CheckDuplicates(item, index);
+            base.SetItem(index, item);
         }
 
         /// <summary>
@@ -220,7 +218,7 @@ namespace ConsoleFx.CmdLineParser
         /// <exception cref="ArgumentException">Thrown if the object is already specified in the collection.</exception>
         private void CheckDuplicates(T obj, int index)
         {
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 if (i == index)
                     continue;

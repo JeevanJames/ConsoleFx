@@ -47,36 +47,37 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Various usage options for the option and its parameters, including the minimum and maximum allowed occurences of
-        ///     the option itself, and also the minimum and maximum allowed number of parameters that can be specified for each
-        ///     occurence.
+        ///     Gets the various usage options for the option and its parameters, including the minimum and maximum
+        ///     allowed occurrences of the option itself, and also the minimum and maximum allowed number of parameters
+        ///     that can be specified for each occurence.
         /// </summary>
         public OptionUsage Usage { get; } = new OptionUsage();
 
         /// <summary>
-        ///     Collection of validators that can validate some or all of the option's parameters.
+        ///     Gets the collection of validators that can validate some or all of the option's parameters.
         /// </summary>
         public OptionParameterValidators Validators { get; }
 
         /// <summary>
-        ///     Optional delegate that allows a option parameter value to be custom formatted.
+        ///     Gets or sets the optional delegate that allows a option parameter value to be custom formatted.
         ///     During parsing, the formatting is performed before any type conversion.
         /// </summary>
         public OptionParameterFormatter Formatter { get; set; }
 
         /// <summary>
-        ///     The type that the option parameters should be converted to. If a <see cref="TypeConverter" /> is specified, then it
-        ///     is used to perform the type conversion, otherwise the framework looks for a default string-to-type type converter
-        ///     for the expected type. If a type converter is not found, an exception is thrown during the parsing.
+        ///     Gets or sets the type that the option parameters should be converted to. If a <see cref="TypeConverter" />
+        ///     is specified, then it is used to perform the type conversion, otherwise the framework looks for a default
+        ///     string-to-type type converter for the expected type. If a type converter is not found, an exception is
+        ///     thrown during the parsing.
         /// </summary>
         /// <remarks>
-        ///     This type applies to all parameters. In case different parameters are to be converted to different types, the
-        ///     conversion must happen outside the ConsoleFx framework.
+        ///     This type applies to all parameters. In case different parameters are to be converted to different types,
+        ///     the conversion must happen outside the ConsoleFx framework.
         /// </remarks>
         public Type Type { get; set; }
 
         /// <summary>
-        ///     Optional converter to convert a string parameter value to the actual <see cref="Type" />.
+        ///     Gets or sets the optional converter to convert a string parameter value to the actual <see cref="Type" />.
         /// </summary>
         public Converter<string, object> TypeConverter { get; set; }
 
@@ -147,13 +148,13 @@ namespace ConsoleFx.CmdLineParser
         ///     Specifies that the option is to be used as a flag. If the option is specified, then
         ///     its value is <c>true</c>, otherwise it is <c>false</c>.
         /// </summary>
-        /// <param name="optional"></param>
+        /// <param name="optional">Indicates whether the option can be specified.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         public Option UsedAsFlag(bool optional = true)
         {
             Usage.SetParametersNotAllowed();
-            Usage.MinOccurences = optional ? 0 : 1;
-            Usage.MaxOccurences = 1;
+            Usage.MinOccurrences = optional ? 0 : 1;
+            Usage.MaxOccurrences = 1;
             return this;
         }
 
@@ -166,8 +167,8 @@ namespace ConsoleFx.CmdLineParser
         public Option UsedAsSingleParameter(bool optional = true)
         {
             Usage.SetParametersRequired();
-            Usage.MinOccurences = optional ? 0 : 1;
-            Usage.MaxOccurences = 1;
+            Usage.MinOccurrences = optional ? 0 : 1;
+            Usage.MaxOccurrences = 1;
             return this;
         }
 
@@ -191,6 +192,7 @@ namespace ConsoleFx.CmdLineParser
                     throw new ArgumentException($"Validator at index {i} is null.", nameof(validators));
                 Validators.Add(validator);
             }
+
             return this;
         }
 
@@ -216,6 +218,7 @@ namespace ConsoleFx.CmdLineParser
                     throw new ArgumentException($"Validator at index {i} is null.", nameof(validators));
                 Validators.Add(parameterIndex, validator);
             }
+
             return this;
         }
     }
@@ -228,16 +231,12 @@ namespace ConsoleFx.CmdLineParser
     /// </summary>
     public sealed class Options : Args<Option>
     {
-        /// <summary>
-        ///     Performs all combinations of comparisons between the <see cref="Arg.Name"/>
-        ///     and <see cref="Option.ShortName"/>.
-        /// </summary>
-        /// <inheritdoc/>
+        //TODO: Change this to check all name combinations
         protected override bool ObjectsMatch(Option obj1, Option obj2) =>
             obj1.HasName(obj2.Name);
 
-        protected override bool NamesMatch(string name, Option item) =>
-            item.HasName(name);
+        protected override bool NamesMatch(string name, Option obj) =>
+            obj.HasName(name);
 
         protected override string GetDuplicateErrorMessage(string name) =>
             string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, name);

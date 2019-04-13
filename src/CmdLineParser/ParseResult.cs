@@ -37,15 +37,14 @@ namespace ConsoleFx.CmdLineParser
         public Command Command { get; }
 
         /// <summary>
-        ///     List of specified command line arguments.
+        ///     Gets the list of specified command line arguments.
         /// </summary>
         public IReadOnlyList<string> Arguments { get; }
 
         /// <summary>
-        ///     List of specified command line options.
+        ///     Gets the list of specified command line options.
         /// </summary>
         public IReadOnlyDictionary<string, object> Options { get; }
-
 
         /// <summary>
         ///     Returns the typed value of the specified option.

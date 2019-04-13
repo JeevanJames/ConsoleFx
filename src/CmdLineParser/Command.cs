@@ -20,7 +20,6 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace ConsoleFx.CmdLineParser
 {
@@ -28,24 +27,23 @@ namespace ConsoleFx.CmdLineParser
     public sealed class Command : Arg
     {
         /// <summary>
-        ///     <para>Initializes a new instance of the <see cref="Command"/> object.</para>
-        ///     <para>This constructor is used internally to create root commands.</para>
+        ///     Initializes a new instance of the <see cref="Command"/> class.
+        ///     <para/>
+        ///     This constructor is used internally to create root commands.
         /// </summary>
         internal Command()
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Command"/> object.
+        ///     Initializes a new instance of the <see cref="Command"/> class.
         /// </summary>
         /// <param name="name">Name of the command.</param>
         /// <param name="caseSensitive">Indicates whether the command name is case sensitive.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the command name is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if the command name is not valid.</exception>
-        public Command(string name, bool caseSensitive = false) : base(new Dictionary<string, bool>
-        {
-            [name] = caseSensitive
-        })
+        /// <exception cref="T:System.ArgumentNullException">Thrown if the command name is null.</exception>
+        /// <exception cref="T:System.ArgumentException">Thrown if the command name is not valid.</exception>
+        public Command(string name, bool caseSensitive = false)
+            : base(new Dictionary<string, bool> { [name] = caseSensitive })
         {
             if (!NamePattern.IsMatch(name))
             {
@@ -53,31 +51,32 @@ namespace ConsoleFx.CmdLineParser
                     $"'{name}' is not a valid command name. Command names should only consist of alphanumeric characters.",
                     nameof(name));
             }
+
             NameComparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
         /// <summary>
-        ///     Specifies whether the command name is case-sensitive.
+        ///     Gets a value indicating whether command name is case-sensitive.
         /// </summary>
         public bool CaseSensitive => NameComparison == StringComparison.Ordinal;
 
         /// <summary>
-        ///     The <see cref="StringComparison" /> value used for comparing the command name.
+        ///     Gets the <see cref="StringComparison" /> value used for comparing the command name.
         /// </summary>
         internal StringComparison NameComparison { get; }
 
         /// <summary>
-        ///     Collection of <see cref="Argument" /> objects for this command.
+        ///     Gets the collection of <see cref="Argument" /> objects for this command.
         /// </summary>
         public Arguments Arguments { get; } = new Arguments();
 
         /// <summary>
-        ///     Collection of <see cref="Option" /> objects for this command.
+        ///     Gets the collection of <see cref="Option" /> objects for this command.
         /// </summary>
         public Options Options { get; } = new Options();
 
         /// <summary>
-        ///     Collection of <see cref="Command" /> sub-command objects for this command.
+        ///     Gets the collection of <see cref="Command" /> sub-command objects for this command.
         /// </summary>
         public Commands Commands { get; } = new Commands();
     }
@@ -87,13 +86,13 @@ namespace ConsoleFx.CmdLineParser
     ///     <para>
     ///         This collection adds special behavior to prevent duplicate command names in the
     ///         collection as well as the ability to retrieve sub-commands based on the correct
-    ///         case-sensivity.
+    ///         case-sensitivity.
     ///     </para>
     /// </summary>
     public sealed class Commands : Args<Command>
     {
-        protected override bool NamesMatch(string name, Command item) =>
-            item.Name.Equals(name, item.NameComparison);
+        protected override bool NamesMatch(string name, Command obj) =>
+            obj.Name.Equals(name, obj.NameComparison);
 
         protected override string GetDuplicateErrorMessage(string name) =>
             $"Command named '{name}' already exists in the command collection.";

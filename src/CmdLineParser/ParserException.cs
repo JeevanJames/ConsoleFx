@@ -18,13 +18,15 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace ConsoleFx.CmdLineParser
 {
+    [Serializable]
     public class ParserException : Exception
     {
         /// <summary>
-        ///     Identifies the type of error that occurred so further logic can be applied to handling it.
+        ///     Gets the type of error that occurred so further logic can be applied to handling it.
         ///     A positive error code denotes a functional error.
         ///     A negative error code denotes an internal error code, which typically means a bug in the application or framework.
         /// </summary>
@@ -40,6 +42,11 @@ namespace ConsoleFx.CmdLineParser
             : base(message, innerException)
         {
             ErrorCode = errorCode;
+        }
+
+        protected ParserException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
 
         public static class Codes

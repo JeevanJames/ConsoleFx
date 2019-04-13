@@ -25,9 +25,11 @@ namespace ConsoleFx.CmdLineParser.Validators
     public class EnumValidator : SingleMessageValidator<string>
     {
         private Type EnumType { get; }
+
         private bool IgnoreCase { get; }
 
-        public EnumValidator(Type enumType, bool ignoreCase = true) : base(Messages.Enum)
+        public EnumValidator(Type enumType, bool ignoreCase = true)
+            : base(Messages.Enum)
         {
             if (enumType == null)
                 throw new ArgumentNullException(nameof(enumType));

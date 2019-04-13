@@ -44,7 +44,7 @@ namespace ConsoleFx.CmdLineParser.Validators
         /// <param name="args">Optional arguments to the message.</param>
         protected void ValidationFailed(string message, string parameterValue, params object[] args)
         {
-            object[] formatArgs = new object[] {parameterValue}.Concat(args).ToArray();
+            object[] formatArgs = new object[] { parameterValue }.Concat(args).ToArray();
             throw new ValidationException(string.Format(CultureInfo.CurrentCulture, message, formatArgs),
                 GetType(), parameterValue);
         }

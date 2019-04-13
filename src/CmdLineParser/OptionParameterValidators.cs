@@ -64,11 +64,13 @@ namespace ConsoleFx.CmdLineParser
                 throw new ParserException(1000,
                     $"Cannot add validators to option {_option.Name} because it does not accept parameters.");
             }
+
             if (parameterIndex >= 0 && _option.Usage.ParameterType == OptionParameterType.Repeating)
             {
                 throw new ParserException(1000,
                     $"Cannot add a specific parameter validator for option {_option.Name} because it is configured to have repeating parameters, where all parameters share the same validators. Use the ValidateWith overload that does not accept a parameter index.");
             }
+
             if (parameterIndex >= _option.Usage.MaxParameters)
             {
                 throw new ParserException(1000,
@@ -83,6 +85,7 @@ namespace ConsoleFx.CmdLineParser
                 validatorList = new ValidatorCollection();
                 _validators.Add(parameterIndex, validatorList);
             }
+
             foreach (Validator validator in validators)
                 validatorList.Add(validator);
         }
@@ -109,7 +112,7 @@ namespace ConsoleFx.CmdLineParser
         ///     Index of the parameter to get the validator collection. Use -1 to get the validators for
         ///     all parameters.
         /// </param>
-        /// <returns></returns>
+        /// <returns>The validators for the parameters at the specified index.</returns>
         internal IEnumerable<Validator> GetValidators(int parameterIndex)
         {
             _validators.TryGetValue(-1, out ValidatorCollection commonValidators);

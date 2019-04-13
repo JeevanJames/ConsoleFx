@@ -24,7 +24,6 @@ namespace ConsoleFx.CmdLineParser.Config
     public abstract class ConfigReader
     {
         //private Dictionary<string, OverrideBehavior> _optionBehaviors;
-
         private List<SpecifiedOption> _options;
         private List<string> _arguments = new List<string>();
 
@@ -49,6 +48,9 @@ namespace ConsoleFx.CmdLineParser.Config
 
         private IEnumerable<string> Consolidate(IEnumerable<string> specifiedArguments, Options options)
         {
+            //TODO: Use options
+            if (options != null)
+                return specifiedArguments;
             return specifiedArguments;
         }
 

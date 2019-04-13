@@ -18,12 +18,14 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace ConsoleFx.CmdLineParser.Validators
 {
     /// <summary>
     ///     Exception thrown as a result of a validation failure.
     /// </summary>
+    [Serializable]
     public class ValidationException : ParserException
     {
         public ValidationException(string message, Type validatorType, string parameterValue)
@@ -33,13 +35,18 @@ namespace ConsoleFx.CmdLineParser.Validators
             ParameterValue = parameterValue;
         }
 
+        protected ValidationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         /// <summary>
-        ///     Type of validator that caused the validation failure.
+        ///     Gets type of validator that caused the validation failure.
         /// </summary>
         public Type ValidatorType { get; }
 
         /// <summary>
-        ///     The parameter value that failed the validation.
+        ///     Gets the parameter value that failed the validation.
         /// </summary>
         public string ParameterValue { get; }
     }

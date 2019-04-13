@@ -25,7 +25,7 @@ namespace ConsoleFx.CmdLineParser
     /// <summary>
     ///     Rules for specifying an option on the command line. This includes number of occurences of
     ///     the option (defaults: 0 min and 1 max) and number of parameters (default: 0).
-    ///     Additional shortcut properties (<see cref="ExpectedOccurences" />,
+    ///     Additional shortcut properties (<see cref="ExpectedOccurrences" />,
     ///     <see cref="ExpectedParameters" /> and <see cref="Requirement" /> allow both min and max
     ///     values to be set for common scenarios.
     /// </summary>
@@ -33,10 +33,10 @@ namespace ConsoleFx.CmdLineParser
     public sealed partial class OptionUsage
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _minOccurences = Defaults.MinOccurences;
+        private int _minOccurrences = Defaults.MinOccurrences;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _maxOccurences = Defaults.MaxOccurences;
+        private int _maxOccurrences = Defaults.MaxOccurrences;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _minParameters = Defaults.MinParameters;
@@ -45,90 +45,93 @@ namespace ConsoleFx.CmdLineParser
         private int _maxParameters = Defaults.MaxParameters;
 
         /// <summary>
-        ///     Specifies the maximum allowed occurences of the option.
+        ///     Gets or sets the maximum allowed occurrences of the option.
         /// </summary>
-        public int MaxOccurences
+        public int MaxOccurrences
         {
-            get => _maxOccurences;
+            get => _maxOccurrences;
             set
             {
-                //An option should allow at least one occurence.
-                //Allowing a max of 0 occurences is the same as saying that the option should never be used.
+                // An option should allow at least one occurence.
+                // Allowing a max of 0 occurrences is the same as saying that the option should never be used.
                 //TODO: Change the exception message to something more appropriate.
                 if (value < 1)
                     throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
-                _maxOccurences = value;
+                _maxOccurrences = value;
             }
         }
 
         /// <summary>
-        ///     Specifies the minimum allowed occurences of the option.
+        ///     Gets or sets the minimum allowed occurrences of the option.
         /// </summary>
-        public int MinOccurences
+        public int MinOccurrences
         {
-            get => _minOccurences;
+            get => _minOccurrences;
             set
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
-                _minOccurences = value;
+                _minOccurrences = value;
             }
         }
 
         /// <summary>
+        ///     Gets or sets the expected number of occurrences of the property.
         ///     Shortcut to get/set both min and max occurence values.
         ///     If min and max values are different, returns null.
         ///     If set to null, then the defaults of 0 (min) and 1 (max) are set.
         /// </summary>
-        public int? ExpectedOccurences
+        public int? ExpectedOccurrences
         {
-            get => MinOccurences == MaxOccurences ? MinOccurences : (int?)null;
+            get => MinOccurrences == MaxOccurrences ? MinOccurrences : (int?)null;
             set
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
-                _minOccurences = value.GetValueOrDefault(Defaults.MinOccurences);
-                _maxOccurences = value.GetValueOrDefault(Defaults.MaxOccurences);
+                _minOccurrences = value.GetValueOrDefault(Defaults.MinOccurrences);
+                _maxOccurrences = value.GetValueOrDefault(Defaults.MaxOccurrences);
             }
         }
 
         /// <summary>
-        ///     Shortcut to set the option's occurences based on its requirement.
+        ///     Gets or sets the option's occurrences based on its requirement.
         /// </summary>
         public OptionRequirement Requirement
         {
             get
             {
-                OptionRequirement requirement = MinOccurences > 0
+                OptionRequirement requirement = MinOccurrences > 0
                     ? OptionRequirement.Required
                     : OptionRequirement.Optional;
-                if (MaxOccurences == Unlimited)
+                if (MaxOccurrences == Unlimited)
                 {
                     if (requirement == OptionRequirement.Required)
                         requirement = OptionRequirement.RequiredUnlimited;
                     else if (requirement == OptionRequirement.Optional)
                         requirement = OptionRequirement.OptionalUnlimited;
                 }
+
                 return requirement;
             }
+
             set
             {
                 switch (value)
                 {
                     case OptionRequirement.Optional:
-                        MinOccurences = 0;
-                        //Don't change MaxOccurences. Let it remain at it's existing value.
+                        // Don't change MaxOccurrences. Let it remain at it's existing value.
+                        MinOccurrences = 0;
                         break;
                     case OptionRequirement.OptionalUnlimited:
-                        MinOccurences = 0;
-                        MaxOccurences = Unlimited;
+                        MinOccurrences = 0;
+                        MaxOccurrences = Unlimited;
                         break;
                     case OptionRequirement.Required:
-                        MinOccurences = 1;
+                        MinOccurrences = 1;
                         break;
                     case OptionRequirement.RequiredUnlimited:
-                        MinOccurences = 1;
-                        MaxOccurences = Unlimited;
+                        MinOccurrences = 1;
+                        MaxOccurrences = Unlimited;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value));
@@ -147,7 +150,7 @@ namespace ConsoleFx.CmdLineParser
         public int MinParameters => _minParameters;
 
         /// <summary>
-        ///     Shortcut to set the option's parameter occurences based on its requirement.
+        ///     Gets or sets the parameter occurrences based on its requirement.
         /// </summary>
         public OptionParameterRequirement ParameterRequirement
         {
@@ -170,9 +173,13 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     <para>Shortcut to get/set both min and max parameter values.</para>
-        ///     <para>If min and max values are different, returns null.</para>
-        ///     <para>If set to null, then the defaults of 0 (min) and 0 (max) are set.</para>
+        ///     Gets or sets the expected number of parameters for the option.
+        ///     <para/>
+        ///     This is a shortcut to getting and setting the min and max properties to the same value.
+        ///     <para/>
+        ///     If min and max values are different, the getter returns <c>null</c>.
+        ///     <para/>
+        ///     If set to <c>null</c>, then the defaults of 0 (min) and 0 (max) are set.
         /// </summary>
         public int? ExpectedParameters
         {
@@ -198,28 +205,34 @@ namespace ConsoleFx.CmdLineParser
         ///     <para>Enforces that parameters should be specified for an option.</para>
         ///     <para>
         ///         By default, only one parameter is required, but this can be customized by specifying
-        ///         the <see cref="min"/> and <see cref="max"/> parameters.
+        ///         the <paramref name="min"/> and <paramref name="max"/> parameters.
         ///     </para>
         /// </summary>
         /// <param name="max">The maximum number of option parameters allowed.</param>
         /// <param name="min">The minimum number of option parameters required.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if the <see cref="min"/> parameter is less than zero.</exception>
-        /// <exception cref="ArgumentException">Thrown if the <see cref="min"/> parameter is greater than the <see cref="max"/> parameter.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="min"/> parameter is less than zero.</exception>
+        /// <exception cref="ArgumentException">Thrown if the <paramref name="min"/> parameter is greater than the <paramref name="max"/> parameter.</exception>
         public void SetParametersRequired(int max = 1, int min = 1)
         {
             if (min < 1)
+            {
                 throw new ArgumentOutOfRangeException(nameof(min),
                     "Minimum parameters has to be one or more if they are required.");
+            }
+
             if (min > max)
+            {
                 throw new ArgumentException(
                     $"Minimum parameter usage ({min}) cannot be larger than the maximum ({max}).", nameof(min));
+            }
+
             _minParameters = min;
             _maxParameters = max;
         }
 
         /// <summary>
-        ///     Specifies whether the parameters of the option are repeating (all have the same meaning)
-        ///     or individual (each is different and can have separate validators).
+        ///     Gets or sets whether the parameters of the option are repeating (all have the same meaning) or individual
+        ///     (each is different and can have separate validators).
         /// </summary>
         public OptionParameterType ParameterType { get; set; }
     }
@@ -228,8 +241,8 @@ namespace ConsoleFx.CmdLineParser
     {
         public static class Defaults
         {
-            public const int MinOccurences = 0;
-            public const int MaxOccurences = 1;
+            public const int MinOccurrences = 0;
+            public const int MaxOccurrences = 1;
 
             public const int MinParameters = 0;
             public const int MaxParameters = 0;

@@ -29,26 +29,25 @@ namespace ConsoleFx.CmdLineParser
     internal sealed class ParseRun
     {
         /// <summary>
-        ///     <para>All specified commands and subcommands.</para>
-        ///     <para>
-        ///         Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we want to avoid the
-        ///         duplicate checks, as commands at different levels can have the same name.
-        ///     </para>
+        ///     Gets all specified commands.
+        ///     <para/>
+        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we want to avoid the
+        ///     duplicate checks, as commands at different levels can have the same name.
         /// </summary>
         internal List<Command> Commands { get; } = new List<Command>();
 
         /// <summary>
-        ///     All allowed arguments and their values.
+        ///     Gets all allowed arguments and their values.
         /// </summary>
         internal List<ArgumentRun> Arguments { get; } = new List<ArgumentRun>();
 
         /// <summary>
-        ///     All allowed options and details of which are specified.
+        ///     Gets all allowed options and details of which are specified.
         /// </summary>
         internal List<OptionRun> Options { get; } = new List<OptionRun>();
 
         /// <summary>
-        ///     All the specified options and argument tokens after accounting for the commands.
+        ///     Gets or sets all the specified options and argument tokens after accounting for the commands.
         /// </summary>
         internal List<string> Tokens { get; set; }
     }
@@ -77,17 +76,18 @@ namespace ConsoleFx.CmdLineParser
         internal Option Option { get; }
 
         /// <summary>
-        /// The <see cref="Command"/> instance to which this option belongs.
+        /// Gets the <see cref="Command"/> instance to which this option belongs.
         /// </summary>
         internal Command Command { get; }
 
-        internal int Occurences { get; set; }
+        internal int Occurrences { get; set; }
 
         //TODO: Optimize initial capacity of this list based on the min and max parameters of the option.
         internal List<string> Parameters { get; } = new List<string>();
 
         /// <summary>
-        ///     <para>The final value of the parameters of the option. The actual type depends on how the option is setup.</para>
+        ///     Gets or sets the final value of the parameters of the option. The actual type depends on how the option is setup.
+        ///     <para/>
         ///     If the option allows parameters, then this can be:
         ///     <list type="bullet">
         ///         <item>
@@ -117,7 +117,7 @@ namespace ConsoleFx.CmdLineParser
 
         internal void Clear()
         {
-            Occurences = 0;
+            Occurrences = 0;
             Parameters.Clear();
         }
     }

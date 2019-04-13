@@ -29,12 +29,12 @@ namespace ConsoleFx.CmdLineParser.Programs
     public abstract class CommandBuilder
     {
         /// <summary>
-        ///     Name of the command.
+        ///     Gets name of the command.
         /// </summary>
         protected abstract string Name { get; }
 
         /// <summary>
-        ///     Optional description of the command. Useful for usage builders.
+        ///     Gets optional description of the command. Useful for usage builders.
         /// </summary>
         protected virtual string Description => null;
 
@@ -42,6 +42,7 @@ namespace ConsoleFx.CmdLineParser.Programs
         ///     Override this method to return the arguments available to this command.
         ///     Remember that optional arguments must be after required arguments.
         /// </summary>
+        /// <returns>The arguments available to this command.</returns>
         protected virtual IEnumerable<Argument> GetArguments()
         {
             yield break;
@@ -50,6 +51,7 @@ namespace ConsoleFx.CmdLineParser.Programs
         /// <summary>
         ///     Override this method to return the options available to this command.
         /// </summary>
+        /// <returns>The options available to this command.</returns>
         protected virtual IEnumerable<Option> GetOptions()
         {
             yield break;
@@ -58,6 +60,7 @@ namespace ConsoleFx.CmdLineParser.Programs
         /// <summary>
         ///     Override this method to return the sub-commands available to this command.
         /// </summary>
+        /// <returns>The sub-commands available to this command.</returns>
         protected virtual IEnumerable<Command> GetCommands()
         {
             yield break;
@@ -90,7 +93,7 @@ namespace ConsoleFx.CmdLineParser.Programs
         ///     <see cref="Command" /> instance; for example when adding sub-commands to a <see cref="Command" /> object.
         ///     For languages that do not support implicit cast operators, use the <see cref="ToCommand" /> method.
         /// </summary>
-        /// <param name="builder"></param>
+        /// <param name="builder">The <see cref="CommandBuilder"/> instance.</param>
         public static implicit operator Command(CommandBuilder builder) => builder.ToCommand();
     }
 }

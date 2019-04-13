@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2018 Jeevan James
@@ -15,15 +16,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using ConsoleFx.CmdLineParser.Validators;
 
 namespace ConsoleFx.CmdLineParser
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Represents a non-option command-line parameter.
     /// </summary>
@@ -32,29 +34,27 @@ namespace ConsoleFx.CmdLineParser
     {
         private ValidatorCollection _validators;
 
-        public Argument(string name, bool isOptional = false) : base(new Dictionary<string, bool>
-        {
-            [name] = false
-        })
+        public Argument(string name, bool isOptional = false)
+            : base(new Dictionary<string, bool> { [name] = false })
         {
             IsOptional = isOptional;
         }
 
         /// <summary>
-        ///     Indicates whether the argument is optional. Like C# optional parameters, then can only
-        ///     be specified after all the required arguments.
+        ///     Gets a value indicating whether the argument is optional. Like C# optional parameters, then can only be
+        ///     specified after all the required arguments.
         /// </summary>
         public bool IsOptional { get; }
 
         /// <summary>
-        ///     Validators for this argument.
+        ///     Gets the validators for this argument.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
 
         public Argument ValidateWith(params Validator[] validators)
         {
-            foreach (Validator validator in validators)
+            foreach (var validator in validators)
                 Validators.Add(validator);
             return this;
         }
@@ -62,20 +62,22 @@ namespace ConsoleFx.CmdLineParser
 
     public sealed class Arguments : Args<Argument>
     {
-        protected override void InsertItem(int index, Argument argument)
+        protected override void InsertItem(int index, Argument item)
         {
-            base.InsertItem(index, argument);
+            base.InsertItem(index, item);
             VerifyOptionalArgumentsAtEnd();
         }
 
-        protected override void SetItem(int index, Argument argument)
+        protected override void SetItem(int index, Argument item)
         {
-            base.SetItem(index, argument);
+            base.SetItem(index, item);
             VerifyOptionalArgumentsAtEnd();
         }
 
-        protected override string GetDuplicateErrorMessage(string name) =>
-            $"Argument named '{name}' already exists in the argument collection.";
+        protected override string GetDuplicateErrorMessage(string name)
+        {
+            return $"Argument named '{name}' already exists in the argument collection.";
+        }
 
         /// <summary>
         ///     Called whenever an argument is added or set in the collection to verify that
@@ -84,8 +86,8 @@ namespace ConsoleFx.CmdLineParser
         private void VerifyOptionalArgumentsAtEnd()
         {
             //TODO: Try and optimize this to not traverse the whole list each time.
-            bool inOptionalSet = false;
-            foreach (Argument argument in this)
+            var inOptionalSet = false;
+            foreach (var argument in this)
             {
                 if (inOptionalSet)
                 {
@@ -94,8 +96,11 @@ namespace ConsoleFx.CmdLineParser
                         throw new ParserException(ParserException.Codes.RequiredArgumentsDefinedAfterOptional,
                             Messages.RequiredArgumentsDefinedAfterOptional);
                     }
-                } else
+                }
+                else
+                {
                     inOptionalSet = argument.IsOptional;
+                }
             }
         }
     }
