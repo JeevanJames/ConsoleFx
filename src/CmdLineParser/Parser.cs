@@ -109,47 +109,47 @@ namespace ConsoleFx.CmdLineParser
 
             Command currentCommand = RootCommand;
 
-            //Go through the tokens and find all the subcommands and their arguments and options.
+            // Go through the tokens and find all the subcommands and their arguments and options.
             for (int i = 0; i < tokens.Count; i++)
             {
                 string token = tokens[i];
 
-                //All options for the current command are considered. So, add them all.
-                //This is not the case for arguments. Only the arguments for the innermost command are considered.
+                // All options for the current command are considered. So, add them all.
+                // This is not the case for arguments. Only the arguments for the innermost command are considered.
                 run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o, currentCommand)));
 
-                //Check if subcommand exists under the current command with the token as a name.
+                // Check if subcommand exists under the current command with the token as a name.
                 Command subcommand = currentCommand.Commands[token];
 
                 if (subcommand != null)
                 {
-                    //Add the command and move to the next command level.
+                    // Add the command and move to the next command level.
                     run.Commands.Add(subcommand);
                     currentCommand = subcommand;
                 }
                 else
                 {
-                    //This is the innermost command. Add any arguments from this command to the run
-                    //and then add all the remaining tokens to the run's Token collection and exit
-                    //the loop.
+                    // This is the innermost command. Add any arguments from this command to the run
+                    // and then add all the remaining tokens to the run's Token collection and exit
+                    // the loop.
 
-                    //Only add the arguments from the current command to the run if a subcommand is not specified.
-                    //Arguments from the innermost command can only be used for a run. If arguments
-                    //from different levels of commands are used, then the correct order of the commands is ambiguous.
+                    // Only add the arguments from the current command to the run if a subcommand is not specified.
+                    // Arguments from the innermost command can only be used for a run. If arguments
+                    // from different levels of commands are used, then the correct order of the commands is ambiguous.
                     foreach (Argument argument in currentCommand.Arguments)
                         run.Arguments.Add(new ArgumentRun(argument));
 
-                    //All tokens from the current token are considered the args for the command.
+                    // All tokens from the current token are considered the args for the command.
                     run.Tokens = new List<string>(tokens.Count - i + 1);
                     for (int j = i; j < tokens.Count; j++)
                         run.Tokens.Add(tokens[j]);
 
-                    //We're done with subcommands. Break out of this loop.
+                    // We're done with subcommands. Break out of this loop.
                     break;
                 }
             }
 
-            //To avoid null-ref exceptions, assign run.Tokens if it is null.
+            // To avoid null-ref exceptions, assign run.Tokens if it is null.
             if (run.Tokens == null)
                 run.Tokens = new List<string>(0);
 
