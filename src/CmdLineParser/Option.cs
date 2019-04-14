@@ -18,7 +18,6 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -26,12 +25,21 @@ using ConsoleFx.CmdLineParser.Validators;
 
 namespace ConsoleFx.CmdLineParser
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Represents an options arg.
     /// </summary>
     [DebuggerDisplay("Option: {Name}")]
     public sealed class Option : Arg
     {
+        /// <inheritdoc />
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying names.
+        /// </summary>
+        /// <param name="names">
+        ///     One or more unique names to identify the option. All names added will be not be case-sensitive. In case
+        ///     you require case-sensitive option names, use the overloaded constructor.
+        /// </param>
         public Option(params string[] names)
         {
             foreach (string name in names)
@@ -39,6 +47,13 @@ namespace ConsoleFx.CmdLineParser
             Validators = new OptionParameterValidators(this);
         }
 
+        /// <inheritdoc />
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying names and
+        ///     specifies whether the names are case sensitive.
+        /// </summary>
+        /// <param name="caseSensitive">Indicates whether the specified <paramref name="names" /> are case sensitive.</param>
+        /// <param name="names">One or more unique names to identify the option.</param>
         public Option(bool caseSensitive, params string[] names)
         {
             foreach (string name in names)
@@ -109,7 +124,7 @@ namespace ConsoleFx.CmdLineParser
             if (formatStr == null)
                 throw new ArgumentNullException(nameof(formatStr));
             if (!formatStr.Contains("{0}"))
-                throw new ArgumentException("The specified format string should contain a format placeholder ({0}) to specify where the parameter value is inserted.", nameof(formatStr));
+                throw new ArgumentException(Errors.Option_MissingPlaceholderInFormatString, nameof(formatStr));
             Formatter = value => string.Format(formatStr, value);
             return this;
         }
@@ -184,12 +199,12 @@ namespace ConsoleFx.CmdLineParser
             if (validators == null)
                 throw new ArgumentNullException(nameof(validators));
             if (validators.Length == 0)
-                throw new ArgumentException("Specify at least one validator.", nameof(validators));
+                throw new ArgumentException(Errors.Option_ValidatorsNotSpecified, nameof(validators));
             for (int i = 0; i < validators.Length; i++)
             {
                 Validator validator = validators[i];
                 if (validator == null)
-                    throw new ArgumentException($"Validator at index {i} is null.", nameof(validators));
+                    throw new ArgumentException(string.Format(Errors.Option_ValidatorIsNull, i), nameof(validators));
                 Validators.Add(validator);
             }
 
@@ -210,12 +225,12 @@ namespace ConsoleFx.CmdLineParser
             if (validators == null)
                 throw new ArgumentNullException(nameof(validators));
             if (validators.Length == 0)
-                throw new ArgumentException("Specify at least one validator.", nameof(validators));
-            for (int i = 0; i < validators.Length; i++)
+                throw new ArgumentException(Errors.Option_ValidatorsNotSpecified, nameof(validators));
+            for (var i = 0; i < validators.Length; i++)
             {
                 Validator validator = validators[i];
                 if (validator == null)
-                    throw new ArgumentException($"Validator at index {i} is null.", nameof(validators));
+                    throw new ArgumentException(string.Format(Errors.Option_ValidatorIsNull, i), nameof(validators));
                 Validators.Add(parameterIndex, validator);
             }
 
@@ -227,17 +242,10 @@ namespace ConsoleFx.CmdLineParser
 
     /// <summary>
     ///     Represents a collection of options. Note: This is not a keyed collection because the key
-    ///     can be either the name or short name.
+    ///     can be one of many names.
     /// </summary>
     public sealed class Options : Args<Option>
     {
-        //TODO: Change this to check all name combinations
-        protected override bool ObjectsMatch(Option obj1, Option obj2) =>
-            obj1.HasName(obj2.Name);
-
-        protected override bool NamesMatch(string name, Option obj) =>
-            obj.HasName(name);
-
         protected override string GetDuplicateErrorMessage(string name) =>
             string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, name);
     }

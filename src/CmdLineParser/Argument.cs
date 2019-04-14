@@ -32,8 +32,15 @@ namespace ConsoleFx.CmdLineParser
     [DebuggerDisplay("Argument {Name} [{Validators.Count} validators]")]
     public sealed class Argument : Arg
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ValidatorCollection _validators;
 
+        /// <inheritdoc />
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Argument" /> class.
+        /// </summary>
+        /// <param name="name">The unique name identifying the argument.</param>
+        /// <param name="isOptional">Indicates whether the argument is optional.</param>
         public Argument(string name, bool isOptional = false)
             : base(new Dictionary<string, bool> { [name] = false })
         {
@@ -41,8 +48,8 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the argument is optional. Like C# optional parameters, then can only be
-        ///     specified after all the required arguments.
+        ///     Gets a value indicating whether the argument is optional. Optional arguments can only be specified after
+        ///     all the required arguments.
         /// </summary>
         public bool IsOptional { get; }
 
@@ -52,14 +59,23 @@ namespace ConsoleFx.CmdLineParser
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
 
+        /// <summary>
+        ///     Specifies one or more validators to validate the argument.
+        /// </summary>
+        /// <param name="validators">The validators to use to validate the argument.</param>
+        /// <returns>The same instance of the <see cref="Argument"/> object to allow for fluent syntax.</returns>
         public Argument ValidateWith(params Validator[] validators)
         {
-            foreach (var validator in validators)
+            foreach (Validator validator in validators)
                 Validators.Add(validator);
             return this;
         }
     }
 
+    /// <inheritdoc />
+    /// <summary>
+    ///     Represents a collection of <see cref="T:ConsoleFx.CmdLineParser.Argument" /> objects.
+    /// </summary>
     public sealed class Arguments : Args<Argument>
     {
         protected override void InsertItem(int index, Argument item)
@@ -76,12 +92,12 @@ namespace ConsoleFx.CmdLineParser
 
         protected override string GetDuplicateErrorMessage(string name)
         {
-            return $"Argument named '{name}' already exists in the argument collection.";
+            return string.Format(Errors.Arguments_Duplicate_argument, name);
         }
 
         /// <summary>
-        ///     Called whenever an argument is added or set in the collection to verify that
-        ///     optional arguments are specified only after the required ones.
+        ///     Called whenever an argument is added or set in the collection to verify that optional arguments are
+        ///     specified only after the required ones.
         /// </summary>
         private void VerifyOptionalArgumentsAtEnd()
         {

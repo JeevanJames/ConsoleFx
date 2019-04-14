@@ -20,12 +20,13 @@ limitations under the License.
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
-    ///     Specifies how the command line args are expected to be grouped.
+    ///     Specifies how the command-line args are expected to be grouped.
     /// </summary>
     public enum ArgGrouping
     {
         /// <summary>
         ///     Command line parameters grouping does not matter. Options and arguments can be mixed together.
+        ///     <para/>
         ///     This is the default grouping.
         /// </summary>
         DoesNotMatter,

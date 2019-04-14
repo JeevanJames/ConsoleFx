@@ -63,10 +63,10 @@ namespace ConsoleFx.CmdLineParser.Validators
             throw new NotSupportedException("Should not have reached here.");
         }
 
-        protected override void ValidateAsActualType(DirectoryInfo directory, string parameterName)
+        protected override void ValidateAsActualType(DirectoryInfo value, string parameterValue)
         {
-            if (ShouldExist && !directory.Exists)
-                ValidationFailed(DirectoryMissingMessage, parameterName);
+            if (ShouldExist && !value.Exists)
+                ValidationFailed(DirectoryMissingMessage, parameterValue);
         }
     }
 

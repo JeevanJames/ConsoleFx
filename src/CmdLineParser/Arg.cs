@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2018 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
@@ -28,9 +30,11 @@ namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
     ///     Base class for command-line args, such as commands, arguments and options.
-    ///     <para>
-    ///     Base class for <see cref="T:ConsoleFx.CmdLineParser.Option" />, <see cref="T:ConsoleFx.CmdLineParser.Argument" /> and
-    ///     <see cref="Command" />.</para>
+    ///     <para />
+    ///     Base class for <see cref="Option" />, <see cref="Argument" /> and <see cref="Command" />.
+    ///     <para />
+    ///     This class provides two capabilities. One is the collection of names that identify the arg and the other is
+    ///     additional metadata that can be used by certain frameworks to add more details for an arg.
     /// </summary>
     public abstract class Arg
     {
@@ -40,41 +44,50 @@ namespace ConsoleFx.CmdLineParser
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Dictionary<string, object> _metadata;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Arg" /> class.
+        /// </summary>
         protected Arg()
         {
             _names = new Dictionary<string, bool>();
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Arg"/> class.
+        ///     Initializes a new instance of the <see cref="Arg" /> class with one or more names.
         /// </summary>
-        /// <param name="names">Name of the object.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="names"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the <paramref name="names"/> is empty or has only whitespace.</exception>
+        /// <param name="names">One or more names for the arg. The first name is considered primary.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="names" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the <paramref name="names" /> collection is empty.</exception>
         protected Arg(IDictionary<string, bool> names)
         {
             if (names == null)
                 throw new ArgumentNullException(nameof(names));
             if (names.Count == 0)
-                throw new ArgumentException("Specify at least one name", nameof(names));
-            foreach (var kvp in names)
+                throw new ArgumentException(Errors.Arg_No_names_specified, nameof(names));
+            foreach (KeyValuePair<string, bool> kvp in names)
                 AddName(kvp.Key, kvp.Value);
 
             _names = new Dictionary<string, bool>(names);
         }
 
+        /// <summary>
+        ///     Adds a new name for the arg.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
+        /// <returns>An instance to the same <see cref="Arg" />, to allow for a fluent syntax.</returns>
         public Arg AddName(string name, bool caseSensitive = false)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
             if (!NamePattern.IsMatch(name))
-                throw new ArgumentException($"Name {name} is not a valid name.", nameof(name));
+                throw new ArgumentException(string.Format(Errors.Arg_Invalid_name, name), nameof(name));
             _names.Add(name, caseSensitive);
             return this;
         }
 
         /// <summary>
-        ///     Returns whether any of the args' names matches the specified name.
+        ///     Checks whether any of the args' names matches the specified name.
         /// </summary>
         /// <param name="name">The name to check against.</param>
         /// <returns><c>true</c>, if the specified name matches any of the args' names, otherwise <c>false</c>.</returns>
@@ -84,7 +97,7 @@ namespace ConsoleFx.CmdLineParser
                 return false;
             return _names.Any(kvp =>
             {
-                StringComparison comparison = kvp.Value
+                var comparison = kvp.Value
                     ? StringComparison.Ordinal
                     : StringComparison.OrdinalIgnoreCase;
                 return name.Equals(kvp.Key, comparison);
@@ -92,19 +105,30 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Gets the first name from all the assigned names for this arg.
+        ///     Gets the first name from all the assigned names for this arg. This represents the primary name of the arg.
         /// </summary>
         public string Name => _names.First().Key;
 
         /// <summary>
         ///     Gets all the secondary names for the arg.
         /// </summary>
-        public IEnumerable<string> AlternateNames => _names.Skip(1).Select(kvp => kvp.Key);
+        public IEnumerable<string> AlternateNames => _names.Skip(count: 1).Select(kvp => kvp.Key);
 
+        /// <summary>
+        ///     Gets the list of all names assigned to the arg.
+        /// </summary>
         protected IDictionary<string, bool> Names => _names;
 
+        /// <summary>
+        ///     Gets all the names of the arg.
+        /// </summary>
         internal IEnumerable<string> AllNames => _names.Select(kvp => kvp.Key);
 
+        /// <summary>
+        ///     Gets a valid name pattern to verify names against.
+        ///     <para />
+        ///     Derived classes can override this to specify different naming rules for certain types of args.
+        /// </summary>
         protected virtual Regex NamePattern { get; } = new Regex(@"^\w[\w_-]*$");
 
         /// <summary>
@@ -128,7 +152,7 @@ namespace ConsoleFx.CmdLineParser
         {
             if (_metadata == null)
                 return default;
-            return _metadata.TryGetValue(name, out object result) ? (T)result : default;
+            return _metadata.TryGetValue(name, out var result) ? (T)result : default;
         }
 
         /// <summary>
@@ -150,14 +174,12 @@ namespace ConsoleFx.CmdLineParser
 
     /// <inheritdoc />
     /// <summary>
-    ///     <para>Base class for collections of objects derived from <see cref="T:ConsoleFx.CmdLineParser.Arg" />.</para>
-    ///     <para>
-    ///         Collections deriving from this class provide an additional indexer that can retrieve
-    ///         an object my its name. They also prevent duplicate objects from being inserted or
-    ///         set on the collection.
-    ///     </para>
+    ///     Base class for collections of objects derived from <see cref="Arg" />.
+    ///     <para />
+    ///     Collections deriving from this class provide an additional indexer that can retrieve an object my its name.
+    ///     They also prevent duplicate objects from being inserted or set on the collection.
     /// </summary>
-    /// <typeparam name="T">The specific type of <see cref="T:ConsoleFx.CmdLineParser.Arg" /> that the collection will hold.</typeparam>
+    /// <typeparam name="T">The specific type of <see cref="Arg" /> that the collection will hold.</typeparam>
     public abstract class Args<T> : Collection<T>
         where T : Arg
     {
@@ -166,18 +188,19 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         /// <param name="name">The name of the object to find.</param>
         /// <returns>The object, if found. Otherwise <c>null</c>.</returns>
-        public T this[string name] =>
-            this.FirstOrDefault(item => NamesMatch(name, item));
+        public T this[string name] => this.FirstOrDefault(item => NamesMatch(name, item));
 
         /// <summary>
-        ///     Compares two objects for equality. The default behavior is to compare their Name
-        ///     properties, but deriving classes can override this behavior.
+        ///     Compares two <see cref="Arg" /> objects for equality. The default behavior is to check if any of their
+        ///     names match, but deriving classes can override this behavior.
         /// </summary>
-        /// <param name="obj1">The first object to compare.</param>
-        /// <param name="obj2">The second object to compare.</param>
+        /// <param name="obj1">The first <see cref="Arg" /> object to compare.</param>
+        /// <param name="obj2">The second <see cref="Arg" /> object to compare.</param>
         /// <returns><c>true</c>, if the objects are equal, otherwise <c>false</c>.</returns>
-        protected virtual bool ObjectsMatch(T obj1, T obj2) =>
-            NamesMatch(obj1.Name, obj2);
+        protected virtual bool ObjectsMatch(T obj1, T obj2)
+        {
+            return obj1.AllNames.Any(name => NamesMatch(name, obj2));
+        }
 
         /// <summary>
         ///     Checks whether the specified object can be identified by the given name.
@@ -185,9 +208,12 @@ namespace ConsoleFx.CmdLineParser
         /// <param name="name">The name to check against.</param>
         /// <param name="obj">The object, whose identity to check against the name.</param>
         /// <returns><c>true</c>, if the object can be identified by the given name, otherwise <c>false</c>.</returns>
-        protected virtual bool NamesMatch(string name, T obj) =>
-            name.Equals(obj.Name);
+        protected virtual bool NamesMatch(string name, T obj)
+        {
+            return obj.HasName(name);
+        }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Prevents duplicate objects from being inserted.
         /// </summary>
@@ -195,10 +221,11 @@ namespace ConsoleFx.CmdLineParser
         /// <param name="item">Object to insert.</param>
         protected override void InsertItem(int index, T item)
         {
-            CheckDuplicates(item, -1);
+            CheckDuplicates(item, index: -1);
             base.InsertItem(index, item);
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///     Prevents duplicate objects from being set in the collection.
         /// </summary>

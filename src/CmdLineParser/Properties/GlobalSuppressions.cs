@@ -52,6 +52,9 @@
     "SA1633:File must have header",
     Justification = "Nice to have, but this rule does not allow file headers in a region.")]
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules",
+    "SA1648:inheritdoc must be used with inheriting class",
+    Justification = "This has a bug where it sometimes misidentifies deriving members as non-deriving.")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules",
     "SA1652:Enable XML documentation output",
     Justification = "Temporary exception. Will be removed once documentation is completed.")]
 

@@ -58,4 +58,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CmdLineParser\CmdLineParser.csproj" />
+  </ItemGroup>
+
 </Project>

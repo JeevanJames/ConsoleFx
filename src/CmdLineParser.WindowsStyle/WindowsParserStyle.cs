@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2018 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
@@ -29,10 +31,11 @@ namespace ConsoleFx.CmdLineParser.WindowsStyle
         private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?][\w-_\?]+)");
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
-        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options, ArgGrouping grouping)
+        public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
+            ArgGrouping grouping)
         {
-            ArgumentType previousType = ArgumentType.NotSet;
-            ArgumentType currentType = ArgumentType.NotSet;
+            var previousType = ArgumentType.NotSet;
+            var currentType = ArgumentType.NotSet;
 
             foreach (string token in tokens)
             {
@@ -40,7 +43,7 @@ namespace ConsoleFx.CmdLineParser.WindowsStyle
 
                 previousType = currentType;
 
-                Match optionMatch = OptionPattern.Match(token);
+                var optionMatch = OptionPattern.Match(token);
                 if (!optionMatch.Success)
                 {
                     currentType = ArgumentType.Argument;
@@ -50,27 +53,33 @@ namespace ConsoleFx.CmdLineParser.WindowsStyle
                 {
                     currentType = ArgumentType.Option;
 
-                    string specifiedOptionName = optionMatch.Groups[1].Value;
+                    string specifiedOptionName = optionMatch.Groups[groupnum: 1].Value;
 
-                    OptionRun availableOption = options.FirstOrDefault(or => or.Option.HasName(specifiedOptionName));
+                    var availableOption = options.FirstOrDefault(or => or.Option.HasName(specifiedOptionName));
                     if (availableOption == null)
-                        throw new ParserException(ParserException.Codes.InvalidOptionSpecified, string.Format(Messages.InvalidOptionSpecified, specifiedOptionName));
+                    {
+                        throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
+                            string.Format(Messages.InvalidOptionSpecified, specifiedOptionName));
+                    }
 
-                    availableOption.Occurences += 1;
+                    availableOption.Occurrences += 1;
 
                     //If no switch parameters are specified, stop processing
                     if (token.Length == specifiedOptionName.Length + 1)
                         continue;
 
                     if (token[specifiedOptionName.Length + 1] != ':')
-                        throw new ParserException(ParserException.Codes.InvalidOptionParameterSpecifier, string.Format(Messages.InvalidOptionParameterSpecifier, specifiedOptionName));
+                    {
+                        throw new ParserException(ParserException.Codes.InvalidOptionParameterSpecifier,
+                            string.Format(Messages.InvalidOptionParameterSpecifier, specifiedOptionName));
+                    }
 
-                    MatchCollection parameterMatches = OptionParameterPattern.Matches(token, optionMatch.Length + 1);
+                    var parameterMatches = OptionParameterPattern.Matches(token, optionMatch.Length + 1);
                     foreach (Match parameterMatch in parameterMatches)
                     {
-                        string value = parameterMatch.Groups[1].Value;
+                        string value = parameterMatch.Groups[groupnum: 1].Value;
                         if (value.StartsWith(",", StringComparison.OrdinalIgnoreCase))
-                            value = value.Remove(0, 1);
+                            value = value.Remove(startIndex: 0, count: 1);
                         availableOption.Parameters.Add(value);
                     }
                 }
@@ -80,13 +89,14 @@ namespace ConsoleFx.CmdLineParser.WindowsStyle
         }
 
         /// <summary>
-        /// This method is used by the code that validates the command-line grouping. It is
-        /// called for every iteration of the arguments.
+        ///     This method is used by the code that validates the command-line grouping. It is
+        ///     called for every iteration of the arguments.
         /// </summary>
-        /// <param name="previousType"></param>
-        /// <param name="currentType"></param>
-        /// <param name="grouping"></param>
-        private static void VerifyCommandLineGrouping(ArgumentType previousType, ArgumentType currentType, ArgGrouping grouping)
+        /// <param name="previousType">The type of the previously-checked argument.</param>
+        /// <param name="currentType">The type of the currently-checked argument.</param>
+        /// <param name="grouping">The expected arg grouping.</param>
+        private static void VerifyCommandLineGrouping(ArgumentType previousType, ArgumentType currentType,
+            ArgGrouping grouping)
         {
             if (grouping == ArgGrouping.DoesNotMatter)
                 return;
@@ -96,10 +106,17 @@ namespace ConsoleFx.CmdLineParser.WindowsStyle
 
             if (grouping == ArgGrouping.OptionsAfterArguments && previousType == ArgumentType.Option &&
                 currentType == ArgumentType.Argument)
-                throw new ParserException(ParserException.Codes.OptionsAfterParameters, Messages.OptionsAfterParameters);
+            {
+                throw new ParserException(ParserException.Codes.OptionsAfterParameters,
+                    Messages.OptionsAfterParameters);
+            }
+
             if (grouping == ArgGrouping.OptionsBeforeArguments && previousType == ArgumentType.Argument &&
                 currentType == ArgumentType.Option)
-                throw new ParserException(ParserException.Codes.OptionsBeforeParameters, Messages.OptionsBeforeParameters);
+            {
+                throw new ParserException(ParserException.Codes.OptionsBeforeParameters,
+                    Messages.OptionsBeforeParameters);
+            }
         }
 
         private enum ArgumentType

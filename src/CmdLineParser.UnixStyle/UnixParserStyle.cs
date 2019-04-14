@@ -81,7 +81,7 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
                         throw new ParserException(-1, $"Cannot specify a parameter for the combined option {optionName}.");
 
                     string[] optionNames = isShortOption && optionName.Length > 1
-                        ? optionName.Split() : (new[] {optionName});
+                        ? optionName.Split() : new[] { optionName };
 
                     Func<OptionRun, bool> predicate = isShortOption
                         ? (Func<OptionRun, bool>)
@@ -97,14 +97,19 @@ namespace ConsoleFx.CmdLineParser.UnixStyle
                     if (option.Option.CaseSensitive)
                     {
                         if (isShortOption && !option.Option.ShortName.Equals(optionName, StringComparison.Ordinal))
+                        {
                             throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
                                 string.Format(Messages.InvalidOptionSpecified, optionName));
+                        }
+
                         if (!option.Option.Name.Equals(optionName, StringComparison.Ordinal))
+                        {
                             throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
                                 string.Format(Messages.InvalidOptionSpecified, optionName));
+                        }
                     }
 
-                    option.Occurences += 1;
+                    option.Occurrences += 1;
                     if (isParameterSpecified)
                     {
                         option.Parameters.Add(parameterValue);

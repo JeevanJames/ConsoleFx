@@ -7,34 +7,66 @@
         <member name="T:ConsoleFx.CmdLineParser.Arg">
             <summary>
                 Base class for command-line args, such as commands, arguments and options.
-                <para>
-                Base class for <see cref="T:ConsoleFx.CmdLineParser.Option" />, <see cref="T:ConsoleFx.CmdLineParser.Argument" /> and
-                <see cref="T:ConsoleFx.CmdLineParser.Command" />.</para>
+                <para />
+                Base class for <see cref="T:ConsoleFx.CmdLineParser.Option" />, <see cref="T:ConsoleFx.CmdLineParser.Argument" /> and <see cref="T:ConsoleFx.CmdLineParser.Command" />.
+                <para />
+                This class provides two capabilities. One is the collection of names that identify the arg and the other is
+                additional metadata that can be used by certain frameworks to add more details for an arg.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.Arg.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Arg" /> class.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Arg.#ctor(System.Collections.Generic.IDictionary{System.String,System.Boolean})">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Arg"/> class.
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Arg" /> class with one or more names.
             </summary>
-            <param name="names">Name of the object.</param>
-            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="names"/> is <c>null</c>.</exception>
-            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="names"/> is empty or has only whitespace.</exception>
+            <param name="names">One or more names for the arg. The first name is considered primary.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="names" /> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="names" /> collection is empty.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.Arg.AddName(System.String,System.Boolean)">
+            <summary>
+                Adds a new name for the arg.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
+            <returns>An instance to the same <see cref="T:ConsoleFx.CmdLineParser.Arg" />, to allow for a fluent syntax.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Arg.HasName(System.String)">
             <summary>
-                Returns whether any of the args' names matches the specified name.
+                Checks whether any of the args' names matches the specified name.
             </summary>
             <param name="name">The name to check against.</param>
             <returns><c>true</c>, if the specified name matches any of the args' names, otherwise <c>false</c>.</returns>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Arg.Name">
             <summary>
-                Gets the first name from all the assigned names for this arg.
+                Gets the first name from all the assigned names for this arg. This represents the primary name of the arg.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Arg.AlternateNames">
             <summary>
                 Gets all the secondary names for the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Arg.Names">
+            <summary>
+                Gets the list of all names assigned to the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Arg.AllNames">
+            <summary>
+                Gets all the names of the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Arg.NamePattern">
+            <summary>
+                Gets a valid name pattern to verify names against.
+                <para />
+                Derived classes can override this to specify different naming rules for certain types of args.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Arg.Item(System.String)">
@@ -63,12 +95,10 @@
         <member name="T:ConsoleFx.CmdLineParser.Args`1">
             <inheritdoc />
             <summary>
-                <para>Base class for collections of objects derived from <see cref="T:ConsoleFx.CmdLineParser.Arg" />.</para>
-                <para>
-                    Collections deriving from this class provide an additional indexer that can retrieve
-                    an object my its name. They also prevent duplicate objects from being inserted or
-                    set on the collection.
-                </para>
+                Base class for collections of objects derived from <see cref="T:ConsoleFx.CmdLineParser.Arg" />.
+                <para />
+                Collections deriving from this class provide an additional indexer that can retrieve an object my its name.
+                They also prevent duplicate objects from being inserted or set on the collection.
             </summary>
             <typeparam name="T">The specific type of <see cref="T:ConsoleFx.CmdLineParser.Arg" /> that the collection will hold.</typeparam>
         </member>
@@ -81,11 +111,11 @@
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Args`1.ObjectsMatch(`0,`0)">
             <summary>
-                Compares two objects for equality. The default behavior is to compare their Name
-                properties, but deriving classes can override this behavior.
+                Compares two <see cref="T:ConsoleFx.CmdLineParser.Arg" /> objects for equality. The default behavior is to check if any of their
+                names match, but deriving classes can override this behavior.
             </summary>
-            <param name="obj1">The first object to compare.</param>
-            <param name="obj2">The second object to compare.</param>
+            <param name="obj1">The first <see cref="T:ConsoleFx.CmdLineParser.Arg" /> object to compare.</param>
+            <param name="obj2">The second <see cref="T:ConsoleFx.CmdLineParser.Arg" /> object to compare.</param>
             <returns><c>true</c>, if the objects are equal, otherwise <c>false</c>.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Args`1.NamesMatch(System.String,`0)">
@@ -97,6 +127,7 @@
             <returns><c>true</c>, if the object can be identified by the given name, otherwise <c>false</c>.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Args`1.InsertItem(System.Int32,`0)">
+            <inheritdoc />
             <summary>
                 Prevents duplicate objects from being inserted.
             </summary>
@@ -104,6 +135,7 @@
             <param name="item">Object to insert.</param>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Args`1.SetItem(System.Int32,`0)">
+            <inheritdoc />
             <summary>
                 Prevents duplicate objects from being set in the collection.
             </summary>
@@ -131,12 +163,13 @@
         </member>
         <member name="T:ConsoleFx.CmdLineParser.ArgGrouping">
             <summary>
-                Specifies how the command line args are expected to be grouped.
+                Specifies how the command-line args are expected to be grouped.
             </summary>
         </member>
         <member name="F:ConsoleFx.CmdLineParser.ArgGrouping.DoesNotMatter">
             <summary>
                 Command line parameters grouping does not matter. Options and arguments can be mixed together.
+                <para/>
                 This is the default grouping.
             </summary>
         </member>
@@ -156,10 +189,18 @@
                 Represents a non-option command-line parameter.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLineParser.Argument.#ctor(System.String,System.Boolean)">
+            <inheritdoc />
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Argument" /> class.
+            </summary>
+            <param name="name">The unique name identifying the argument.</param>
+            <param name="isOptional">Indicates whether the argument is optional.</param>
+        </member>
         <member name="P:ConsoleFx.CmdLineParser.Argument.IsOptional">
             <summary>
-                Gets a value indicating whether the argument is optional. Like C# optional parameters, then can only be
-                specified after all the required arguments.
+                Gets a value indicating whether the argument is optional. Optional arguments can only be specified after
+                all the required arguments.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Argument.Validators">
@@ -167,10 +208,23 @@
                 Gets the validators for this argument.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLineParser.Argument.ValidateWith(ConsoleFx.CmdLineParser.Validators.Validator[])">
+            <summary>
+                Specifies one or more validators to validate the argument.
+            </summary>
+            <param name="validators">The validators to use to validate the argument.</param>
+            <returns>The same instance of the <see cref="T:ConsoleFx.CmdLineParser.Argument"/> object to allow for fluent syntax.</returns>
+        </member>
+        <member name="T:ConsoleFx.CmdLineParser.Arguments">
+            <inheritdoc />
+            <summary>
+                Represents a collection of <see cref="T:ConsoleFx.CmdLineParser.Argument" /> objects.
+            </summary>
+        </member>
         <member name="M:ConsoleFx.CmdLineParser.Arguments.VerifyOptionalArgumentsAtEnd">
             <summary>
-                Called whenever an argument is added or set in the collection to verify that
-                optional arguments are specified only after the required ones.
+                Called whenever an argument is added or set in the collection to verify that optional arguments are
+                specified only after the required ones.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Command.#ctor">
@@ -242,6 +296,52 @@
         <member name="F:ConsoleFx.CmdLineParser.Config.OverrideBehavior.AlwaysConfig">
             <summary>
                 If available, use only config values and ignore specified values.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLineParser.Errors">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Errors.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Errors.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Errors.Arg_Invalid_name">
+            <summary>
+              Looks up a localized string similar to Name {0} is not a valid name..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Errors.Arg_No_names_specified">
+            <summary>
+              Looks up a localized string similar to Specify at least one name.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Errors.Arguments_Duplicate_argument">
+            <summary>
+              Looks up a localized string similar to Argument named &apos;{0}&apos; already exists in the argument collection..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Errors.Option_MissingPlaceholderInFormatString">
+            <summary>
+              Looks up a localized string similar to The specified format string should contain a format placeholder ({0}) to specify where the parameter value is inserted..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Errors.Option_ValidatorIsNull">
+            <summary>
+              Looks up a localized string similar to Validator at index {0} is null..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Errors.Option_ValidatorsNotSpecified">
+            <summary>
+              Looks up a localized string similar to Specify at least one validator..
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineParser.Messages">
@@ -331,9 +431,29 @@
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineParser.Option">
+            <inheritdoc />
             <summary>
                 Represents an options arg.
             </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.Option.#ctor(System.String[])">
+            <inheritdoc />
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Option" /> class with the specified identifying names.
+            </summary>
+            <param name="names">
+                One or more unique names to identify the option. All names added will be not be case-sensitive. In case
+                you require case-sensitive option names, use the overloaded constructor.
+            </param>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.Option.#ctor(System.Boolean,System.String[])">
+            <inheritdoc />
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Option" /> class with the specified identifying names and
+                specifies whether the names are case sensitive.
+            </summary>
+            <param name="caseSensitive">Indicates whether the specified <paramref name="names" /> are case sensitive.</param>
+            <param name="names">One or more unique names to identify the option.</param>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Option.Usage">
             <summary>
@@ -446,7 +566,7 @@
         <member name="T:ConsoleFx.CmdLineParser.Options">
             <summary>
                 Represents a collection of options. Note: This is not a keyed collection because the key
-                can be either the name or short name.
+                can be one of many names.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineParser.OptionParameterRequirement">
@@ -701,7 +821,7 @@
         </member>
         <member name="T:ConsoleFx.CmdLineParser.ParserStyle">
             <summary>
-            Base class that validates the rules for argument grouping.
+                Base class that validates the rules for argument grouping.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.ParserStyle.GetGrouping(ConsoleFx.CmdLineParser.ArgGrouping,System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineParser.Option},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineParser.Argument})">
