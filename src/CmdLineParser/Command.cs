@@ -24,61 +24,105 @@ using System.Diagnostics;
 namespace ConsoleFx.CmdLineParser
 {
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
-    public sealed class Command : Arg
+    public class Command : Arg
     {
+        private Arguments _arguments;
+        private Options _options;
+        private Commands _commands;
+
+        /// <inheritdoc />
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Command"/> class.
-        ///     <para/>
+        ///     Initializes a new instance of the <see cref="Command" /> class.
+        ///     <para />
         ///     This constructor is used internally to create root commands.
         /// </summary>
         internal Command()
         {
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Command"/> class.
-        /// </summary>
-        /// <param name="name">Name of the command.</param>
-        /// <param name="caseSensitive">Indicates whether the command name is case sensitive.</param>
-        /// <exception cref="T:System.ArgumentNullException">Thrown if the command name is null.</exception>
-        /// <exception cref="T:System.ArgumentException">Thrown if the command name is not valid.</exception>
-        public Command(string name, bool caseSensitive = false)
-            : base(new Dictionary<string, bool> { [name] = caseSensitive })
+        public Command(params string[] names)
         {
-            if (!NamePattern.IsMatch(name))
-            {
-                throw new ArgumentException(
-                    $"'{name}' is not a valid command name. Command names should only consist of alphanumeric characters.",
-                    nameof(name));
-            }
-
-            NameComparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            foreach (string name in names)
+                AddName(name);
         }
 
-        /// <summary>
-        ///     Gets a value indicating whether command name is case-sensitive.
-        /// </summary>
-        public bool CaseSensitive => NameComparison == StringComparison.Ordinal;
-
-        /// <summary>
-        ///     Gets the <see cref="StringComparison" /> value used for comparing the command name.
-        /// </summary>
-        internal StringComparison NameComparison { get; }
+        public Command(bool caseSensitive, params string[] names)
+        {
+            foreach (string name in names)
+                AddName(name, caseSensitive);
+        }
 
         /// <summary>
         ///     Gets the collection of <see cref="Argument" /> objects for this command.
         /// </summary>
-        public Arguments Arguments { get; } = new Arguments();
+        public Arguments Arguments
+        {
+            get
+            {
+                if (_arguments == null)
+                {
+                    _arguments = new Arguments();
+                    IEnumerable<Argument> arguments = GetArguments();
+                    foreach (Argument argument in arguments)
+                        _arguments.Add(argument);
+                }
+
+                return _arguments;
+            }
+        }
+
+        protected virtual IEnumerable<Argument> GetArguments()
+        {
+            yield break;
+        }
 
         /// <summary>
         ///     Gets the collection of <see cref="Option" /> objects for this command.
         /// </summary>
-        public Options Options { get; } = new Options();
+        public Options Options
+        {
+            get
+            {
+                if (_options == null)
+                {
+                    _options = new Options();
+                    IEnumerable<Option> options = GetOptions();
+                    foreach (Option option in options)
+                        _options.Add(option);
+                }
+
+                return _options;
+            }
+        }
+
+        protected virtual IEnumerable<Option> GetOptions()
+        {
+            yield break;
+        }
 
         /// <summary>
         ///     Gets the collection of <see cref="Command" /> sub-command objects for this command.
         /// </summary>
-        public Commands Commands { get; } = new Commands();
+        public Commands Commands
+        {
+            get
+            {
+                if (_commands == null)
+                {
+                    _commands = new Commands();
+                    IEnumerable<Command> commands = GetCommands();
+                    foreach (Command command in commands)
+                        _commands.Add(command);
+                }
+
+                return _commands;
+            }
+        }
+
+        protected virtual IEnumerable<Command> GetCommands()
+        {
+            yield break;
+        }
     }
 
     /// <summary>
@@ -91,9 +135,6 @@ namespace ConsoleFx.CmdLineParser
     /// </summary>
     public sealed class Commands : Args<Command>
     {
-        protected override bool NamesMatch(string name, Command obj) =>
-            obj.Name.Equals(name, obj.NameComparison);
-
         protected override string GetDuplicateErrorMessage(string name) =>
             $"Command named '{name}' already exists in the command collection.";
     }

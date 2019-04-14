@@ -39,7 +39,7 @@ namespace ConsoleFx.CmdLineParser
     public abstract class Arg
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Dictionary<string, bool> _names;
+        private readonly Dictionary<string, bool> _names = new Dictionary<string, bool>();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Dictionary<string, object> _metadata;
@@ -49,7 +49,6 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         protected Arg()
         {
-            _names = new Dictionary<string, bool>();
         }
 
         /// <summary>

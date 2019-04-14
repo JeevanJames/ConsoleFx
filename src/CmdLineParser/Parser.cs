@@ -58,13 +58,16 @@ namespace ConsoleFx.CmdLineParser
 
         public Commands Commands => RootCommand.Commands;
 
+        public ParseResult Parse(IEnumerable<string> tokens) =>
+            Parse(tokens.ToArray());
+
         /// <summary>
         ///     Parses the given set of tokens based on the rules specified by the <see cref="Arguments" />, <see cref="Options" />
         ///     and <see cref="Commands" /> properties.
         /// </summary>
         /// <param name="tokens">Token strings to parse.</param>
         /// <returns>A <see cref="ParseResult" /> instance.</returns>
-        public ParseResult Parse(IEnumerable<string> tokens)
+        public ParseResult Parse(params string[] tokens)
         {
             IReadOnlyList<string> tokenList = tokens.ToList();
 

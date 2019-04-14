@@ -29,7 +29,7 @@ namespace ConsoleFx.CmdLineParser
     /// <summary>
     ///     Represents an options arg.
     /// </summary>
-    [DebuggerDisplay("Option: {Name}")]
+    [DebuggerDisplay("Option: {" + nameof(Name) + "}")]
     public sealed class Option : Arg
     {
         /// <inheritdoc />

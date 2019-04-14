@@ -228,29 +228,11 @@
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Command.#ctor">
+            <inheritdoc />
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Command"/> class.
-                <para/>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Command" /> class.
+                <para />
                 This constructor is used internally to create root commands.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLineParser.Command.#ctor(System.String,System.Boolean)">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineParser.Command"/> class.
-            </summary>
-            <param name="name">Name of the command.</param>
-            <param name="caseSensitive">Indicates whether the command name is case sensitive.</param>
-            <exception cref="T:System.ArgumentNullException">Thrown if the command name is null.</exception>
-            <exception cref="T:System.ArgumentException">Thrown if the command name is not valid.</exception>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.Command.CaseSensitive">
-            <summary>
-                Gets a value indicating whether command name is case-sensitive.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.Command.NameComparison">
-            <summary>
-                Gets the <see cref="T:System.StringComparison" /> value used for comparing the command name.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Command.Arguments">
@@ -764,7 +746,7 @@
                 Gets the implicit <see cref="T:ConsoleFx.CmdLineParser.Command" /> instance that is the root of all commands and args.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Parser.Parse(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:ConsoleFx.CmdLineParser.Parser.Parse(System.String[])">
             <summary>
                 Parses the given set of tokens based on the rules specified by the <see cref="P:ConsoleFx.CmdLineParser.Parser.Arguments" />, <see cref="P:ConsoleFx.CmdLineParser.Parser.Options" />
                 and <see cref="P:ConsoleFx.CmdLineParser.Parser.Commands" /> properties.
