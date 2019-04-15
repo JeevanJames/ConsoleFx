@@ -139,14 +139,22 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Gets the maximum allowed number of parameters for the option.
+        ///     Gets or sets the maximum allowed number of parameters for the option.
         /// </summary>
-        public int MaxParameters => _maxParameters;
+        public int MaxParameters
+        {
+            get => _maxParameters;
+            set => _maxParameters = value; //TODO: Validate value
+        }
 
         /// <summary>
-        ///     Gets the minimum allowed number of parameters for the option.
+        ///     Gets or sets the minimum allowed number of parameters for the option.
         /// </summary>
-        public int MinParameters => _minParameters;
+        public int MinParameters
+        {
+            get => _minParameters;
+            set => _minParameters = value; //TODO: Validate value
+        }
 
         /// <summary>
         ///     Gets or sets the parameter occurrences based on its requirement.

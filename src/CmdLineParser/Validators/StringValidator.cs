@@ -24,7 +24,7 @@ namespace ConsoleFx.CmdLineParser.Validators
     public sealed class StringValidator : Validator<string>
     {
         public StringValidator(int maxLength)
-            : this(1, maxLength)
+            : this(minLength: 1, maxLength)
         {
         }
 
@@ -59,7 +59,7 @@ namespace ConsoleFx.CmdLineParser.Validators
 
     public static class StringValidatorExtensions
     {
-        public static Argument ValidateAsString(this Argument argument, int minLength, int maxLength,
+        public static Argument ValidateAsString(this Argument argument, int minLength, int maxLength = int.MaxValue,
             string minLengthMessage = null, string maxLengthMessage = null)
         {
             var validator = new StringValidator(minLength, maxLength);
@@ -70,8 +70,8 @@ namespace ConsoleFx.CmdLineParser.Validators
             return argument.ValidateWith(validator);
         }
 
-        public static Option ValidateAsString(this Option option, int minLength, int maxLength, int parameterIndex = -1,
-            string minLengthMessage = null, string maxLengthMessage = null)
+        public static Option ValidateAsString(this Option option, int minLength, int maxLength = int.MaxValue,
+            int parameterIndex = -1, string minLengthMessage = null, string maxLengthMessage = null)
         {
             var validator = new StringValidator(minLength, maxLength);
             if (minLengthMessage != null)

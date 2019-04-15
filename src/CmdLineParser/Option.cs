@@ -249,4 +249,16 @@ namespace ConsoleFx.CmdLineParser
         protected override string GetDuplicateErrorMessage(string name) =>
             string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, name);
     }
+
+    public static class OptionExtensions
+    {
+        public static Option UsedAsUnlimitedOccurrencesAndParameters(this Option option, bool optional = false)
+        {
+            option.Usage.MinOccurrences = optional ? 0 : 1;
+            option.Usage.MaxOccurrences = int.MaxValue;
+            option.Usage.MinParameters = optional ? 0 : 1;
+            option.Usage.MaxParameters = int.MaxValue;
+            return option;
+        }
+    }
 }

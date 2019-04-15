@@ -52,6 +52,7 @@ namespace ConsoleFx.CmdLineParser
         internal List<string> Tokens { get; set; }
     }
 
+    [DebuggerDisplay("{" + nameof(Argument) + "}")]
     internal sealed class ArgumentRun
     {
         internal ArgumentRun(Argument argument)

@@ -686,12 +686,12 @@
         </member>
         <member name="P:ConsoleFx.CmdLineParser.OptionUsage.MaxParameters">
             <summary>
-                Gets the maximum allowed number of parameters for the option.
+                Gets or sets the maximum allowed number of parameters for the option.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.OptionUsage.MinParameters">
             <summary>
-                Gets the minimum allowed number of parameters for the option.
+                Gets or sets the minimum allowed number of parameters for the option.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.OptionUsage.ParameterRequirement">

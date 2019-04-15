@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Validators;
 using ConsoleFx.CmdLineParser.WindowsStyle;
+using ConsoleFx.ConsoleExtensions;
+
+using TestHarness.Commands;
 
 namespace TestHarness
 {
@@ -12,32 +15,31 @@ namespace TestHarness
         private static void Main(string[] args)
         {
             var parser = new Parser(new WindowsParserStyle());
-            parser.Commands.Add(new InstallCommand());
-            ParseResult result = parser.Parse("install", "swagen", "-s=http://myget.com");
-            Console.WriteLine(result);
-        }
-    }
+            parser.Commands.Add(new MultiRepoCommand("clone"));
+            parser.Commands.Add(new MultiRepoCommand("pull"));
+            parser.Commands.Add(new PushCommand());
 
-    public sealed class InstallCommand : Command
-    {
-        /// <inheritdoc />
-        public InstallCommand()
-            : base("install", "i")
-        {
-        }
+            try
+            {
+                ParseResult result = parser.Parse("push", "-include:repo1", "-include:repo2,repo3", "-message:blah");
+                Console.WriteLine(result.Command.Name);
+                Console.WriteLine("Options");
+                foreach (KeyValuePair<string, object> option in result.Options)
+                    Console.WriteLine($"    {option.Key} = {option.Value}");
+                Console.WriteLine("Arguments");
+                foreach (string argument in result.Arguments)
+                    Console.WriteLine($"    {argument}");
+            }
+            catch (ParserException ex)
+            {
+                ConsoleEx.PrintLine(new ColorString().Red(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                ConsoleEx.PrintLine(new ColorString().BgDkYellow(ex.Message));
+            }
 
-        /// <inheritdoc />
-        protected override IEnumerable<Argument> GetArguments()
-        {
-            yield return new Argument("packageName");
-        }
-
-        /// <inheritdoc />
-        protected override IEnumerable<Option> GetOptions()
-        {
-            yield return new Option("source", "s")
-                .UsedAsSingleParameter()
-                .ValidateAsUri(UriKind.Absolute);
+            Console.ReadLine();
         }
     }
 }
