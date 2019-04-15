@@ -103,7 +103,14 @@ namespace ConsoleFx.CmdLineParser
             ProcessOptions(run.Options);
             ProcessArguments(specifiedArguments, run.Arguments);
 
-            return CreateParseResult(run);
+            var parseResult = CreateParseResult(run);
+
+            CommandCustomValidator customCommandValidator = parseResult.Command.CustomValidator;
+            string validationError = customCommandValidator?.Invoke(parseResult.Arguments, parseResult.Options);
+            if (validationError != null)
+                throw new ValidationException(validationError, null, null);
+
+            return parseResult;
         }
 
         private ParseRun CreateRun(IReadOnlyList<string> tokens)

@@ -24,5 +24,11 @@ namespace TestHarness
                 .UsedAsUnlimitedOccurrencesAndParameters(optional: true)
                 .ValidateWithRegex(@"^[\w_-]+$");
         }
+
+        /// <inheritdoc />
+        protected override string PerformCustomValidation(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options)
+        {
+            return base.PerformCustomValidation(arguments, options);
+        }
     }
 }

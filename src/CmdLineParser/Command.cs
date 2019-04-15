@@ -26,9 +26,17 @@ namespace ConsoleFx.CmdLineParser
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
     public class Command : Arg
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Arguments _arguments;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Options _options;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Commands _commands;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private CommandCustomValidator _customValidator;
 
         /// <inheritdoc />
         /// <summary>
@@ -123,7 +131,22 @@ namespace ConsoleFx.CmdLineParser
         {
             yield break;
         }
+
+        public CommandCustomValidator CustomValidator
+        {
+            get => _customValidator ?? PerformCustomValidation;
+            set => _customValidator = value;
+        }
+
+        protected virtual string PerformCustomValidation(IReadOnlyList<string> arguments,
+            IReadOnlyDictionary<string, object> options)
+        {
+            return null;
+        }
     }
+
+    public delegate string CommandCustomValidator(IReadOnlyList<string> arguments,
+        IReadOnlyDictionary<string, object> options);
 
     /// <summary>
     ///     <para>Collection of <see cref="Command" /> objects.</para>

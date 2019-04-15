@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
 
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Validators;
@@ -18,7 +16,7 @@ namespace TestHarness.Commands
         /// <inheritdoc />
         protected override IEnumerable<Option> GetOptions()
         {
-            foreach (Option option in base.GetOptions())
+            foreach (var option in base.GetOptions())
                 yield return option;
 
             yield return new Option("message", "m")
