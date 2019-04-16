@@ -326,6 +326,21 @@
               Looks up a localized string similar to Specify at least one validator..
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLineParser.HelpCommand.#ctor(System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.HelpCommand.#ctor(System.Boolean,System.String[])">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.HelpCommand.GetOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.HelpCommand.HandleCommand(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <inheritdoc />
+        </member>
         <member name="T:ConsoleFx.CmdLineParser.Messages">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -509,22 +524,6 @@
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLineParser.Option"/>.</returns>
             <exception cref="T:System.ArgumentNullException">Thrown if the specified delegate is null.</exception>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Option.UsedAsFlag(System.Boolean)">
-            <summary>
-                Specifies that the option is to be used as a flag. If the option is specified, then
-                its value is <c>true</c>, otherwise it is <c>false</c>.
-            </summary>
-            <param name="optional">Indicates whether the option can be specified.</param>
-            <returns>The instance of the <see cref="T:ConsoleFx.CmdLineParser.Option"/>.</returns>
-        </member>
-        <member name="M:ConsoleFx.CmdLineParser.Option.UsedAsSingleParameter(System.Boolean)">
-            <summary>
-                Specifies that the option is to have only a single parameter. This means that not more
-                than one occurence of the option and only one parameter for the option.
-            </summary>
-            <param name="optional">If <c>true</c>, then the option does not need to be specified.</param>
-            <returns>The instance of the <see cref="T:ConsoleFx.CmdLineParser.Option"/>.</returns>
-        </member>
         <member name="M:ConsoleFx.CmdLineParser.Option.ValidateWith(ConsoleFx.CmdLineParser.Validators.Validator[])">
             <summary>
             Specifies one or more validators that will be used to validate the option's parameter values.
@@ -550,6 +549,24 @@
                 Represents a collection of options. Note: This is not a keyed collection because the key
                 can be one of many names.
             </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.OptionExtensions.UsedAsFlag(ConsoleFx.CmdLineParser.Option,System.Boolean)">
+            <summary>
+                Specifies that the option is to be used as a flag. If the option is specified, then
+                its value is <c>true</c>, otherwise it is <c>false</c>.
+            </summary>
+            <param name="option">The <see cref="T:ConsoleFx.CmdLineParser.Option"/> instance.</param>
+            <param name="optional">Indicates whether the option can be specified.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLineParser.Option"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.OptionExtensions.UsedAsSingleParameter(ConsoleFx.CmdLineParser.Option,System.Boolean)">
+            <summary>
+                Specifies that the option is to have only a single parameter. This means that not more
+                than one occurence of the option and only one parameter for the option.
+            </summary>
+            <param name="option">The <see cref="T:ConsoleFx.CmdLineParser.Option"/> instance.</param>
+            <param name="optional">If <c>true</c>, then the option does not need to be specified.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLineParser.Option"/>.</returns>
         </member>
         <member name="T:ConsoleFx.CmdLineParser.OptionParameterRequirement">
             <summary>

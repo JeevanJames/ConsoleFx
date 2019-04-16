@@ -17,7 +17,6 @@ limitations under the License.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -37,6 +36,9 @@ namespace ConsoleFx.CmdLineParser
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CommandCustomValidator _customValidator;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private CommandHandler _handler;
 
         /// <inheritdoc />
         /// <summary>
@@ -143,10 +145,24 @@ namespace ConsoleFx.CmdLineParser
         {
             return null;
         }
+
+        public CommandHandler Handler
+        {
+            get => _handler ?? HandleCommand;
+            set => _handler = value;
+        }
+
+        protected virtual int HandleCommand(IReadOnlyList<string> arguments,
+            IReadOnlyDictionary<string, object> options)
+        {
+            return 0;
+        }
     }
 
     public delegate string CommandCustomValidator(IReadOnlyList<string> arguments,
         IReadOnlyDictionary<string, object> options);
+
+    public delegate int CommandHandler(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options);
 
     /// <summary>
     ///     <para>Collection of <see cref="Command" /> objects.</para>
