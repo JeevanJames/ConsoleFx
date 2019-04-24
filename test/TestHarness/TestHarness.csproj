@@ -9,6 +9,7 @@
     <ProjectReference Include="..\..\src\CmdLineParser.WindowsStyle\CmdLineParser.WindowsStyle.csproj" />
     <ProjectReference Include="..\..\src\CmdLineParser\CmdLineParser.csproj" />
     <ProjectReference Include="..\..\src\ConsoleExtensions\ConsoleExtensions.csproj" />
+    <ProjectReference Include="..\..\src\Prompter\Prompter.csproj" />
   </ItemGroup>
 
 </Project>

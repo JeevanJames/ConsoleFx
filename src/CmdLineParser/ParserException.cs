@@ -51,7 +51,6 @@ namespace ConsoleFx.CmdLineParser
 
         public static class Codes
         {
-            public const int ValidationFailed = PublicErrorCodeBase + 1;
             public const int InvalidOptionSpecified = PublicErrorCodeBase + 2;
             public const int InvalidOptionParametersSpecified = PublicErrorCodeBase + 3;
             public const int RequiredOptionAbsent = PublicErrorCodeBase + 4;

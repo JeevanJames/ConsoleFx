@@ -7,6 +7,7 @@ using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Validators;
 using ConsoleFx.CmdLineParser.WindowsStyle;
 using ConsoleFx.ConsoleExtensions;
+using ConsoleFx.Prompter;
 
 using TestHarness.Commands;
 
@@ -21,9 +22,14 @@ namespace TestHarness
             parser.Commands.Add(new MultiRepoCommand("pull"));
             parser.Commands.Add(new PushCommand());
 
+            var prompter = new Prompter();
+            prompter.List("ArgsSource", "What should be the source of the CLI args?",
+                new[] { "Main method args parameter", "Args in code" });
+            dynamic answers = prompter.Ask();
+
             try
             {
-                ParseResult result = parser.Parse("commit", "-help");
+                ParseResult result = parser.Parse(answers.ArgsSource == 0 ? args : new [] {"commit", "/help"});
                 Console.WriteLine(result.Command.Name);
                 Console.WriteLine("Options");
                 foreach (KeyValuePair<string, object> option in result.Options)
