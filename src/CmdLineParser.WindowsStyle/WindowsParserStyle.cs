@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using ConsoleFx.CmdLineArgs;
+
 namespace ConsoleFx.CmdLineParser.WindowsStyle
 {
     public sealed class WindowsParserStyle : ParserStyle

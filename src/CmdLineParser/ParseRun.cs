@@ -20,6 +20,8 @@ limitations under the License.
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using ConsoleFx.CmdLineArgs;
+
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>
@@ -31,8 +33,8 @@ namespace ConsoleFx.CmdLineParser
         /// <summary>
         ///     Gets all specified commands.
         ///     <para/>
-        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we want to avoid the
-        ///     duplicate checks, as commands at different levels can have the same name.
+        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we
+        ///     want to avoid the duplicate checks, as commands at different levels can have the same name.
         /// </summary>
         internal List<Command> Commands { get; } = new List<Command>();
 

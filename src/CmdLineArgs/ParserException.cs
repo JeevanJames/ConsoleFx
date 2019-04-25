@@ -20,30 +20,48 @@ limitations under the License.
 using System;
 using System.Runtime.Serialization;
 
-namespace ConsoleFx.CmdLineParser
+namespace ConsoleFx.CmdLineArgs
 {
     [Serializable]
     public class ParserException : Exception
     {
         /// <summary>
         ///     Gets the type of error that occurred so further logic can be applied to handling it.
+        ///     <para/>
         ///     A positive error code denotes a functional error.
+        ///     <para/>
         ///     A negative error code denotes an internal error code, which typically means a bug in the application or framework.
         /// </summary>
         public int ErrorCode { get; }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ParserException"/> class with an error code and message.
+        /// </summary>
+        /// <param name="errorCode">A machine readable code for the specific error that occurred.</param>
+        /// <param name="message">The error message</param>
         public ParserException(int errorCode, string message)
             : base(message)
         {
             ErrorCode = errorCode;
         }
 
-        protected ParserException(int errorCode, string message, Exception innerException)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ParserException"/> class with an error code and message.
+        /// </summary>
+        /// <param name="errorCode">A machine readable code for the specific error that occurred.</param>
+        /// <param name="message">The error message.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception.</param>
+        public ParserException(int errorCode, string message, Exception innerException)
             : base(message, innerException)
         {
             ErrorCode = errorCode;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ParserException"/> class with serialized data.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
         protected ParserException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

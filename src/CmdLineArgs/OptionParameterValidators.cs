@@ -113,7 +113,7 @@ namespace ConsoleFx.CmdLineArgs
         ///     all parameters.
         /// </param>
         /// <returns>The validators for the parameters at the specified index.</returns>
-        internal IEnumerable<Validator> GetValidators(int parameterIndex)
+        public IEnumerable<Validator> GetValidators(int parameterIndex)
         {
             _validators.TryGetValue(-1, out ValidatorCollection commonValidators);
 

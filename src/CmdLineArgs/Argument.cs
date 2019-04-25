@@ -37,7 +37,6 @@ namespace ConsoleFx.CmdLineArgs
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ValidatorCollection _validators;
 
-        /// <inheritdoc />
         /// <summary>
         ///     Initializes a new instance of the <see cref="Argument" /> class.
         /// </summary>

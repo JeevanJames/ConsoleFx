@@ -62,6 +62,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleExtensions\ConsoleExtensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Errors.Designer.cs">
       <DependentUpon>Errors.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -86,7 +90,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Messages.resx">
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Validators\Messages.resx">
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>

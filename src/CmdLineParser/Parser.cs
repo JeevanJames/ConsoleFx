@@ -23,8 +23,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
+using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineArgs.Validators;
+using ConsoleFx.CmdLineArgs.Validators.Bases;
 using ConsoleFx.CmdLineParser.Config;
-using ConsoleFx.CmdLineParser.Validators;
 
 namespace ConsoleFx.CmdLineParser
 {

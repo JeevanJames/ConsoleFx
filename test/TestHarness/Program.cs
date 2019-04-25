@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineParser;
-using ConsoleFx.CmdLineParser.Validators;
 using ConsoleFx.CmdLineParser.WindowsStyle;
 using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Prompter;

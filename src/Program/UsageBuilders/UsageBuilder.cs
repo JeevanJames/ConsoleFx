@@ -22,7 +22,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace ConsoleFx.CmdLineParser.Programs.UsageBuilders
+using ConsoleFx.CmdLineParser;
+
+namespace ConsoleFx.Program.UsageBuilders
 {
     public abstract class UsageBuilder
     {

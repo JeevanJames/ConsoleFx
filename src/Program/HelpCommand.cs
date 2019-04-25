@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using ConsoleFx.CmdLineArgs;
 using ConsoleFx.ConsoleExtensions;
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.Program
 {
     public class HelpCommand : Command
     {

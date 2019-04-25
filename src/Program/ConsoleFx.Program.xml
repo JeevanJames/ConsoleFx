@@ -4,5 +4,88 @@
         <name>ConsoleFx.Program</name>
     </assembly>
     <members>
+        <member name="T:ConsoleFx.Program.CommandBuilder">
+            <summary>
+                Helper class that is useful for creating <see cref="T:ConsoleFx.CmdLineArgs.Command" /> objects using inheritance semantics.
+                Simply override the necessary members and then convert to a <see cref="T:ConsoleFx.CmdLineArgs.Command" /> object using the
+                <see cref="M:ConsoleFx.Program.CommandBuilder.ToCommand" /> method or using an implicit cast.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Program.CommandBuilder.Name">
+            <summary>
+                Gets name of the command.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Program.CommandBuilder.Description">
+            <summary>
+                Gets optional description of the command. Useful for usage builders.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.Program.CommandBuilder.GetArguments">
+            <summary>
+                Override this method to return the arguments available to this command.
+                Remember that optional arguments must be after required arguments.
+            </summary>
+            <returns>The arguments available to this command.</returns>
+        </member>
+        <member name="M:ConsoleFx.Program.CommandBuilder.GetOptions">
+            <summary>
+                Override this method to return the options available to this command.
+            </summary>
+            <returns>The options available to this command.</returns>
+        </member>
+        <member name="M:ConsoleFx.Program.CommandBuilder.GetCommands">
+            <summary>
+                Override this method to return the sub-commands available to this command.
+            </summary>
+            <returns>The sub-commands available to this command.</returns>
+        </member>
+        <member name="M:ConsoleFx.Program.CommandBuilder.ToCommand">
+            <summary>
+                Creates a <see cref="T:ConsoleFx.CmdLineArgs.Command" /> instance from this command builder.
+            </summary>
+            <returns>A <see cref="T:ConsoleFx.CmdLineArgs.Command" /> instance.</returns>
+        </member>
+        <member name="M:ConsoleFx.Program.CommandBuilder.op_Implicit(ConsoleFx.Program.CommandBuilder)~ConsoleFx.CmdLineArgs.Command">
+            <summary>
+                Implicit cast operator to convert a <see cref="T:ConsoleFx.Program.CommandBuilder" /> instance to a <see cref="T:ConsoleFx.CmdLineArgs.Command" /> instance.
+                This means that you can pass a <see cref="T:ConsoleFx.Program.CommandBuilder" /> instance to any method that expects a
+                <see cref="T:ConsoleFx.CmdLineArgs.Command" /> instance; for example when adding sub-commands to a <see cref="T:ConsoleFx.CmdLineArgs.Command" /> object.
+                For languages that do not support implicit cast operators, use the <see cref="M:ConsoleFx.Program.CommandBuilder.ToCommand" /> method.
+            </summary>
+            <param name="builder">The <see cref="T:ConsoleFx.Program.CommandBuilder"/> instance.</param>
+        </member>
+        <member name="M:ConsoleFx.Program.HelpCommand.GetOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Program.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Program.HelpCommand.HandleCommand(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <inheritdoc />
+        </member>
+        <member name="T:ConsoleFx.Program.Messages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Program.Messages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Program.Messages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Program.Messages.InternalError">
+             <summary>
+               Looks up a localized string similar to An internal error has occurred with the following message:
+                {0}
+            Please contact the developer or your administrator for assistance..
+             </summary>
+        </member>
     </members>
 </doc>

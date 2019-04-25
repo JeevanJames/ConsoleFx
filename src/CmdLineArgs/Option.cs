@@ -33,7 +33,6 @@ namespace ConsoleFx.CmdLineArgs
     [DebuggerDisplay("Option: {" + nameof(Name) + "}")]
     public sealed class Option : Arg
     {
-        /// <inheritdoc />
         /// <summary>
         ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying names.
         /// </summary>
@@ -48,7 +47,6 @@ namespace ConsoleFx.CmdLineArgs
             Validators = new OptionParameterValidators(this);
         }
 
-        /// <inheritdoc />
         /// <summary>
         ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying names and
         ///     specifies whether the names are case sensitive.

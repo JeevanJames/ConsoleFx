@@ -17,7 +17,9 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.CmdLineParser.Programs
+using ConsoleFx.CmdLineArgs;
+
+namespace ConsoleFx.Program
 {
     public static class HelpExtensions
     {

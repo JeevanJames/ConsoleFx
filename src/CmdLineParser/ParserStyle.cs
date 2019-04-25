@@ -21,6 +21,8 @@ limitations under the License.
 
 using System.Collections.Generic;
 
+using ConsoleFx.CmdLineArgs;
+
 namespace ConsoleFx.CmdLineParser
 {
     /// <summary>

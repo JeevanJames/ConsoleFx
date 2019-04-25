@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Programs\Messages.Designer.cs">
+    <Compile Update="Messages.Designer.cs">
       <DependentUpon>Messages.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -55,7 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Programs\Messages.resx">
+    <EmbeddedResource Update="Messages.resx">
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -74,6 +74,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CmdLineArgs\CmdLineArgs.csproj" />
     <ProjectReference Include="..\ConsoleExtensions\ConsoleExtensions.csproj" />
   </ItemGroup>
 

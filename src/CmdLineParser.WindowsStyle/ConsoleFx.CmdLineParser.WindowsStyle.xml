@@ -4,7 +4,7 @@
         <name>ConsoleFx.CmdLineParser.WindowsStyle</name>
     </assembly>
     <members>
-        <member name="M:ConsoleFx.CmdLineParser.WindowsStyle.WindowsParserStyle.VerifyCommandLineGrouping(ConsoleFx.CmdLineParser.WindowsStyle.WindowsParserStyle.ArgumentType,ConsoleFx.CmdLineParser.WindowsStyle.WindowsParserStyle.ArgumentType,ConsoleFx.CmdLineParser.ArgGrouping)">
+        <member name="M:ConsoleFx.CmdLineParser.WindowsStyle.WindowsParserStyle.VerifyCommandLineGrouping(ConsoleFx.CmdLineParser.WindowsStyle.WindowsParserStyle.ArgumentType,ConsoleFx.CmdLineParser.WindowsStyle.WindowsParserStyle.ArgumentType,ConsoleFx.CmdLineArgs.ArgGrouping)">
             <summary>
                 This method is used by the code that validates the command-line grouping. It is
                 called for every iteration of the arguments.

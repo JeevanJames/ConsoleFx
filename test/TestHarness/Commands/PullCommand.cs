@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineParser;
-using ConsoleFx.CmdLineParser.Validators;
+using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineArgs.Validators;
 
 namespace TestHarness.Commands
 {

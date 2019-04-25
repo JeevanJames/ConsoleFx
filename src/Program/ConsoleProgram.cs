@@ -21,7 +21,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ConsoleFx.CmdLineParser.Programs
+using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineParser;
+
+namespace ConsoleFx.Program
 {
     public abstract class ConsoleProgram
     {

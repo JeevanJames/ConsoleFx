@@ -19,7 +19,9 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-namespace ConsoleFx.CmdLineParser.Programs
+using ConsoleFx.CmdLineArgs;
+
+namespace ConsoleFx.Program
 {
     /// <summary>
     ///     Helper class that is useful for creating <see cref="Command" /> objects using inheritance semantics.
