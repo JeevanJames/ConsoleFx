@@ -1,8 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
-
 /*
 ConsoleFx CLI Library Suite
-Copyright 2015-2018 Jeevan James
+Copyright 2015-2019 Jeevan James
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,7 +15,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 #endregion
 
 using System;
@@ -25,13 +23,16 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineParser.Runs;
 
-namespace ConsoleFx.CmdLineParser.WindowsStyle
+namespace ConsoleFx.CmdLineParser.Style
 {
     public sealed class WindowsParserStyle : ParserStyle
     {
         // -Option or /Option
         private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?][\w-_\?]*)");
+
+        // -Option:Param1,Param2 or /Option:Param1,Param2
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,

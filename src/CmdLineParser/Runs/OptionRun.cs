@@ -1,7 +1,7 @@
 #region --- License & Copyright Notice ---
 /*
 ConsoleFx CLI Library Suite
-Copyright 2015-2018 Jeevan James
+Copyright 2015-2019 Jeevan James
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,51 +22,8 @@ using System.Diagnostics;
 
 using ConsoleFx.CmdLineArgs;
 
-namespace ConsoleFx.CmdLineParser
+namespace ConsoleFx.CmdLineParser.Runs
 {
-    /// <summary>
-    ///     Represents the internal state of a single parse execution. This includes the commands, arguments and options that
-    ///     were specified.
-    /// </summary>
-    internal sealed class ParseRun
-    {
-        /// <summary>
-        ///     Gets all specified commands.
-        ///     <para/>
-        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we
-        ///     want to avoid the duplicate checks, as commands at different levels can have the same name.
-        /// </summary>
-        internal List<Command> Commands { get; } = new List<Command>();
-
-        /// <summary>
-        ///     Gets all allowed arguments and their values.
-        /// </summary>
-        internal List<ArgumentRun> Arguments { get; } = new List<ArgumentRun>();
-
-        /// <summary>
-        ///     Gets all allowed options and details of which are specified.
-        /// </summary>
-        internal List<OptionRun> Options { get; } = new List<OptionRun>();
-
-        /// <summary>
-        ///     Gets or sets all the specified options and argument tokens after accounting for the commands.
-        /// </summary>
-        internal List<string> Tokens { get; set; }
-    }
-
-    [DebuggerDisplay("{" + nameof(Argument) + "}")]
-    internal sealed class ArgumentRun
-    {
-        internal ArgumentRun(Argument argument)
-        {
-            Argument = argument;
-        }
-
-        internal Argument Argument { get; }
-
-        internal string Value { get; set; }
-    }
-
     [DebuggerDisplay("{Command} {Option}")]
     public sealed class OptionRun
     {

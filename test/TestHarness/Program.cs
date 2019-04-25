@@ -5,7 +5,7 @@ using System.Text;
 
 using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineParser;
-using ConsoleFx.CmdLineParser.WindowsStyle;
+using ConsoleFx.CmdLineParser.Style;
 using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Prompter;
 

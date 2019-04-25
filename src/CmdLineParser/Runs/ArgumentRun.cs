@@ -1,4 +1,4 @@
-﻿#region --- License & Copyright Notice ---
+#region --- License & Copyright Notice ---
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -17,11 +17,22 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.Prompter
+using System.Diagnostics;
+
+using ConsoleFx.CmdLineArgs;
+
+namespace ConsoleFx.CmdLineParser.Runs
 {
-    public delegate TResult AnswersFunc<out TResult>(dynamic answers);
+    [DebuggerDisplay("{" + nameof(Argument) + "}")]
+    internal sealed class ArgumentRun
+    {
+        internal ArgumentRun(Argument argument)
+        {
+            Argument = argument;
+        }
 
-    public delegate ValidationResult Validator<in TValue>(TValue value, dynamic answers);
+        internal Argument Argument { get; }
 
-    public delegate object AskerFn(Question question, dynamic answers);
+        internal string Value { get; set; }
+    }
 }

@@ -1,4 +1,21 @@
 <?xml version="1.0"?>
+<!--
+ConsoleFx CLI Library Suite
+Copyright 2015-2019 Jeevan James
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <doc>
     <assembly>
         <name>ConsoleFx.CmdLineParser</name>
@@ -130,15 +147,15 @@
             <param name="tokens">Token strings to parse.</param>
             <returns>A <see cref="T:ConsoleFx.CmdLineParser.ParseResult" /> instance.</returns>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Parser.ResolveOptionParameterValues(ConsoleFx.CmdLineParser.OptionRun)">
+        <member name="M:ConsoleFx.CmdLineParser.Parser.ResolveOptionParameterValues(ConsoleFx.CmdLineParser.Runs.OptionRun)">
             <summary>
                 Resolves an <see cref="T:ConsoleFx.CmdLineArgs.Option" />'s value based on it's usage details. See the comments on the
-                <see cref="P:ConsoleFx.CmdLineParser.OptionRun.ResolvedValue" /> property for details on how the resolution is done.
+                <see cref="P:ConsoleFx.CmdLineParser.Runs.OptionRun.ResolvedValue" /> property for details on how the resolution is done.
             </summary>
-            <param name="optionRun">The <see cref="T:ConsoleFx.CmdLineParser.OptionRun" /> instance, whose option to resolve.</param>
+            <param name="optionRun">The <see cref="T:ConsoleFx.CmdLineParser.Runs.OptionRun" /> instance, whose option to resolve.</param>
             <returns>The value of the option.</returns>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Parser.ProcessArguments(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineParser.ArgumentRun})">
+        <member name="M:ConsoleFx.CmdLineParser.Parser.ProcessArguments(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineParser.Runs.ArgumentRun})">
             <summary>
                 Process the specified arguments by verifying their usage, validating them and executing
                 their handlers.
@@ -170,74 +187,12 @@
             <param name="default">Default value to return if the option is not found.</param>
             <returns>The typed value of the specified option.</returns>
         </member>
-        <member name="T:ConsoleFx.CmdLineParser.ParserStyle">
+        <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Command">
             <summary>
-                Base class that validates the rules for argument grouping.
+            Gets the <see cref="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Command"/> instance to which this option belongs.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.ParserStyle.GetGrouping(ConsoleFx.CmdLineArgs.ArgGrouping,System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Option},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Argument})">
-            <summary>
-                Allows the parser style to override the preferred grouping based on its rules for the specified options and
-                arguments.
-            </summary>
-            <param name="specifiedGrouping">The preferred grouping.</param>
-            <param name="options">The list of allowed options.</param>
-            <param name="arguments">The list of allowed arguments.</param>
-            <returns>The final grouping for the specified options and arguments.</returns>
-        </member>
-        <member name="M:ConsoleFx.CmdLineParser.ParserStyle.ValidateDefinedOptions(System.Collections.Generic.IEnumerable{ConsoleFx.CmdLineArgs.Option})">
-            <summary>
-                <para>Validate that the defined options are compatible with the parser style.</para>
-                <para>An exception should be thrown if any option is invalid.</para>
-                <para>An example of an invalid option is a short name longer than one character for the UNIX style parser.</para>
-            </summary>
-            <param name="options">List of all the defined options.</param>
-        </member>
-        <member name="M:ConsoleFx.CmdLineParser.ParserStyle.IdentifyTokens(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineParser.OptionRun},ConsoleFx.CmdLineArgs.ArgGrouping)">
-            <summary>
-                <para>Identifies all provided tokens as arguments, options and option parameters.</para>
-                <para>Option and argument validators are not checked in this phase. Only the arg grouping is checked.</para>
-            </summary>
-            <param name="tokens">All the specified tokens</param>
-            <param name="options">All available options. If any of the tokens match, add its details to this parameter.</param>
-            <param name="grouping">The expected arg grouping to validate.</param>
-            <returns>A collection of all the identified arguments.</returns>
-        </member>
-        <member name="T:ConsoleFx.CmdLineParser.ParseRun">
-            <summary>
-                Represents the internal state of a single parse execution. This includes the commands, arguments and options that
-                were specified.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.ParseRun.Commands">
-            <summary>
-                Gets all specified commands.
-                <para/>
-                Note: We use a <see cref="T:System.Collections.Generic.List`1" /> instead of the <see cref="P:ConsoleFx.CmdLineParser.ParseRun.Commands"/> collection here, because we
-                want to avoid the duplicate checks, as commands at different levels can have the same name.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.ParseRun.Arguments">
-            <summary>
-                Gets all allowed arguments and their values.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.ParseRun.Options">
-            <summary>
-                Gets all allowed options and details of which are specified.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.ParseRun.Tokens">
-            <summary>
-                Gets or sets all the specified options and argument tokens after accounting for the commands.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.OptionRun.Command">
-            <summary>
-            Gets the <see cref="P:ConsoleFx.CmdLineParser.OptionRun.Command"/> instance to which this option belongs.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.OptionRun.ResolvedValue">
+        <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.ResolvedValue">
             <summary>
                 Gets or sets the final value of the parameters of the option. The actual type depends on how the option is setup.
                 <para/>
@@ -266,6 +221,77 @@
                     </item>
                 </list>
             </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLineParser.Runs.ParseRun">
+            <summary>
+                Represents the internal state of a single parse execution. This includes the commands, arguments and options that
+                were specified.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Commands">
+            <summary>
+                Gets all specified commands.
+                <para/>
+                Note: We use a <see cref="T:System.Collections.Generic.List`1" /> instead of the <see cref="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Commands"/> collection here, because we
+                want to avoid the duplicate checks, as commands at different levels can have the same name.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Arguments">
+            <summary>
+                Gets all allowed arguments and their values.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Options">
+            <summary>
+                Gets all allowed options and details of which are specified.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Tokens">
+            <summary>
+                Gets or sets all the specified options and argument tokens after accounting for the commands.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLineParser.Style.ParserStyle">
+            <summary>
+                Base class that validates the rules for argument grouping.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.Style.ParserStyle.GetGrouping(ConsoleFx.CmdLineArgs.ArgGrouping,System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Option},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Argument})">
+            <summary>
+                Allows the parser style to override the preferred grouping based on its rules for the specified options and
+                arguments.
+            </summary>
+            <param name="specifiedGrouping">The preferred grouping.</param>
+            <param name="options">The list of allowed options.</param>
+            <param name="arguments">The list of allowed arguments.</param>
+            <returns>The final grouping for the specified options and arguments.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.Style.ParserStyle.ValidateDefinedOptions(System.Collections.Generic.IEnumerable{ConsoleFx.CmdLineArgs.Option})">
+            <summary>
+                <para>Validate that the defined options are compatible with the parser style.</para>
+                <para>An exception should be thrown if any option is invalid.</para>
+                <para>An example of an invalid option is a short name longer than one character for the UNIX style parser.</para>
+            </summary>
+            <param name="options">List of all the defined options.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.Style.ParserStyle.IdentifyTokens(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineParser.Runs.OptionRun},ConsoleFx.CmdLineArgs.ArgGrouping)">
+            <summary>
+                <para>Identifies all provided tokens as arguments, options and option parameters.</para>
+                <para>Option and argument validators are not checked in this phase. Only the arg grouping is checked.</para>
+            </summary>
+            <param name="tokens">All the specified tokens</param>
+            <param name="options">All available options. If any of the tokens match, add its details to this parameter.</param>
+            <param name="grouping">The expected arg grouping to validate.</param>
+            <returns>A collection of all the identified arguments.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLineParser.Style.WindowsParserStyle.VerifyCommandLineGrouping(ConsoleFx.CmdLineParser.Style.WindowsParserStyle.ArgumentType,ConsoleFx.CmdLineParser.Style.WindowsParserStyle.ArgumentType,ConsoleFx.CmdLineArgs.ArgGrouping)">
+            <summary>
+                This method is used by the code that validates the command-line grouping. It is
+                called for every iteration of the arguments.
+            </summary>
+            <param name="previousType">The type of the previously-checked argument.</param>
+            <param name="currentType">The type of the currently-checked argument.</param>
+            <param name="grouping">The expected arg grouping.</param>
         </member>
     </members>
 </doc>

@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 ConsoleFx CLI Library Suite
-Copyright 2015-2018 Jeevan James
+Copyright 2015-2019 Jeevan James
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,10 +27,12 @@ using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineArgs.Validators;
 using ConsoleFx.CmdLineArgs.Validators.Bases;
 using ConsoleFx.CmdLineParser.Config;
+using ConsoleFx.CmdLineParser.Runs;
+using ConsoleFx.CmdLineParser.Style;
 
 namespace ConsoleFx.CmdLineParser
 {
-    public class Parser
+    public sealed class Parser
     {
         public Parser(ParserStyle parserStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
