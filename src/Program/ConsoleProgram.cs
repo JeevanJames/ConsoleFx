@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using ConsoleFx.CmdLineArgs;
@@ -27,52 +28,37 @@ using ConsoleFx.CmdLineParser.Style;
 
 namespace ConsoleFx.Program
 {
-    public abstract class ConsoleProgram
+    public class ConsoleProgram : Command
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ParserStyle _parserStyle;
 
-        protected ConsoleProgram(ParserStyle parserStyle)
+        public ConsoleProgram(ParserStyle parserStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
-            if (parserStyle == null)
+            if (parserStyle is null)
                 throw new ArgumentNullException(nameof(parserStyle));
             _parserStyle = parserStyle;
+            Grouping = grouping;
         }
 
-        protected virtual ArgGrouping Grouping => ArgGrouping.DoesNotMatter;
-
-        protected virtual IEnumerable<Command> GetCommands()
-        {
-            yield break;
-        }
-
-        protected virtual IEnumerable<Option> GetOptions()
-        {
-            yield break;
-        }
-
-        protected virtual IEnumerable<Argument> GetArguments()
-        {
-            yield break;
-        }
-
-        protected abstract int Handle(ParseResult result);
+        public ArgGrouping Grouping { get; }
 
         public int Run()
         {
             var parser = new Parser(_parserStyle, Grouping);
-            IEnumerable<Argument> arguments = GetArguments();
+            List<Argument> arguments = Arguments.ToList();
             foreach (Argument argument in arguments)
                 parser.Arguments.Add(argument);
-            IEnumerable<Option> options = GetOptions();
+            Options options = Options;
             foreach (Option option in options)
                 parser.Options.Add(option);
-            IEnumerable<Command> commands = GetCommands();
+            List<Command> commands = Commands.ToList();
             foreach (Command command in commands)
                 parser.Commands.Add(command);
             try
             {
                 ParseResult result = parser.Parse(Environment.GetCommandLineArgs().Skip(1));
-                return Handle(result);
+                return Handler(result.Arguments, result.Options);
             }
             catch (Exception ex)
             {

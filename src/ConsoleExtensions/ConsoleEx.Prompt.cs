@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
@@ -35,8 +37,8 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        /// Accepts user input and validates the input with the specified validator.
-        /// If the input is not valid, the entered text is cleared and user prompted to enter the input again.
+        ///     Accepts user input and validates the input with the specified validator.
+        ///     If the input is not valid, the entered text is cleared and user prompted to enter the input again.
         /// </summary>
         /// <param name="validator">Function to validate the input text</param>
         /// <returns>The input entered by the user</returns>
@@ -51,7 +53,7 @@ namespace ConsoleFx.ConsoleExtensions
             while (!isValid)
             {
                 Console.SetCursorPosition(left, top);
-                Console.Write(new string(' ', input.Length));
+                Console.Write(new string(c: ' ', input.Length));
                 Console.SetCursorPosition(left, top);
                 input = Console.ReadLine();
                 isValid = validator(input);

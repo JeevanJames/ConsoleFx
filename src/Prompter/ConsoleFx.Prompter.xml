@@ -11,18 +11,18 @@
         </member>
         <member name="T:ConsoleFx.Prompter.FunctionOrValue`1">
             <summary>
-            Represents a fixed value or a factory function that can generate the value.
+                Represents a fixed value or a factory function that can generate the value.
             </summary>
             <typeparam name="TValue">The type of the value.</typeparam>
         </member>
         <member name="P:ConsoleFx.Prompter.FunctionOrValue`1.Value">
             <summary>
-            Gets the fixed value.
+                Gets the fixed value.
             </summary>
         </member>
         <member name="P:ConsoleFx.Prompter.FunctionOrValue`1.Function">
             <summary>
-            Gets the factory function to generate the value.
+                Gets the factory function to generate the value.
             </summary>
         </member>
     </members>

@@ -17,29 +17,17 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineArgs.Base;
 
 namespace ConsoleFx.Program
 {
     public static class HelpExtensions
     {
-        public static Command Description(this Command command, string description)
+        public static TArg Description<TArg>(this TArg arg, string description)
+            where TArg : Arg
         {
-            command["Description"] = description;
-            return command;
-        }
-
-        public static Option Description(this Option option, string description)
-        {
-            option["Description"] = description;
-            return option;
-        }
-
-        public static Argument Description(this Argument argument, string name, string description)
-        {
-            argument["Name"] = name;
-            argument["Description"] = description;
-            return argument;
+            arg["Description"] = description;
+            return arg;
         }
     }
 }

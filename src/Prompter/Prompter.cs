@@ -43,7 +43,7 @@ namespace ConsoleFx.Prompter
 
             foreach (Question question in Questions)
             {
-                object answer = null;
+                object answer;
 
                 if (!question.CanAsk(answers))
                 {
@@ -59,7 +59,7 @@ namespace ConsoleFx.Prompter
                     continue;
                 }
 
-                bool validAnswer = false;
+                bool validAnswer;
                 do
                 {
                     object input = question.AskerFn(question, answers);

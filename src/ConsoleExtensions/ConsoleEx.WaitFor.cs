@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
@@ -52,9 +54,7 @@ namespace ConsoleFx.ConsoleExtensions
         {
             char key;
             do
-            {
                 key = Console.ReadKey(intercept: true).KeyChar;
-            }
             while (Array.IndexOf(keys, key) < 0);
             return key;
         }
@@ -67,7 +67,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>The character pressed by the user</returns>
         public static char WaitForKeys(bool ignoreCase, params char[] keys)
         {
-            char[] casedKeys = ignoreCase ? keys.Select(k => char.ToUpperInvariant(k)).ToArray() : keys;
+            char[] casedKeys = ignoreCase ? keys.Select(char.ToUpperInvariant).ToArray() : keys;
             int keyIndex;
             do
             {
@@ -88,16 +88,17 @@ namespace ConsoleFx.ConsoleExtensions
         {
             ConsoleKey key;
             do
-            {
-                key = Console.ReadKey(true).Key;
-            }
+                key = Console.ReadKey(intercept: true).Key;
             while (Array.IndexOf(keys, key) < 0);
             return key;
         }
 
         /// <summary>
-        /// <para>Repeatedly prompts the user for a key press, until any of the specified escape keys are pressed.</para>
-        /// <para>If the pressed key if available in the specified handlers, the corresponding handler is called. If not, it is ignored and the loop continues.</para>
+        ///     <para>Repeatedly prompts the user for a key press, until any of the specified escape keys are pressed.</para>
+        ///     <para>
+        ///         If the pressed key if available in the specified handlers, the corresponding handler is called. If not, it is
+        ///         ignored and the loop continues.
+        ///     </para>
         /// </summary>
         /// <param name="handlers">Collection of keys to handle and their handlers.</param>
         /// <param name="postKeyPress">Optional action to run after any key press, not counting the ignored keys and escape keys.</param>
@@ -107,7 +108,10 @@ namespace ConsoleFx.ConsoleExtensions
         {
             if (handlers == null)
                 throw new ArgumentNullException(nameof(handlers));
-            if (!handlers.Any())
+
+            List<KeyHandler> handlersList = handlers.ToList();
+
+            if (handlersList.Count == 0)
                 throw new ArgumentException("Specify at least one handler.", nameof(handlers));
 
             // If the escapeKeys parameter is not specified, default it to the Escape key.
@@ -115,44 +119,48 @@ namespace ConsoleFx.ConsoleExtensions
                 escapeKeys = new[] { ConsoleKey.Escape };
 
             // Ensure that none of the escape keys are specified in the handlers.
-            if (handlers.Any(h => escapeKeys.Any(k => k == h.Key)))
-                throw new ArgumentException("Specified escape keys should not be specified in the handlers.", nameof(escapeKeys));
-
-            ConsoleKey key = Console.ReadKey(true).Key;
-            while (!escapeKeys.Any(k => k == key))
+            if (handlersList.Any(h => escapeKeys.Any(k => k == h.Key)))
             {
-                KeyHandler handler = handlers.FirstOrDefault(h => h.Key == key);
+                throw new ArgumentException("Specified escape keys should not be specified in the handlers.",
+                    nameof(escapeKeys));
+            }
+
+            List<ConsoleKey> escapeKeysList = escapeKeys.ToList();
+            ConsoleKey key = Console.ReadKey(intercept: true).Key;
+            while (!escapeKeysList.Any(k => k == key))
+            {
+                KeyHandler handler = handlersList.FirstOrDefault(h => h.Key == key);
                 if (handler != null)
                 {
                     handler.Action?.Invoke(key);
                     postKeyPress?.Invoke(key);
                 }
 
-                key = Console.ReadKey(true).Key;
+                key = Console.ReadKey(intercept: true).Key;
             }
         }
     }
 
     /// <summary>
-    /// Represents a handler for a key press in the <see cref="ConsoleEx.WaitForKeysLoop"/> method.
+    ///     Represents a handler for a key press in the <see cref="ConsoleEx.WaitForKeysLoop" /> method.
     /// </summary>
     public sealed class KeyHandler
     {
         public KeyHandler(ConsoleKey key, Action<ConsoleKey> action)
         {
-            if (action == null)
+            if (action is null)
                 throw new ArgumentNullException(nameof(action));
             Key = key;
             Action = action;
         }
 
         /// <summary>
-        /// Gets the key to handle.
+        ///     Gets the key to handle.
         /// </summary>
         public ConsoleKey Key { get; }
 
         /// <summary>
-        /// Gets the handler to call when the key is pressed.
+        ///     Gets the handler to call when the key is pressed.
         /// </summary>
         public Action<ConsoleKey> Action { get; }
     }
@@ -160,13 +168,15 @@ namespace ConsoleFx.ConsoleExtensions
     public static class ConsoleKeyExtensions
     {
         /// <summary>
-        /// Provides a fluid way to create a <see cref="KeyHandler"/> instance when using the
-        /// <see cref="ConsoleEx.WaitForKeysLoop"/> method.
+        ///     Provides a fluid way to create a <see cref="KeyHandler" /> instance when using the
+        ///     <see cref="ConsoleEx.WaitForKeysLoop" /> method.
         /// </summary>
         /// <param name="key">The key to handle.</param>
         /// <param name="action">The handler to call when the key is pressed.</param>
-        /// <returns>An instance of the <see cref="KeyHandler"/> class.</returns>
-        public static KeyHandler HandledBy(this ConsoleKey key, Action<ConsoleKey> action) =>
-            new KeyHandler(key, action);
+        /// <returns>An instance of the <see cref="KeyHandler" /> class.</returns>
+        public static KeyHandler HandledBy(this ConsoleKey key, Action<ConsoleKey> action)
+        {
+            return new KeyHandler(key, action);
+        }
     }
 }

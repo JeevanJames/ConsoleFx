@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
@@ -25,12 +27,12 @@ namespace ConsoleFx.ConsoleExtensions
     public static partial class ConsoleEx
     {
         /// <summary>
-        /// Writes a <see cref="ColorString"/> object to the console.
+        ///     Writes a <see cref="ColorString" /> object to the console.
         /// </summary>
-        /// <param name="message">The <see cref="ColorString"/> object to write.</param>
+        /// <param name="message">The <see cref="ColorString" /> object to write.</param>
         public static void Print(ColorString message)
         {
-            foreach (ColorStringBlock block in message)
+            foreach (var block in message)
             {
                 if (block.ForeColor.HasValue)
                     Console.ForegroundColor = ColorMappings[block.ForeColor.Value];
@@ -43,12 +45,12 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        /// Writes one or more <see cref="ColorString"/> objects to the console.
+        ///     Writes one or more <see cref="ColorString" /> objects to the console.
         /// </summary>
-        /// <param name="messages">The <see cref="ColorString"/> objects to write.</param>
+        /// <param name="messages">The <see cref="ColorString" /> objects to write.</param>
         public static void PrintLine(params ColorString[] messages)
         {
-            foreach (ColorString message in messages)
+            foreach (var message in messages)
             {
                 Print(message);
                 Console.WriteLine();
@@ -57,13 +59,13 @@ namespace ConsoleFx.ConsoleExtensions
 
         /// <summary>
         ///     Writes one or more blank lines to the Console.
-        ///     <para/>
+        ///     <para />
         ///     Just a more descriptive way to do a <code>Console.WriteLine()</code>.
         /// </summary>
         /// <param name="count">The number of blank lines to write.</param>
         public static void PrintBlank(int count = 1)
         {
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
                 Console.WriteLine();
         }
 
@@ -75,7 +77,7 @@ namespace ConsoleFx.ConsoleExtensions
         public static void PrintIndented(int indent, params string[] lines)
         {
             foreach (string line in lines)
-                PrintIndented(line, indent, true);
+                PrintIndented(line, indent, indentFirstLine: true);
         }
 
         /// <summary>
@@ -92,7 +94,7 @@ namespace ConsoleFx.ConsoleExtensions
             if (text == null)
                 throw new ArgumentNullException(nameof(text));
 
-            var indentStr = new string(' ', indent);
+            var indentStr = new string(c: ' ', indent);
             int lineWidth = Console.WindowWidth - indent - 1;
 
             var startPos = 0;
@@ -125,7 +127,6 @@ namespace ConsoleFx.ConsoleExtensions
             [CColor.Red] = ConsoleColor.Red,
             [CColor.White] = ConsoleColor.White,
             [CColor.Yellow] = ConsoleColor.Yellow,
-
             [CColor.BgBlack] = ConsoleColor.Black,
             [CColor.BgBlue] = ConsoleColor.Blue,
             [CColor.BgCyan] = ConsoleColor.Cyan,
@@ -141,7 +142,7 @@ namespace ConsoleFx.ConsoleExtensions
             [CColor.BgMagenta] = ConsoleColor.Magenta,
             [CColor.BgRed] = ConsoleColor.Red,
             [CColor.BgWhite] = ConsoleColor.White,
-            [CColor.BgYellow] = ConsoleColor.Yellow,
+            [CColor.BgYellow] = ConsoleColor.Yellow
         };
     }
 }

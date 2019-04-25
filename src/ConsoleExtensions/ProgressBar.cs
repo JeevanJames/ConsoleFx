@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -15,21 +16,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace ConsoleFx.ConsoleExtensions
 {
     /// <summary>
-    /// Represents a console progress bar.
+    ///     Represents a console progress bar.
     /// </summary>
     public sealed class ProgressBar
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProgressBar"/> class.
+        ///     Initializes a new instance of the <see cref="ProgressBar" /> class.
         /// </summary>
         /// <param name="value">The starting value of the progress bar. Defaults to the minimum value.</param>
         /// <param name="minValue">The minimum value of the progress bar.</param>

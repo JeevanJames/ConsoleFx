@@ -6,54 +6,57 @@
     <members>
         <member name="T:ConsoleFx.ConsoleExtensions.ColorString">
             <summary>
-            Represents a string that includes color information.
+                Represents a string that includes color information.
             </summary>
             <remarks>
-            Internally, this class maintains a collection of text blocks, each with color information.
+                Internally, this class maintains a collection of text blocks, each with color information.
             </remarks>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.Text(System.String,System.Nullable{ConsoleFx.ConsoleExtensions.CColor},System.Nullable{ConsoleFx.ConsoleExtensions.CColor})">
             <summary>
-            <para>Adds the text to the color string with the specified foreground and background colors.</para>
-            <para>The colors are optional and if not specified, they retain whatever values they were before.</para>
-            <para>Unless you want to dynamically specify the colors, prefer using the color-specified methods like <see cref="M:ConsoleFx.ConsoleExtensions.ColorString.Red(System.String)"/>.</para>
+                <para>Adds the text to the color string with the specified foreground and background colors.</para>
+                <para>The colors are optional and if not specified, they retain whatever values they were before.</para>
+                <para>
+                    Unless you want to dynamically specify the colors, prefer using the color-specified methods like
+                    <see cref="M:ConsoleFx.ConsoleExtensions.ColorString.Red(System.String)" />.
+                </para>
             </summary>
             <param name="text">The text to add to the color string.</param>
             <param name="foreColor">Optional foreground color for the text.</param>
             <param name="backColor">Optional background color for the text.</param>
-            <returns>The current instance of <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.</returns>
+            <returns>The current instance of <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" />.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.Reset(System.String)">
             <summary>
-            Resets the foreground color.
+                Resets the foreground color.
             </summary>
             <param name="text">Optional text to append to the color string after resetting the foreground color.</param>
-            <returns>The current instance of <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.</returns>
+            <returns>The current instance of <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" />.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.BgReset(System.String)">
             <summary>
-            Resets the background color.
+                Resets the background color.
             </summary>
             <param name="text">Optional text to append to the color string after resetting the background color.</param>
-            <returns>The current instance of <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.</returns>
+            <returns>The current instance of <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" />.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.ToString">
             <summary>
-            Builds a string representing the text blocks defined in the object.
+                Builds a string representing the text blocks defined in the object.
             </summary>
             <returns>A color string.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.TryParse(System.String,ConsoleFx.ConsoleExtensions.ColorString@)">
             <summary>
-            Creates an instance of a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> from the specified color string.
+                Creates an instance of a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> from the specified color string.
             </summary>
             <param name="cstr">The color string to parse</param>
-            <param name="colorStr">The new <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> instance created from the color string.</param>
-            <returns>True, if the color string could be parsed and a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> instance created; otherwise false.</returns>
+            <param name="colorStr">The new <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance created from the color string.</param>
+            <returns>True, if the color string could be parsed and a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance created; otherwise false.</returns>
         </member>
         <member name="T:ConsoleFx.ConsoleExtensions.ColorStringBlock">
             <summary>
-            Represents a colored text block in a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> instance.
+                Represents a colored text block in a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance.
             </summary>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ClearCurrentLine">
@@ -63,20 +66,20 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Print(ConsoleFx.ConsoleExtensions.ColorString)">
             <summary>
-            Writes a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> object to the console.
+                Writes a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> object to the console.
             </summary>
-            <param name="message">The <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> object to write.</param>
+            <param name="message">The <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> object to write.</param>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.PrintLine(ConsoleFx.ConsoleExtensions.ColorString[])">
             <summary>
-            Writes one or more <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> objects to the console.
+                Writes one or more <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> objects to the console.
             </summary>
-            <param name="messages">The <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> objects to write.</param>
+            <param name="messages">The <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> objects to write.</param>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.PrintBlank(System.Int32)">
             <summary>
                 Writes one or more blank lines to the Console.
-                <para/>
+                <para />
                 Just a more descriptive way to do a <code>Console.WriteLine()</code>.
             </summary>
             <param name="count">The number of blank lines to write.</param>
@@ -108,16 +111,17 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Prompt(System.Func{System.String,System.Boolean})">
             <summary>
-            Accepts user input and validates the input with the specified validator.
-            If the input is not valid, the entered text is cleared and user prompted to enter the input again.
+                Accepts user input and validates the input with the specified validator.
+                If the input is not valid, the entered text is cleared and user prompted to enter the input again.
             </summary>
             <param name="validator">Function to validate the input text</param>
             <returns>The input entered by the user</returns>
         </member>
         <member name="P:ConsoleFx.ConsoleExtensions.ConsoleEx.SecretMask">
             <summary>
-                Gets or sets the character to be used when entering a secret value using the ReadSecret methods. The default is '*'.
-                <para/>
+                Gets or sets the character to be used when entering a secret value using the ReadSecret methods. The default is
+                '*'.
+                <para />
                 Changing this value applies globally.
             </summary>
         </member>
@@ -144,10 +148,14 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecretCommon``2(System.Func{``1},System.Action{``1,System.Char},System.Func{``1,System.Int32},System.Func{``1,``0},System.Boolean,System.Boolean,System.Boolean)">
             <summary>
-            Common method used by both the <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecret(System.Boolean,System.Boolean,System.Boolean)"/> and <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecretSecure(System.Boolean,System.Boolean,System.Boolean)"/> methods to receive a secret input from the user.
+                Common method used by both the <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecret(System.Boolean,System.Boolean,System.Boolean)" /> and
+                <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecretSecure(System.Boolean,System.Boolean,System.Boolean)" /> methods to receive a secret input from the user.
             </summary>
             <typeparam name="TResult">The type of the resultant secret.</typeparam>
-            <typeparam name="TAccumulator">The type of the accumulator, used to incrementally build the resultant secret (could be the same type as the result).</typeparam>
+            <typeparam name="TAccumulator">
+                The type of the accumulator, used to incrementally build the resultant secret (could be
+                the same type as the result).
+            </typeparam>
             <param name="accumulatorFactory">Function to create the accumulator type.</param>
             <param name="accumulatorAppender">Function to append a single entered character to the accumulator.</param>
             <param name="getAccumulatorLength">Function to retrieve the current length of the accumulator.</param>
@@ -193,8 +201,11 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})">
             <summary>
-            <para>Repeatedly prompts the user for a key press, until any of the specified escape keys are pressed.</para>
-            <para>If the pressed key if available in the specified handlers, the corresponding handler is called. If not, it is ignored and the loop continues.</para>
+                <para>Repeatedly prompts the user for a key press, until any of the specified escape keys are pressed.</para>
+                <para>
+                    If the pressed key if available in the specified handlers, the corresponding handler is called. If not, it is
+                    ignored and the loop continues.
+                </para>
             </summary>
             <param name="handlers">Collection of keys to handle and their handlers.</param>
             <param name="postKeyPress">Optional action to run after any key press, not counting the ignored keys and escape keys.</param>
@@ -202,36 +213,36 @@
         </member>
         <member name="T:ConsoleFx.ConsoleExtensions.KeyHandler">
             <summary>
-            Represents a handler for a key press in the <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})"/> method.
+                Represents a handler for a key press in the <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})" /> method.
             </summary>
         </member>
         <member name="P:ConsoleFx.ConsoleExtensions.KeyHandler.Key">
             <summary>
-            Gets the key to handle.
+                Gets the key to handle.
             </summary>
         </member>
         <member name="P:ConsoleFx.ConsoleExtensions.KeyHandler.Action">
             <summary>
-            Gets the handler to call when the key is pressed.
+                Gets the handler to call when the key is pressed.
             </summary>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleKeyExtensions.HandledBy(System.ConsoleKey,System.Action{System.ConsoleKey})">
             <summary>
-            Provides a fluid way to create a <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler"/> instance when using the
-            <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})"/> method.
+                Provides a fluid way to create a <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler" /> instance when using the
+                <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})" /> method.
             </summary>
             <param name="key">The key to handle.</param>
             <param name="action">The handler to call when the key is pressed.</param>
-            <returns>An instance of the <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler"/> class.</returns>
+            <returns>An instance of the <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler" /> class.</returns>
         </member>
         <member name="T:ConsoleFx.ConsoleExtensions.ProgressBar">
             <summary>
-            Represents a console progress bar.
+                Represents a console progress bar.
             </summary>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ProgressBar.#ctor(System.Int32,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Char,System.Char)">
             <summary>
-            Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ProgressBar"/> class.
+                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ProgressBar" /> class.
             </summary>
             <param name="value">The starting value of the progress bar. Defaults to the minimum value.</param>
             <param name="minValue">The minimum value of the progress bar.</param>

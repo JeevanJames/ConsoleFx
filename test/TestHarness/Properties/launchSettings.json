@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestHarness": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Temp\\Blah.txt D:\\Temp\\Blah.bat -f"
+    }
+  }
+}

@@ -1,65 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineParser;
+using ConsoleFx.CmdLineArgs.Validators;
 using ConsoleFx.CmdLineParser.Style;
 using ConsoleFx.ConsoleExtensions;
-using ConsoleFx.Prompter;
+using ConsoleFx.Program;
 
-using TestHarness.Commands;
+using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
 namespace TestHarness
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        private static int Main()
         {
-            var parser = new Parser(new WindowsParserStyle());
-            parser.Commands.Add(new MultiRepoCommand("clone"));
-            parser.Commands.Add(new MultiRepoCommand("pull"));
-            parser.Commands.Add(new PushCommand());
+            var program = new ConsoleProgram(ParserStyle.Windows);
+            program.Options.Add(new Option("force", "f")
+                .UsedAsFlag());
+            program.Arguments.Add(new Argument("SourceFile")
+                .ValidateAsFile(shouldExist: false));
+            program.Arguments.Add(new Argument("DestFile"));
+            program.Handler = Handler;
+            return program.Run();
+        }
 
-            var prompter = new Prompter();
-            prompter.List("ArgsSource", "What should be the source of the CLI args?",
-                new[] { "Main method args parameter", "Args in code" });
-            dynamic answers = prompter.Ask();
-
-            try
-            {
-                ParseResult result = parser.Parse(answers.ArgsSource == 0 ? args : new [] {"commit", "/help"});
-                Console.WriteLine(result.Command.Name);
-                Console.WriteLine("Options");
-                foreach (KeyValuePair<string, object> option in result.Options)
-                {
-                    if (option.Value is string str)
-                        Console.WriteLine($"    {option.Key} = {str}");
-                    if (option.Value is IList<string> list)
-                        Console.WriteLine($"    {option.Key} = " + list.Aggregate(new StringBuilder(), (sb, s) =>
-                        {
-                            if (sb.Length > 0)
-                                sb.Append(",");
-                            sb.Append(s);
-                            return sb;
-                        }));
-                }
-
-                Console.WriteLine("Arguments");
-                foreach (string argument in result.Arguments)
-                    Console.WriteLine($"    {argument}");
-            }
-            catch (ParserException ex)
-            {
-                ConsoleEx.PrintLine(new ColorString().Red(ex.Message));
-            }
-            catch (Exception ex)
-            {
-                ConsoleEx.PrintLine(new ColorString().BgDkYellow(ex.Message));
-            }
-
-            Console.ReadLine();
+        private static int Handler(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options)
+        {
+            PrintLine(new ColorString("Copying file ")
+                .Cyan(arguments[index: 0])
+                .Reset(" to ")
+                .Green(arguments[index: 1]));
+            if ((bool)options["force"])
+                PrintLine(new ColorString("Force: ").Red("true"));
+            WaitForAnyKey();
+            return 0;
         }
     }
 }

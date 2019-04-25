@@ -101,9 +101,19 @@ namespace ConsoleFx.CmdLineArgs.Validators
 
     public static class FileValidatorExtensions
     {
+        public static Argument ValidateAsFile(this Argument argument, bool shouldExist) =>
+            argument.ValidateWith(new FileValidator(shouldExist));
+
         public static Argument ValidateAsFile(this Argument argument, bool shouldExist,
             IEnumerable<string> allowedExtensions) =>
             argument.ValidateWith(new FileValidator(shouldExist, allowedExtensions));
+
+        public static Argument ValidateAsFile(this Argument argument, bool shouldExist,
+            params string[] allowedExtensions) =>
+            argument.ValidateWith(new FileValidator(shouldExist, allowedExtensions));
+
+        public static Option ValidateAsFile(this Option option, bool shouldExist, int parameterIndex = -1) =>
+            option.ValidateWith(parameterIndex, new FileValidator(shouldExist));
 
         public static Option ValidateAsFile(this Option option, bool shouldExist, IEnumerable<string> allowedExtensions,
             int parameterIndex = -1) =>

@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
@@ -23,14 +25,12 @@ namespace ConsoleFx.Prompter.Questions
 {
     public sealed class TypedQuestion<T> : Question
     {
-        private readonly AskerFn _askerFn;
-
         internal TypedQuestion(Question question)
             : base(question?.Name, question != null ? question.Message : (string)null)
         {
             if (question == null)
                 throw new ArgumentNullException(nameof(question));
-            _askerFn = question.AskerFn;
+            AskerFn = question.AskerFn;
             CanAskFn = question.CanAskFn;
             Validator = question.Validator;
             ConvertedValueValidator = question.ConvertedValueValidator;
@@ -48,6 +48,6 @@ namespace ConsoleFx.Prompter.Questions
             return this;
         }
 
-        internal override AskerFn AskerFn => _askerFn;
+        internal override AskerFn AskerFn { get; }
     }
 }

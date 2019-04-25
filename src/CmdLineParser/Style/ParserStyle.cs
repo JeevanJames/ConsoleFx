@@ -63,5 +63,9 @@ namespace ConsoleFx.CmdLineParser.Style
         /// <returns>A collection of all the identified arguments.</returns>
         public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping);
+
+        public static readonly ParserStyle Unix = new UnixParserStyle();
+
+        public static readonly ParserStyle Windows = new WindowsParserStyle();
     }
 }

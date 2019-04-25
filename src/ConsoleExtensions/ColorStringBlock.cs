@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System.Text;
@@ -22,7 +24,7 @@ using System.Text;
 namespace ConsoleFx.ConsoleExtensions
 {
     /// <summary>
-    /// Represents a colored text block in a <see cref="ColorString"/> instance.
+    ///     Represents a colored text block in a <see cref="ColorString" /> instance.
     /// </summary>
     public sealed class ColorStringBlock
     {

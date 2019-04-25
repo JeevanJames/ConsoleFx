@@ -66,8 +66,8 @@ namespace ConsoleFx.CmdLineParser
             Parse(tokens.ToArray());
 
         /// <summary>
-        ///     Parses the given set of tokens based on the rules specified by the <see cref="Arguments" />, <see cref="Options" />
-        ///     and <see cref="Commands" /> properties.
+        ///     Parses the given set of tokens based on the rules specified by the <see cref="Arguments" />,
+        ///     <see cref="Options" /> and <see cref="Commands" /> properties.
         /// </summary>
         /// <param name="tokens">Token strings to parse.</param>
         /// <returns>A <see cref="ParseResult" /> instance.</returns>
@@ -75,27 +75,26 @@ namespace ConsoleFx.CmdLineParser
         {
             IReadOnlyList<string> tokenList = tokens.ToList();
 
-            //Creates a ParseRun instance, which specifies the sequence of commands specified and
-            //the tokens and any options and arguments that apply to the specified commands.
+            // Creates a ParseRun instance, which specifies the sequence of commands specified and the tokens and any
+            // options and arguments that apply to the specified commands.
             ParseRun run = CreateRun(tokenList);
 
-            //Extract out just the option and argument objects from their respective run collections.
-            //We want to pass these to parser style methods that only need to deal with the Option and
-            //Argument objects and not have to deal with the 'run' aspects. See some of the calls to
-            //protected methods from this method.
+            // Extract out just the option and argument objects from their respective run collections.
+            // We want to pass these to parser style methods that only need to deal with the Option and Argument objects
+            // and not have to deal with the 'run' aspects. See some of the calls to protected methods from this method.
             IReadOnlyList<Option> justOptions = run.Options.Select(o => o.Option).ToList();
             IReadOnlyList<Argument> justArguments = run.Arguments.Select(a => a.Argument).ToList();
 
-            //Even though the caller can define the grouping, the parser style can override it based
-            //on the available options and arguments. See the UnixParserStyle class for an example.
+            // Even though the caller can define the grouping, the parser style can override it based on the available
+            // options and arguments. See the UnixParserStyle class for an example.
             Grouping = ParserStyle.GetGrouping(Grouping, justOptions, justArguments);
 
-            //Validate all the available options based on the parser style rules.
-            //See the UnixParserStyle for an example.
+            // Validate all the available options based on the parser style rules.
+            // See the UnixParserStyle for an example.
             ParserStyle.ValidateDefinedOptions(justOptions);
 
-            //Identify all tokens as options or arguments. Identified option details are stored in
-            //the Option instance itself. Identified arguments are returned from the method.
+            // Identify all tokens as options or arguments. Identified option details are stored in the Option instance
+            // itself. Identified arguments are returned from the method.
             List<string> specifiedArguments =
                 ParserStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
 
@@ -103,7 +102,7 @@ namespace ConsoleFx.CmdLineParser
             //if (ConfigReader != null)
             //    specifiedArguments = ConfigReader.Run(specifiedArguments, Options);
 
-            //Process the specified options and arguments, and resolve their values.
+            // Process the specified options and arguments, and resolve their values.
             ProcessOptions(run.Options);
             ProcessArguments(specifiedArguments, run.Arguments);
 
@@ -174,28 +173,28 @@ namespace ConsoleFx.CmdLineParser
         {
             foreach (OptionRun or in optionRuns)
             {
-                //If the option is required, but is not specified.
+                // If the option is required, but is not specified.
                 if (or.Option.Usage.MinOccurrences > 0 && or.Occurrences == 0)
                 {
                     throw new ParserException(ParserException.Codes.RequiredOptionAbsent,
                         string.Format(Messages.RequiredOptionAbsent, or.Option.Name));
                 }
 
-                //If the option is specified less times than the minimum expected number of times.
+                // If the option is specified less times than the minimum expected number of times.
                 if (or.Occurrences < or.Option.Usage.MinOccurrences)
                 {
                     throw new ParserException(ParserException.Codes.TooFewOptions,
                         string.Format(Messages.TooFewOptions, or.Option.Name, or.Option.Usage.MinOccurrences));
                 }
 
-                //If the option is specified more times than the maximum allowed number of times.
+                // If the option is specified more times than the maximum allowed number of times.
                 if (or.Occurrences > or.Option.Usage.MaxOccurrences)
                 {
                     throw new ParserException(ParserException.Codes.TooManyOptions,
                         string.Format(Messages.TooManyOptions, or.Option.Name, or.Option.Usage.MaxOccurrences));
                 }
 
-                //If the option with required parameters is specified, but no parameters are.
+                // If the option with required parameters is specified, but no parameters are.
                 if (or.Occurrences > 0 && or.Option.Usage.MinParameters > 0 && or.Parameters.Count == 0)
                 {
                     throw new ParserException(ParserException.Codes.RequiredParametersAbsent,
@@ -325,28 +324,28 @@ namespace ConsoleFx.CmdLineParser
             if (argumentRuns.Count == 0)
                 return;
 
-            //Throw exception of number of specified arguments is greater than number of defined arguments.
+            // Throw exception of number of specified arguments is greater than number of defined arguments.
             if (specifiedArguments.Count > argumentRuns.Count)
             {
                 throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
                     Messages.InvalidNumberOfArguments);
             }
 
-            //Find the number of arguments that are required.
+            // Find the number of arguments that are required.
             int requiredArgumentCount = 0;
             while (requiredArgumentCount < argumentRuns.Count &&
                 !argumentRuns[requiredArgumentCount].Argument.IsOptional)
                 requiredArgumentCount++;
 
-            //Throw exception if not enough required arguments are specified.
+            // Throw exception if not enough required arguments are specified.
             if (specifiedArguments.Count < requiredArgumentCount)
             {
                 throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
                     Messages.InvalidNumberOfArguments);
             }
 
-            //Iterate through all specified arguments and validate.
-            //If validated, run the argument handler.
+            // Iterate through all specified arguments and validate.
+            // If validated, run the argument handler.
             for (var i = 0; i < specifiedArguments.Count; i++)
             {
                 string argumentValue = specifiedArguments[i];

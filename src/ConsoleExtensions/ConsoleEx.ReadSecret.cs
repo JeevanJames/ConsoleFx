@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
@@ -26,8 +28,9 @@ namespace ConsoleFx.ConsoleExtensions
     public static partial class ConsoleEx
     {
         /// <summary>
-        ///     Gets or sets the character to be used when entering a secret value using the ReadSecret methods. The default is '*'.
-        ///     <para/>
+        ///     Gets or sets the character to be used when entering a secret value using the ReadSecret methods. The default is
+        ///     '*'.
+        ///     <para />
         ///     Changing this value applies globally.
         /// </summary>
         public static char SecretMask { get; set; } = '*';
@@ -42,8 +45,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>The entered stream of characters as a string.</returns>
         public static string ReadSecret(bool hideCursor = false, bool hideMask = false, bool needValue = false)
         {
-            return ReadSecretCommon(
-                () => new StringBuilder(),
+            return ReadSecretCommon(() => new StringBuilder(),
                 (sb, key) => sb.Append(key),
                 sb => sb.Length,
                 sb => sb.ToString(),
@@ -59,16 +61,17 @@ namespace ConsoleFx.ConsoleExtensions
         /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
         /// <param name="needValue">If true, at least one character must be entered.</param>
         /// <returns>The entered stream of characters as a string.</returns>
-        public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false, bool needValue = false)
+        public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false,
+            bool needValue = false)
         {
             Print(prompt);
             return ReadSecret(hideCursor, hideMask, needValue);
         }
 
-        public static SecureString ReadSecretSecure(bool hideCursor = false, bool hideMask = false, bool needValue = false)
+        public static SecureString ReadSecretSecure(bool hideCursor = false, bool hideMask = false,
+            bool needValue = false)
         {
-            return ReadSecretCommon(
-                () => new SecureString(),
+            return ReadSecretCommon(() => new SecureString(),
                 (acc, key) => acc.AppendChar(key),
                 acc => acc.Length,
                 acc => acc,
@@ -82,10 +85,14 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        /// Common method used by both the <see cref="ReadSecret(bool,bool,bool)"/> and <see cref="ReadSecretSecure(bool,bool,bool)"/> methods to receive a secret input from the user.
+        ///     Common method used by both the <see cref="ReadSecret(bool,bool,bool)" /> and
+        ///     <see cref="ReadSecretSecure(bool,bool,bool)" /> methods to receive a secret input from the user.
         /// </summary>
         /// <typeparam name="TResult">The type of the resultant secret.</typeparam>
-        /// <typeparam name="TAccumulator">The type of the accumulator, used to incrementally build the resultant secret (could be the same type as the result).</typeparam>
+        /// <typeparam name="TAccumulator">
+        ///     The type of the accumulator, used to incrementally build the resultant secret (could be
+        ///     the same type as the result).
+        /// </typeparam>
         /// <param name="accumulatorFactory">Function to create the accumulator type.</param>
         /// <param name="accumulatorAppender">Function to append a single entered character to the accumulator.</param>
         /// <param name="getAccumulatorLength">Function to retrieve the current length of the accumulator.</param>
@@ -94,8 +101,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
         /// <param name="needValue">If true, at least one character must be entered.</param>
         /// <returns>The entered data.</returns>
-        private static TResult ReadSecretCommon<TResult, TAccumulator>(
-            Func<TAccumulator> accumulatorFactory,
+        private static TResult ReadSecretCommon<TResult, TAccumulator>(Func<TAccumulator> accumulatorFactory,
             Action<TAccumulator, char> accumulatorAppender,
             Func<TAccumulator, int> getAccumulatorLength,
             Func<TAccumulator, TResult> resultExtractor,
@@ -111,7 +117,7 @@ namespace ConsoleFx.ConsoleExtensions
 
                 ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
                 bool done = keyInfo.Key == ConsoleKey.Enter &&
-                            ((needValue && getAccumulatorLength(accumulator) > 0) || !needValue);
+                    ((needValue && getAccumulatorLength(accumulator) > 0) || !needValue);
                 while (!done)
                 {
                     if (keyInfo.Key != ConsoleKey.Enter)
@@ -122,12 +128,12 @@ namespace ConsoleFx.ConsoleExtensions
 
                         //Move the cursor only if hideCursor is false
                         else if (!hideCursor)
-                            Console.Write(' ');
+                            Console.Write(value: ' ');
                     }
 
-                    keyInfo = Console.ReadKey(true);
+                    keyInfo = Console.ReadKey(intercept: true);
                     done = keyInfo.Key == ConsoleKey.Enter &&
-                           ((needValue && getAccumulatorLength(accumulator) > 0) || !needValue);
+                        ((needValue && getAccumulatorLength(accumulator) > 0) || !needValue);
                 }
 
                 Console.WriteLine();

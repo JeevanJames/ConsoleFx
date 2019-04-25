@@ -1,4 +1,5 @@
 ﻿#region --- License & Copyright Notice ---
+
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -15,6 +16,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 #endregion
 
 using System;
@@ -25,7 +27,8 @@ namespace ConsoleFx.ConsoleExtensions
 {
     public static partial class ConsoleEx
     {
-        public static int SelectSingle(IEnumerable<string> optionsList, SelectSingleSettings settings = null, int startingIndex = 0)
+        public static int SelectSingle(IEnumerable<string> optionsList, SelectSingleSettings settings = null,
+            int startingIndex = 0)
         {
             if (optionsList == null)
                 throw new ArgumentNullException(nameof(optionsList));
@@ -49,11 +52,13 @@ namespace ConsoleFx.ConsoleExtensions
                 int startLine = Console.CursorTop;
 
                 int selectedChoice = startingIndex >= 0 && startingIndex < options.Count
-                    ? startingIndex : 0;
-                string unselectedPrefix = settings.UnselectedPrefix ?? new string(' ', settings.SelectedPrefix.Length);
+                    ? startingIndex
+                    : 0;
+                string unselectedPrefix =
+                    settings.UnselectedPrefix ?? new string(c: ' ', settings.SelectedPrefix.Length);
 
                 // Print the initial list with the selected value highlighted
-                for (int i = 0; i < options.Count; i++)
+                for (var i = 0; i < options.Count; i++)
                 {
                     if (i == selectedChoice)
                     {
@@ -82,18 +87,18 @@ namespace ConsoleFx.ConsoleExtensions
                     else if (selectedChoice >= options.Count)
                         selectedChoice = 0;
 
-                    Console.SetCursorPosition(0, startLine + oldChoice);
+                    Console.SetCursorPosition(left: 0, startLine + oldChoice);
                     Print(new ColorString().Text($"{unselectedPrefix}{options[oldChoice]}",
                         settings.UnselectedFgColor, settings.UnselectedBgColor));
 
-                    Console.SetCursorPosition(0, startLine + selectedChoice);
+                    Console.SetCursorPosition(left: 0, startLine + selectedChoice);
                     Print(new ColorString().Text($"{settings.SelectedPrefix}{options[selectedChoice]}",
                         settings.SelectedFgColor, settings.SelectedBgColor));
 
                     pressed = WaitForKeys(ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
                 }
 
-                Console.SetCursorPosition(0, startLine + options.Count);
+                Console.SetCursorPosition(left: 0, startLine + options.Count);
 
                 return selectedChoice;
             }
@@ -128,7 +133,10 @@ namespace ConsoleFx.ConsoleExtensions
             if (checkedIndices == null)
                 checkedIndices = Enumerable.Empty<int>();
             if (checkedIndices.Any(c => c < 0 || c >= options.Count))
-                throw new ArgumentOutOfRangeException(nameof(settings), "Checked indices in settings contain out of range values.");
+            {
+                throw new ArgumentOutOfRangeException(nameof(settings),
+                    "Checked indices in settings contain out of range values.");
+            }
 
             bool cursorVisible = Console.CursorVisible;
             Console.CursorVisible = false;
@@ -141,12 +149,12 @@ namespace ConsoleFx.ConsoleExtensions
 
                 int selectedChoice = startingIndex;
 
-                List<bool> checkedItems = Enumerable.Repeat(false, options.Count).ToList();
+                List<bool> checkedItems = Enumerable.Repeat(element: false, options.Count).ToList();
                 foreach (int checkedIndex in checkedIndices)
                     checkedItems[checkedIndex] = true;
 
                 // Print the initial list with the selected value highlighted
-                for (int i = 0; i < options.Count; i++)
+                for (var i = 0; i < options.Count; i++)
                 {
                     string format = checkedItems[i] ? settings.CheckedFormat : settings.UncheckedFormat;
                     if (i == selectedChoice)
@@ -162,14 +170,17 @@ namespace ConsoleFx.ConsoleExtensions
                 }
 
                 // Repeatedly handle up and down arrow key presses until Enter is pressed
-                ConsoleKey pressed = WaitForKeys(ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.Spacebar);
+                ConsoleKey pressed = WaitForKeys(ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter,
+                    ConsoleKey.Spacebar);
                 while (pressed != ConsoleKey.Enter)
                 {
                     if (pressed == ConsoleKey.Spacebar)
                     {
                         checkedItems[selectedChoice] = !checkedItems[selectedChoice];
-                        string format = checkedItems[selectedChoice] ? settings.CheckedFormat : settings.UncheckedFormat;
-                        Console.SetCursorPosition(0, startLine + selectedChoice);
+                        string format = checkedItems[selectedChoice]
+                            ? settings.CheckedFormat
+                            : settings.UncheckedFormat;
+                        Console.SetCursorPosition(left: 0, startLine + selectedChoice);
                         Print(new ColorString().Text(string.Format(format, options[selectedChoice]),
                             settings.SelectedFgColor, settings.SelectedBgColor));
                     }
@@ -186,24 +197,25 @@ namespace ConsoleFx.ConsoleExtensions
                         else if (selectedChoice >= options.Count)
                             selectedChoice = 0;
 
-                        Console.SetCursorPosition(0, startLine + oldChoice);
+                        Console.SetCursorPosition(left: 0, startLine + oldChoice);
                         string format = checkedItems[oldChoice] ? settings.CheckedFormat : settings.UncheckedFormat;
                         Print(new ColorString().Text(string.Format(format, options[oldChoice]),
                             settings.UnselectedFgColor, settings.UnselectedBgColor));
 
-                        Console.SetCursorPosition(0, startLine + selectedChoice);
+                        Console.SetCursorPosition(left: 0, startLine + selectedChoice);
                         format = checkedItems[selectedChoice] ? settings.CheckedFormat : settings.UncheckedFormat;
                         Print(new ColorString().Text(string.Format(format, options[selectedChoice]),
                             settings.SelectedFgColor, settings.SelectedBgColor));
                     }
 
-                    pressed = WaitForKeys(ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.Spacebar);
+                    pressed = WaitForKeys(ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter,
+                        ConsoleKey.Spacebar);
                 }
 
-                Console.SetCursorPosition(0, startLine + options.Count);
+                Console.SetCursorPosition(left: 0, startLine + options.Count);
 
                 var result = new List<int>();
-                for (int i = 0; i < checkedItems.Count; i++)
+                for (var i = 0; i < checkedItems.Count; i++)
                 {
                     if (checkedItems[i])
                         result.Add(i);
