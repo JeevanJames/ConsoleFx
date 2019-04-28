@@ -40,8 +40,7 @@ namespace ConsoleFx.ConsoleExtensions.Tests
                 .Yellow().BgBlack("Suite");
             yield return new object[] { cs1, "ConsoleFx [Green]CLI [Green.Blue]Library [Yellow.Black]Suite" };
 
-            var cs2 = new ColorString()
-                .Text("ConsoleFx ")
+            var cs2 = new ColorString("ConsoleFx ")
                 .Green("CLI ")
                 .Reset().BgBlue("Library ")
                 .Yellow().BgBlack("Suite");

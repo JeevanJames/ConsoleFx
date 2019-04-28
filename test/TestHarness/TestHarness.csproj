@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Capture\Capture.csproj" />
     <ProjectReference Include="..\..\src\CmdLineArgs\CmdLineArgs.csproj" />
     <ProjectReference Include="..\..\src\CmdLineParser\CmdLineParser.csproj" />
     <ProjectReference Include="..\..\src\ConsoleExtensions\ConsoleExtensions.csproj" />
