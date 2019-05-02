@@ -24,22 +24,48 @@ namespace ConsoleFx.ConsoleExtensions
 {
     public static partial class ConsoleEx
     {
+        public static ColorResetOption ColorReset { get; set; } = ColorResetOption.DontReset;
+
         /// <summary>
         ///     Writes a <see cref="ColorString" /> object to the console.
         /// </summary>
         /// <param name="message">The <see cref="ColorString" /> object to write.</param>
         public static void Print(ColorString message)
         {
-            foreach (var block in message)
+            foreach (ColorStringBlock block in message)
             {
                 if (block.ForeColor.HasValue)
-                    Console.ForegroundColor = ColorMappings[block.ForeColor.Value];
+                {
+                    if (block.ForeColor.Value == CColor.Reset)
+                    {
+                        ConsoleColor backColor = Console.BackgroundColor;
+                        Console.ResetColor();
+                        Console.BackgroundColor = backColor;
+                    }
+                    else
+                        Console.ForegroundColor = ColorMappings[block.ForeColor.Value];
+                }
+
                 if (block.BackColor.HasValue)
-                    Console.BackgroundColor = ColorMappings[block.BackColor.Value];
+                {
+                    if (block.BackColor.Value == CColor.BgReset)
+                    {
+                        ConsoleColor foreColor = Console.ForegroundColor;
+                        Console.ResetColor();
+                        Console.ForegroundColor = foreColor;
+                    }
+                    else
+                        Console.BackgroundColor = ColorMappings[block.BackColor.Value];
+                }
+
                 Console.Write(block.Text);
+
+                if (ColorReset == ColorResetOption.ResetAfterColor)
+                    Console.ResetColor();
             }
 
-            Console.ResetColor();
+            if (ColorReset == ColorResetOption.ResetAfterColorString)
+                Console.ResetColor();
         }
 
         /// <summary>
@@ -48,7 +74,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <param name="messages">The <see cref="ColorString" /> objects to write.</param>
         public static void PrintLine(params ColorString[] messages)
         {
-            foreach (var message in messages)
+            foreach (ColorString message in messages)
             {
                 Print(message);
                 Console.WriteLine();
@@ -142,5 +168,12 @@ namespace ConsoleFx.ConsoleExtensions
             [CColor.BgWhite] = ConsoleColor.White,
             [CColor.BgYellow] = ConsoleColor.Yellow
         };
+    }
+
+    public enum ColorResetOption
+    {
+        DontReset,
+        ResetAfterColorString,
+        ResetAfterColor,
     }
 }

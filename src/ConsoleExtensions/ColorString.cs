@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -82,8 +83,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>The current instance of <see cref="ColorString" />.</returns>
         public ColorString Reset(string text = null)
         {
-            _currentForeColor = null;
-            return Text(text);
+            return Text(text, CColor.Reset);
         }
 
         /// <summary>
@@ -93,8 +93,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>The current instance of <see cref="ColorString" />.</returns>
         public ColorString BgReset(string text = null)
         {
-            _currentBackColor = null;
-            return Text(text);
+            return Text(text, foreColor: null, CColor.BgReset);
         }
 
         public ColorString Black(string text = null)
@@ -179,17 +178,17 @@ namespace ConsoleFx.ConsoleExtensions
 
         public ColorString BgBlack(string text = null)
         {
-            return Text(text, foreColor: null, CColor.Black);
+            return Text(text, foreColor: null, CColor.BgBlack);
         }
 
         public ColorString BgBlue(string text = null)
         {
-            return Text(text, foreColor: null, CColor.Blue);
+            return Text(text, foreColor: null, CColor.BgBlue);
         }
 
         public ColorString BgCyan(string text = null)
         {
-            return Text(text, foreColor: null, CColor.Cyan);
+            return Text(text, foreColor: null, CColor.BgCyan);
         }
 
         public ColorString BgDkBlue(string text = null)
@@ -229,32 +228,32 @@ namespace ConsoleFx.ConsoleExtensions
 
         public ColorString BgGray(string text = null)
         {
-            return Text(text, foreColor: null, CColor.Gray);
+            return Text(text, foreColor: null, CColor.BgGray);
         }
 
         public ColorString BgGreen(string text = null)
         {
-            return Text(text, foreColor: null, CColor.Green);
+            return Text(text, foreColor: null, CColor.BgGreen);
         }
 
         public ColorString BgMagenta(string text = null)
         {
-            return Text(text, foreColor: null, CColor.Magenta);
+            return Text(text, foreColor: null, CColor.BgMagenta);
         }
 
         public ColorString BgRed(string text = null)
         {
-            return Text(text, foreColor: null, CColor.Red);
+            return Text(text, foreColor: null, CColor.BgRed);
         }
 
         public ColorString BgWhite(string text = null)
         {
-            return Text(text, foreColor: null, CColor.White);
+            return Text(text, foreColor: null, CColor.BgWhite);
         }
 
         public ColorString BgYellow(string text = null)
         {
-            return Text(text, foreColor: null, CColor.Yellow);
+            return Text(text, foreColor: null, CColor.BgYellow);
         }
 
         /// <summary>
@@ -267,6 +266,12 @@ namespace ConsoleFx.ConsoleExtensions
             foreach (ColorStringBlock block in _blocks)
                 sb.Append(block);
             return sb.ToString();
+        }
+
+        public string ToText()
+        {
+            return this.Aggregate(new StringBuilder(),
+                (sb, block) => sb.Append(block.Text)).ToString();
         }
 
         #region Interface implementations
@@ -305,71 +310,40 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>True, if the color string could be parsed and a <see cref="ColorString" /> instance created; otherwise false.</returns>
         public static bool TryParse(string cstr, out ColorString colorStr)
         {
-            colorStr = new ColorString();
-
             MatchCollection matches = ColorStringPattern.Matches(cstr);
             if (matches.Count == 0)
             {
-                colorStr.Text(cstr);
+                colorStr = new ColorString(cstr);
                 return true;
             }
 
+            colorStr = new ColorString(cstr.Substring(0, matches[0].Index));
             for (var i = 0; i < matches.Count; i++)
             {
-                int startIndex = i == 0 ? 0 : matches[i - 1].Index + matches[i - 1].Length;
-                int endIndex = matches[i].Index;
-                colorStr.Text(cstr.Substring(startIndex, endIndex - startIndex));
+                Match match = matches[i];
 
-                // First color is always specified. Figure it out.
-                string color1Str = matches[i].Groups[groupnum: 1].Value;
-                var color1 = (CColor)Enum.Parse(typeof(CColor), color1Str, ignoreCase: true);
-                bool color1IsBackground = color1Str.StartsWith("Bg", StringComparison.OrdinalIgnoreCase);
-
-                // Second color is optional. Check if it is specified.
-                string color2Str = matches[i].Groups[groupnum: 2].Value;
-                CColor? color2 = null;
-                if (!string.IsNullOrEmpty(color2Str))
+                string[] colorParts = match.Groups[1].Value.Split('.');
+                CColor? foregroundColor = null;
+                CColor? backgroundColor = null;
+                foreach (string colorPart in colorParts)
                 {
-                    color2 = (CColor)Enum.Parse(typeof(CColor), color2Str, ignoreCase: true);
-                    bool color2IsBackground = color2Str.StartsWith("Bg", StringComparison.OrdinalIgnoreCase);
-
-                    // Both colors cannot be background or foreground colors
-                    if (color1IsBackground == color2IsBackground)
-                    {
-                        if (color1IsBackground)
-                        {
-                            throw new FormatException(
-                                $"Specified colors {color1Str} and {color2Str} cannot both be background colors.");
-                        }
-
-                        throw new FormatException(
-                            $"Specified colors {color1Str} and {color2Str} cannot both be foreground colors.");
-                    }
-                }
-
-                // Figure out which specified color is background and which is foreground.
-                CColor? foreColor = null, backColor = null;
-                if (color1IsBackground)
-                    backColor = color1;
-                else
-                    foreColor = color1;
-                if (color2.HasValue)
-                {
-                    if (color1IsBackground)
-                        foreColor = color2.Value;
+                    var color = (CColor)Enum.Parse(typeof(CColor), colorPart, ignoreCase: true);
+                    if (colorPart.StartsWith("Bg", StringComparison.OrdinalIgnoreCase))
+                        backgroundColor = color;
                     else
-                        backColor = color2.Value;
+                        foregroundColor = color;
                 }
 
-                colorStr.Text(text: null, foreColor, backColor);
+                int startIndex = match.Index + match.Length;
+                int endIndex = i < matches.Count - 1 ? matches[i + 1].Index : cstr.Length;
+                colorStr.Text(cstr.Substring(startIndex, endIndex - startIndex), foregroundColor, backgroundColor);
             }
-
-            Match lastMatch = matches[matches.Count - 1];
-            colorStr.Text(cstr.Substring(lastMatch.Index + lastMatch.Length));
 
             return true;
         }
 
-        private static readonly Regex ColorStringPattern = new Regex(@"\[(\w+)(?:\.(\w+))?\]");
+        private static readonly Regex ColorStringPattern = new Regex(
+            @"\[((?:Bg)?(?:Dk)?(?:Black|Blue|Cyan|Gray|Green|Magenta|Red|Yellow|White|Reset)(?:\.(?:Bg)?(?:Dk)?(?:Black|Blue|Cyan|Gray|Green|Magenta|Red|Yellow|White|Reset))*)\]",
+            RegexOptions.IgnoreCase);
     }
 }

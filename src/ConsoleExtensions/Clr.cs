@@ -55,6 +55,8 @@ namespace ConsoleFx.ConsoleExtensions
 
         public static InstanceClr Yellow => new InstanceClr(CColor.Yellow, null);
 
+        public static InstanceClr Reset => new InstanceClr(CColor.Reset, null);
+
         public static InstanceClr BgBlack => new InstanceClr(null, CColor.BgBlack);
 
         public static InstanceClr BgBlue => new InstanceClr(null, CColor.BgBlue);
@@ -86,6 +88,8 @@ namespace ConsoleFx.ConsoleExtensions
         public static InstanceClr BgWhite => new InstanceClr(null, CColor.BgWhite);
 
         public static InstanceClr BgYellow => new InstanceClr(null, CColor.BgYellow);
+
+        public static InstanceClr BgReset => new InstanceClr(null, CColor.BgReset);
     }
 
     public readonly struct InstanceClr
@@ -157,6 +161,8 @@ namespace ConsoleFx.ConsoleExtensions
 
         public InstanceClr Yellow => new InstanceClr(this, CColor.Yellow, null);
 
+        public InstanceClr Reset => new InstanceClr(this, CColor.Reset, null);
+
         public InstanceClr BgBlack => new InstanceClr(this, null, CColor.BgBlack);
 
         public InstanceClr BgBlue => new InstanceClr(this, null, CColor.BgBlue);
@@ -188,5 +194,7 @@ namespace ConsoleFx.ConsoleExtensions
         public InstanceClr BgWhite => new InstanceClr(this, null, CColor.BgWhite);
 
         public InstanceClr BgYellow => new InstanceClr(this, null, CColor.BgYellow);
+
+        public InstanceClr BgReset => new InstanceClr(this, null, CColor.BgReset);
     }
 }

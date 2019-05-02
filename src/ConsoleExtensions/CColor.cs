@@ -37,6 +37,7 @@ namespace ConsoleFx.ConsoleExtensions
         Red,
         White,
         Yellow,
+        Reset,
 
         BgBlack,
         BgBlue,
@@ -54,5 +55,6 @@ namespace ConsoleFx.ConsoleExtensions
         BgRed,
         BgWhite,
         BgYellow,
+        BgReset,
     }
 }
