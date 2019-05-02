@@ -12,6 +12,18 @@
                 Internally, this class maintains a collection of text blocks, each with color information.
             </remarks>
         </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ColorString.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> class.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ColorString.#ctor(System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> class with the specified
+                <paramref name="initialText"/>.
+            </summary>
+            <param name="initialText">The initial text to add to the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.</param>
+        </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.Text(System.String,System.Nullable{ConsoleFx.ConsoleExtensions.CColor},System.Nullable{ConsoleFx.ConsoleExtensions.CColor})">
             <summary>
                 <para>Adds the text to the color string with the specified foreground and background colors.</para>
@@ -42,9 +54,15 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.ToString">
             <summary>
-                Builds a string representing the text blocks defined in the object.
+                Builds a string representing the text blocks defined in this <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.
             </summary>
             <returns>A color string.</returns>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ColorString.ToText">
+            <summary>
+                Builds a string representing just the text from the text blocks defined in this <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.
+            </summary>
+            <returns>A string that is just the text from all the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> blocks.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.TryParse(System.String,ConsoleFx.ConsoleExtensions.ColorString@)">
             <summary>

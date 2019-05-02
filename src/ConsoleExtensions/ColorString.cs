@@ -44,10 +44,18 @@ namespace ConsoleFx.ConsoleExtensions
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CColor? _currentBackColor;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ColorString"/> class.
+        /// </summary>
         public ColorString()
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ColorString"/> class with the specified
+        ///     <paramref name="initialText"/>.
+        /// </summary>
+        /// <param name="initialText">The initial text to add to the <see cref="ColorString"/>.</param>
         public ColorString(string initialText)
         {
             Text(initialText);
@@ -257,7 +265,7 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     Builds a string representing the text blocks defined in the object.
+        ///     Builds a string representing the text blocks defined in this <see cref="ColorString"/>.
         /// </summary>
         /// <returns>A color string.</returns>
         public override string ToString()
@@ -268,6 +276,10 @@ namespace ConsoleFx.ConsoleExtensions
             return sb.ToString();
         }
 
+        /// <summary>
+        ///     Builds a string representing just the text from the text blocks defined in this <see cref="ColorString"/>.
+        /// </summary>
+        /// <returns>A string that is just the text from all the <see cref="ColorString"/> blocks.</returns>
         public string ToText()
         {
             return this.Aggregate(new StringBuilder(),
