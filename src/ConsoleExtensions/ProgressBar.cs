@@ -1,5 +1,4 @@
 ﻿#region --- License & Copyright Notice ---
-
 /*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
@@ -16,7 +15,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 #endregion
 
 using System;
@@ -69,7 +67,7 @@ namespace ConsoleFx.ConsoleExtensions
         public int Value
         {
             get => _value;
-            set => Update(value);
+            set => _value = Update(value);
         }
 
         public int Line { get; }
@@ -80,12 +78,10 @@ namespace ConsoleFx.ConsoleExtensions
 
         public char FillChar { get; }
 
-        private void Update(int value)
+        private int Update(int value)
         {
             if (value < MinValue || value > MaxValue)
-                return;
-
-            _value = value;
+                return _value;
 
             int currentLeft = Console.CursorLeft;
             int currentTop = Console.CursorTop;
@@ -102,6 +98,8 @@ namespace ConsoleFx.ConsoleExtensions
                 Console.SetCursorPosition(currentLeft, currentTop);
                 Console.CursorVisible = cursorVisible;
             }
+
+            return value;
         }
     }
 }

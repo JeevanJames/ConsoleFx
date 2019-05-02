@@ -35,7 +35,7 @@ namespace ConsoleFx.ConsoleExtensions.Tests
         public static IEnumerable<object[]> Get_ToString_Builds_color_string_Data()
         {
             var cs1 = new ColorString("ConsoleFx ")
-                .Green("CLI ")
+                .BgGreen("CLI ")
                 .BgBlue("Library ")
                 .Yellow().BgBlack("Suite");
             yield return new object[] { cs1, "ConsoleFx [Green]CLI [Green.Blue]Library [Yellow.Black]Suite" };

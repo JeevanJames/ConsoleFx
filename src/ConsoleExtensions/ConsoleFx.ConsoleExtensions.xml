@@ -59,6 +59,14 @@
                 Represents a colored text block in a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance.
             </summary>
         </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ColorStringBlock.#ctor(System.String,System.Nullable{ConsoleFx.ConsoleExtensions.CColor},System.Nullable{ConsoleFx.ConsoleExtensions.CColor})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ColorStringBlock"/> class.
+            </summary>
+            <param name="text">The text of the block that will be colored as per the specified colors.</param>
+            <param name="foreColor">The foreground color of the text in this block.</param>
+            <param name="backColor">The background color of the text in this block.</param>
+        </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ClearCurrentLine">
             <summary>
             Clears the contents of the current line and resets the cursor position to the start of the line.
