@@ -18,19 +18,25 @@ limitations under the License.
 #endregion
 
 using System;
-
+using System.Diagnostics;
 using ConsoleFx.CmdLineArgs.Validators.Bases;
 
 namespace ConsoleFx.CmdLineArgs.Validators
 {
     public sealed class CustomValidator : SingleMessageValidator<string>
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Func<string, bool> _validator;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CustomValidator"/> class.
+        /// </summary>
+        /// <param name="validator">A delegate that represents the custom validator logic.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="validator"/> is <c>null</c>.</exception>
         public CustomValidator(Func<string, bool> validator)
             : base(Messages.Custom)
         {
-            if (validator == null)
+            if (validator is null)
                 throw new ArgumentNullException(nameof(validator));
             _validator = validator;
         }

@@ -25,13 +25,13 @@ using ConsoleFx.CmdLineParser.Runs;
 namespace ConsoleFx.CmdLineParser.Style
 {
     /// <summary>
-    ///     Base class that validates the rules for argument grouping.
+    ///     Base class that defines the style of the arguments being parsed.
     /// </summary>
-    public abstract class ParserStyle
+    public abstract class ArgStyle
     {
         /// <summary>
-        ///     Allows the parser style to override the preferred grouping based on its rules for the specified options and
-        ///     arguments.
+        ///     Allows the parser style to override the preferred grouping based on its rules for the
+        ///     specified options and arguments.
         /// </summary>
         /// <param name="specifiedGrouping">The preferred grouping.</param>
         /// <param name="options">The list of allowed options.</param>
@@ -64,8 +64,8 @@ namespace ConsoleFx.CmdLineParser.Style
         public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping);
 
-        public static readonly ParserStyle Unix = new UnixParserStyle();
+        public static readonly ArgStyle Unix = new UnixArgStyle();
 
-        public static readonly ParserStyle Windows = new WindowsParserStyle();
+        public static readonly ArgStyle Windows = new WindowsArgStyle();
     }
 }

@@ -27,7 +27,7 @@ using ConsoleFx.CmdLineParser.Runs;
 
 namespace ConsoleFx.CmdLineParser.Style
 {
-    public sealed class WindowsParserStyle : ParserStyle
+    public sealed class WindowsArgStyle : ArgStyle
     {
         // -Option or /Option
         private static readonly Regex OptionPattern = new Regex(@"^[\-\/]([\w\?][\w-_\?]*)");

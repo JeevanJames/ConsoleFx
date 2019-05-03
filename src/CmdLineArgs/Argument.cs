@@ -30,7 +30,7 @@ namespace ConsoleFx.CmdLineArgs
     ///     Represents a non-option command-line parameter.
     /// </summary>
     [DebuggerDisplay("Argument {Name} [{Validators.Count} validators]")]
-    public sealed class Argument : Arg
+    public sealed class Argument : ArgumentOrOption<Argument>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ValidatorCollection _validators;
@@ -63,7 +63,7 @@ namespace ConsoleFx.CmdLineArgs
         /// </summary>
         /// <param name="validators">The validators to use to validate the argument.</param>
         /// <returns>The same instance of the <see cref="Argument"/> object to allow for fluent syntax.</returns>
-        public Argument ValidateWith(params Validator[] validators)
+        public override sealed Argument ValidateWith(params Validator[] validators)
         {
             foreach (Validator validator in validators)
                 Validators.Add(validator);

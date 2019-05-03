@@ -23,6 +23,9 @@ using ConsoleFx.CmdLineArgs.Validators.Bases;
 
 namespace ConsoleFx.CmdLineArgs.Validators
 {
+    /// <summary>
+    ///     Validates whether an arg value is a valid <see cref="Guid"/>.
+    /// </summary>
     public class GuidValidator : SingleMessageValidator<Guid>
     {
         public GuidValidator()

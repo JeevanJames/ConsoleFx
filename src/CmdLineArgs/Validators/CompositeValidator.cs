@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 using ConsoleFx.CmdLineArgs.Validators.Bases;
@@ -25,16 +26,24 @@ using ConsoleFx.CmdLineArgs.Validators.Bases;
 namespace ConsoleFx.CmdLineArgs.Validators
 {
     /// <summary>
-    /// Checks if any one of the specified validators passes.
+    ///     Checks if any one of the specified validators passes.
     /// </summary>
     public class CompositeValidator : SingleMessageValidator<string>
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Validator[] _validators;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CompositeValidator"/> class.
+        /// </summary>
+        /// <param name="errorMessage">The validation failure message.</param>
+        /// <param name="validators">Two or more validators that form the composite validator.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="validators"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if less than 2 validators are specified.</exception>
         public CompositeValidator(string errorMessage, params Validator[] validators)
             : base(errorMessage)
         {
-            if (validators == null)
+            if (validators is null)
                 throw new ArgumentNullException(nameof(validators));
             if (validators.Length < 2)
                 throw new ArgumentException("Specify at least two validators for a composite validator.", nameof(validators));

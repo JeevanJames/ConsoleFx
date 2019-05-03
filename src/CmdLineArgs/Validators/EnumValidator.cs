@@ -24,22 +24,25 @@ using ConsoleFx.CmdLineArgs.Validators.Bases;
 
 namespace ConsoleFx.CmdLineArgs.Validators
 {
+    /// <summary>
+    ///     Checks if a value is a valid enum.
+    /// </summary>
     public class EnumValidator : SingleMessageValidator<string>
     {
-        private Type EnumType { get; }
-
-        private bool IgnoreCase { get; }
-
         public EnumValidator(Type enumType, bool ignoreCase = true)
             : base(Messages.Enum)
         {
-            if (enumType == null)
+            if (enumType is null)
                 throw new ArgumentNullException(nameof(enumType));
             if (!enumType.IsEnum)
                 throw new ArgumentException("The enumType parameter should specify a enumerator type", nameof(enumType));
             EnumType = enumType;
             IgnoreCase = ignoreCase;
         }
+
+        private Type EnumType { get; }
+
+        private bool IgnoreCase { get; }
 
         protected override string ValidateAsString(string parameterValue)
         {
@@ -52,7 +55,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
     }
 
     public class EnumValidator<TEnum> : EnumValidator
-        where TEnum : struct, IComparable
+        where TEnum : Enum
     {
         public EnumValidator(bool ignoreCase = true)
             : base(typeof(TEnum), ignoreCase)
@@ -72,7 +75,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
         }
 
         public static Argument ValidateAsEnum<TEnum>(this Argument argument, bool ignoreCase = true, string message = null)
-            where TEnum : struct, IComparable
+            where TEnum : Enum
         {
             var validator = new EnumValidator<TEnum>(ignoreCase);
             if (message != null)
@@ -91,7 +94,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
 
         public static Option ValidateAsEnum<TEnum>(this Option option, bool ignoreCase = true, int parameterIndex = -1,
             string message = null)
-            where TEnum : struct, IComparable
+            where TEnum : Enum
         {
             var validator = new EnumValidator<TEnum>(ignoreCase);
             if (message != null)

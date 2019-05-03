@@ -17,17 +17,25 @@ limitations under the License.
 */
 #endregion
 
+using System;
+using System.Diagnostics;
+
 using ConsoleFx.CmdLineArgs.Validators.Bases;
 
 namespace ConsoleFx.CmdLineArgs.Validators
 {
     public class IntegerValidator : Validator<long>
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly long _minimumValue;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly long _maximumValue;
 
         public IntegerValidator(long minimumValue = long.MinValue, long maximumValue = long.MaxValue)
         {
+            if (minimumValue > maximumValue)
+                throw new ArgumentException("Minimum value cannot be greater than the maximum value.", nameof(minimumValue));
             _minimumValue = minimumValue;
             _maximumValue = maximumValue;
         }

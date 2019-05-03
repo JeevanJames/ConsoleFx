@@ -29,7 +29,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
         public RegexValidator(Regex regex)
             : base(Messages.Regex)
         {
-            if (regex == null)
+            if (regex is null)
                 throw new ArgumentNullException(nameof(regex));
             Regex = regex;
         }

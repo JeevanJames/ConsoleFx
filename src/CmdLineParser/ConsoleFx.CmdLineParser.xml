@@ -234,22 +234,22 @@
                 Gets or sets all the specified options and argument tokens after accounting for the commands.
             </summary>
         </member>
-        <member name="T:ConsoleFx.CmdLineParser.Style.ParserStyle">
+        <member name="T:ConsoleFx.CmdLineParser.Style.ArgStyle">
             <summary>
-                Base class that validates the rules for argument grouping.
+                Base class that defines the style of the arguments being parsed.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Style.ParserStyle.GetGrouping(ConsoleFx.CmdLineArgs.ArgGrouping,System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Option},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Argument})">
+        <member name="M:ConsoleFx.CmdLineParser.Style.ArgStyle.GetGrouping(ConsoleFx.CmdLineArgs.ArgGrouping,System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Option},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Argument})">
             <summary>
-                Allows the parser style to override the preferred grouping based on its rules for the specified options and
-                arguments.
+                Allows the parser style to override the preferred grouping based on its rules for the
+                specified options and arguments.
             </summary>
             <param name="specifiedGrouping">The preferred grouping.</param>
             <param name="options">The list of allowed options.</param>
             <param name="arguments">The list of allowed arguments.</param>
             <returns>The final grouping for the specified options and arguments.</returns>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Style.ParserStyle.ValidateDefinedOptions(System.Collections.Generic.IEnumerable{ConsoleFx.CmdLineArgs.Option})">
+        <member name="M:ConsoleFx.CmdLineParser.Style.ArgStyle.ValidateDefinedOptions(System.Collections.Generic.IEnumerable{ConsoleFx.CmdLineArgs.Option})">
             <summary>
                 <para>Validate that the defined options are compatible with the parser style.</para>
                 <para>An exception should be thrown if any option is invalid.</para>
@@ -257,7 +257,7 @@
             </summary>
             <param name="options">List of all the defined options.</param>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Style.ParserStyle.IdentifyTokens(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineParser.Runs.OptionRun},ConsoleFx.CmdLineArgs.ArgGrouping)">
+        <member name="M:ConsoleFx.CmdLineParser.Style.ArgStyle.IdentifyTokens(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineParser.Runs.OptionRun},ConsoleFx.CmdLineArgs.ArgGrouping)">
             <summary>
                 <para>Identifies all provided tokens as arguments, options and option parameters.</para>
                 <para>Option and argument validators are not checked in this phase. Only the arg grouping is checked.</para>
@@ -267,10 +267,10 @@
             <param name="grouping">The expected arg grouping to validate.</param>
             <returns>A collection of all the identified arguments.</returns>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Style.UnixParserStyle.GetGrouping(ConsoleFx.CmdLineArgs.ArgGrouping,System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Option},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Argument})">
+        <member name="M:ConsoleFx.CmdLineParser.Style.UnixArgStyle.GetGrouping(ConsoleFx.CmdLineArgs.ArgGrouping,System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Option},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLineArgs.Argument})">
             <inheritdoc/>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.Style.WindowsParserStyle.VerifyCommandLineGrouping(ConsoleFx.CmdLineParser.Style.WindowsParserStyle.ArgumentType,ConsoleFx.CmdLineParser.Style.WindowsParserStyle.ArgumentType,ConsoleFx.CmdLineArgs.ArgGrouping)">
+        <member name="M:ConsoleFx.CmdLineParser.Style.WindowsArgStyle.VerifyCommandLineGrouping(ConsoleFx.CmdLineParser.Style.WindowsArgStyle.ArgumentType,ConsoleFx.CmdLineParser.Style.WindowsArgStyle.ArgumentType,ConsoleFx.CmdLineArgs.ArgGrouping)">
             <summary>
                 This method is used by the code that validates the command-line grouping. It is
                 called for every iteration of the arguments.

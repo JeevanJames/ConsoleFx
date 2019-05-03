@@ -31,7 +31,7 @@ namespace ConsoleFx.CmdLineArgs
     ///     Represents an options arg.
     /// </summary>
     [DebuggerDisplay("Option: {" + nameof(Name) + "}")]
-    public sealed class Option : Arg
+    public sealed class Option : ArgumentOrOption<Option>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying names.
@@ -76,7 +76,7 @@ namespace ConsoleFx.CmdLineArgs
         ///     Gets or sets the optional delegate that allows a option parameter value to be custom formatted.
         ///     During parsing, the formatting is performed before any type conversion.
         /// </summary>
-        public OptionParameterFormatter Formatter { get; set; }
+        public Func<string, string> Formatter { get; set; }
 
         /// <summary>
         ///     Gets or sets the type that the option parameters should be converted to. If a <see cref="TypeConverter" />
@@ -102,7 +102,7 @@ namespace ConsoleFx.CmdLineArgs
         /// <param name="formatter">Parameter formatter delegate</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the parameter formatter delegate is null.</exception>
-        public Option FormatParamsAs(OptionParameterFormatter formatter)
+        public Option FormatParamsAs(Func<string, string> formatter)
         {
             if (formatter == null)
                 throw new ArgumentNullException(nameof(formatter));
@@ -159,15 +159,16 @@ namespace ConsoleFx.CmdLineArgs
         }
 
         /// <summary>
-        /// Specifies one or more validators that will be used to validate the option's parameter values.
+        ///     Specifies one or more validators that will be used to validate the option's parameter
+        ///     values.
         /// </summary>
         /// <param name="validators">One or more validators.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the specified validators array is null.</exception>
         /// <exception cref="ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
-        public Option ValidateWith(params Validator[] validators)
+        public override sealed Option ValidateWith(params Validator[] validators)
         {
-            if (validators == null)
+            if (validators is null)
                 throw new ArgumentNullException(nameof(validators));
             if (validators.Length == 0)
                 throw new ArgumentException(Errors.Option_ValidatorsNotSpecified, nameof(validators));
@@ -193,7 +194,7 @@ namespace ConsoleFx.CmdLineArgs
         /// <exception cref="ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
         public Option ValidateWith(int parameterIndex, params Validator[] validators)
         {
-            if (validators == null)
+            if (validators is null)
                 throw new ArgumentNullException(nameof(validators));
             if (validators.Length == 0)
                 throw new ArgumentException(Errors.Option_ValidatorsNotSpecified, nameof(validators));
@@ -208,8 +209,6 @@ namespace ConsoleFx.CmdLineArgs
             return this;
         }
     }
-
-    public delegate string OptionParameterFormatter(string value);
 
     /// <summary>
     ///     Represents a collection of options. Note: This is not a keyed collection because the key

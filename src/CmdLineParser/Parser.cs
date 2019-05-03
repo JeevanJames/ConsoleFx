@@ -34,13 +34,13 @@ namespace ConsoleFx.CmdLineParser
 {
     public sealed class Parser
     {
-        public Parser(ParserStyle parserStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
+        public Parser(ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
-            ParserStyle = parserStyle;
+            ArgStyle = argStyle;
             Grouping = grouping;
         }
 
-        public ParserStyle ParserStyle { get; }
+        public ArgStyle ArgStyle { get; }
 
         /// <summary>
         ///     Gets or sets how the args should be grouped.
@@ -86,17 +86,17 @@ namespace ConsoleFx.CmdLineParser
             IReadOnlyList<Argument> justArguments = run.Arguments.Select(a => a.Argument).ToList();
 
             // Even though the caller can define the grouping, the parser style can override it based on the available
-            // options and arguments. See the UnixParserStyle class for an example.
-            Grouping = ParserStyle.GetGrouping(Grouping, justOptions, justArguments);
+            // options and arguments. See the UnixArgStyle class for an example.
+            Grouping = ArgStyle.GetGrouping(Grouping, justOptions, justArguments);
 
             // Validate all the available options based on the parser style rules.
-            // See the UnixParserStyle for an example.
-            ParserStyle.ValidateDefinedOptions(justOptions);
+            // See the UnixArgStyle for an example.
+            ArgStyle.ValidateDefinedOptions(justOptions);
 
             // Identify all tokens as options or arguments. Identified option details are stored in the Option instance
             // itself. Identified arguments are returned from the method.
             List<string> specifiedArguments =
-                ParserStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
+                ArgStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
 
             //TODO: Come back to this later
             //if (ConfigReader != null)

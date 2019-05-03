@@ -14,7 +14,7 @@ namespace TestHarness
     {
         private static int Main()
         {
-            var program = new ConsoleProgram(ParserStyle.Windows);
+            var program = new ConsoleProgram(ArgStyle.Windows);
             program.Options.Add(new Option("force", "f")
                 .UsedAsFlag());
             program.Arguments.Add(new Argument("SourceFile")

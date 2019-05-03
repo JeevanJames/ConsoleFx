@@ -457,7 +457,7 @@
                 Gets or sets the optional converter to convert a string parameter value to the actual <see cref="P:ConsoleFx.CmdLineArgs.Option.Type" />.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLineArgs.Option.FormatParamsAs(ConsoleFx.CmdLineArgs.OptionParameterFormatter)">
+        <member name="M:ConsoleFx.CmdLineArgs.Option.FormatParamsAs(System.Func{System.String,System.String})">
             <summary>
                 Assigns a parameter formatter delegate to the option, which can be used to format the
                 option's parameter value.
@@ -496,7 +496,8 @@
         </member>
         <member name="M:ConsoleFx.CmdLineArgs.Option.ValidateWith(ConsoleFx.CmdLineArgs.Validators.Bases.Validator[])">
             <summary>
-            Specifies one or more validators that will be used to validate the option's parameter values.
+                Specifies one or more validators that will be used to validate the option's parameter
+                values.
             </summary>
             <param name="validators">One or more validators.</param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLineArgs.Option"/>.</returns>
@@ -754,14 +755,22 @@
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Validators.Bases.SingleMessageValidator`1">
             <summary>
-                Base class for validators that only have one possible type of validation failure. In this case, the class provides
-                an OOTB Message property with a default value that can be changed.
+                Base class for validators that only have one possible type of validation failure. In this
+                case, the class provides a Message property with a default value that can be changed.
             </summary>
             <typeparam name="T">The actual type of the value being validated.</typeparam>
         </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Validators.Bases.SingleMessageValidator`1.#ctor(System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineArgs.Validators.Bases.SingleMessageValidator`1"/> class.
+            </summary>
+            <param name="message">The validation failure message.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="message"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="message"/> is empty or only white spaces.</exception>
+        </member>
         <member name="P:ConsoleFx.CmdLineArgs.Validators.Bases.SingleMessageValidator`1.Message">
             <summary>
-            Gets or sets the error message to be displayed if the validation fails.
+                Gets or sets the error message to be displayed if the validation fails.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Validators.Bases.Validator">
@@ -828,8 +837,17 @@
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Validators.CompositeValidator">
             <summary>
-            Checks if any one of the specified validators passes.
+                Checks if any one of the specified validators passes.
             </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Validators.CompositeValidator.#ctor(System.String,ConsoleFx.CmdLineArgs.Validators.Bases.Validator[])">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineArgs.Validators.CompositeValidator"/> class.
+            </summary>
+            <param name="errorMessage">The validation failure message.</param>
+            <param name="validators">Two or more validators that form the composite validator.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="validators"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if less than 2 validators are specified.</exception>
         </member>
         <member name="M:ConsoleFx.CmdLineArgs.Validators.CompositeValidator.ValidateAsString(System.String)">
             <inheritdoc />
@@ -840,6 +858,23 @@
             <param name="parameterValue">The parameter value as a string</param>
             <returns>The parameter value converted to its actual type.</returns>
             <exception cref="T:ConsoleFx.CmdLineArgs.Validators.ValidationException">Thrown if the validation fails.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Validators.CustomValidator.#ctor(System.Func{System.String,System.Boolean})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineArgs.Validators.CustomValidator"/> class.
+            </summary>
+            <param name="validator">A delegate that represents the custom validator logic.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="validator"/> is <c>null</c>.</exception>
+        </member>
+        <member name="T:ConsoleFx.CmdLineArgs.Validators.EnumValidator">
+            <summary>
+                Checks if a value is a valid enum.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLineArgs.Validators.GuidValidator">
+            <summary>
+                Validates whether an arg value is a valid <see cref="T:System.Guid"/>.
+            </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Validators.Messages">
             <summary>

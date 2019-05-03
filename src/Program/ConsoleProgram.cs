@@ -31,13 +31,13 @@ namespace ConsoleFx.Program
     public class ConsoleProgram : Command
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ParserStyle _parserStyle;
+        private readonly ArgStyle _argStyle;
 
-        public ConsoleProgram(ParserStyle parserStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
+        public ConsoleProgram(ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
-            if (parserStyle is null)
-                throw new ArgumentNullException(nameof(parserStyle));
-            _parserStyle = parserStyle;
+            if (argStyle is null)
+                throw new ArgumentNullException(nameof(argStyle));
+            _argStyle = argStyle;
             Grouping = grouping;
         }
 
@@ -45,7 +45,7 @@ namespace ConsoleFx.Program
 
         public int Run()
         {
-            var parser = new Parser(_parserStyle, Grouping);
+            var parser = new Parser(_argStyle, Grouping);
             List<Argument> arguments = Arguments.ToList();
             foreach (Argument argument in arguments)
                 parser.Arguments.Add(argument);
