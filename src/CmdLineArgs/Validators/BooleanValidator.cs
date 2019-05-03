@@ -39,12 +39,12 @@ namespace ConsoleFx.CmdLineArgs.Validators
         {
             _trueStrings = new List<string>(1)
             {
-                trueString
+                trueString,
             };
 
             _falseStrings = new List<string>(1)
             {
-                falseString
+                falseString,
             };
 
             _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;

@@ -68,7 +68,7 @@
             <summary>
                 Creates an instance of a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> from the specified color string.
             </summary>
-            <param name="cstr">The color string to parse</param>
+            <param name="cstr">The color string to parse.</param>
             <param name="colorStr">The new <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance created from the color string.</param>
             <returns>True, if the color string could be parsed and a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance created; otherwise false.</returns>
         </member>
@@ -106,7 +106,7 @@
             <summary>
                 Writes one or more blank lines to the Console.
                 <para />
-                Just a more descriptive way to do a <code>Console.WriteLine()</code>.
+                Just a more descriptive way to do a Console.WriteLine().
             </summary>
             <param name="count">The number of blank lines to write.</param>
         </member>
@@ -132,16 +132,16 @@
             <summary>
                 Displays a message and waits for user input.
             </summary>
-            <param name="message">A string or color string representing the message to be displayed</param>
-            <returns>The input entered by the user</returns>
+            <param name="message">A string or color string representing the message to be displayed.</param>
+            <returns>The input entered by the user.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Prompt(System.Func{System.String,System.Boolean})">
             <summary>
                 Accepts user input and validates the input with the specified validator.
                 If the input is not valid, the entered text is cleared and user prompted to enter the input again.
             </summary>
-            <param name="validator">Function to validate the input text</param>
-            <returns>The input entered by the user</returns>
+            <param name="validator">Function to validate the input text.</param>
+            <returns>The input entered by the user.</returns>
         </member>
         <member name="P:ConsoleFx.ConsoleExtensions.ConsoleEx.SecretMask">
             <summary>
@@ -193,7 +193,7 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForEnter">
             <summary>
-                Waits for the user to press the ENTER (RETURN) key
+                Waits for the user to press the ENTER (RETURN) key.
             </summary>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForAnyKey">
@@ -201,14 +201,14 @@
                 Waits for the user to press any key on the keyboard. Displays the character representing
                 the pressed key in the console window.
             </summary>
-            <returns>Information about the pressed key</returns>
+            <returns>Information about the pressed key.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeys(System.Char[])">
             <summary>
                 Waits for any of a specified set of keys to be pressed by the user.
             </summary>
             <param name="keys">An array of characters representing the allowed set of characters.</param>
-            <returns>The character pressed by the user</returns>
+            <returns>The character pressed by the user.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeys(System.Boolean,System.Char[])">
             <summary>
@@ -216,14 +216,14 @@
             </summary>
             <param name="ignoreCase">Indicates whether to the keys pressed are case sensitive.</param>
             <param name="keys">An array of characters representing the allowed set of characters.</param>
-            <returns>The character pressed by the user</returns>
+            <returns>The character pressed by the user.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeys(System.ConsoleKey[])">
             <summary>
                 Waits for any of a specified set of keys to be pressed by the user.
             </summary>
             <param name="keys">An array of ConsoleKey objects representing the allowed set of keys.</param>
-            <returns>The key pressed by the user</returns>
+            <returns>The key pressed by the user.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})">
             <summary>

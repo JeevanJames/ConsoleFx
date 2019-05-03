@@ -55,7 +55,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
         ///     Validates the parameter value as a string. Converts to the actual type if the validation succeeds and returns that
         ///     value. This method must be overridden in derived classes.
         /// </summary>
-        /// <param name="parameterValue">The parameter value as a string</param>
+        /// <param name="parameterValue">The parameter value as a string.</param>
         /// <returns>The parameter value converted to its actual type.</returns>
         /// <exception cref="T:ConsoleFx.CmdLineArgs.Validators.ValidationException">Thrown if the validation fails.</exception>
         protected override string ValidateAsString(string parameterValue)

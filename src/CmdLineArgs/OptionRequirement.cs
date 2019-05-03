@@ -46,6 +46,6 @@ namespace ConsoleFx.CmdLineArgs
         ///     The option is required. Sets the option's MinOccurences property to 1 and MaxOccurences
         ///     property to int.MaxValue to indicate unlimited number of occurences.
         /// </summary>
-        RequiredUnlimited
+        RequiredUnlimited,
     }
 }

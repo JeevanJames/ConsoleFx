@@ -61,15 +61,6 @@ namespace ConsoleFx.Capture {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file &apos;{0}&apos; does not exist..
-        /// </summary>
-        internal static string Arg_FileNotExists {
-            get {
-                return ResourceManager.GetString("Arg_FileNotExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The process was aborted..
         /// </summary>
         internal static string ProcessAborted {

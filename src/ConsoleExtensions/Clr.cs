@@ -106,7 +106,7 @@ namespace ConsoleFx.ConsoleExtensions
             _colors = new CColor?[2]
             {
                 foregroundColor ?? clr._colors[0],
-                backgroundColor ?? clr._colors[1]
+                backgroundColor ?? clr._colors[1],
             };
         }
 

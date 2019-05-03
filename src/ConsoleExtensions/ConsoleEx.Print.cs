@@ -84,7 +84,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <summary>
         ///     Writes one or more blank lines to the Console.
         ///     <para />
-        ///     Just a more descriptive way to do a <code>Console.WriteLine()</code>.
+        ///     Just a more descriptive way to do a Console.WriteLine().
         /// </summary>
         /// <param name="count">The number of blank lines to write.</param>
         public static void PrintBlank(int count = 1)
@@ -166,7 +166,7 @@ namespace ConsoleFx.ConsoleExtensions
             [CColor.BgMagenta] = ConsoleColor.Magenta,
             [CColor.BgRed] = ConsoleColor.Red,
             [CColor.BgWhite] = ConsoleColor.White,
-            [CColor.BgYellow] = ConsoleColor.Yellow
+            [CColor.BgYellow] = ConsoleColor.Yellow,
         };
     }
 

@@ -26,7 +26,7 @@ namespace ConsoleFx.ConsoleExtensions
     public static partial class ConsoleEx
     {
         /// <summary>
-        ///     Waits for the user to press the ENTER (RETURN) key
+        ///     Waits for the user to press the ENTER (RETURN) key.
         /// </summary>
         public static void WaitForEnter()
         {
@@ -37,7 +37,7 @@ namespace ConsoleFx.ConsoleExtensions
         ///     Waits for the user to press any key on the keyboard. Displays the character representing
         ///     the pressed key in the console window.
         /// </summary>
-        /// <returns>Information about the pressed key</returns>
+        /// <returns>Information about the pressed key.</returns>
         public static ConsoleKeyInfo WaitForAnyKey()
         {
             return Console.ReadKey(intercept: true);
@@ -47,7 +47,7 @@ namespace ConsoleFx.ConsoleExtensions
         ///     Waits for any of a specified set of keys to be pressed by the user.
         /// </summary>
         /// <param name="keys">An array of characters representing the allowed set of characters.</param>
-        /// <returns>The character pressed by the user</returns>
+        /// <returns>The character pressed by the user.</returns>
         public static char WaitForKeys(params char[] keys)
         {
             char key;
@@ -62,7 +62,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// </summary>
         /// <param name="ignoreCase">Indicates whether to the keys pressed are case sensitive.</param>
         /// <param name="keys">An array of characters representing the allowed set of characters.</param>
-        /// <returns>The character pressed by the user</returns>
+        /// <returns>The character pressed by the user.</returns>
         public static char WaitForKeys(bool ignoreCase, params char[] keys)
         {
             char[] casedKeys = ignoreCase ? keys.Select(char.ToUpperInvariant).ToArray() : keys;
@@ -81,7 +81,7 @@ namespace ConsoleFx.ConsoleExtensions
         ///     Waits for any of a specified set of keys to be pressed by the user.
         /// </summary>
         /// <param name="keys">An array of ConsoleKey objects representing the allowed set of keys.</param>
-        /// <returns>The key pressed by the user</returns>
+        /// <returns>The key pressed by the user.</returns>
         public static ConsoleKey WaitForKeys(params ConsoleKey[] keys)
         {
             ConsoleKey key;

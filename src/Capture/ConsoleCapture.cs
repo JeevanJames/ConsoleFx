@@ -71,7 +71,7 @@ namespace ConsoleFx.Capture
         ///     the error output.
         /// </summary>
         /// <param name="captureError">Indicates whether to capture errors from the app.</param>
-        /// <returns>An instance of <see cref="ConsoleCaptureResult"/></returns>
+        /// <returns>An instance of <see cref="ConsoleCaptureResult"/>.</returns>
         /// <exception cref="ConsoleCaptureException">Thrown if the process cannot be started.</exception>
         public ConsoleCaptureResult Start(bool captureError = false)
         {
@@ -102,7 +102,7 @@ namespace ConsoleFx.Capture
         }
 
         /// <summary>
-        ///     Used to capture output if error output is not required
+        ///     Used to capture output if error output is not required.
         /// </summary>
         /// <param name="process">The process to capture output from.</param>
         /// <param name="outputMessage">The output message captured from the process.</param>
@@ -118,9 +118,10 @@ namespace ConsoleFx.Capture
         }
 
         /// <summary>
-        /// Used to capture both output and error output. This code is more complicated and is
-        /// based on the CodeProject article by Andrew Tweddle:
-        /// http://www.codeproject.com/KB/string/CommandLineHelper.aspx
+        ///     Used to capture both output and error output. This code is more complicated and is
+        ///     based on the CodeProject article by Andrew Tweddle:
+        ///     <para/>
+        ///     http://www.codeproject.com/KB/string/CommandLineHelper.aspx.
         /// </summary>
         /// <param name="process">The process to capture output from.</param>
         /// <param name="outputMessage">The output message captured from the process.</param>
@@ -160,7 +161,14 @@ namespace ConsoleFx.Capture
             return process.ExitCode;
         }
 
-        //Static shortcut for capturing console output.
+        /// <summary>
+        ///     Starts the specified application as a console app and captures the output and (optionally)
+        ///     the error output.
+        /// </summary>
+        /// <param name="fileName">The file name of the command-line application to execute.</param>
+        /// <param name="arguments">The arguments to pass to the command-line application.</param>
+        /// <param name="captureError">Indicates whether to capture errors from the app.</param>
+        /// <returns>An instance of <see cref="ConsoleCaptureResult"/>.</returns>
         public static ConsoleCaptureResult Start(string fileName, string arguments = null, bool captureError = false)
         {
             return new ConsoleCapture(fileName, arguments).Start(captureError);

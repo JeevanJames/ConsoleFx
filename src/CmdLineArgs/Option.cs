@@ -99,7 +99,7 @@ namespace ConsoleFx.CmdLineArgs
         ///     Assigns a parameter formatter delegate to the option, which can be used to format the
         ///     option's parameter value.
         /// </summary>
-        /// <param name="formatter">Parameter formatter delegate</param>
+        /// <param name="formatter">Parameter formatter delegate.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the parameter formatter delegate is null.</exception>
         public Option FormatParamsAs(Func<string, string> formatter)

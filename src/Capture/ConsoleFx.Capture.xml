@@ -4,18 +4,52 @@
         <name>ConsoleFx.Capture</name>
     </assembly>
     <members>
+        <member name="T:ConsoleFx.Capture.ConsoleCapture">
+            <summary>
+                Executes a command-line application and captures its output.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ConsoleCapture.FileName">
+            <summary>
+                Gets the path to the command-line application to execute.
+                <para/>
+                This could be an absolute path, relative path or a file name on the system path.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ConsoleCapture.Arguments">
+            <summary>
+                Gets the arguments to pass to the command-line application to execute.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCapture.#ctor(System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCapture"/> class with the
+                <paramref name="fileName"/> of the command-line application to execute.
+            </summary>
+            <param name="fileName">The file name of the command-line application to execute.</param>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCapture.#ctor(System.String,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCapture"/> class with the
+                <paramref name="fileName"/> of the command-line application to execute and any
+                <paramref name="arguments"/> to pass to it.
+            </summary>
+            <param name="fileName">The file name of the command-line application to execute.</param>
+            <param name="arguments">The arguments to pass to the command-line application.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="fileName"/> is <c>null</c>.</exception>
+        </member>
         <member name="M:ConsoleFx.Capture.ConsoleCapture.Start(System.Boolean)">
             <summary>
-            Starts the specified application as a console app and captures the output and
-            (optionally) the error output.
+                Starts the specified application as a console app and captures the output and (optionally)
+                the error output.
             </summary>
             <param name="captureError">Indicates whether to capture errors from the app.</param>
-            <returns>An instance of <see cref="T:ConsoleFx.Capture.ConsoleCaptureResult"/></returns>
+            <returns>An instance of <see cref="T:ConsoleFx.Capture.ConsoleCaptureResult"/>.</returns>
             <exception cref="T:ConsoleFx.Capture.ConsoleCaptureException">Thrown if the process cannot be started.</exception>
         </member>
         <member name="M:ConsoleFx.Capture.ConsoleCapture.CaptureOutput(System.Diagnostics.Process,System.String@)">
             <summary>
-            Used to capture output if error output is not required
+                Used to capture output if error output is not required.
             </summary>
             <param name="process">The process to capture output from.</param>
             <param name="outputMessage">The output message captured from the process.</param>
@@ -23,15 +57,54 @@
         </member>
         <member name="M:ConsoleFx.Capture.ConsoleCapture.CaptureOutputAndError(System.Diagnostics.Process,System.String@,System.String@)">
             <summary>
-            Used to capture both output and error output. This code is more complicated and is
-            based on the CodeProject article by Andrew Tweddle:
-            http://www.codeproject.com/KB/string/CommandLineHelper.aspx
+                Used to capture both output and error output. This code is more complicated and is
+                based on the CodeProject article by Andrew Tweddle:
+                <para/>
+                http://www.codeproject.com/KB/string/CommandLineHelper.aspx.
             </summary>
             <param name="process">The process to capture output from.</param>
             <param name="outputMessage">The output message captured from the process.</param>
             <param name="errorMessage">The error message captured from the process.</param>
             <returns>The process exit code.</returns>
             <exception cref="T:ConsoleFx.Capture.ConsoleCaptureException">Thrown if any of processes fails.</exception>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCapture.Start(System.String,System.String,System.Boolean)">
+            <summary>
+                Starts the specified application as a console app and captures the output and (optionally)
+                the error output.
+            </summary>
+            <param name="fileName">The file name of the command-line application to execute.</param>
+            <param name="arguments">The arguments to pass to the command-line application.</param>
+            <param name="captureError">Indicates whether to capture errors from the app.</param>
+            <returns>An instance of <see cref="T:ConsoleFx.Capture.ConsoleCaptureResult"/>.</returns>
+        </member>
+        <member name="T:ConsoleFx.Capture.ConsoleCaptureResult">
+            <summary>
+                Represents the result of a console capture.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCaptureResult.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCaptureResult"/> class.
+            </summary>
+            <param name="exitCode">The exit code from the process.</param>
+            <param name="outputMessage">The text captured from standard output.</param>
+            <param name="errorMessage">The text captured from standard error.</param>
+        </member>
+        <member name="P:ConsoleFx.Capture.ConsoleCaptureResult.ExitCode">
+            <summary>
+                Gets the exit code from the executed process.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ConsoleCaptureResult.ErrorMessage">
+            <summary>
+                Gets the text captured from standard error.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Capture.ConsoleCaptureResult.OutputMessage">
+            <summary>
+                Gets the text captured from standard output.
+            </summary>
         </member>
         <member name="T:ConsoleFx.Capture.ErrorMessages">
             <summary>
@@ -47,11 +120,6 @@
             <summary>
               Overrides the current thread's CurrentUICulture property for all
               resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.Capture.ErrorMessages.Arg_FileNotExists">
-            <summary>
-              Looks up a localized string similar to The file &apos;{0}&apos; does not exist..
             </summary>
         </member>
         <member name="P:ConsoleFx.Capture.ErrorMessages.ProcessAborted">

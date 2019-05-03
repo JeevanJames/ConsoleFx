@@ -31,7 +31,7 @@ namespace ConsoleFx.Prompter.Questions
         {
             _askerFn = (q, ans) =>
             {
-                bool validator(string str)
+                bool Validator(string str)
                 {
                     if (string.IsNullOrEmpty(str))
                         str = q.DefaultValue.Resolve(ans);
@@ -47,7 +47,7 @@ namespace ConsoleFx.Prompter.Questions
                     return valid;
                 }
 
-                return ConsoleEx.Prompt(new ColorString().Cyan(q.Message.Resolve(ans)), (Func<string, bool>)validator);
+                return ConsoleEx.Prompt(new ColorString().Cyan(q.Message.Resolve(ans)), (Func<string, bool>)Validator);
             };
         }
 

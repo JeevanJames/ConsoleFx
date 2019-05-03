@@ -317,7 +317,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <summary>
         ///     Creates an instance of a <see cref="ColorString" /> from the specified color string.
         /// </summary>
-        /// <param name="cstr">The color string to parse</param>
+        /// <param name="cstr">The color string to parse.</param>
         /// <param name="colorStr">The new <see cref="ColorString" /> instance created from the color string.</param>
         /// <returns>True, if the color string could be parsed and a <see cref="ColorString" /> instance created; otherwise false.</returns>
         public static bool TryParse(string cstr, out ColorString colorStr)

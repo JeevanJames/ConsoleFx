@@ -127,7 +127,7 @@ namespace ConsoleFx.CmdLineParser.Style
         {
             NotSet,
             Option,
-            Argument
+            Argument,
         }
     }
 }

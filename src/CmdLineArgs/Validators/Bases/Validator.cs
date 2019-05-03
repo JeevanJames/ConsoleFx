@@ -24,7 +24,7 @@ using System.Linq;
 namespace ConsoleFx.CmdLineArgs.Validators.Bases
 {
     /// <summary>
-    ///     Base class for all validators
+    ///     Base class for all validators.
     /// </summary>
     public abstract class Validator
     {
@@ -37,10 +37,10 @@ namespace ConsoleFx.CmdLineArgs.Validators.Bases
 
         /// <summary>
         ///     Shortcut method for throwing a failed validation exception. Use this from derived classes,
-        ///     instead of throwing the exception directly
+        ///     instead of throwing the exception directly.
         /// </summary>
-        /// <param name="message">The validation error message</param>
-        /// <param name="parameterValue">The parameter value that caused the validation to fail</param>
+        /// <param name="message">The validation error message.</param>
+        /// <param name="parameterValue">The parameter value that caused the validation to fail.</param>
         /// <param name="args">Optional arguments to the message.</param>
         protected void ValidationFailed(string message, string parameterValue, params object[] args)
         {
@@ -75,7 +75,7 @@ namespace ConsoleFx.CmdLineArgs.Validators.Bases
         ///     Validates the parameter value as a string. Converts to the actual type if the validation succeeds and returns that
         ///     value. This method must be overridden in derived classes.
         /// </summary>
-        /// <param name="parameterValue">The parameter value as a string</param>
+        /// <param name="parameterValue">The parameter value as a string.</param>
         /// <returns>The parameter value converted to its actual type.</returns>
         /// <exception cref="ValidationException">Thrown if the validation fails.</exception>
         protected abstract T ValidateAsString(string parameterValue);
@@ -86,7 +86,7 @@ namespace ConsoleFx.CmdLineArgs.Validators.Bases
         ///     This is useful for additional validations that can only be performed on the actual typed value.
         /// </summary>
         /// <param name="value">The typed parameter value.</param>
-        /// <param name="parameterValue">The parameter value as a string</param>
+        /// <param name="parameterValue">The parameter value as a string.</param>
         /// <exception cref="ValidationException">Thrown if the validation fails.</exception>
         protected virtual void ValidateAsActualType(T value, string parameterValue)
         {
@@ -94,7 +94,7 @@ namespace ConsoleFx.CmdLineArgs.Validators.Bases
     }
 
     /// <summary>
-    ///     Collection of validator classes
+    ///     Collection of validator classes.
     /// </summary>
     public sealed class ValidatorCollection : Collection<Validator>
     {

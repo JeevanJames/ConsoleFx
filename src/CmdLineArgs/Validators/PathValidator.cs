@@ -55,6 +55,6 @@ namespace ConsoleFx.CmdLineArgs.Validators
     public enum PathType
     {
         File,
-        Directory
+        Directory,
     }
 }

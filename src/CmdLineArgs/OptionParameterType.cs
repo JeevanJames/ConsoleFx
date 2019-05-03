@@ -20,7 +20,7 @@ limitations under the License.
 namespace ConsoleFx.CmdLineArgs
 {
     /// <summary>
-    ///     Specify whether the parameters of an option are repeating or individual
+    ///     Specify whether the parameters of an option are repeating or individual.
     /// </summary>
     public enum OptionParameterType
     {
@@ -32,6 +32,6 @@ namespace ConsoleFx.CmdLineArgs
         /// <summary>
         ///     Each parameter is independent, has its own meaning and is at a specific position
         /// </summary>
-        Individual
+        Individual,
     }
 }

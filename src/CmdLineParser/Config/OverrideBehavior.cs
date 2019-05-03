@@ -39,6 +39,6 @@ namespace ConsoleFx.CmdLineParser.Config
         /// <summary>
         ///     If available, use only config values and ignore specified values.
         /// </summary>
-        AlwaysConfig
+        AlwaysConfig,
     }
 }

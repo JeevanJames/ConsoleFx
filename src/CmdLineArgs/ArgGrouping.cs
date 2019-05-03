@@ -39,6 +39,6 @@ namespace ConsoleFx.CmdLineArgs
         /// <summary>
         ///     Options must be specified after arguments in the command line.
         /// </summary>
-        OptionsAfterArguments
+        OptionsAfterArguments,
     }
 }

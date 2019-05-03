@@ -462,7 +462,7 @@
                 Assigns a parameter formatter delegate to the option, which can be used to format the
                 option's parameter value.
             </summary>
-            <param name="formatter">Parameter formatter delegate</param>
+            <param name="formatter">Parameter formatter delegate.</param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLineArgs.Option"/>.</returns>
             <exception cref="T:System.ArgumentNullException">Thrown if the parameter formatter delegate is null.</exception>
         </member>
@@ -557,7 +557,7 @@
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.OptionParameterType">
             <summary>
-                Specify whether the parameters of an option are repeating or individual
+                Specify whether the parameters of an option are repeating or individual.
             </summary>
         </member>
         <member name="F:ConsoleFx.CmdLineArgs.OptionParameterType.Repeating">
@@ -736,7 +736,7 @@
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLineArgs.ParserException"/> class with an error code and message.
             </summary>
             <param name="errorCode">A machine readable code for the specific error that occurred.</param>
-            <param name="message">The error message</param>
+            <param name="message">The error message.</param>
         </member>
         <member name="M:ConsoleFx.CmdLineArgs.ParserException.#ctor(System.Int32,System.String,System.Exception)">
             <summary>
@@ -775,7 +775,7 @@
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Validators.Bases.Validator">
             <summary>
-                Base class for all validators
+                Base class for all validators.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLineArgs.Validators.Bases.Validator.Validate(System.String)">
@@ -788,10 +788,10 @@
         <member name="M:ConsoleFx.CmdLineArgs.Validators.Bases.Validator.ValidationFailed(System.String,System.String,System.Object[])">
             <summary>
                 Shortcut method for throwing a failed validation exception. Use this from derived classes,
-                instead of throwing the exception directly
+                instead of throwing the exception directly.
             </summary>
-            <param name="message">The validation error message</param>
-            <param name="parameterValue">The parameter value that caused the validation to fail</param>
+            <param name="message">The validation error message.</param>
+            <param name="parameterValue">The parameter value that caused the validation to fail.</param>
             <param name="args">Optional arguments to the message.</param>
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Validators.Bases.Validator`1">
@@ -811,7 +811,7 @@
                 Validates the parameter value as a string. Converts to the actual type if the validation succeeds and returns that
                 value. This method must be overridden in derived classes.
             </summary>
-            <param name="parameterValue">The parameter value as a string</param>
+            <param name="parameterValue">The parameter value as a string.</param>
             <returns>The parameter value converted to its actual type.</returns>
             <exception cref="T:ConsoleFx.CmdLineArgs.Validators.ValidationException">Thrown if the validation fails.</exception>
         </member>
@@ -822,12 +822,12 @@
                 This is useful for additional validations that can only be performed on the actual typed value.
             </summary>
             <param name="value">The typed parameter value.</param>
-            <param name="parameterValue">The parameter value as a string</param>
+            <param name="parameterValue">The parameter value as a string.</param>
             <exception cref="T:ConsoleFx.CmdLineArgs.Validators.ValidationException">Thrown if the validation fails.</exception>
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Validators.Bases.ValidatorCollection">
             <summary>
-                Collection of validator classes
+                Collection of validator classes.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Validators.BooleanValidator">
@@ -855,7 +855,7 @@
                 Validates the parameter value as a string. Converts to the actual type if the validation succeeds and returns that
                 value. This method must be overridden in derived classes.
             </summary>
-            <param name="parameterValue">The parameter value as a string</param>
+            <param name="parameterValue">The parameter value as a string.</param>
             <returns>The parameter value converted to its actual type.</returns>
             <exception cref="T:ConsoleFx.CmdLineArgs.Validators.ValidationException">Thrown if the validation fails.</exception>
         </member>

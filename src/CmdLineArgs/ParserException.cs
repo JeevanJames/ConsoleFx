@@ -38,7 +38,7 @@ namespace ConsoleFx.CmdLineArgs
         ///     Initializes a new instance of the <see cref="ParserException"/> class with an error code and message.
         /// </summary>
         /// <param name="errorCode">A machine readable code for the specific error that occurred.</param>
-        /// <param name="message">The error message</param>
+        /// <param name="message">The error message.</param>
         public ParserException(int errorCode, string message)
             : base(message)
         {

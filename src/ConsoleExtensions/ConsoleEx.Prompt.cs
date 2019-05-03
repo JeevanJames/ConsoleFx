@@ -26,8 +26,8 @@ namespace ConsoleFx.ConsoleExtensions
         /// <summary>
         ///     Displays a message and waits for user input.
         /// </summary>
-        /// <param name="message">A string or color string representing the message to be displayed</param>
-        /// <returns>The input entered by the user</returns>
+        /// <param name="message">A string or color string representing the message to be displayed.</param>
+        /// <returns>The input entered by the user.</returns>
         public static string Prompt(ColorString message)
         {
             Print(message);
@@ -38,8 +38,8 @@ namespace ConsoleFx.ConsoleExtensions
         ///     Accepts user input and validates the input with the specified validator.
         ///     If the input is not valid, the entered text is cleared and user prompted to enter the input again.
         /// </summary>
-        /// <param name="validator">Function to validate the input text</param>
-        /// <returns>The input entered by the user</returns>
+        /// <param name="validator">Function to validate the input text.</param>
+        /// <returns>The input entered by the user.</returns>
         public static string Prompt(Func<string, bool> validator)
         {
 #pragma warning disable SA1008 // Opening parenthesis must be spaced correctly

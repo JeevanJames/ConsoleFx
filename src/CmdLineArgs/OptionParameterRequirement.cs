@@ -33,6 +33,6 @@ namespace ConsoleFx.CmdLineArgs
         /// <summary>
         ///     The option requires one or more parameters.
         /// </summary>
-        Required
+        Required,
     }
 }

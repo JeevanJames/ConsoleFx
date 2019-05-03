@@ -57,7 +57,7 @@ namespace ConsoleFx.CmdLineParser.Style
         ///     <para>Identifies all provided tokens as arguments, options and option parameters.</para>
         ///     <para>Option and argument validators are not checked in this phase. Only the arg grouping is checked.</para>
         /// </summary>
-        /// <param name="tokens">All the specified tokens</param>
+        /// <param name="tokens">All the specified tokens.</param>
         /// <param name="options">All available options. If any of the tokens match, add its details to this parameter.</param>
         /// <param name="grouping">The expected arg grouping to validate.</param>
         /// <returns>A collection of all the identified arguments.</returns>
