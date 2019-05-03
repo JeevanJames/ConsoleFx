@@ -23,17 +23,41 @@ using System.Threading;
 
 namespace ConsoleFx.Capture
 {
+    /// <summary>
+    ///     Executes a command-line application and captures its output.
+    /// </summary>
     public sealed class ConsoleCapture
     {
+        /// <summary>
+        ///     Gets the path to the command-line application to execute.
+        ///     <para/>
+        ///     This could be an absolute path, relative path or a file name on the system path.
+        /// </summary>
         private string FileName { get; }
 
+        /// <summary>
+        ///     Gets the arguments to pass to the command-line application to execute.
+        /// </summary>
         private string Arguments { get; }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleCapture"/> class with the
+        ///     <paramref name="fileName"/> of the command-line application to execute.
+        /// </summary>
+        /// <param name="fileName">The file name of the command-line application to execute.</param>
         public ConsoleCapture(string fileName)
             : this(fileName, null)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleCapture"/> class with the
+        ///     <paramref name="fileName"/> of the command-line application to execute and any
+        ///     <paramref name="arguments"/> to pass to it.
+        /// </summary>
+        /// <param name="fileName">The file name of the command-line application to execute.</param>
+        /// <param name="arguments">The arguments to pass to the command-line application.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="fileName"/> is <c>null</c>.</exception>
         public ConsoleCapture(string fileName, string arguments)
         {
             if (fileName == null)
@@ -43,8 +67,8 @@ namespace ConsoleFx.Capture
         }
 
         /// <summary>
-        /// Starts the specified application as a console app and captures the output and
-        /// (optionally) the error output.
+        ///     Starts the specified application as a console app and captures the output and (optionally)
+        ///     the error output.
         /// </summary>
         /// <param name="captureError">Indicates whether to capture errors from the app.</param>
         /// <returns>An instance of <see cref="ConsoleCaptureResult"/></returns>
@@ -71,13 +95,14 @@ namespace ConsoleFx.Capture
 
                 string errorMessage = string.Empty;
                 int exitCode = captureError
-                    ? CaptureOutputAndError(process, out string outputMessage, out errorMessage) : CaptureOutput(process, out outputMessage);
+                    ? CaptureOutputAndError(process, out string outputMessage, out errorMessage)
+                    : CaptureOutput(process, out outputMessage);
                 return new ConsoleCaptureResult(exitCode, outputMessage, errorMessage);
             }
         }
 
         /// <summary>
-        /// Used to capture output if error output is not required
+        ///     Used to capture output if error output is not required
         /// </summary>
         /// <param name="process">The process to capture output from.</param>
         /// <param name="outputMessage">The output message captured from the process.</param>

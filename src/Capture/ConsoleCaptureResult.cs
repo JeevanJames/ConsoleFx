@@ -22,11 +22,19 @@ using System.Diagnostics;
 
 namespace ConsoleFx.Capture
 {
+    /// <summary>
+    ///     Represents the result of a console capture.
+    /// </summary>
     [DebuggerDisplay("Exit code: {ExitCode}")]
     [Serializable]
     public sealed class ConsoleCaptureResult
     {
-        //Only the ConsoleCapture class can create an instance
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleCaptureResult"/> class.
+        /// </summary>
+        /// <param name="exitCode">The exit code from the process.</param>
+        /// <param name="outputMessage">The text captured from standard output.</param>
+        /// <param name="errorMessage">The text captured from standard error.</param>
         internal ConsoleCaptureResult(int exitCode, string outputMessage, string errorMessage)
         {
             ExitCode = exitCode;
@@ -34,10 +42,19 @@ namespace ConsoleFx.Capture
             ErrorMessage = errorMessage;
         }
 
+        /// <summary>
+        ///     Gets the exit code from the executed process.
+        /// </summary>
         public int ExitCode { get; }
 
+        /// <summary>
+        ///     Gets the text captured from standard error.
+        /// </summary>
         public string ErrorMessage { get; }
 
+        /// <summary>
+        ///     Gets the text captured from standard output.
+        /// </summary>
         public string OutputMessage { get; }
     }
 }
