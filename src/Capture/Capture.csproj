@@ -10,11 +10,10 @@
     <Authors>Jeevan James</Authors>
     <Company>Jeevan James</Company>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Description>
-      ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
+    <Description>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
 
-      The ConsoleFx.Capture package provides support for capturing console output from other CLI applications.
-    </Description>
+The ConsoleFx.Capture package provides support for capturing console output from other CLI applications.
+</Description>
     <Copyright>Copyright (c) 2006-2019 Jeevan James</Copyright>
     <PackageProjectUrl>https://github.com/JeevanJames/ConsoleFx/</PackageProjectUrl>
     <PackageIconUrl>https://github.com/JeevanJames/ConsoleFx/raw/master/Logo.png</PackageIconUrl>
@@ -37,10 +36,6 @@
     <NoWarn>1701;1702;1591</NoWarn>
     <DocumentationFile>ConsoleFx.Capture.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="stylecop.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />

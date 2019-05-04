@@ -22,26 +22,58 @@ using System.Runtime.Serialization;
 
 namespace ConsoleFx.Capture
 {
+    /// <summary>
+    ///     Represents errors that occur during <see cref="ConsoleCapture"/> execution.
+    /// </summary>
     [Serializable]
     public sealed class ConsoleCaptureException : Exception
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleCaptureException"/> class with a
+        ///     specified <paramref name="errorCode"/> and <paramref name="message"/>.
+        /// </summary>
+        /// <param name="errorCode">The code that describes the error.</param>
+        /// <param name="message">The message that describes the error.</param>
         public ConsoleCaptureException(int errorCode, string message)
             : base(message)
         {
             ErrorCode = errorCode;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleCaptureException"/> class with a
+        ///     specified <paramref name="errorCode"/>, <paramref name="message"/> and a reference to
+        ///     the inner exception that is the cause of this exception.
+        /// </summary>
+        /// <param name="errorCode">The code that describes the error.</param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="innerException">The exception that is the cause of this exception.</param>
         public ConsoleCaptureException(int errorCode, string message, Exception innerException)
             : base(message, innerException)
         {
             ErrorCode = errorCode;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleCaptureException"/> class with
+        ///     serialized data.
+        /// </summary>
+        /// <param name="info">
+        ///     The <see cref="SerializationInfo"/> that holds the serialized object data about the
+        ///     exception being thrown.
+        /// </param>
+        /// <param name="context">
+        ///     The <see cref="StreamingContext"/> that contains contextual information about the source
+        ///     or destination.
+        /// </param>
         private ConsoleCaptureException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
 
+        /// <summary>
+        ///     Gets the code that describes the error.
+        /// </summary>
         public int ErrorCode { get; }
 
         public static class Codes

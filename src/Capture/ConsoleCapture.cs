@@ -29,6 +29,24 @@ namespace ConsoleFx.Capture
     public sealed class ConsoleCapture
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleCapture"/> class with the
+        ///     <paramref name="fileName"/> of the command-line application to execute and any
+        ///     <paramref name="arguments"/> to pass to it.
+        /// </summary>
+        /// <param name="fileName">The file name of the command-line application to execute.</param>
+        /// <param name="arguments">The arguments to pass to the command-line application.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if the <paramref name="fileName"/> is <c>null</c>.
+        /// </exception>
+        public ConsoleCapture(string fileName, string arguments = null)
+        {
+            if (fileName == null)
+                throw new ArgumentNullException(nameof(fileName));
+            FileName = fileName;
+            Arguments = arguments;
+        }
+
+        /// <summary>
         ///     Gets the path to the command-line application to execute.
         ///     <para/>
         ///     This could be an absolute path, relative path or a file name on the system path.
@@ -39,32 +57,6 @@ namespace ConsoleFx.Capture
         ///     Gets the arguments to pass to the command-line application to execute.
         /// </summary>
         private string Arguments { get; }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ConsoleCapture"/> class with the
-        ///     <paramref name="fileName"/> of the command-line application to execute.
-        /// </summary>
-        /// <param name="fileName">The file name of the command-line application to execute.</param>
-        public ConsoleCapture(string fileName)
-            : this(fileName, null)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ConsoleCapture"/> class with the
-        ///     <paramref name="fileName"/> of the command-line application to execute and any
-        ///     <paramref name="arguments"/> to pass to it.
-        /// </summary>
-        /// <param name="fileName">The file name of the command-line application to execute.</param>
-        /// <param name="arguments">The arguments to pass to the command-line application.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="fileName"/> is <c>null</c>.</exception>
-        public ConsoleCapture(string fileName, string arguments)
-        {
-            if (fileName == null)
-                throw new ArgumentNullException(nameof(fileName));
-            FileName = fileName;
-            Arguments = arguments;
-        }
 
         /// <summary>
         ///     Starts the specified application as a console app and captures the output and (optionally)
