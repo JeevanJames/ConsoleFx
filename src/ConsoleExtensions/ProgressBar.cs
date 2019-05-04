@@ -33,11 +33,17 @@ namespace ConsoleFx.ConsoleExtensions
         /// <summary>
         ///     Initializes a new instance of the <see cref="ProgressBar" /> class.
         /// </summary>
-        /// <param name="value">The starting value of the progress bar. Defaults to the minimum value.</param>
+        /// <param name="value">
+        ///     The starting value of the progress bar. Defaults to the minimum value.
+        /// </param>
         /// <param name="minValue">The minimum value of the progress bar.</param>
         /// <param name="maxValue">The maximum value of the progress bar.</param>
-        /// <param name="line">The line to start rendering the progress bar. Defaults to the current cursor location.</param>
-        /// <param name="column">The column to start rendering the progress bar. Defaults to the current cursor location.</param>
+        /// <param name="line">
+        ///     The line to start rendering the progress bar. Defaults to the current cursor location.
+        /// </param>
+        /// <param name="column">
+        ///     The column to start rendering the progress bar. Defaults to the current cursor location.
+        /// </param>
         /// <param name="barChar">The character to render the progress bar.</param>
         /// <param name="fillChar">The character to render the progress part of the progress bar.</param>
         public ProgressBar(int value = 0, int minValue = 0, int maxValue = 20,

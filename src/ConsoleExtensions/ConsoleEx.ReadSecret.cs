@@ -26,8 +26,8 @@ namespace ConsoleFx.ConsoleExtensions
     public static partial class ConsoleEx
     {
         /// <summary>
-        ///     Gets or sets the character to be used when entering a secret value using the ReadSecret methods. The default is
-        ///     '*'.
+        ///     Gets or sets the character to be used when entering a secret value using the ReadSecret
+        ///     methods. The default is <c>'*'</c>.
         ///     <para />
         ///     Changing this value applies globally.
         /// </summary>
@@ -37,9 +37,9 @@ namespace ConsoleFx.ConsoleExtensions
         ///     Reads a stream of characters from standard output, but obscures the entered characters
         ///     with a mask character.
         /// </summary>
-        /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
-        /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
-        /// <param name="needValue">If true, at least one character must be entered.</param>
+        /// <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+        /// <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
         /// <returns>The entered stream of characters as a string.</returns>
         public static string ReadSecret(bool hideCursor = false, bool hideMask = false, bool needValue = false)
         {
@@ -55,9 +55,9 @@ namespace ConsoleFx.ConsoleExtensions
         ///     but obscures the entered characters with a mask character.
         /// </summary>
         /// <param name="prompt">The text prompt to display.</param>
-        /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
-        /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
-        /// <param name="needValue">If true, at least one character must be entered.</param>
+        /// <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+        /// <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
         /// <returns>The entered stream of characters as a string.</returns>
         public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false,
             bool needValue = false)
@@ -66,6 +66,14 @@ namespace ConsoleFx.ConsoleExtensions
             return ReadSecret(hideCursor, hideMask, needValue);
         }
 
+        /// <summary>
+        ///     Reads a stream of characters from standard output, but obscures the entered characters
+        ///     with a mask character.
+        /// </summary>
+        /// <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+        /// <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
+        /// <returns>The entered stream of characters as a <see cref="SecureString"/>.</returns>
         public static SecureString ReadSecretSecure(bool hideCursor = false, bool hideMask = false,
             bool needValue = false)
         {
@@ -76,15 +84,26 @@ namespace ConsoleFx.ConsoleExtensions
                 hideCursor, hideMask, needValue);
         }
 
-        public static SecureString ReadSecretSecure(ColorString prompt, bool hideCursor = false, bool hideMask = false)
+        /// <summary>
+        ///     Displays a text prompt, and then reads a stream of characters from standard output,
+        ///     but obscures the entered characters with a mask character.
+        /// </summary>
+        /// <param name="prompt">The text prompt to display.</param>
+        /// <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+        /// <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
+        /// <returns>The entered stream of characters as a <see cref="SecureString"/>.</returns>
+        public static SecureString ReadSecretSecure(ColorString prompt, bool hideCursor = false, bool hideMask = false,
+            bool needValue = false)
         {
             Print(prompt);
-            return ReadSecretSecure(hideCursor, hideMask);
+            return ReadSecretSecure(hideCursor, hideMask, needValue);
         }
 
         /// <summary>
         ///     Common method used by both the <see cref="ReadSecret(bool,bool,bool)" /> and
-        ///     <see cref="ReadSecretSecure(bool,bool,bool)" /> methods to receive a secret input from the user.
+        ///     <see cref="ReadSecretSecure(bool,bool,bool)" /> methods to receive a secret input
+        ///     from the user.
         /// </summary>
         /// <typeparam name="TResult">The type of the resultant secret.</typeparam>
         /// <typeparam name="TAccumulator">
@@ -95,9 +114,9 @@ namespace ConsoleFx.ConsoleExtensions
         /// <param name="accumulatorAppender">Function to append a single entered character to the accumulator.</param>
         /// <param name="getAccumulatorLength">Function to retrieve the current length of the accumulator.</param>
         /// <param name="resultExtractor">Function to extract the final result from the accumulator.</param>
-        /// <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
-        /// <param name="hideMask">If true, prevents the mask character from being shown.</param>
-        /// <param name="needValue">If true, at least one character must be entered.</param>
+        /// <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+        /// <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+        /// <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
         /// <returns>The entered data.</returns>
         private static TResult ReadSecretCommon<TResult, TAccumulator>(Func<TAccumulator> accumulatorFactory,
             Action<TAccumulator, char> accumulatorAppender,

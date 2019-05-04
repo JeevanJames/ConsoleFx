@@ -19,6 +19,9 @@ limitations under the License.
 
 namespace ConsoleFx.ConsoleExtensions
 {
+    /// <summary>
+    ///     Foreground colors and background colors.
+    /// </summary>
     public enum CColor
     {
         Black,

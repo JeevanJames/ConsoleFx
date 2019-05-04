@@ -28,7 +28,7 @@ namespace ConsoleFx.ConsoleExtensions
         public static int SelectSingle(IEnumerable<string> optionsList, SelectSingleSettings settings = null,
             int startingIndex = 0)
         {
-            if (optionsList == null)
+            if (optionsList is null)
                 throw new ArgumentNullException(nameof(optionsList));
 
             List<string> options = optionsList.ToList();

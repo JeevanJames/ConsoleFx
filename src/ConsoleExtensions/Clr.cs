@@ -21,6 +21,9 @@ using System.Text;
 
 namespace ConsoleFx.ConsoleExtensions
 {
+    /// <summary>
+    ///     Structure that represents a foreground and background color.
+    /// </summary>
     public readonly struct Clr
     {
         public static InstanceClr Black => new InstanceClr(CColor.Black, null);

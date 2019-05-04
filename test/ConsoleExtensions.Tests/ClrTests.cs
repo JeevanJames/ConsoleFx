@@ -25,6 +25,7 @@ namespace ConsoleFx.ConsoleExtensions.Tests
             yield return new object[] { BgRed, "[BgRed]" };
             yield return new object[] { Yellow.Cyan, "[Cyan]" };
             yield return new object[] { BgRed.BgBlue, "[BgBlue]" };
+            yield return new object[] { BgRed.BgBlack.Blue, "[Blue.BgBlack]" };
         }
 
         [Theory, MemberData(nameof(InterpolatedStringGeneratesCorrectString_Data))]
@@ -38,6 +39,11 @@ namespace ConsoleFx.ConsoleExtensions.Tests
             yield return new object[] { $"ConsoleFx {Cyan.BgYellow}Suite", "ConsoleFx [Cyan.BgYellow]Suite" };
             yield return new object[] { $"{Green.BgBlack}ConsoleFx Suite", "[Green.BgBlack]ConsoleFx Suite" };
             yield return new object[] { $"ConsoleFx Suite{Magenta.BgDkBlue}", "ConsoleFx Suite[Magenta.BgDkBlue]" };
+            yield return new object[]
+            {
+                $"{White.BgBlack}ConsoleFx {Magenta.BgDkBlue}Suite",
+                "[White.BgBlack]ConsoleFx [Magenta.BgDkBlue]Suite",
+            };
         }
     }
 }

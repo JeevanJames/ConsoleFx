@@ -36,7 +36,9 @@ namespace ConsoleFx.ConsoleExtensions
 
         /// <summary>
         ///     Accepts user input and validates the input with the specified validator.
-        ///     If the input is not valid, the entered text is cleared and user prompted to enter the input again.
+        ///     <para/>
+        ///     If the input is not valid, the entered text is cleared and user prompted to enter
+        ///     the input again.
         /// </summary>
         /// <param name="validator">Function to validate the input text.</param>
         /// <returns>The input entered by the user.</returns>

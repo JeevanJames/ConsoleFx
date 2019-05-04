@@ -94,7 +94,8 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     Writes multiple lines to the console, with each line being left-aligned to the specified indent.
+        ///     Writes multiple lines to the console, with each line being left-aligned to the specified
+        ///     indent.
         /// </summary>
         /// <param name="indent">The indent to left align each line.</param>
         /// <param name="lines">The lines to write.</param>
@@ -105,7 +106,8 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     Writes a long piece of text to the console such that each new line is left-aligned to the same indent.
+        ///     Writes a long piece of text to the console such that each new line is left-aligned
+        ///     to the same indent.
         /// </summary>
         /// <param name="text">The text to write.</param>
         /// <param name="indent">The indent to left align the text.</param>

@@ -24,7 +24,8 @@ namespace ConsoleFx.ConsoleExtensions
     public static partial class ConsoleEx
     {
         /// <summary>
-        /// Clears the contents of the current line and resets the cursor position to the start of the line.
+        ///     Clears the contents of the current line and resets the cursor position to the start
+        ///     of the line.
         /// </summary>
         public static void ClearCurrentLine()
         {

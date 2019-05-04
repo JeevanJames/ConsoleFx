@@ -44,7 +44,7 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     Waits for any of a specified set of keys to be pressed by the user.
+        ///     Waits for any of a specified set of <paramref name="keys"/> to be pressed by the user.
         /// </summary>
         /// <param name="keys">An array of characters representing the allowed set of characters.</param>
         /// <returns>The character pressed by the user.</returns>
@@ -58,7 +58,7 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     Waits for any of a specified set of keys to be pressed by the user.
+        ///     Waits for any of a specified set of <paramref name="keys"/> to be pressed by the user.
         /// </summary>
         /// <param name="ignoreCase">Indicates whether to the keys pressed are case sensitive.</param>
         /// <param name="keys">An array of characters representing the allowed set of characters.</param>
@@ -78,9 +78,11 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     Waits for any of a specified set of keys to be pressed by the user.
+        ///     Waits for any of a specified set of <paramref name="keys"/> to be pressed by the user.
         /// </summary>
-        /// <param name="keys">An array of ConsoleKey objects representing the allowed set of keys.</param>
+        /// <param name="keys">
+        ///     An array of <see cref="ConsoleKey"/> objects representing the allowed set of keys.
+        /// </param>
         /// <returns>The key pressed by the user.</returns>
         public static ConsoleKey WaitForKeys(params ConsoleKey[] keys)
         {
@@ -92,15 +94,20 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     <para>Repeatedly prompts the user for a key press, until any of the specified escape keys are pressed.</para>
-        ///     <para>
-        ///         If the pressed key if available in the specified handlers, the corresponding handler is called. If not, it is
-        ///         ignored and the loop continues.
-        ///     </para>
+        ///     Repeatedly prompts the user for a key press, until any of the specified escape keys
+        ///     are pressed.
+        ///     <para/>
+        ///     If the pressed key if available in the specified handlers, the corresponding handler
+        ///     is called. If not, it is ignored and the loop continues.
         /// </summary>
         /// <param name="handlers">Collection of keys to handle and their handlers.</param>
-        /// <param name="postKeyPress">Optional action to run after any key press, not counting the ignored keys and escape keys.</param>
-        /// <param name="escapeKeys">The keys that will break the loop. If not specified, defaults to the escape key.</param>
+        /// <param name="postKeyPress">
+        ///     Optional action to run after any key press, not counting the ignored keys and escape
+        ///     keys.
+        /// </param>
+        /// <param name="escapeKeys">
+        ///     The keys that will break the loop. If not specified, defaults to the escape key.
+        /// </param>
         public static void WaitForKeysLoop(IEnumerable<KeyHandler> handlers,
             Action<ConsoleKey> postKeyPress = null, IEnumerable<ConsoleKey> escapeKeys = null)
         {
@@ -144,6 +151,15 @@ namespace ConsoleFx.ConsoleExtensions
     /// </summary>
     public sealed class KeyHandler
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="KeyHandler"/> class with a specified
+        ///     <paramref name="key"/> and <paramref name="action"/> to take when the key is pressed.
+        /// </summary>
+        /// <param name="key">The key to handle.</param>
+        /// <param name="action">The action to perform if the key is pressed.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if the <paramref name="action"/> is <c>null</c>.
+        /// </exception>
         public KeyHandler(ConsoleKey key, Action<ConsoleKey> action)
         {
             if (action is null)

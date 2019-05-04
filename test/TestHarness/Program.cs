@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 
 using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineArgs.Validators;
@@ -6,6 +7,8 @@ using ConsoleFx.CmdLineParser.Style;
 using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Program;
 
+using static System.Console;
+using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
 namespace TestHarness
@@ -14,6 +17,16 @@ namespace TestHarness
     {
         private static int Main()
         {
+            PrintLine(LargestWindowWidth.ToString());
+            WaitForAnyKey();
+            var pb = new ProgressBar(1, maxValue: LargestWindowWidth);
+            Thread.Sleep(1000);
+            pb.Value = 2;
+            Thread.Sleep(1000);
+            pb.Value = 3;
+            Thread.Sleep(1000);
+            pb.Value = 4;
+
             var program = new ConsoleProgram(ArgStyle.Windows);
             program.Options.Add(new Option("force", "f")
                 .UsedAsFlag());
@@ -26,12 +39,9 @@ namespace TestHarness
 
         private static int Handler(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options)
         {
-            PrintLine(new ColorString("Copying file ")
-                .Cyan(arguments[index: 0])
-                .Reset(" to ")
-                .Green(arguments[index: 1]));
+            PrintLine($"Copying file {Cyan}{arguments[0]} to {Green}{arguments[1]}");
             if ((bool)options["force"])
-                PrintLine(new ColorString("Force: ").Red("true"));
+                PrintLine($"Force: {Red}true");
             WaitForAnyKey();
             return 0;
         }

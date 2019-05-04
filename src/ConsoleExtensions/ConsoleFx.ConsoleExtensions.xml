@@ -4,6 +4,16 @@
         <name>ConsoleFx.ConsoleExtensions</name>
     </assembly>
     <members>
+        <member name="T:ConsoleFx.ConsoleExtensions.CColor">
+            <summary>
+                Foreground colors and background colors.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.ConsoleExtensions.Clr">
+            <summary>
+                Structure that represents a foreground and background color.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.ConsoleExtensions.ColorString">
             <summary>
                 Represents a string that includes color information.
@@ -87,7 +97,8 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ClearCurrentLine">
             <summary>
-            Clears the contents of the current line and resets the cursor position to the start of the line.
+                Clears the contents of the current line and resets the cursor position to the start
+                of the line.
             </summary>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Print(ConsoleFx.ConsoleExtensions.ColorString)">
@@ -112,14 +123,16 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.PrintIndented(System.Int32,System.String[])">
             <summary>
-                Writes multiple lines to the console, with each line being left-aligned to the specified indent.
+                Writes multiple lines to the console, with each line being left-aligned to the specified
+                indent.
             </summary>
             <param name="indent">The indent to left align each line.</param>
             <param name="lines">The lines to write.</param>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.PrintIndented(System.String,System.Int32,System.Boolean)">
             <summary>
-                Writes a long piece of text to the console such that each new line is left-aligned to the same indent.
+                Writes a long piece of text to the console such that each new line is left-aligned
+                to the same indent.
             </summary>
             <param name="text">The text to write.</param>
             <param name="indent">The indent to left align the text.</param>
@@ -138,15 +151,17 @@
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Prompt(System.Func{System.String,System.Boolean})">
             <summary>
                 Accepts user input and validates the input with the specified validator.
-                If the input is not valid, the entered text is cleared and user prompted to enter the input again.
+                <para/>
+                If the input is not valid, the entered text is cleared and user prompted to enter
+                the input again.
             </summary>
             <param name="validator">Function to validate the input text.</param>
             <returns>The input entered by the user.</returns>
         </member>
         <member name="P:ConsoleFx.ConsoleExtensions.ConsoleEx.SecretMask">
             <summary>
-                Gets or sets the character to be used when entering a secret value using the ReadSecret methods. The default is
-                '*'.
+                Gets or sets the character to be used when entering a secret value using the ReadSecret
+                methods. The default is <c>'*'</c>.
                 <para />
                 Changing this value applies globally.
             </summary>
@@ -156,9 +171,9 @@
                 Reads a stream of characters from standard output, but obscures the entered characters
                 with a mask character.
             </summary>
-            <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
-            <param name="hideMask">If true, prevents the mask character from being shown.</param>
-            <param name="needValue">If true, at least one character must be entered.</param>
+            <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+            <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+            <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
             <returns>The entered stream of characters as a string.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecret(ConsoleFx.ConsoleExtensions.ColorString,System.Boolean,System.Boolean,System.Boolean)">
@@ -167,15 +182,37 @@
                 but obscures the entered characters with a mask character.
             </summary>
             <param name="prompt">The text prompt to display.</param>
-            <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
-            <param name="hideMask">If true, prevents the mask character from being shown.</param>
-            <param name="needValue">If true, at least one character must be entered.</param>
+            <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+            <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+            <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
             <returns>The entered stream of characters as a string.</returns>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecretSecure(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+                Reads a stream of characters from standard output, but obscures the entered characters
+                with a mask character.
+            </summary>
+            <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+            <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+            <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
+            <returns>The entered stream of characters as a <see cref="T:System.Security.SecureString"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecretSecure(ConsoleFx.ConsoleExtensions.ColorString,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+                Displays a text prompt, and then reads a stream of characters from standard output,
+                but obscures the entered characters with a mask character.
+            </summary>
+            <param name="prompt">The text prompt to display.</param>
+            <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+            <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+            <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
+            <returns>The entered stream of characters as a <see cref="T:System.Security.SecureString"/>.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecretCommon``2(System.Func{``1},System.Action{``1,System.Char},System.Func{``1,System.Int32},System.Func{``1,``0},System.Boolean,System.Boolean,System.Boolean)">
             <summary>
                 Common method used by both the <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecret(System.Boolean,System.Boolean,System.Boolean)" /> and
-                <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecretSecure(System.Boolean,System.Boolean,System.Boolean)" /> methods to receive a secret input from the user.
+                <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecretSecure(System.Boolean,System.Boolean,System.Boolean)" /> methods to receive a secret input
+                from the user.
             </summary>
             <typeparam name="TResult">The type of the resultant secret.</typeparam>
             <typeparam name="TAccumulator">
@@ -186,9 +223,9 @@
             <param name="accumulatorAppender">Function to append a single entered character to the accumulator.</param>
             <param name="getAccumulatorLength">Function to retrieve the current length of the accumulator.</param>
             <param name="resultExtractor">Function to extract the final result from the accumulator.</param>
-            <param name="hideCursor">If true, hides the cursor while the characters are being input.</param>
-            <param name="hideMask">If true, prevents the mask character from being shown.</param>
-            <param name="needValue">If true, at least one character must be entered.</param>
+            <param name="hideCursor">If <c>true</c>, hides the cursor while the characters are being input.</param>
+            <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
+            <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
             <returns>The entered data.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForEnter">
@@ -205,14 +242,14 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeys(System.Char[])">
             <summary>
-                Waits for any of a specified set of keys to be pressed by the user.
+                Waits for any of a specified set of <paramref name="keys"/> to be pressed by the user.
             </summary>
             <param name="keys">An array of characters representing the allowed set of characters.</param>
             <returns>The character pressed by the user.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeys(System.Boolean,System.Char[])">
             <summary>
-                Waits for any of a specified set of keys to be pressed by the user.
+                Waits for any of a specified set of <paramref name="keys"/> to be pressed by the user.
             </summary>
             <param name="ignoreCase">Indicates whether to the keys pressed are case sensitive.</param>
             <param name="keys">An array of characters representing the allowed set of characters.</param>
@@ -220,27 +257,45 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeys(System.ConsoleKey[])">
             <summary>
-                Waits for any of a specified set of keys to be pressed by the user.
+                Waits for any of a specified set of <paramref name="keys"/> to be pressed by the user.
             </summary>
-            <param name="keys">An array of ConsoleKey objects representing the allowed set of keys.</param>
+            <param name="keys">
+                An array of <see cref="T:System.ConsoleKey"/> objects representing the allowed set of keys.
+            </param>
             <returns>The key pressed by the user.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})">
             <summary>
-                <para>Repeatedly prompts the user for a key press, until any of the specified escape keys are pressed.</para>
-                <para>
-                    If the pressed key if available in the specified handlers, the corresponding handler is called. If not, it is
-                    ignored and the loop continues.
-                </para>
+                Repeatedly prompts the user for a key press, until any of the specified escape keys
+                are pressed.
+                <para/>
+                If the pressed key if available in the specified handlers, the corresponding handler
+                is called. If not, it is ignored and the loop continues.
             </summary>
             <param name="handlers">Collection of keys to handle and their handlers.</param>
-            <param name="postKeyPress">Optional action to run after any key press, not counting the ignored keys and escape keys.</param>
-            <param name="escapeKeys">The keys that will break the loop. If not specified, defaults to the escape key.</param>
+            <param name="postKeyPress">
+                Optional action to run after any key press, not counting the ignored keys and escape
+                keys.
+            </param>
+            <param name="escapeKeys">
+                The keys that will break the loop. If not specified, defaults to the escape key.
+            </param>
         </member>
         <member name="T:ConsoleFx.ConsoleExtensions.KeyHandler">
             <summary>
                 Represents a handler for a key press in the <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})" /> method.
             </summary>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.KeyHandler.#ctor(System.ConsoleKey,System.Action{System.ConsoleKey})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler"/> class with a specified
+                <paramref name="key"/> and <paramref name="action"/> to take when the key is pressed.
+            </summary>
+            <param name="key">The key to handle.</param>
+            <param name="action">The action to perform if the key is pressed.</param>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the <paramref name="action"/> is <c>null</c>.
+            </exception>
         </member>
         <member name="P:ConsoleFx.ConsoleExtensions.KeyHandler.Key">
             <summary>
@@ -270,11 +325,17 @@
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ProgressBar" /> class.
             </summary>
-            <param name="value">The starting value of the progress bar. Defaults to the minimum value.</param>
+            <param name="value">
+                The starting value of the progress bar. Defaults to the minimum value.
+            </param>
             <param name="minValue">The minimum value of the progress bar.</param>
             <param name="maxValue">The maximum value of the progress bar.</param>
-            <param name="line">The line to start rendering the progress bar. Defaults to the current cursor location.</param>
-            <param name="column">The column to start rendering the progress bar. Defaults to the current cursor location.</param>
+            <param name="line">
+                The line to start rendering the progress bar. Defaults to the current cursor location.
+            </param>
+            <param name="column">
+                The column to start rendering the progress bar. Defaults to the current cursor location.
+            </param>
             <param name="barChar">The character to render the progress bar.</param>
             <param name="fillChar">The character to render the progress part of the progress bar.</param>
         </member>

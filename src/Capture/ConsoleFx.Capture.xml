@@ -9,6 +9,18 @@
                 Executes a command-line application and captures its output.
             </summary>
         </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCapture.#ctor(System.String,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCapture"/> class with the
+                <paramref name="fileName"/> of the command-line application to execute and any
+                <paramref name="arguments"/> to pass to it.
+            </summary>
+            <param name="fileName">The file name of the command-line application to execute.</param>
+            <param name="arguments">The arguments to pass to the command-line application.</param>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the <paramref name="fileName"/> is <c>null</c>.
+            </exception>
+        </member>
         <member name="P:ConsoleFx.Capture.ConsoleCapture.FileName">
             <summary>
                 Gets the path to the command-line application to execute.
@@ -20,23 +32,6 @@
             <summary>
                 Gets the arguments to pass to the command-line application to execute.
             </summary>
-        </member>
-        <member name="M:ConsoleFx.Capture.ConsoleCapture.#ctor(System.String)">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCapture"/> class with the
-                <paramref name="fileName"/> of the command-line application to execute.
-            </summary>
-            <param name="fileName">The file name of the command-line application to execute.</param>
-        </member>
-        <member name="M:ConsoleFx.Capture.ConsoleCapture.#ctor(System.String,System.String)">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCapture"/> class with the
-                <paramref name="fileName"/> of the command-line application to execute and any
-                <paramref name="arguments"/> to pass to it.
-            </summary>
-            <param name="fileName">The file name of the command-line application to execute.</param>
-            <param name="arguments">The arguments to pass to the command-line application.</param>
-            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="fileName"/> is <c>null</c>.</exception>
         </member>
         <member name="M:ConsoleFx.Capture.ConsoleCapture.Start(System.Boolean)">
             <summary>
@@ -77,6 +72,48 @@
             <param name="arguments">The arguments to pass to the command-line application.</param>
             <param name="captureError">Indicates whether to capture errors from the app.</param>
             <returns>An instance of <see cref="T:ConsoleFx.Capture.ConsoleCaptureResult"/>.</returns>
+        </member>
+        <member name="T:ConsoleFx.Capture.ConsoleCaptureException">
+            <summary>
+                Represents errors that occur during <see cref="T:ConsoleFx.Capture.ConsoleCapture"/> execution.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCaptureException.#ctor(System.Int32,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCaptureException"/> class with a
+                specified <paramref name="errorCode"/> and <paramref name="message"/>.
+            </summary>
+            <param name="errorCode">The code that describes the error.</param>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCaptureException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCaptureException"/> class with a
+                specified <paramref name="errorCode"/>, <paramref name="message"/> and a reference to
+                the inner exception that is the cause of this exception.
+            </summary>
+            <param name="errorCode">The code that describes the error.</param>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of this exception.</param>
+        </member>
+        <member name="M:ConsoleFx.Capture.ConsoleCaptureException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Capture.ConsoleCaptureException"/> class with
+                serialized data.
+            </summary>
+            <param name="info">
+                The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the
+                exception being thrown.
+            </param>
+            <param name="context">
+                The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source
+                or destination.
+            </param>
+        </member>
+        <member name="P:ConsoleFx.Capture.ConsoleCaptureException.ErrorCode">
+            <summary>
+                Gets the code that describes the error.
+            </summary>
         </member>
         <member name="T:ConsoleFx.Capture.ConsoleCaptureResult">
             <summary>
