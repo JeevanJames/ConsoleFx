@@ -21,23 +21,17 @@ using System;
 
 namespace ConsoleFx.Prompter
 {
-    public abstract class Question
+    public abstract class Question : PromptItem
     {
         protected Question(string name, FunctionOrValue<string> message)
+            : base(message)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Specify a name for the question.", nameof(name));
             Name = name;
-            Message = message;
         }
 
         public string Name { get; }
-
-        internal FunctionOrValue<string> Message { get; }
-
-        internal abstract AskerFn AskerFn { get; }
-
-        internal AnswersFunc<bool> CanAskFn { get; set; }
 
         internal FunctionOrValue<object> DefaultValue { get; set; }
 
@@ -47,7 +41,7 @@ namespace ConsoleFx.Prompter
 
         internal Validator<object> ConvertedValueValidator { get; set; }
 
-        public Question When(AnswersFunc<bool> canAskFn)
+        public new Question When(AnswersFunc<bool> canAskFn)
         {
             CanAskFn = canAskFn;
             return this;
@@ -58,9 +52,6 @@ namespace ConsoleFx.Prompter
             DefaultValue = defaultValue;
             return this;
         }
-
-        internal bool CanAsk(dynamic answers) =>
-            (CanAskFn == null) || (bool)CanAskFn(answers);
 
         internal object Convert(object value) =>
             ConverterFn != null ? ConverterFn(value) : value;

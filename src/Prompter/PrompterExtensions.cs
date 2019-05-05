@@ -26,60 +26,67 @@ namespace ConsoleFx.Prompter
 {
     public static class PrompterExtensions
     {
-        public static InputQuestion Input(this Prompter prompter, string name, FunctionOrValue<string> message)
+        public static Prompter Input(this Prompter prompter, string name, FunctionOrValue<string> message,
+            Action<InputQuestion> setupQuestion = null)
         {
             var question = new InputQuestion(name, message);
-            prompter.AddQuestion(question);
-            return question;
+            setupQuestion?.Invoke(question);
+            return prompter.AddItem(question);
         }
 
-        public static PasswordQuestion Password(this Prompter prompter, string name, FunctionOrValue<string> message)
+        public static Prompter Password(this Prompter prompter, string name, FunctionOrValue<string> message,
+            Action<PasswordQuestion> setupQuestion = null)
         {
             var question = new PasswordQuestion(name, message);
-            prompter.AddQuestion(question);
-            return question;
+            setupQuestion?.Invoke(question);
+            return prompter.AddItem(question);
         }
 
-        public static ConfirmQuestion Confirm(this Prompter prompter, string name, FunctionOrValue<string> message, bool @default = false)
+        public static Prompter Confirm(this Prompter prompter, string name, FunctionOrValue<string> message,
+            bool @default = false, Action<ConfirmQuestion> setupQuestion = null)
         {
             var question = new ConfirmQuestion(name, message, @default);
-            prompter.AddQuestion(question);
-            return question;
+            setupQuestion?.Invoke(question);
+            return prompter.AddItem(question);
         }
 
-        public static ListQuestion List(this Prompter prompter, string name, FunctionOrValue<string> message, IEnumerable<string> choices)
+        public static Prompter List(this Prompter prompter, string name, FunctionOrValue<string> message,
+            IEnumerable<string> choices, Action<ListQuestion> setupQuestion = null)
         {
             var question = new ListQuestion(name, message, choices);
-            prompter.AddQuestion(question);
-            return question;
+            setupQuestion?.Invoke(question);
+            return prompter.AddItem(question);
         }
 
-        public static CheckboxQuestion Checkbox(this Prompter prompter, string name, FunctionOrValue<string> message, IEnumerable<string> choices)
+        public static Prompter Checkbox(this Prompter prompter, string name, FunctionOrValue<string> message,
+            IEnumerable<string> choices, Action<CheckboxQuestion> setupQuestion = null)
         {
             var question = new CheckboxQuestion(name, message, choices);
-            prompter.AddQuestion(question);
-            return question;
+            setupQuestion?.Invoke(question);
+            return prompter.AddItem(question);
         }
 
-        public static StaticText Text(this Prompter prompter, FunctionOrValue<string> text)
+        public static Prompter Text(this Prompter prompter, FunctionOrValue<string> text,
+            Action<StaticText> setupStaticText = null)
         {
             var staticText = new StaticText(text);
-            prompter.AddQuestion(staticText);
-            return staticText;
+            setupStaticText?.Invoke(staticText);
+            return prompter.AddItem(staticText);
         }
 
-        public static StaticText BlankLine(this Prompter prompter)
+        public static Prompter BlankLine(this Prompter prompter, Action<StaticText> setupStaticText = null)
         {
             var staticText = new StaticText(string.Empty);
-            prompter.AddQuestion(staticText);
-            return staticText;
+            setupStaticText?.Invoke(staticText);
+            return prompter.AddItem(staticText);
         }
 
-        public static StaticText Separator(this Prompter prompter, char separator = '=')
+        public static Prompter Separator(this Prompter prompter, char separator = '=',
+            Action<StaticText> setupStaticText = null)
         {
             var staticText = new StaticText(new string(separator, Console.WindowWidth));
-            prompter.AddQuestion(staticText);
-            return staticText;
+            setupStaticText?.Invoke(staticText);
+            return prompter.AddItem(staticText);
         }
     }
 }

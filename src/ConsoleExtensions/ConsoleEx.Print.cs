@@ -64,7 +64,7 @@ namespace ConsoleFx.ConsoleExtensions
                     Console.ResetColor();
             }
 
-            if (ColorReset == ColorResetOption.ResetAfterColorString)
+            if (ColorReset == ColorResetOption.ResetAfterCommand)
                 Console.ResetColor();
         }
 
@@ -175,7 +175,7 @@ namespace ConsoleFx.ConsoleExtensions
     public enum ColorResetOption
     {
         DontReset,
-        ResetAfterColorString,
+        ResetAfterCommand,
         ResetAfterColor,
     }
 }

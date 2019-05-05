@@ -33,9 +33,10 @@ namespace ConsoleFx.Prompter.Questions
             {
                 bool Validator(string str)
                 {
+                    var question = (InputQuestion)q;
                     if (string.IsNullOrEmpty(str))
-                        str = q.DefaultValue.Resolve(ans);
-                    bool valid = (q.Validator == null) || q.Validator(str, ans).Valid;
+                        str = question.DefaultValue.Resolve(ans);
+                    bool valid = (question.Validator == null) || question.Validator(str, ans).Valid;
                     var teq = (TextEntryQuestion)q;
                     if (valid && teq.IsRequired)
                     {

@@ -18,46 +18,50 @@ limitations under the License.
 #endregion
 
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class Prompter
+    public sealed class Prompter //TODO: : IList<PromptItem>
     {
-        private readonly List<Question> _questions;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly List<PromptItem> _promptItems = new List<PromptItem>();
 
-        public Prompter()
+        public IReadOnlyList<PromptItem> PromptItems => _promptItems;
+
+        public Prompter AddItem(PromptItem promptItem)
         {
-            _questions = new List<Question>();
-        }
-
-        public IReadOnlyList<Question> Questions => _questions;
-
-        public void AddQuestion(Question question)
-        {
-            _questions.Add(question);
+            _promptItems.Add(promptItem);
+            return this;
         }
 
         public Answers Ask()
         {
-            var answers = new Answers(Questions.Count);
+            var answers = new Answers(PromptItems.Count);
 
-            foreach (Question question in Questions)
+            foreach (PromptItem promptItem in PromptItems)
             {
                 object answer;
 
-                if (!question.CanAsk(answers))
+                if (!promptItem.CanAsk(answers))
                 {
-                    answer = question.DefaultValue.Resolve(answers);
-                    if (answer != null)
-                        answers.Add(question.Name, answer);
+                    if (promptItem is Question q)
+                    {
+                        answer = q.DefaultValue.Resolve(answers);
+                        if (answer != null)
+                            answers.Add(q.Name, answer);
+                    }
+
                     continue;
                 }
 
-                if (question is StaticText)
+                if (promptItem is StaticText)
                 {
-                    question.AskerFn(question, answers);
+                    promptItem.AskerFn(promptItem, answers);
                     continue;
                 }
+
+                var question = promptItem as Question;
 
                 bool validAnswer;
                 do

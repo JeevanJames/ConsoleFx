@@ -17,17 +17,16 @@ limitations under the License.
 */
 #endregion
 
-using System;
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class StaticText : Question
+    public sealed class StaticText : PromptItem
     {
         private readonly AskerFn _askerFn;
 
         internal StaticText(FunctionOrValue<string> message)
-            : base(Guid.NewGuid().ToString("N"), message)
+            : base(message)
         {
             _askerFn = (q, ans) =>
             {

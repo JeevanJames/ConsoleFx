@@ -23,5 +23,5 @@ namespace ConsoleFx.Prompter
 
     public delegate ValidationResult Validator<in TValue>(TValue value, dynamic answers);
 
-    public delegate object AskerFn(Question question, dynamic answers);
+    public delegate object AskerFn(PromptItem promptItem, dynamic answers);
 }

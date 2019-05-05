@@ -1,4 +1,4 @@
-﻿#region --- License & Copyright Notice ---
+﻿ #region --- License & Copyright Notice ---
 
 /*
 ConsoleFx CLI Library Suite
