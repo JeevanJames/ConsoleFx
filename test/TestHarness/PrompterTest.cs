@@ -16,6 +16,11 @@ namespace TestHarness
                     q => q.When(ans => true).DefaultsTo("Jeevan"))
                 .Password("Password", "Enter password: ")
                 .Confirm("Proceed", "Should we proceed? ", true)
+                .Checkbox("Proceed2", "Should we proceed (checkbox)? ", new[]
+                {
+                    "Yes",
+                    "No"
+                })
                 .Text("You have decided to proceed",
                     t => t.When(ans => ans.Proceed))
                 .Text("You have decided not to proceed",
@@ -25,6 +30,7 @@ namespace TestHarness
             PrintLine($"Your name is {Yellow}{answers.Name}");
             PrintLine($"Your password is {Red}{answers.Password}");
             PrintLine($"Should proceed: {Blue}{answers.Proceed}");
+            PrintLine($"Should proceed 2: {DkBlue.BgWhite}{answers.Proceed2}");
         }
     }
 }

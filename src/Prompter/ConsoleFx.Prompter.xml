@@ -6,7 +6,7 @@
     <members>
         <member name="T:ConsoleFx.Prompter.Answers">
             <summary>
-            Represents a hash of the answered values.
+                Represents a hash of the answered values.
             </summary>
         </member>
         <member name="T:ConsoleFx.Prompter.FunctionOrValue`1">
