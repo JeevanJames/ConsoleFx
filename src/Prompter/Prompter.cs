@@ -17,30 +17,53 @@ limitations under the License.
 */
 #endregion
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class Prompter //TODO: : IList<PromptItem>
+    public sealed class Prompter : IList<PromptItem>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly List<PromptItem> _promptItems = new List<PromptItem>();
 
-        public IReadOnlyList<PromptItem> PromptItems => _promptItems;
-
-        public Prompter AddItem(PromptItem promptItem)
+        public PromptItem this[int index]
         {
-            _promptItems.Add(promptItem);
-            return this;
+            get => _promptItems[index];
+            set => _promptItems[index] = value;
+        }
+
+        public int Count => _promptItems.Count;
+
+        public bool IsReadOnly => ((IList<PromptItem>)_promptItems).IsReadOnly;
+
+        public event EventHandler<BeforeAfterPromptEventArgs> BeforePrompt;
+
+        public event EventHandler<BetweenPromptEventArgs> BetweenPrompts;
+
+        public event EventHandler<BeforeAfterPromptEventArgs> AfterPrompt;
+
+        public void Add(PromptItem item)
+        {
+            _promptItems.Add(item);
         }
 
         public Answers Ask()
         {
-            var answers = new Answers(PromptItems.Count);
+            var answers = new Answers(_promptItems.Count);
 
-            foreach (PromptItem promptItem in PromptItems)
+            EventHandler<BeforeAfterPromptEventArgs> beforePrompt = BeforePrompt;
+            EventHandler<BetweenPromptEventArgs> betweenPrompts = BetweenPrompts;
+            EventHandler<BeforeAfterPromptEventArgs> afterPrompt = AfterPrompt;
+
+            for (int i = 0; i < _promptItems.Count; i++)
             {
+                PromptItem promptItem = _promptItems[i];
+
+                beforePrompt?.Invoke(this, new BeforeAfterPromptEventArgs { Prompt = promptItem });
+
                 object answer;
 
                 if (!promptItem.CanAsk(answers))
@@ -103,9 +126,77 @@ namespace ConsoleFx.Prompter
 #pragma warning restore S2583 // Conditionally executed blocks should be reachable
 
                 answers.Add(question.Name, answer);
+
+                if (i < _promptItems.Count - 1)
+                {
+                    betweenPrompts?.Invoke(this, new BetweenPromptEventArgs
+                    {
+                        PreviousPrompt = promptItem,
+                        NextPrompt = _promptItems[i + 1],
+                    });
+                }
+
+                afterPrompt?.Invoke(this, new BeforeAfterPromptEventArgs { Prompt = promptItem });
             }
 
             return answers;
         }
+
+        public void Clear()
+        {
+            _promptItems.Clear();
+        }
+
+        public bool Contains(PromptItem item)
+        {
+            return _promptItems.Contains(item);
+        }
+
+        public void CopyTo(PromptItem[] array, int arrayIndex)
+        {
+            _promptItems.CopyTo(array, arrayIndex);
+        }
+
+        public IEnumerator<PromptItem> GetEnumerator()
+        {
+            return ((IList<PromptItem>)_promptItems).GetEnumerator();
+        }
+
+        public int IndexOf(PromptItem item)
+        {
+            return _promptItems.IndexOf(item);
+        }
+
+        public void Insert(int index, PromptItem item)
+        {
+            _promptItems.Insert(index, item);
+        }
+
+        public bool Remove(PromptItem item)
+        {
+            return _promptItems.Remove(item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            _promptItems.RemoveAt(index);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IList<PromptItem>)_promptItems).GetEnumerator();
+        }
+    }
+
+    public sealed class BetweenPromptEventArgs : EventArgs
+    {
+        public PromptItem PreviousPrompt { get; set; }
+
+        public PromptItem NextPrompt { get; set; }
+    }
+
+    public sealed class BeforeAfterPromptEventArgs : EventArgs
+    {
+        public PromptItem Prompt { get; set; }
     }
 }

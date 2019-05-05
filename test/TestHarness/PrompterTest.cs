@@ -11,7 +11,7 @@ namespace TestHarness
         {
             ColorReset = ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand;
 
-            dynamic answers = new Prompter()
+            var prompter = new Prompter()
                 .Input("Name", "Hi, what's your name? ",
                     q => q.When(ans => true).DefaultsTo("Jeevan"))
                 .Password("Password", "Enter password: ")
@@ -24,8 +24,9 @@ namespace TestHarness
                 .Text("You have decided to proceed",
                     t => t.When(ans => ans.Proceed))
                 .Text("You have decided not to proceed",
-                    t => t.When(ans => !ans.Proceed))
-                .Ask();
+                    t => t.When(ans => !ans.Proceed));
+            prompter.BetweenPrompts += (sender, args) => PrintBlank();
+            dynamic answers = prompter.Ask();
 
             PrintLine($"Your name is {Yellow}{answers.Name}");
             PrintLine($"Your password is {Red}{answers.Password}");

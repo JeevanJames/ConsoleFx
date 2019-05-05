@@ -31,7 +31,8 @@ namespace ConsoleFx.Prompter
         {
             var question = new InputQuestion(name, message);
             setupQuestion?.Invoke(question);
-            return prompter.AddItem(question);
+            prompter.Add(question);
+            return prompter;
         }
 
         public static Prompter Password(this Prompter prompter, string name, FunctionOrValue<string> message,
@@ -39,7 +40,8 @@ namespace ConsoleFx.Prompter
         {
             var question = new PasswordQuestion(name, message);
             setupQuestion?.Invoke(question);
-            return prompter.AddItem(question);
+            prompter.Add(question);
+            return prompter;
         }
 
         public static Prompter Confirm(this Prompter prompter, string name, FunctionOrValue<string> message,
@@ -47,7 +49,8 @@ namespace ConsoleFx.Prompter
         {
             var question = new ConfirmQuestion(name, message, @default);
             setupQuestion?.Invoke(question);
-            return prompter.AddItem(question);
+            prompter.Add(question);
+            return prompter;
         }
 
         public static Prompter List(this Prompter prompter, string name, FunctionOrValue<string> message,
@@ -55,7 +58,8 @@ namespace ConsoleFx.Prompter
         {
             var question = new ListQuestion(name, message, choices);
             setupQuestion?.Invoke(question);
-            return prompter.AddItem(question);
+            prompter.Add(question);
+            return prompter;
         }
 
         public static Prompter Checkbox(this Prompter prompter, string name, FunctionOrValue<string> message,
@@ -63,7 +67,8 @@ namespace ConsoleFx.Prompter
         {
             var question = new CheckboxQuestion(name, message, choices);
             setupQuestion?.Invoke(question);
-            return prompter.AddItem(question);
+            prompter.Add(question);
+            return prompter;
         }
 
         public static Prompter Text(this Prompter prompter, FunctionOrValue<string> text,
@@ -71,14 +76,16 @@ namespace ConsoleFx.Prompter
         {
             var staticText = new StaticText(text);
             setupStaticText?.Invoke(staticText);
-            return prompter.AddItem(staticText);
+            prompter.Add(staticText);
+            return prompter;
         }
 
         public static Prompter BlankLine(this Prompter prompter, Action<StaticText> setupStaticText = null)
         {
             var staticText = new StaticText(string.Empty);
             setupStaticText?.Invoke(staticText);
-            return prompter.AddItem(staticText);
+            prompter.Add(staticText);
+            return prompter;
         }
 
         public static Prompter Separator(this Prompter prompter, char separator = '=',
@@ -86,7 +93,8 @@ namespace ConsoleFx.Prompter
         {
             var staticText = new StaticText(new string(separator, Console.WindowWidth));
             setupStaticText?.Invoke(staticText);
-            return prompter.AddItem(staticText);
+            prompter.Add(staticText);
+            return prompter;
         }
     }
 }
