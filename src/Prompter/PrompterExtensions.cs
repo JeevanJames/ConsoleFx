@@ -64,9 +64,12 @@ namespace ConsoleFx.Prompter
 
         //TODO: Enforce a converter parameter here
         public static Prompter List<TValue>(this Prompter prompter, string name, FunctionOrValue<string> message,
-            IEnumerable<string> choices, Action<ListQuestion<TValue>> setupQuestion = null)
+            IEnumerable<string> choices, Func<int, TValue> converter, Action<ListQuestion<TValue>> setupQuestion = null)
         {
+            if (converter is null)
+                throw new ArgumentNullException(nameof(converter));
             var question = new ListQuestion<TValue>(name, message, choices);
+            question.Transform(converter);
             setupQuestion?.Invoke(question);
             prompter.Add(question);
             return prompter;

@@ -23,6 +23,11 @@ namespace ConsoleFx.Prompter
 {
     public abstract class Question : PromptItem
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Question"/> class.
+        /// </summary>
+        /// <param name="name">The name of the variable to store the answer.</param>
+        /// <param name="message">The message to display to the user.</param>
         protected Question(string name, FunctionOrValue<string> message)
             : base(message)
         {
@@ -31,6 +36,9 @@ namespace ConsoleFx.Prompter
             Name = name;
         }
 
+        /// <summary>
+        ///     Gets the name of the variable to store the answer.
+        /// </summary>
         public string Name { get; }
 
         internal FunctionOrValue<object> DefaultValue { get; set; }

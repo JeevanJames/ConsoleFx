@@ -19,8 +19,8 @@ namespace TestHarness
                     .DefaultsTo("Jeevan"))
                 .Password("Password", "Enter password: ")
                 .Confirm("Proceed", "Should we proceed? ", true)
-                .List<bool>("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No" }, q => q
-                    .Transform(selected => selected == 0))
+                .List<bool>("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No" },
+                    selected => selected == 0)
                 .Text("You have decided to proceed", t => t
                     .When(ans => ans.Proceed))
                 .Text("You have decided not to proceed", t => t
