@@ -19,10 +19,19 @@ limitations under the License.
 
 namespace ConsoleFx.Prompter
 {
+    /// <summary>
+    ///     Represents the result of a validation on a question's answer.
+    /// </summary>
     public readonly struct ValidationResult
     {
+        /// <summary>
+        ///     Gets a value indicating whether the answer is valid.
+        /// </summary>
         internal bool Valid { get; }
 
+        /// <summary>
+        ///     Gets the error message describing the reason why the validation failed.
+        /// </summary>
         internal string ErrorMessage { get; }
 
         internal ValidationResult(bool valid)
