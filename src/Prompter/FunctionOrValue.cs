@@ -30,6 +30,30 @@ namespace ConsoleFx.Prompter
     public readonly struct FunctionOrValue<TValue>
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="FunctionOrValue{TValue}"/> struct with
+        ///     a fixed <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The fixed value to set.</param>
+        internal FunctionOrValue(TValue value)
+        {
+            Value = value;
+            Function = null;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FunctionOrValue{TValue}"/> struct with
+        ///     a factory <paramref name="function"/>.
+        /// </summary>
+        /// <param name="function">The factory function.</param>
+        internal FunctionOrValue(Func<dynamic, TValue> function)
+        {
+            if (function is null)
+                throw new ArgumentNullException(nameof(function));
+            Function = function;
+            Value = default;
+        }
+
+        /// <summary>
         ///     Gets the fixed value.
         /// </summary>
         internal TValue Value { get; }
@@ -39,30 +63,31 @@ namespace ConsoleFx.Prompter
         /// </summary>
         internal Func<dynamic, TValue> Function { get; }
 
-        internal FunctionOrValue(TValue value)
-        {
-            Value = value;
-            Function = null;
-        }
-
-        internal FunctionOrValue(Func<dynamic, TValue> function)
-        {
-            if (function == null)
-                throw new ArgumentNullException(nameof(function));
-            Function = function;
-            Value = default;
-        }
-
+        /// <summary>
+        ///     Resolves the value of the <see cref="FunctionOrValue{TValue}"/> by either returning
+        ///     the fixed value or executing the factory function and returning a dynamic value.
+        /// </summary>
+        /// <param name="answers">The set of answers passed to the factory function.</param>
+        /// <returns>The resolved value of the <see cref="FunctionOrValue{TValue}"/>.</returns>
         internal TValue Resolve(dynamic answers = null)
         {
             return Function != null ? (TValue)Function(answers) : Value;
         }
 
+        /// <summary>
+        ///     Implicitly converts a fixed value to a <see cref="FunctionOrValue{TValue}"/> struct.
+        /// </summary>
+        /// <param name="value">The fixed value to convert.</param>
         public static implicit operator FunctionOrValue<TValue>(TValue value)
         {
             return new FunctionOrValue<TValue>(value);
         }
 
+        /// <summary>
+        ///     Implicitly converts a factory function delegate to a <see cref="FunctionOrValue{TValue}"/>
+        ///     struct.
+        /// </summary>
+        /// <param name="function">The factory function delegate to convert.</param>
         public static implicit operator FunctionOrValue<TValue>(Func<dynamic, TValue> function)
         {
             return new FunctionOrValue<TValue>(function);

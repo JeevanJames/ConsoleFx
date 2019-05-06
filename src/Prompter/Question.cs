@@ -53,6 +53,14 @@ namespace ConsoleFx.Prompter
             return this;
         }
 
+        public Question ValidateWith(Validator<object> validator)
+        {
+            if (validator is null)
+                throw new ArgumentNullException(nameof(validator));
+            Validator = validator;
+            return this;
+        }
+
         internal object Convert(object value) =>
             ConverterFn != null ? ConverterFn(value) : value;
     }

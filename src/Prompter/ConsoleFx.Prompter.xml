@@ -6,7 +6,7 @@
     <members>
         <member name="T:ConsoleFx.Prompter.Answers">
             <summary>
-                Represents a hash of the answered values.
+                Represents a dictionary of the answered values.
             </summary>
         </member>
         <member name="T:ConsoleFx.Prompter.FunctionOrValue`1">
@@ -14,6 +14,20 @@
                 Represents a fixed value or a factory function that can generate the value.
             </summary>
             <typeparam name="TValue">The type of the value.</typeparam>
+        </member>
+        <member name="M:ConsoleFx.Prompter.FunctionOrValue`1.#ctor(`0)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Prompter.FunctionOrValue`1"/> struct with
+                a fixed <paramref name="value"/>.
+            </summary>
+            <param name="value">The fixed value to set.</param>
+        </member>
+        <member name="M:ConsoleFx.Prompter.FunctionOrValue`1.#ctor(System.Func{System.Object,`0})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Prompter.FunctionOrValue`1"/> struct with
+                a factory <paramref name="function"/>.
+            </summary>
+            <param name="function">The factory function.</param>
         </member>
         <member name="P:ConsoleFx.Prompter.FunctionOrValue`1.Value">
             <summary>
@@ -24,6 +38,27 @@
             <summary>
                 Gets the factory function to generate the value.
             </summary>
+        </member>
+        <member name="M:ConsoleFx.Prompter.FunctionOrValue`1.Resolve(System.Object)">
+            <summary>
+                Resolves the value of the <see cref="T:ConsoleFx.Prompter.FunctionOrValue`1"/> by either returning
+                the fixed value or executing the factory function and returning a dynamic value.
+            </summary>
+            <param name="answers">The set of answers passed to the factory function.</param>
+            <returns>The resolved value of the <see cref="T:ConsoleFx.Prompter.FunctionOrValue`1"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.Prompter.FunctionOrValue`1.op_Implicit(`0)~ConsoleFx.Prompter.FunctionOrValue{`0}">
+            <summary>
+                Implicitly converts a fixed value to a <see cref="T:ConsoleFx.Prompter.FunctionOrValue`1"/> struct.
+            </summary>
+            <param name="value">The fixed value to convert.</param>
+        </member>
+        <member name="M:ConsoleFx.Prompter.FunctionOrValue`1.op_Implicit(System.Func{System.Object,`0})~ConsoleFx.Prompter.FunctionOrValue{`0}">
+            <summary>
+                Implicitly converts a factory function delegate to a <see cref="T:ConsoleFx.Prompter.FunctionOrValue`1"/>
+                struct.
+            </summary>
+            <param name="function">The factory function delegate to convert.</param>
         </member>
         <member name="M:ConsoleFx.Prompter.PromptItem.#ctor(ConsoleFx.Prompter.FunctionOrValue{System.String})">
             <summary>

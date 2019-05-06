@@ -22,6 +22,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using ConsoleFx.ConsoleExtensions;
+
 namespace ConsoleFx.Prompter
 {
     public sealed class Prompter : IList<PromptItem>
@@ -66,6 +68,8 @@ namespace ConsoleFx.Prompter
 
                 object answer;
 
+                // If the prompt cannot be displayed, continue the loop.
+                // If it is a question, try assigning the default value, if available.
                 if (!promptItem.CanAsk(answers))
                 {
                     if (promptItem is Question q)
@@ -78,6 +82,7 @@ namespace ConsoleFx.Prompter
                     continue;
                 }
 
+                // If the prompt is static text, just display it and continue the loop.
                 if (promptItem is StaticText)
                 {
                     promptItem.AskerFn(promptItem, answers);
@@ -86,21 +91,23 @@ namespace ConsoleFx.Prompter
 
                 var question = promptItem as Question;
 
-                bool validAnswer;
+                answer = null;
+                bool validAnswer = false;
                 do
                 {
                     object input = question.AskerFn(question, answers);
 
-                    //if (question.RawValueValidatorFn != null)
-                    //{
-                    //    ValidationResult validationResult = question.RawValueValidatorFn(input, answers);
-                    //    if (!validationResult.Valid)
-                    //    {
-                    //        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                    //            ConsoleEx.PrintLine($"[red]{validationResult.ErrorMessage}");
-                    //        continue;
-                    //    }
-                    //}
+                    if (question.Validator != null)
+                    {
+                        ValidationResult validationResult = question.Validator(input, answers);
+                        if (!validationResult.Valid)
+                        {
+                            if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                                ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
+                            continue;
+                        }
+                    }
+
                     answer = question.Convert(input);
 
                     //if (answer == null || (answer as string).Length == 0)
