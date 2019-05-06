@@ -19,32 +19,44 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class ListQuestion : Question
+    public class ListQuestion<TValue> : Question<int, TValue>
     {
         private readonly IReadOnlyList<string> _choices;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly AskerFn _askerFn;
 
         public ListQuestion(string name, FunctionOrValue<string> message, IEnumerable<string> choices)
             : base(name, message)
         {
-            if (choices == null)
+            if (choices is null)
                 throw new ArgumentNullException(nameof(choices));
+
             _choices = choices.ToList();
 
             _askerFn = (q, ans) =>
             {
-                var lq = (ListQuestion)q;
+                var lq = (ListQuestion<TValue>)q;
                 ConsoleEx.PrintLine(q.Message.Resolve(ans));
                 return ConsoleEx.SelectSingle(lq._choices);
             };
         }
 
         internal override AskerFn AskerFn => _askerFn;
+    }
+
+    public sealed class ListQuestion : ListQuestion<int>
+    {
+        public ListQuestion(string name, FunctionOrValue<string> message, IEnumerable<string> choices)
+            : base(name, message, choices)
+        {
+        }
     }
 }

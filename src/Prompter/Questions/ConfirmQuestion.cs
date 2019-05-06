@@ -22,7 +22,7 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class ConfirmQuestion : Question
+    public sealed class ConfirmQuestion : Question<bool, bool>
     {
         private readonly AskerFn _askerFn;
         private readonly bool _default;

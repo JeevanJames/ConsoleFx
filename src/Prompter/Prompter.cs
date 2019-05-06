@@ -97,9 +97,9 @@ namespace ConsoleFx.Prompter
                 {
                     object input = question.AskerFn(question, answers);
 
-                    if (question.Validator != null)
+                    if (question.RawValueValidator != null)
                     {
-                        ValidationResult validationResult = question.Validator(input, answers);
+                        ValidationResult validationResult = question.RawValueValidator(input, answers);
                         if (!validationResult.Valid)
                         {
                             if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
@@ -108,24 +108,24 @@ namespace ConsoleFx.Prompter
                         }
                     }
 
-                    answer = question.Convert(input);
+                    if (input == null || (input is string s && s.Length == 0))
+                        answer = question.DefaultValue.Resolve(answers);
+                    else
+                        answer = input;
 
-                    //if (answer == null || (answer as string).Length == 0)
-                    //    answer = question.DefaultValue.Resolve(answers);
+                    answer = question.Convert(answer);
 
-                    //if (optional && string.IsNullOrWhiteSpace(input) && question.DefaultValueFn != null)
-                    //    answer = question.DefaultValueFn(answers);
+                    if (question.ConvertedValueValidator != null)
+                    {
+                        ValidationResult validationResult = question.ConvertedValueValidator(answer, answers);
+                        if (!validationResult.Valid)
+                        {
+                            if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                                ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
+                            continue;
+                        }
+                    }
 
-                    //if (question.ValidatorFn != null)
-                    //{
-                    //    ValidationResult validationResult = question.ValidatorFn(answer, answers);
-                    //    if (!validationResult.Valid)
-                    //    {
-                    //        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                    //            ConsoleEx.PrintLine($"[red]{validationResult.ErrorMessage}");
-                    //        continue;
-                    //    }
-                    //}
                     validAnswer = true;
                 }
 #pragma warning disable S2583 // Conditionally executed blocks should be reachable

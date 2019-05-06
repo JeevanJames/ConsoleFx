@@ -21,7 +21,7 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class PasswordQuestion : TextEntryQuestion
+    public class PasswordQuestion<TValue> : TextEntryQuestion<TValue>
     {
         private readonly AskerFn _askerFn;
         private bool _hideCursor;
@@ -32,24 +32,32 @@ namespace ConsoleFx.Prompter.Questions
         {
             _askerFn = (q, ans) =>
             {
-                var pq = (PasswordQuestion)q;
+                var pq = (PasswordQuestion<TValue>)q;
                 return ConsoleEx.ReadSecret(new ColorString().Cyan(q.Message.Resolve(ans)),
                     hideCursor: pq._hideCursor, hideMask: pq._hideMask);
             };
         }
 
-        public PasswordQuestion HideCursor()
+        public PasswordQuestion<TValue> HideCursor()
         {
             _hideCursor = true;
             return this;
         }
 
-        public PasswordQuestion HideMask()
+        public PasswordQuestion<TValue> HideMask()
         {
             _hideMask = true;
             return this;
         }
 
         internal override AskerFn AskerFn => _askerFn;
+    }
+
+    public sealed class PasswordQuestion : PasswordQuestion<string>
+    {
+        internal PasswordQuestion(string name, FunctionOrValue<string> message)
+            : base(name, message)
+        {
+        }
     }
 }

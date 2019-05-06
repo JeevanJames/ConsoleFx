@@ -21,7 +21,7 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class MultiLineQuestion : TextEntryQuestion
+    public class MultiLineQuestion<TValue> : TextEntryQuestion<TValue>
     {
         private readonly AskerFn _askerFn;
 
@@ -36,5 +36,13 @@ namespace ConsoleFx.Prompter.Questions
         }
 
         internal override AskerFn AskerFn => _askerFn;
+    }
+
+    public sealed class MultiLineQuestion : MultiLineQuestion<string>
+    {
+        public MultiLineQuestion(string name, FunctionOrValue<string> message)
+            : base(name, message)
+        {
+        }
     }
 }

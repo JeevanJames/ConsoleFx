@@ -62,6 +62,16 @@ namespace ConsoleFx.Prompter
             return prompter;
         }
 
+        //TODO: Enforce a converter parameter here
+        public static Prompter List<TValue>(this Prompter prompter, string name, FunctionOrValue<string> message,
+            IEnumerable<string> choices, Action<ListQuestion<TValue>> setupQuestion = null)
+        {
+            var question = new ListQuestion<TValue>(name, message, choices);
+            setupQuestion?.Invoke(question);
+            prompter.Add(question);
+            return prompter;
+        }
+
         public static Prompter Checkbox(this Prompter prompter, string name, FunctionOrValue<string> message,
             IEnumerable<string> choices, Action<CheckboxQuestion> setupQuestion = null)
         {

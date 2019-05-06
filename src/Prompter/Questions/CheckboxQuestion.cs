@@ -19,15 +19,18 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class CheckboxQuestion : Question
+    public sealed class CheckboxQuestion : Question<IReadOnlyList<int>, IReadOnlyList<int>>
     {
         private readonly IReadOnlyList<string> _choices;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly AskerFn _askerFn;
 
         public CheckboxQuestion(string name, FunctionOrValue<string> message, IEnumerable<string> choices)

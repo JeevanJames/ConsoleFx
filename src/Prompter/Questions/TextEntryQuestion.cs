@@ -21,41 +21,17 @@ using System;
 
 namespace ConsoleFx.Prompter.Questions
 {
-    public abstract class TextEntryQuestion : Question
+    public abstract class TextEntryQuestion<TValue> : Question<string, TValue>
     {
         protected TextEntryQuestion(string name, FunctionOrValue<string> message)
             : base(name, message)
         {
         }
 
-        public TextEntryQuestion Validate(Func<string, bool> validator)
-        {
-            if (validator == null)
-                throw new ArgumentNullException(nameof(validator));
-            Validator = (str, _) => validator((string)str);
-            return this;
-        }
-
-        public TextEntryQuestion Validate(Func<string, dynamic, bool> validator)
-        {
-            if (validator == null)
-                throw new ArgumentNullException(nameof(validator));
-            Validator = (str, ans) => validator((string)str, ans);
-            return this;
-        }
-
-        public TextEntryQuestion Required(bool allowWhitespaceOnly = false)
+        public TextEntryQuestion<TValue> Required(bool allowWhitespaceOnly = false)
         {
             IsRequired = true;
             AllowWhitespaceOnly = allowWhitespaceOnly;
-            return this;
-        }
-
-        public TextEntryQuestion Convert<T>(Func<string, T> converter)
-        {
-            if (converter == null)
-                throw new ArgumentNullException(nameof(converter));
-            ConverterFn = str => converter((string)str);
             return this;
         }
 

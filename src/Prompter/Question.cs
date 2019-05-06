@@ -35,33 +35,57 @@ namespace ConsoleFx.Prompter
 
         internal FunctionOrValue<object> DefaultValue { get; set; }
 
-        internal Validator<object> Validator { get; set; }
+        internal Validator<object> RawValueValidator { get; set; }
 
         internal Func<object, object> ConverterFn { get; set; }
 
         internal Validator<object> ConvertedValueValidator { get; set; }
 
-        public new Question When(AnswersFunc<bool> canAskFn)
+        internal object Convert(object value) =>
+            ConverterFn != null ? ConverterFn(value) : value;
+    }
+
+    public abstract class Question<TRaw, TConverted> : Question
+    {
+        protected Question(string name, FunctionOrValue<string> message)
+            : base(name, message)
+        {
+        }
+
+        public new Question<TRaw, TConverted> When(AnswersFunc<bool> canAskFn)
         {
             CanAskFn = canAskFn;
             return this;
         }
 
-        public Question DefaultsTo(FunctionOrValue<object> defaultValue)
+        public Question<TRaw, TConverted> DefaultsTo(FunctionOrValue<TConverted> defaultValue)
         {
             DefaultValue = defaultValue;
             return this;
         }
 
-        public Question ValidateWith(Validator<object> validator)
+        public Question<TRaw, TConverted> ValidateWith(Validator<TConverted> validator)
         {
             if (validator is null)
                 throw new ArgumentNullException(nameof(validator));
-            Validator = validator;
+            ConvertedValueValidator = (value, ans) => validator((TConverted)value, ans);
             return this;
         }
 
-        internal object Convert(object value) =>
-            ConverterFn != null ? ConverterFn(value) : value;
+        public Question<TRaw, TConverted> ValidateInputWith(Validator<TRaw> validator)
+        {
+            if (validator is null)
+                throw new ArgumentNullException(nameof(validator));
+            RawValueValidator = (value, ans) => validator((TRaw)value, ans);
+            return this;
+        }
+
+        public Question<TRaw, TConverted> Transform(Func<TRaw, TConverted> converter)
+        {
+            if (converter is null)
+                throw new ArgumentNullException(nameof(converter));
+            ConverterFn = raw => converter((TRaw)raw);
+            return this;
+        }
     }
 }

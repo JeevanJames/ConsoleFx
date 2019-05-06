@@ -18,11 +18,12 @@ limitations under the License.
 #endregion
 
 using System;
+
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter.Questions
 {
-    public sealed class InputQuestion : TextEntryQuestion
+    public class InputQuestion<TValue> : TextEntryQuestion<TValue>
     {
         private readonly AskerFn _askerFn;
 
@@ -33,11 +34,11 @@ namespace ConsoleFx.Prompter.Questions
             {
                 bool Validator(string str)
                 {
-                    var question = (InputQuestion)q;
+                    var question = (InputQuestion<TValue>)q;
                     if (string.IsNullOrEmpty(str))
                         str = question.DefaultValue.Resolve(ans);
-                    bool valid = (question.Validator == null) || question.Validator(str, ans).Valid;
-                    var teq = (TextEntryQuestion)q;
+                    bool valid = (question.RawValueValidator == null) || question.RawValueValidator(str, ans).Valid;
+                    var teq = (TextEntryQuestion<TValue>)q;
                     if (valid && teq.IsRequired)
                     {
                         return teq.AllowWhitespaceOnly
@@ -53,5 +54,13 @@ namespace ConsoleFx.Prompter.Questions
         }
 
         internal override AskerFn AskerFn => _askerFn;
+    }
+
+    public sealed class InputQuestion : InputQuestion<string>
+    {
+        internal InputQuestion(string name, FunctionOrValue<string> message)
+            : base(name, message)
+        {
+        }
     }
 }
