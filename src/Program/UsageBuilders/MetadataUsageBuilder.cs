@@ -39,11 +39,11 @@ namespace ConsoleFx.Program.UsageBuilders
             Console.WriteLine(@"Usage:");
 
             //TODO: ConsoleEx.WriteIndented(GetUsage(parser.Options, parser.Arguments), 4, true);
-            Console.WriteLine(GetUsage(parser.Options, parser.Arguments));
+            Console.WriteLine(GetUsage(parser.Command.Options, parser.Command.Arguments));
             Console.WriteLine();
 
-            int maxOptionNameLength = parser.Options.Max(opt => opt.Name.Length);
-            foreach (Option option in parser.Options)
+            int maxOptionNameLength = parser.Command.Options.Max(opt => opt.Name.Length);
+            foreach (Option option in parser.Command.Options)
             {
                 string fullNameSection = $"  -{option.Name.PadRight(maxOptionNameLength)}  ";
                 string description = option["Description"] ?? string.Empty;
@@ -55,11 +55,11 @@ namespace ConsoleFx.Program.UsageBuilders
 
             Console.WriteLine();
 
-            int maxArgumentNameLength = parser.Arguments.Max(a => (a["Name"] ?? string.Empty).Length);
-            maxArgumentNameLength = Math.Max(maxArgumentNameLength, "Arg".Length + parser.Arguments.Count);
-            for (var i = 0; i < parser.Arguments.Count; i++)
+            int maxArgumentNameLength = parser.Command.Arguments.Max(a => (a["Name"] ?? string.Empty).Length);
+            maxArgumentNameLength = Math.Max(maxArgumentNameLength, "Arg".Length + parser.Command.Arguments.Count);
+            for (var i = 0; i < parser.Command.Arguments.Count; i++)
             {
-                Argument argument = parser.Arguments[i];
+                Argument argument = parser.Command.Arguments[i];
                 string name = argument["Name"] ?? $"Arg{i + 1}";
                 string description = argument["Description"] ?? string.Empty;
                 Console.WriteLine($"  <{name.PadRight(maxArgumentNameLength)}>  {description}");

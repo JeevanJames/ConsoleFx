@@ -105,7 +105,7 @@ namespace ConsoleFx.CmdLineArgs.Base
         /// <summary>
         ///     Gets the first name from all the assigned names for this arg. This represents the primary name of the arg.
         /// </summary>
-        public string Name => _names.First().Key;
+        public string Name => _names.Count == 0 ? null : _names.First().Key;
 
         /// <summary>
         ///     Gets all the secondary names for the arg.

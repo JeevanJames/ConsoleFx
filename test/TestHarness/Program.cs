@@ -6,7 +6,7 @@ namespace TestHarness
     {
         private static void Main()
         {
-            TestBase testHarness = new PrompterTest();
+            TestBase testHarness = new ParserTest();
             testHarness.Run();
 
             PrintBlank();

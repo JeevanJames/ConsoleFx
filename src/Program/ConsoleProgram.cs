@@ -28,7 +28,7 @@ using ConsoleFx.CmdLineParser.Style;
 
 namespace ConsoleFx.Program
 {
-    public class ConsoleProgram : Command
+    public class ConsoleProgram : RootCommand
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ArgStyle _argStyle;
@@ -45,16 +45,16 @@ namespace ConsoleFx.Program
 
         public int Run()
         {
-            var parser = new Parser(_argStyle, Grouping);
+            var parser = new Parser(this, _argStyle, Grouping);
             List<Argument> arguments = Arguments.ToList();
             foreach (Argument argument in arguments)
-                parser.Arguments.Add(argument);
+                parser.Command.Arguments.Add(argument);
             Options options = Options;
             foreach (Option option in options)
-                parser.Options.Add(option);
+                parser.Command.Options.Add(option);
             List<Command> commands = Commands.ToList();
             foreach (Command command in commands)
-                parser.Commands.Add(command);
+                parser.Command.Commands.Add(command);
             try
             {
                 ParseResult result = parser.Parse(Environment.GetCommandLineArgs().Skip(1));

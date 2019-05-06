@@ -178,4 +178,12 @@ namespace ConsoleFx.CmdLineArgs
         protected override string GetDuplicateErrorMessage(string name) =>
             $"Command named '{name}' already exists in the command collection.";
     }
+
+    public class RootCommand : Command
+    {
+        public RootCommand()
+            : base()
+        {
+        }
+    }
 }

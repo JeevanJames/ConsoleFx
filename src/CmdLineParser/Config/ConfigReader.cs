@@ -42,8 +42,8 @@ namespace ConsoleFx.CmdLineParser.Config
         private void InitializeBehaviors(out List<OverrideBehavior> argumentBehaviors,
             out Dictionary<string, OverrideBehavior> optionBehaviors)
         {
-            argumentBehaviors = new List<OverrideBehavior>(Parser.Arguments.Count);
-            optionBehaviors = new Dictionary<string, OverrideBehavior>(Parser.Options.Count);
+            argumentBehaviors = new List<OverrideBehavior>(Parser.Command.Arguments.Count);
+            optionBehaviors = new Dictionary<string, OverrideBehavior>(Parser.Command.Options.Count);
         }
 
         protected abstract void IdentifyArgs();

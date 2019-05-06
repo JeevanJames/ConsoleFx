@@ -34,11 +34,19 @@ namespace ConsoleFx.CmdLineParser
 {
     public sealed class Parser
     {
-        public Parser(ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
+        public Parser(RootCommand command, ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
+            if (command is null)
+                throw new ArgumentNullException(nameof(command));
+            if (argStyle is null)
+                throw new ArgumentNullException(nameof(argStyle));
+
+            Command = command;
             ArgStyle = argStyle;
             Grouping = grouping;
         }
+
+        public Command Command { get; }
 
         public ArgStyle ArgStyle { get; }
 
@@ -50,17 +58,6 @@ namespace ConsoleFx.CmdLineParser
         public ArgGrouping Grouping { get; set; }
 
         public ConfigReader ConfigReader { get; set; }
-
-        /// <summary>
-        ///     Gets the implicit <see cref="Command" /> instance that is the root of all commands and args.
-        /// </summary>
-        private Command RootCommand { get; } = new Command();
-
-        public Arguments Arguments => RootCommand.Arguments;
-
-        public Options Options => RootCommand.Options;
-
-        public Commands Commands => RootCommand.Commands;
 
         public ParseResult Parse(IEnumerable<string> tokens) =>
             Parse(tokens.ToArray());
@@ -75,26 +72,27 @@ namespace ConsoleFx.CmdLineParser
         {
             IReadOnlyList<string> tokenList = tokens.ToList();
 
-            // Creates a ParseRun instance, which specifies the sequence of commands specified and the tokens and any
-            // options and arguments that apply to the specified commands.
+            // Creates a ParseRun instance, which specifies the sequence of commands specified and
+            // the tokens and any options and arguments that apply to the specified commands.
             ParseRun run = CreateRun(tokenList);
 
             // Extract out just the option and argument objects from their respective run collections.
-            // We want to pass these to parser style methods that only need to deal with the Option and Argument objects
-            // and not have to deal with the 'run' aspects. See some of the calls to protected methods from this method.
+            // We want to pass these to parser style methods that only need to deal with the Option
+            // and Argument objects and not have to deal with the 'run' aspects. See some of the calls
+            // to protected methods from this method.
             IReadOnlyList<Option> justOptions = run.Options.Select(o => o.Option).ToList();
             IReadOnlyList<Argument> justArguments = run.Arguments.Select(a => a.Argument).ToList();
 
-            // Even though the caller can define the grouping, the parser style can override it based on the available
-            // options and arguments. See the UnixArgStyle class for an example.
+            // Even though the caller can define the grouping, the parser style can override it based
+            // on the available options and arguments. See the UnixArgStyle class for an example.
             Grouping = ArgStyle.GetGrouping(Grouping, justOptions, justArguments);
 
             // Validate all the available options based on the parser style rules.
             // See the UnixArgStyle for an example.
             ArgStyle.ValidateDefinedOptions(justOptions);
 
-            // Identify all tokens as options or arguments. Identified option details are stored in the Option instance
-            // itself. Identified arguments are returned from the method.
+            // Identify all tokens as options or arguments. Identified option details are stored in
+            // the Option instance itself. Identified arguments are returned from the method.
             List<string> specifiedArguments =
                 ArgStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
 
@@ -120,7 +118,8 @@ namespace ConsoleFx.CmdLineParser
         {
             var run = new ParseRun();
 
-            Command currentCommand = RootCommand;
+            run.Commands.Add(Command);
+            Command currentCommand = Command;
 
             // Go through the tokens and find all the subcommands and their arguments and options.
             for (int i = 0; i < tokens.Count; i++)
@@ -129,7 +128,7 @@ namespace ConsoleFx.CmdLineParser
 
                 // All options for the current command are considered. So, add them all.
                 // This is not the case for arguments. Only the arguments for the innermost command are considered.
-                run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o, currentCommand)));
+                //run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o, currentCommand)));
 
                 // Check if subcommand exists under the current command with the token as a name.
                 Command subcommand = currentCommand.Commands[token];
@@ -146,11 +145,13 @@ namespace ConsoleFx.CmdLineParser
                     // and then add all the remaining tokens to the run's Token collection and exit
                     // the loop.
 
+                    // Add all the options for the current command.
+                    run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o, currentCommand)));
+
                     // Only add the arguments from the current command to the run if a subcommand is not specified.
                     // Arguments from the innermost command can only be used for a run. If arguments
                     // from different levels of commands are used, then the correct order of the commands is ambiguous.
-                    foreach (Argument argument in currentCommand.Arguments)
-                        run.Arguments.Add(new ArgumentRun(argument));
+                    run.Arguments.AddRange(currentCommand.Arguments.Select(a => new ArgumentRun(a)));
 
                     // All tokens from the current token are considered the args for the command.
                     run.Tokens = new List<string>(tokens.Count - i + 1);
@@ -162,7 +163,8 @@ namespace ConsoleFx.CmdLineParser
                 }
             }
 
-            // To avoid null-ref exceptions, assign run.Tokens if it is null.
+            // To avoid null-ref exceptions in case no tokens are specified, assign run.Tokens if it
+            // is null.
             if (run.Tokens == null)
                 run.Tokens = new List<string>(0);
 
@@ -233,8 +235,9 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Resolves an <see cref="Option" />'s value based on it's usage details. See the comments on the
-        ///     <see cref="OptionRun.ResolvedValue" /> property for details on how the resolution is done.
+        ///     Resolves an <see cref="Option" />'s value based on it's usage details. See the comments
+        ///     on the <see cref="OptionRun.ResolvedValue" /> property for details on how the resolution
+        ///     is done.
         /// </summary>
         /// <param name="optionRun">The <see cref="OptionRun" /> instance, whose option to resolve.</param>
         /// <returns>The value of the option.</returns>
@@ -242,25 +245,25 @@ namespace ConsoleFx.CmdLineParser
         {
             Option option = optionRun.Option;
 
-            //If parameters are not allowed on the option...
+            // If parameters are not allowed on the option...
             if (option.Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
             {
-                //If the option can occur more than once, it's value will be an integer specifying
-                //the number of occurences.
+                // If the option can occur more than once, it's value will be an integer specifying
+                // the number of occurences.
                 if (option.Usage.MaxOccurrences > 1)
                     return optionRun.Occurrences;
 
-                //If the option can occur not more than once, it's value will be a bool indicating
-                //whether it was specified or not.
+                // If the option can occur not more than once, it's value will be a bool indicating
+                // whether it was specified or not.
                 return optionRun.Occurrences > 0;
             }
 
-            //If no type is specified, assume string.
+            // If no type is specified, assume string.
             Type optionType = option.Type ?? typeof(string);
             Converter<string, object> converter = option.TypeConverter;
 
-            //If a custom type converter is not specified and the option's value type is not string,
-            //then attempt to find a default type converter for that type, which can convert from string.
+            // If a custom type converter is not specified and the option's value type is not string,
+            // then attempt to find a default type converter for that type, which can convert from string.
             if (converter == null && optionType != typeof(string))
             {
                 TypeConverter typeConverter = TypeDescriptor.GetConverter(optionType);
@@ -275,9 +278,9 @@ namespace ConsoleFx.CmdLineParser
                 converter = value => typeConverter.ConvertFromString(value);
             }
 
-            //If the option can have multiple parameter values (either because the MaxParameters usage
-            //is greater than one or because MaxParameters is one but MaxOccurences is greater than
-            //one), then the option's value is an IList<Type>.
+            // If the option can have multiple parameter values (either because the MaxParameters usage
+            // is greater than one or because MaxParameters is one but MaxOccurences is greater than
+            // one), then the option's value is an IList<Type>.
             if (option.Usage.MaxParameters > 1 || (option.Usage.MaxParameters == 1 && option.Usage.MaxOccurrences > 1))
             {
                 Type listType = typeof(List<>).MakeGenericType(optionType);
@@ -294,7 +297,7 @@ namespace ConsoleFx.CmdLineParser
                 return list;
             }
 
-            //If the option only has one parameter specified, then the option's value is a string.
+            // If the option only has one parameter specified, then the option's value is a string.
             if (option.Usage.MaxParameters == 1 && optionRun.Parameters.Count > 0)
             {
                 return GetConvertedValue(optionRun.Parameters[0], option, converter);
@@ -359,20 +362,20 @@ namespace ConsoleFx.CmdLineParser
 
         private static ParseResult CreateParseResult(ParseRun run)
         {
-            Command finalCommand = run.Commands.Count > 0 ? run.Commands[run.Commands.Count - 1] : null;
+            Command finalCommand = run.Commands[run.Commands.Count - 1];
             List<string> arguments = run.Arguments
                 .Select(ar => ar.Value)
                 .ToList();
             Dictionary<string, object> options = run.Options
                 .Where(option => option.Command.Name == null)
                 .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.ResolvedValue);
-            foreach (Command command in run.Commands)
-            {
-                IEnumerable<OptionRun> commandOptionRuns = run.Options.Where(option => option.Command == command);
-                foreach (OptionRun commandOptionRun in commandOptionRuns)
-                    options.Add(commandOptionRun.Option.Name, commandOptionRun.ResolvedValue);
-            }
 
+            //foreach (Command command in run.Commands)
+            //{
+            //    IEnumerable<OptionRun> commandOptionRuns = run.Options.Where(option => option.Command == command);
+            //    foreach (OptionRun commandOptionRun in commandOptionRuns)
+            //        options.Add(commandOptionRun.Option.Name, commandOptionRun.ResolvedValue);
+            //}
             return new ParseResult(finalCommand, arguments, options);
         }
     }

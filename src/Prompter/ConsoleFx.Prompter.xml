@@ -66,5 +66,32 @@
             </summary>
             <param name="message">The <paramref name="message"/> to display to the user.</param>
         </member>
+        <member name="M:ConsoleFx.Prompter.Question.#ctor(System.String,ConsoleFx.Prompter.FunctionOrValue{System.String})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Prompter.Question"/> class.
+            </summary>
+            <param name="name">The name of the variable to store the answer.</param>
+            <param name="message">The message to display to the user.</param>
+        </member>
+        <member name="P:ConsoleFx.Prompter.Question.Name">
+            <summary>
+                Gets the name of the variable to store the answer.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.Prompter.ValidationResult">
+            <summary>
+                Represents the result of a validation on a question's answer.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Prompter.ValidationResult.Valid">
+            <summary>
+                Gets a value indicating whether the answer is valid.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.Prompter.ValidationResult.ErrorMessage">
+            <summary>
+                Gets the error message describing the reason why the validation failed.
+            </summary>
+        </member>
     </members>
 </doc>
