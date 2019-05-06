@@ -35,6 +35,8 @@ namespace ConsoleFx.CmdLineParser.Runs
 
         internal Option Option { get; }
 
+        //TODO: Can remove this property as we're only considering options from the innermost command.
+
         /// <summary>
         /// Gets the <see cref="Command"/> instance to which this option belongs.
         /// </summary>

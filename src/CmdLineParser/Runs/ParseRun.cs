@@ -32,8 +32,9 @@ namespace ConsoleFx.CmdLineParser.Runs
         /// <summary>
         ///     Gets all specified commands.
         ///     <para/>
-        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection here, because we
-        ///     want to avoid the duplicate checks, as commands at different levels can have the same name.
+        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection
+        ///     here, because we want to avoid the duplicate checks, as commands at different levels
+        ///     can have the same name.
         /// </summary>
         internal List<Command> Commands { get; } = new List<Command>();
 
@@ -48,7 +49,8 @@ namespace ConsoleFx.CmdLineParser.Runs
         internal List<OptionRun> Options { get; } = new List<OptionRun>();
 
         /// <summary>
-        ///     Gets or sets all the specified options and argument tokens after accounting for the commands.
+        ///     Gets or sets all the specified options and argument tokens after accounting for the
+        ///     commands.
         /// </summary>
         internal List<string> Tokens { get; set; }
     }
