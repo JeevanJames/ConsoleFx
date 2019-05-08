@@ -5,31 +5,43 @@ environment:
     secure: 3tEiaoqZlTJcJkAX+3wWyp3mbCYuJpALEFzTEaum6ACiXbWgsa1kWYGBi3TUFY7c
   MYGET_FEED:
     secure: YuV15P4qNR7KhAKqUhCHjzpv7aTb4QzgBDdb4COjw2s1JdMgQccy1WcAV/VGOP0ZKh4UjHdD0R0n/4Xnz1UIdQ==
+  CODECOV_TOKEN:
+    secure: MPsNuwdM5Urci3xkf+DW99r+lzC1VAf4Zt4+sKFsij6K6Ln1QfBFJa9DVGhCt55E
+install:
+- pwsh: choco install codecov
 build_script:
 - pwsh: dotnet build -c Release
 test_script:
-- pwsh: dotnet test --blame ./test/ConsoleExtensions.Tests/ConsoleExtensions.Tests.csproj /p:CollectCoverage=true /p:Exclude=\"[xunit.*]*\" /p:CoverletOutputFormat=opencover
+- pwsh: >-
+    dotnet test --blame ./test/ConsoleExtensions.Tests/ConsoleExtensions.Tests.csproj /p:CollectCoverage=true /p:Exclude=\"[xunit.*]*\" /p:CoverletOutputFormat=opencover
+
+    codecov -f "./test/ConsoleExtensions.Tests/coverage.opencover.xml"
 deploy_script:
 - pwsh: >-
     dotnet pack ./src/Capture/Capture.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./src/Capture/bin/Release/ConsoleFx.Capture.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
 
+
     dotnet pack ./src/CmdLineArgs/CmdLineArgs.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./src/CmdLineArgs/bin/Release/ConsoleFx.CmdLineArgs.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+
 
     dotnet pack ./src/CmdLineParser/CmdLineParser.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./src/CmdLineParser/bin/Release/ConsoleFx.CmdLineParser.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
 
+
     dotnet pack ./src/ConsoleExtensions/ConsoleExtensions.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./src/ConsoleExtensions/bin/Release/ConsoleFx.ConsoleExtensions.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
 
+
     dotnet pack ./src/Program/Program.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./src/Program/bin/Release/ConsoleFx.Program.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+
 
     dotnet pack ./src/Prompter/Prompter.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
