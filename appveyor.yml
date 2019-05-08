@@ -1,0 +1,16 @@
+version: 2.0.0-build.{build}
+image: Visual Studio 2019 Preview
+environment:
+  MYGET_API_KEY:
+    secure: 3tEiaoqZlTJcJkAX+3wWyp3mbCYuJpALEFzTEaum6ACiXbWgsa1kWYGBi3TUFY7c
+  MYGET_FEED:
+    secure: YuV15P4qNR7KhAKqUhCHjzpv7aTb4QzgBDdb4COjw2s1JdMgQccy1WcAV/VGOP0ZKh4UjHdD0R0n/4Xnz1UIdQ==
+build_script:
+- pwsh: dotnet build -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION ./src/ConsoleExtensions/ConsoleExtensions.csproj
+test_script:
+- pwsh: dotnet test --blame ./test/ConsoleExtensions.Tests/ConsoleExtensions.Tests.csproj /p:CollectCoverage=true /p:Exclude=\"[xunit.*]*\" /p:CoverletOutputFormat=opencover
+deploy_script:
+- pwsh: >-
+    dotnet pack ./src/ConsoleExtensions/ConsoleExtensions.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
+
+    dotnet nuget push ./src/ConsoleExtensions/bin/Release/ConsoleFx.ConsoleExtensions.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
