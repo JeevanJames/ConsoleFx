@@ -5,8 +5,7 @@ environment:
     secure: 3tEiaoqZlTJcJkAX+3wWyp3mbCYuJpALEFzTEaum6ACiXbWgsa1kWYGBi3TUFY7c
   MYGET_FEED:
     secure: YuV15P4qNR7KhAKqUhCHjzpv7aTb4QzgBDdb4COjw2s1JdMgQccy1WcAV/VGOP0ZKh4UjHdD0R0n/4Xnz1UIdQ==
-  CODECOV_TOKEN:
-    secure: MPsNuwdM5Urci3xkf+DW99r+lzC1VAf4Zt4+sKFsij6K6Ln1QfBFJa9DVGhCt55E
+  CODECOV_TOKEN: 9393205e-cfa3-459f-a3d4-af5c04c3410d
 install:
 - pwsh: choco install codecov
 build_script:
