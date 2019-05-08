@@ -5,7 +5,6 @@
     <AssemblyName>ConsoleFx.Art</AssemblyName>
     <RootNamespace>ConsoleFx.Art</RootNamespace>
     <LangVersion>latest</LangVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0.0.1</Version>
     <Authors>Jeevan James</Authors>
     <Company>Jeevan James</Company>
