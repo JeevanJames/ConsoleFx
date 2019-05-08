@@ -24,36 +24,34 @@ using ConsoleFx.CmdLineArgs;
 
 namespace ConsoleFx.CmdLineParser.Runs
 {
-    [DebuggerDisplay("{Command} {Option}")]
+    [DebuggerDisplay("{Option.ToString()} - {ResolvedValue}")]
     public sealed class OptionRun
     {
-        internal OptionRun(Option option, Command command)
+        internal OptionRun(Option option)
         {
             Option = option;
-            Command = command;
         }
 
         internal Option Option { get; }
 
-        //TODO: Can remove this property as we're only considering options from the innermost command.
-
         /// <summary>
-        /// Gets the <see cref="Command"/> instance to which this option belongs.
+        ///     Gets or sets the number of occurences of the option.
         /// </summary>
-        internal Command Command { get; }
-
         internal int Occurrences { get; set; }
 
         //TODO: Optimize initial capacity of this list based on the min and max parameters of the option.
         internal List<string> Parameters { get; } = new List<string>();
 
         /// <summary>
-        ///     Gets or sets the final value of the parameters of the option. The actual type depends on how the option is setup.
-        ///     <para/>
+        ///     Gets or sets the final value of the parameters of the option. The actual type depends
+        ///     on how the option is setup.
+        ///     <para />
         ///     If the option allows parameters, then this can be:
         ///     <list type="bullet">
         ///         <item>
-        ///             <description>a <see cref="IList{T}" />, if more than one parameters are allowed, or</description>
+        ///             <description>
+        ///                 a <see cref="IList{T}" />, if more than one parameters are allowed, or
+        ///             </description>
         ///         </item>
         ///         <item>
         ///             <description>an object of type T, if only one parameter is allowed.</description>
@@ -63,24 +61,18 @@ namespace ConsoleFx.CmdLineParser.Runs
         ///     <list type="bullet">
         ///         <item>
         ///             <description>
-        ///                 an <see cref="int" /> which is the number of times the option is specified (if it allows more
-        ///                 than one occurence), or
+        ///                 an <see cref="int" /> which is the number of times the option is specified
+        ///                 (if it allows more than one occurence), or
         ///             </description>
         ///         </item>
         ///         <item>
         ///             <description>
-        ///                 a <see cref="bool" /> which is true if the option was specified otherwise false (if it allows
-        ///                 only one occurence).
+        ///                 a <see cref="bool" /> which is true if the option was specified otherwise
+        ///                 false (if it allows only one occurence).
         ///             </description>
         ///         </item>
         ///     </list>
         /// </summary>
         internal object ResolvedValue { get; set; }
-
-        internal void Clear()
-        {
-            Occurrences = 0;
-            Parameters.Clear();
-        }
     }
 }

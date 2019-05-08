@@ -128,6 +128,17 @@ namespace ConsoleFx.CmdLineArgs
             return this;
         }
 
+        public Option ParamsOfType(Type type, Converter<string, object> converter = null)
+        {
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+
+            Type = type;
+            if (converter != null)
+                TypeConverter = value => converter(value);
+            return this;
+        }
+
         /// <summary>
         ///     Specifies the type to convert the option parameters, with an optional custom converter.
         ///     If a custom converter is not specified, the type's type converter will be used.

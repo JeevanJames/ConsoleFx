@@ -146,7 +146,7 @@ namespace ConsoleFx.CmdLineParser
                     // the loop.
 
                     // Add all the options for the current command.
-                    run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o, currentCommand)));
+                    run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o)));
 
                     // Only add the arguments from the current command to the run if a subcommand is not specified.
                     // Arguments from the innermost command can only be used for a run. If arguments
@@ -367,7 +367,6 @@ namespace ConsoleFx.CmdLineParser
                 .Select(ar => ar.Value)
                 .ToList();
             Dictionary<string, object> options = run.Options
-                .Where(option => option.Command.Name == null)
                 .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.ResolvedValue);
 
             //foreach (Command command in run.Commands)

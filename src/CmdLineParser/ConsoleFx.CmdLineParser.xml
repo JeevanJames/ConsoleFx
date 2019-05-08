@@ -166,19 +166,22 @@
             <param name="default">Default value to return if the option is not found.</param>
             <returns>The typed value of the specified option.</returns>
         </member>
-        <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Command">
+        <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Occurrences">
             <summary>
-            Gets the <see cref="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Command"/> instance to which this option belongs.
+                Gets or sets the number of occurences of the option.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.ResolvedValue">
             <summary>
-                Gets or sets the final value of the parameters of the option. The actual type depends on how the option is setup.
-                <para/>
+                Gets or sets the final value of the parameters of the option. The actual type depends
+                on how the option is setup.
+                <para />
                 If the option allows parameters, then this can be:
                 <list type="bullet">
                     <item>
-                        <description>a <see cref="T:System.Collections.Generic.IList`1" />, if more than one parameters are allowed, or</description>
+                        <description>
+                            a <see cref="T:System.Collections.Generic.IList`1" />, if more than one parameters are allowed, or
+                        </description>
                     </item>
                     <item>
                         <description>an object of type T, if only one parameter is allowed.</description>
@@ -188,14 +191,14 @@
                 <list type="bullet">
                     <item>
                         <description>
-                            an <see cref="T:System.Int32" /> which is the number of times the option is specified (if it allows more
-                            than one occurence), or
+                            an <see cref="T:System.Int32" /> which is the number of times the option is specified
+                            (if it allows more than one occurence), or
                         </description>
                     </item>
                     <item>
                         <description>
-                            a <see cref="T:System.Boolean" /> which is true if the option was specified otherwise false (if it allows
-                            only one occurence).
+                            a <see cref="T:System.Boolean" /> which is true if the option was specified otherwise
+                            false (if it allows only one occurence).
                         </description>
                     </item>
                 </list>
@@ -211,8 +214,9 @@
             <summary>
                 Gets all specified commands.
                 <para/>
-                Note: We use a <see cref="T:System.Collections.Generic.List`1" /> instead of the <see cref="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Commands"/> collection here, because we
-                want to avoid the duplicate checks, as commands at different levels can have the same name.
+                Note: We use a <see cref="T:System.Collections.Generic.List`1" /> instead of the <see cref="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Commands"/> collection
+                here, because we want to avoid the duplicate checks, as commands at different levels
+                can have the same name.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Arguments">
@@ -227,7 +231,8 @@
         </member>
         <member name="P:ConsoleFx.CmdLineParser.Runs.ParseRun.Tokens">
             <summary>
-                Gets or sets all the specified options and argument tokens after accounting for the commands.
+                Gets or sets all the specified options and argument tokens after accounting for the
+                commands.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineParser.Style.ArgStyle">

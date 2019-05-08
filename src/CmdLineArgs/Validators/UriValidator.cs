@@ -58,7 +58,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
             var validator = new UriValidator(uriKind);
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(parameterIndex, validator);
+            return option.ValidateWith(parameterIndex, validator).ParamsOfType<Uri>();
         }
     }
 }
