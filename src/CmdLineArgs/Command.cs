@@ -141,7 +141,7 @@ namespace ConsoleFx.CmdLineArgs
             set => _customValidator = value;
         }
 
-        protected virtual string PerformCustomValidation(IReadOnlyList<string> arguments,
+        protected virtual string PerformCustomValidation(IReadOnlyList<object> arguments,
             IReadOnlyDictionary<string, object> options)
         {
             return null;
@@ -153,7 +153,7 @@ namespace ConsoleFx.CmdLineArgs
             set => _handler = value;
         }
 
-        protected virtual int HandleCommand(IReadOnlyList<string> arguments,
+        protected virtual int HandleCommand(IReadOnlyList<object> arguments,
             IReadOnlyDictionary<string, object> options)
         {
             return 0;
@@ -195,10 +195,10 @@ namespace ConsoleFx.CmdLineArgs
         }
     }
 
-    public delegate string CommandCustomValidator(IReadOnlyList<string> arguments,
+    public delegate string CommandCustomValidator(IReadOnlyList<object> arguments,
         IReadOnlyDictionary<string, object> options);
 
-    public delegate int CommandHandler(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options);
+    public delegate int CommandHandler(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options);
 
     /// <summary>
     ///     <para>Collection of <see cref="Command" /> objects.</para>

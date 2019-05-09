@@ -31,7 +31,7 @@ namespace TestHarness
         }
 
         /// <inheritdoc />
-        protected override string PerformCustomValidation(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options)
+        protected override string PerformCustomValidation(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
         {
             if (options["include"] != null && options["exclude"] != null)
                 return "Cannot specify both include and exclude";

@@ -50,6 +50,9 @@
                 Gets the validators for this argument.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Argument.FormatAs(System.Func{System.String,System.String})">
+            <inheritdoc />
+        </member>
         <member name="M:ConsoleFx.CmdLineArgs.Argument.TypedAs``1(System.Converter{System.String,``0})">
             <summary>
                 Specifies the type to convert the option parameters, with an optional custom converter.
@@ -383,10 +386,10 @@
         <member name="M:ConsoleFx.CmdLineArgs.HelpCommand.GetOptions">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLineArgs.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+        <member name="M:ConsoleFx.CmdLineArgs.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLineArgs.HelpCommand.HandleCommand(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+        <member name="M:ConsoleFx.CmdLineArgs.HelpCommand.HandleCommand(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
             <inheritdoc />
         </member>
         <member name="T:ConsoleFx.CmdLineArgs.Messages">

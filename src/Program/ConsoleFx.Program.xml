@@ -58,10 +58,10 @@
         <member name="M:ConsoleFx.Program.HelpCommand.GetOptions">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.Program.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+        <member name="M:ConsoleFx.Program.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.Program.HelpCommand.HandleCommand(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+        <member name="M:ConsoleFx.Program.HelpCommand.HandleCommand(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
             <inheritdoc />
         </member>
         <member name="T:ConsoleFx.Program.Messages">

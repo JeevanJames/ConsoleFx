@@ -47,7 +47,7 @@ namespace ConsoleFx.CmdLineArgs
         }
 
         /// <inheritdoc />
-        protected override string PerformCustomValidation(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options)
+        protected override string PerformCustomValidation(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
         {
             if (options["help"] != null)
             {
@@ -61,7 +61,7 @@ namespace ConsoleFx.CmdLineArgs
         }
 
         /// <inheritdoc />
-        protected override int HandleCommand(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options)
+        protected override int HandleCommand(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
         {
             if (options["help"] != null)
                 ConsoleEx.PrintLine(new ColorString().BgBlue("This is the help text"));

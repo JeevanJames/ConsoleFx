@@ -287,25 +287,14 @@ namespace ConsoleFx.CmdLineParser
                 var list = (IList)Activator.CreateInstance(listType, optionRun.Parameters.Count);
 
                 foreach (string parameter in optionRun.Parameters)
-                {
                     list.Add(GetConvertedValue(parameter, option, converter));
-
-                    //string formattedParameter = option.Formatter != null ? option.Formatter(parameter) : parameter;
-                    //list.Add(converter == null ? formattedParameter : converter(formattedParameter));
-                }
 
                 return list;
             }
 
             // If the option only has one parameter specified, then the option's value is a string.
             if (option.Usage.MaxParameters == 1 && optionRun.Parameters.Count > 0)
-            {
                 return GetConvertedValue(optionRun.Parameters[0], option, converter);
-
-                //string formattedParameter = option.Formatter != null
-                //    ? option.Formatter(optionRun.Parameters[0]) : optionRun.Parameters[0];
-                //return converter == null ? formattedParameter : converter(formattedParameter);
-            }
 
             throw new InvalidOperationException("Should never reach here");
 
@@ -356,14 +345,42 @@ namespace ConsoleFx.CmdLineParser
                 foreach (Validator validator in argument.Validators)
                     validator.Validate(argumentValue);
 
-                argumentRuns[i].Value = argumentValue;
+                argumentRuns[i].Value = ResolveArgumentValue(argumentRuns[i], argumentValue);
             }
+        }
+
+        private static object ResolveArgumentValue(ArgumentRun argumentRun, string strValue)
+        {
+            Argument argument = argumentRun.Argument;
+
+            // If no type is specified, assume string.
+            Type argumentType = argument.Type ?? typeof(string);
+            Converter<string, object> converter = argument.TypeConverter;
+
+            // If a custom type converter is not specified and the option's value type is not string,
+            // then attempt to find a default type converter for that type, which can convert from string.
+            if (converter == null && argumentType != typeof(string))
+            {
+                TypeConverter typeConverter = TypeDescriptor.GetConverter(argumentType);
+
+                // If a default converter cannot be found, throw an exception
+                if (!typeConverter.CanConvertFrom(typeof(string)))
+                {
+                    throw new ParserException(-1,
+                        $"Unable to find a adequate type converter to convert the value of the {argument.Name} argument to type {argumentType.FullName}.");
+                }
+
+                converter = value => typeConverter.ConvertFromString(value);
+            }
+
+            string formattedValue = argument.Formatter != null ? argument.Formatter(strValue) : strValue;
+            return converter == null ? formattedValue : converter(formattedValue);
         }
 
         private static ParseResult CreateParseResult(ParseRun run)
         {
             Command finalCommand = run.Commands[run.Commands.Count - 1];
-            List<string> arguments = run.Arguments
+            List<object> arguments = run.Arguments
                 .Select(ar => ar.Value)
                 .ToList();
             Dictionary<string, object> options = run.Options

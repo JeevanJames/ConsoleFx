@@ -28,7 +28,7 @@ namespace ConsoleFx.CmdLineParser
     /// </summary>
     public sealed class ParseResult
     {
-        internal ParseResult(Command command, IReadOnlyList<string> arguments,
+        internal ParseResult(Command command, IReadOnlyList<object> arguments,
             IReadOnlyDictionary<string, object> options)
         {
             Command = command;
@@ -41,7 +41,7 @@ namespace ConsoleFx.CmdLineParser
         /// <summary>
         ///     Gets the list of specified command line arguments.
         /// </summary>
-        public IReadOnlyList<string> Arguments { get; }
+        public IReadOnlyList<object> Arguments { get; }
 
         /// <summary>
         ///     Gets the list of specified command line options.

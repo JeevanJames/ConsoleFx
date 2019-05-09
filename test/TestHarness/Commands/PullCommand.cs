@@ -26,7 +26,7 @@ namespace TestHarness.Commands
         }
 
         /// <inheritdoc />
-        protected override int HandleCommand(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, object> options)
+        protected override int HandleCommand(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
         {
             Console.WriteLine("Pushing");
             return 0;

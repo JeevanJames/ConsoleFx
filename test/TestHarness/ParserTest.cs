@@ -12,9 +12,13 @@ namespace TestHarness
         internal override void Run()
         {
             var command = new RootCommand();
-            command.AddArgument("source");
+            command.AddArgument("source")
+                .FormatAs(s => s.ToUpperInvariant());
             command.AddArgument("destination")
                 .ValidateAsString(5);
+            command.AddArgument("count")
+                .ValidateAsInteger(0, 100)
+                .TypedAs<int>();
             command.AddOption("v")
                 .UsedAsFlag();
             command.AddOption("y")
@@ -37,16 +41,21 @@ namespace TestHarness
                 .ValidateAsGuid();
             command.Handler = (args, opts) =>
             {
-                foreach (string arg in args)
-                    Console.WriteLine(arg);
+                foreach (object arg in args)
+                    Console.WriteLine(arg?.ToString() ?? "<value not specified>");
                 foreach (System.Collections.Generic.KeyValuePair<string, object> kvp in opts)
                     Console.WriteLine($"{kvp.Key} = {kvp.Value}");
                 return 0;
             };
 
             var parser = new Parser(command, ArgStyle.Windows);
-            ParseResult result = parser.Parse("sourceFile", "destfile", "/v", "/trace:debug", "/r:2", "-log:blah",
-                "/web:https://example.com", "-id:{DD45218B-CE76-4714-A3B3-7F77F4A287F1}");
+            ParseResult result = parser.Parse("sourceFile", "destfile", "7",
+                "/v",
+                "/trace:debug",
+                "/r:2",
+                "-log:blah",
+                "/web:https://example.com",
+                "-id:{DD45218B-CE76-4714-A3B3-7F77F4A287F1}");
             result.Command.Handler(result.Arguments, result.Options);
         }
     }
