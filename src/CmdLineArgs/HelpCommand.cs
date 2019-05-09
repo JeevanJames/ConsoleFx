@@ -20,8 +20,6 @@ limitations under the License.
 using System.Collections.Generic;
 using System.Linq;
 
-using ConsoleFx.ConsoleExtensions;
-
 namespace ConsoleFx.CmdLineArgs
 {
     public class HelpCommand : Command
@@ -58,14 +56,6 @@ namespace ConsoleFx.CmdLineArgs
             }
 
             return base.PerformCustomValidation(arguments, options);
-        }
-
-        /// <inheritdoc />
-        protected override int HandleCommand(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
-        {
-            if (options["help"] != null)
-                ConsoleEx.PrintLine(new ColorString().BgBlue("This is the help text"));
-            return base.HandleCommand(arguments, options);
         }
     }
 }

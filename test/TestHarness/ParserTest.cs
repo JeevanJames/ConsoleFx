@@ -16,7 +16,7 @@ namespace TestHarness
         {
             ColorReset = ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand;
 
-            var command = new RootCommand();
+            var command = new Command();
             command.AddArgument("source")
                 .FormatAs(s => s.ToUpperInvariant());
             command.AddArgument("destination")
@@ -44,14 +44,6 @@ namespace TestHarness
             command.AddOption("id")
                 .UsedAsSingleParameter()
                 .ValidateAsGuid();
-            command.Handler = (args, opts) =>
-            {
-                foreach (object arg in args)
-                    Console.WriteLine(arg?.ToString() ?? "<value not specified>");
-                foreach (System.Collections.Generic.KeyValuePair<string, object> kvp in opts)
-                    Console.WriteLine($"{kvp.Key} = {kvp.Value}");
-                return 0;
-            };
 
             var parser = new Parser(command, ArgStyle.Windows);
             try
@@ -63,7 +55,11 @@ namespace TestHarness
                     "-log:blah",
                     "/web:https://example.com",
                     "-id:{DD45218B-CE76-4714-A3B3-7F77F4A287F1}");
-                result.Command.Handler(result.Arguments, result.Options);
+
+                foreach (object arg in result.Arguments)
+                    Console.WriteLine(arg?.ToString() ?? "<value not specified>");
+                foreach (System.Collections.Generic.KeyValuePair<string, object> kvp in result.Options)
+                    Console.WriteLine($"{kvp.Key} = {kvp.Value}");
             }
             catch (ParserException ex)
             {

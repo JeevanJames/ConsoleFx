@@ -18,25 +18,23 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineParser;
-using ConsoleFx.CmdLineParser.Style;
+
+using ParserStyle = ConsoleFx.CmdLineParser.Style;
 
 namespace ConsoleFx.Program
 {
-    public class ConsoleProgram : RootCommand
+    public class ConsoleProgram : ProgramCommand
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ArgStyle _argStyle;
 
         public ConsoleProgram(ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
-            if (argStyle is null)
-                throw new ArgumentNullException(nameof(argStyle));
             _argStyle = argStyle;
             Grouping = grouping;
         }
@@ -45,16 +43,7 @@ namespace ConsoleFx.Program
 
         public int Run()
         {
-            var parser = new Parser(this, _argStyle, Grouping);
-            List<Argument> arguments = Arguments.ToList();
-            foreach (Argument argument in arguments)
-                parser.Command.Arguments.Add(argument);
-            Options options = Options;
-            foreach (Option option in options)
-                parser.Command.Options.Add(option);
-            List<Command> commands = Commands.ToList();
-            foreach (Command command in commands)
-                parser.Command.Commands.Add(command);
+            var parser = new Parser(this, CreateArgStyle(), Grouping);
             try
             {
                 ParseResult result = parser.Parse(Environment.GetCommandLineArgs().Skip(1));
@@ -65,6 +54,17 @@ namespace ConsoleFx.Program
                 Console.WriteLine(ex);
                 return -1;
             }
+        }
+
+        private ParserStyle.ArgStyle CreateArgStyle()
+        {
+            switch (_argStyle)
+            {
+                case ArgStyle.Unix: return new ParserStyle.UnixArgStyle();
+                case ArgStyle.Windows: return new ParserStyle.WindowsArgStyle();
+            }
+
+            throw new NotSupportedException($"Unsupported argument style: '{_argStyle}'.");
         }
     }
 }

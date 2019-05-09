@@ -34,7 +34,7 @@ namespace ConsoleFx.CmdLineParser
 {
     public sealed class Parser
     {
-        public Parser(RootCommand command, ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
+        public Parser(Command command, ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
             if (command is null)
                 throw new ArgumentNullException(nameof(command));

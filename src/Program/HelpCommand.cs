@@ -25,7 +25,7 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Program
 {
-    public class HelpCommand : Command
+    public class HelpCommand : ProgramCommand
     {
         public HelpCommand(params string[] names)
             : base(names)

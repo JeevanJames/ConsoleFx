@@ -39,15 +39,12 @@ namespace ConsoleFx.CmdLineArgs
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CommandCustomValidator _customValidator;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private CommandHandler _handler;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="Command" /> class.
         ///     <para />
         ///     This constructor is used internally to create root commands.
         /// </summary>
-        internal Command()
+        public Command()
         {
         }
 
@@ -147,18 +144,6 @@ namespace ConsoleFx.CmdLineArgs
             return null;
         }
 
-        public CommandHandler Handler
-        {
-            get => _handler ?? HandleCommand;
-            set => _handler = value;
-        }
-
-        protected virtual int HandleCommand(IReadOnlyList<object> arguments,
-            IReadOnlyDictionary<string, object> options)
-        {
-            return 0;
-        }
-
         public Argument AddArgument(string name, bool isOptional = false)
         {
             var argument = new Argument(name, isOptional);
@@ -212,13 +197,5 @@ namespace ConsoleFx.CmdLineArgs
     {
         protected override string GetDuplicateErrorMessage(string name) =>
             $"Command named '{name}' already exists in the command collection.";
-    }
-
-    public class RootCommand : Command
-    {
-        public RootCommand()
-            : base()
-        {
-        }
     }
 }
