@@ -99,7 +99,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
             var validator = new EnumValidator(enumType, ignoreCase);
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(parameterIndex, validator).ParamsOfType(enumType);
+            return option.ValidateWith(parameterIndex, validator).TypedAs(enumType);
         }
 
         public static Option ValidateAsEnum<TEnum>(this Option option, bool ignoreCase = true, int parameterIndex = -1,
@@ -109,7 +109,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
             var validator = new EnumValidator<TEnum>(ignoreCase);
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(parameterIndex, validator).ParamsOfType<TEnum>();
+            return option.ValidateWith(parameterIndex, validator).TypedAs<TEnum>();
         }
     }
 }

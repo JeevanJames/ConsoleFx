@@ -56,7 +56,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
             var validator = new GuidValidator();
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(parameterIndex, validator).ParamsOfType<Guid>();
+            return option.ValidateWith(parameterIndex, validator).TypedAs<Guid>();
         }
     }
 }

@@ -72,70 +72,21 @@ namespace ConsoleFx.CmdLineArgs
         /// </summary>
         public OptionParameterValidators Validators { get; }
 
-        /// <summary>
-        ///     Gets or sets the optional delegate that allows a option parameter value to be custom formatted.
-        ///     During parsing, the formatting is performed before any type conversion.
-        /// </summary>
-        public Func<string, string> Formatter { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the type that the option parameters should be converted to. If a <see cref="TypeConverter" />
-        ///     is specified, then it is used to perform the type conversion, otherwise the framework looks for a default
-        ///     string-to-type type converter for the expected type. If a type converter is not found, an exception is
-        ///     thrown during the parsing.
-        /// </summary>
-        /// <remarks>
-        ///     This type applies to all parameters. In case different parameters are to be converted to different types,
-        ///     the conversion must happen outside the ConsoleFx framework.
-        /// </remarks>
-        public Type Type { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the optional converter to convert a string parameter value to the actual <see cref="Type" />.
-        /// </summary>
-        public Converter<string, object> TypeConverter { get; set; }
-
-        /// <summary>
-        ///     Assigns a parameter formatter delegate to the option, which can be used to format the
-        ///     option's parameter value.
-        /// </summary>
-        /// <param name="formatter">Parameter formatter delegate.</param>
-        /// <returns>The instance of the <see cref="Option"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if the parameter formatter delegate is null.</exception>
-        public Option FormatParamsAs(Func<string, string> formatter)
+        public override Option FormatAs(Func<string, string> formatter)
         {
-            if (formatter == null)
-                throw new ArgumentNullException(nameof(formatter));
-            Formatter = formatter;
+            InternalFormatAs(formatter);
             return this;
         }
 
-        /// <summary>
-        ///     Assigns a format string to the option, which will be used to format the option's
-        ///     parameter value.
-        /// </summary>
-        /// <param name="formatStr">The format string, where the first format placeholder ({0}) represents the parameter value.</param>
-        /// <returns>The instance of the <see cref="Option"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if the format string is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if the format string does not contain a format placeholder ({0}).</exception>
-        public Option FormatParamsAs(string formatStr)
+        public override Option FormatAs(string formatStr)
         {
-            if (formatStr == null)
-                throw new ArgumentNullException(nameof(formatStr));
-            if (!formatStr.Contains("{0}"))
-                throw new ArgumentException(Errors.Option_MissingPlaceholderInFormatString, nameof(formatStr));
-            Formatter = value => string.Format(formatStr, value);
+            InternalFormatAs(formatStr);
             return this;
         }
 
-        public Option ParamsOfType(Type type, Converter<string, object> converter = null)
+        public override Option TypedAs(Type type, Converter<string, object> converter = null)
         {
-            if (type is null)
-                throw new ArgumentNullException(nameof(type));
-
-            Type = type;
-            if (converter != null)
-                TypeConverter = value => converter(value);
+            InternalTypedAs(type, converter);
             return this;
         }
 
@@ -146,11 +97,9 @@ namespace ConsoleFx.CmdLineArgs
         /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
         /// <param name="converter">Optional custom converter.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
-        public Option ParamsOfType<T>(Converter<string, T> converter = null)
+        public override Option TypedAs<T>(Converter<string, T> converter = null)
         {
-            Type = typeof(T);
-            if (converter != null)
-                TypeConverter = value => converter(value);
+            InternalTypedAs<T>(typeof(T), converter);
             return this;
         }
 

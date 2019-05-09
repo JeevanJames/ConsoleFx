@@ -50,6 +50,15 @@
                 Gets the validators for this argument.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Argument.TypedAs``1(System.Converter{System.String,``0})">
+            <summary>
+                Specifies the type to convert the option parameters, with an optional custom converter.
+                If a custom converter is not specified, the type's type converter will be used.
+            </summary>
+            <typeparam name="T">The type to convert the option parameters to.</typeparam>
+            <param name="converter">Optional custom converter.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLineArgs.Option"/>.</returns>
+        </member>
         <member name="M:ConsoleFx.CmdLineArgs.Argument.ValidateWith(ConsoleFx.CmdLineArgs.Validators.Bases.Validator[])">
             <summary>
                 Specifies one or more validators to validate the argument.
@@ -225,6 +234,73 @@
                 usually the <c>Name</c> property.
             </param>
             <returns>The error message string for the exception.</returns>
+        </member>
+        <member name="P:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.Formatter">
+            <summary>
+                Gets or sets the optional delegate that allows an arg value to be custom formatted.
+                <para />
+                During parsing, the formatting is performed before any type conversion.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.Type">
+            <summary>
+                Gets or sets the type that the arg's values should be converted to. If a
+                <see cref="P:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.TypeConverter" /> is specified, then it is used to perform the type
+                conversion, otherwise the framework looks for a default string-to-type type converter
+                for the expected type. If a type converter is not found, an exception is thrown during
+                the parsing.
+            </summary>
+            <remarks>
+                In the case of <see cref="T:ConsoleFx.CmdLineArgs.Option"/>, this type applies to all parameters. In case
+                different parameters are to be converted to different types, the conversion must happen
+                outside the ConsoleFx framework.
+            </remarks>
+        </member>
+        <member name="P:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.TypeConverter">
+            <summary>
+                Gets or sets the optional converter to convert a string arg value to the actual
+                <see cref="P:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.Type" />.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.FormatAs(System.Func{System.String,System.String})">
+            <summary>
+                Assigns the <see cref="P:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.Formatter"/> property, which can be used to format the arg's
+                value.
+            </summary>
+            <param name="formatter">The formatter delegate.</param>
+            <returns>The instance of the <typeparamref name="TArg"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the formatter delegate is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.FormatAs(System.String)">
+            <summary>
+                Assigns a format string to the arg, which will be used to format the arg's value.
+            </summary>
+            <param name="formatStr">
+                The format string, where the first format placeholder ({0}) represents the arg's value.
+            </param>
+            <returns>The instance of the <typeparamref name="TArg"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if the format string is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the format string does not contain a format placeholder ({0}).
+            </exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.TypedAs``1(System.Converter{System.String,``0})">
+            <summary>
+                Specifies the type to convert the option parameters, with an optional custom converter.
+                If a custom converter is not specified, the type's type converter will be used.
+            </summary>
+            <typeparam name="T">The type to convert the option parameters to.</typeparam>
+            <param name="converter">Optional custom converter.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLineArgs.Option"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.ValidateWith(ConsoleFx.CmdLineArgs.Validators.Bases.Validator[])">
+            <summary>
+                Specifies one or more validators that will be used to validate the arg's values.
+            </summary>
+            <param name="validators">One or more validators.</param>
+            <returns>The instance of the <typeparamref name="TArg"/>.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLineArgs.Command.#ctor">
             <summary>
@@ -434,49 +510,7 @@
                 Gets the collection of validators that can validate some or all of the option's parameters.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLineArgs.Option.Formatter">
-            <summary>
-                Gets or sets the optional delegate that allows a option parameter value to be custom formatted.
-                During parsing, the formatting is performed before any type conversion.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineArgs.Option.Type">
-            <summary>
-                Gets or sets the type that the option parameters should be converted to. If a <see cref="P:ConsoleFx.CmdLineArgs.Option.TypeConverter" />
-                is specified, then it is used to perform the type conversion, otherwise the framework looks for a default
-                string-to-type type converter for the expected type. If a type converter is not found, an exception is
-                thrown during the parsing.
-            </summary>
-            <remarks>
-                This type applies to all parameters. In case different parameters are to be converted to different types,
-                the conversion must happen outside the ConsoleFx framework.
-            </remarks>
-        </member>
-        <member name="P:ConsoleFx.CmdLineArgs.Option.TypeConverter">
-            <summary>
-                Gets or sets the optional converter to convert a string parameter value to the actual <see cref="P:ConsoleFx.CmdLineArgs.Option.Type" />.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLineArgs.Option.FormatParamsAs(System.Func{System.String,System.String})">
-            <summary>
-                Assigns a parameter formatter delegate to the option, which can be used to format the
-                option's parameter value.
-            </summary>
-            <param name="formatter">Parameter formatter delegate.</param>
-            <returns>The instance of the <see cref="T:ConsoleFx.CmdLineArgs.Option"/>.</returns>
-            <exception cref="T:System.ArgumentNullException">Thrown if the parameter formatter delegate is null.</exception>
-        </member>
-        <member name="M:ConsoleFx.CmdLineArgs.Option.FormatParamsAs(System.String)">
-            <summary>
-                Assigns a format string to the option, which will be used to format the option's
-                parameter value.
-            </summary>
-            <param name="formatStr">The format string, where the first format placeholder ({0}) represents the parameter value.</param>
-            <returns>The instance of the <see cref="T:ConsoleFx.CmdLineArgs.Option"/>.</returns>
-            <exception cref="T:System.ArgumentNullException">Thrown if the format string is null.</exception>
-            <exception cref="T:System.ArgumentException">Thrown if the format string does not contain a format placeholder ({0}).</exception>
-        </member>
-        <member name="M:ConsoleFx.CmdLineArgs.Option.ParamsOfType``1(System.Converter{System.String,``0})">
+        <member name="M:ConsoleFx.CmdLineArgs.Option.TypedAs``1(System.Converter{System.String,``0})">
             <summary>
                 Specifies the type to convert the option parameters, with an optional custom converter.
                 If a custom converter is not specified, the type's type converter will be used.

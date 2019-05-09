@@ -17,6 +17,7 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -57,6 +58,37 @@ namespace ConsoleFx.CmdLineArgs
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
+
+        public override Argument FormatAs(Func<string, string> formatter)
+        {
+            InternalFormatAs(formatter);
+            return this;
+        }
+
+        public override Argument FormatAs(string formatStr)
+        {
+            InternalFormatAs(formatStr);
+            return this;
+        }
+
+        public override Argument TypedAs(Type type, Converter<string, object> converter = null)
+        {
+            InternalTypedAs(type, converter);
+            return this;
+        }
+
+        /// <summary>
+        ///     Specifies the type to convert the option parameters, with an optional custom converter.
+        ///     If a custom converter is not specified, the type's type converter will be used.
+        /// </summary>
+        /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
+        /// <param name="converter">Optional custom converter.</param>
+        /// <returns>The instance of the <see cref="Option"/>.</returns>
+        public override Argument TypedAs<T>(Converter<string, T> converter = null)
+        {
+            InternalTypedAs<T>(typeof(T), converter);
+            return this;
+        }
 
         /// <summary>
         ///     Specifies one or more validators to validate the argument.

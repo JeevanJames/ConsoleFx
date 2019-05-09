@@ -12,30 +12,29 @@ namespace TestHarness
         internal override void Run()
         {
             var command = new RootCommand();
-            command.Arguments.Add(new Argument("source"));
-            command.Arguments.Add(new Argument("destination")
-                .ValidateAsString(5));
-            command.Options.Add(new Option("v")
-                .UsedAsFlag());
-            command.Options.Add(new Option("y")
-                .UsedAsFlag());
-            command.Options.Add(new Option("trace", "t")
+            command.AddArgument("source");
+            command.AddArgument("destination")
+                .ValidateAsString(5);
+            command.AddOption("v")
+                .UsedAsFlag();
+            command.AddOption("y")
+                .UsedAsFlag();
+            command.AddOption("trace", "t")
                 .UsedAsSingleParameter()
-                .ValidateAsEnum<TraceLevel>().ParamsOfType<string>());
-            command.Options.Add(new Option("repeat", "r")
+                .ValidateAsEnum<TraceLevel>().TypedAs<string>();
+            command.AddOption("repeat", "r")
                 .UsedAsSingleParameter()
                 .ValidateAsInteger(0, 3)
-                .ParamsOfType<int>());
-            command.Options.Add(new Option("log", "l")
+                .TypedAs<int>();
+            command.AddOption("log", "l")
                 .UsedAsSingleParameter()
-                .FormatParamsAs(s => $"Log{s}"));
-            command.Options.Add(new Option("url", "u", "web")
+                .FormatAs("Log{0}");
+            command.AddOption("url", "u", "web")
                 .UsedAsSingleParameter()
-                .ValidateAsUri()
-                .ParamsOfType<Uri>());
-            command.Options.Add(new Option("id")
+                .ValidateAsUri();
+            command.AddOption("id")
                 .UsedAsSingleParameter()
-                .ValidateAsGuid());
+                .ValidateAsGuid();
             command.Handler = (args, opts) =>
             {
                 foreach (string arg in args)

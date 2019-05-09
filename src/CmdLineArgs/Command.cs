@@ -158,6 +158,41 @@ namespace ConsoleFx.CmdLineArgs
         {
             return 0;
         }
+
+        public Argument AddArgument(string name, bool isOptional = false)
+        {
+            var argument = new Argument(name, isOptional);
+            Arguments.Add(argument);
+            return argument;
+        }
+
+        public Command AddCommand(params string[] names)
+        {
+            var command = new Command(names);
+            Commands.Add(command);
+            return command;
+        }
+
+        public Command AddCommand(bool caseSensitive, params string[] names)
+        {
+            var command = new Command(caseSensitive, names);
+            Commands.Add(command);
+            return command;
+        }
+
+        public Option AddOption(params string[] names)
+        {
+            var option = new Option(names);
+            Options.Add(option);
+            return option;
+        }
+
+        public Option AddOption(bool caseSensitive, params string[] names)
+        {
+            var option = new Option(caseSensitive, names);
+            Options.Add(option);
+            return option;
+        }
     }
 
     public delegate string CommandCustomValidator(IReadOnlyList<string> arguments,
