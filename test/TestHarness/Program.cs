@@ -1,4 +1,7 @@
-﻿using static ConsoleFx.ConsoleExtensions.ConsoleEx;
+﻿using System;
+
+using static ConsoleFx.ConsoleExtensions.Clr;
+using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
 namespace TestHarness
 {
@@ -6,8 +9,15 @@ namespace TestHarness
     {
         private static void Main()
         {
-            TestBase testHarness = new ParserTest();
-            testHarness.Run();
+            try
+            {
+                TestBase testHarness = new ParserTest();
+                testHarness.Run();
+            }
+            catch (Exception ex)
+            {
+                PrintLine($"{Red.BgWhite}[{ex.GetType().Name}]{ex.Message}");
+            }
 
             PrintBlank();
             PrintLine("Press any key to escape");

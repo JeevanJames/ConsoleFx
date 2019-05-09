@@ -332,6 +332,7 @@ namespace ConsoleFx.CmdLineParser
             // Throw exception if not enough required arguments are specified.
             if (specifiedArguments.Count < requiredArgumentCount)
             {
+                //TODO: The error message is too generic. Change to specify the first argument that's missing.
                 throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
                     Messages.InvalidNumberOfArguments);
             }

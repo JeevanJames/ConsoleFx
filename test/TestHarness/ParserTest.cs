@@ -5,18 +5,23 @@ using ConsoleFx.CmdLineArgs.Validators;
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Style;
 
+using static ConsoleFx.ConsoleExtensions.ConsoleEx;
+using static ConsoleFx.ConsoleExtensions.Clr;
+
 namespace TestHarness
 {
     internal sealed class ParserTest : TestBase
     {
         internal override void Run()
         {
+            ColorReset = ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand;
+
             var command = new RootCommand();
             command.AddArgument("source")
                 .FormatAs(s => s.ToUpperInvariant());
             command.AddArgument("destination")
                 .ValidateAsString(5);
-            command.AddArgument("count")
+            command.AddArgument("count", isOptional: true)
                 .ValidateAsInteger(0, 100)
                 .TypedAs<int>();
             command.AddOption("v")
@@ -49,14 +54,25 @@ namespace TestHarness
             };
 
             var parser = new Parser(command, ArgStyle.Windows);
-            ParseResult result = parser.Parse("sourceFile", "destfile", "7",
-                "/v",
-                "/trace:debug",
-                "/r:2",
-                "-log:blah",
-                "/web:https://example.com",
-                "-id:{DD45218B-CE76-4714-A3B3-7F77F4A287F1}");
-            result.Command.Handler(result.Arguments, result.Options);
+            try
+            {
+                ParseResult result = parser.Parse("sourceFile", "destfile", "7",
+                    "/v",
+                    "/trace:debug",
+                    "/r:2",
+                    "-log:blah",
+                    "/web:https://example.com",
+                    "-id:{DD45218B-CE76-4714-A3B3-7F77F4A287F1}");
+                result.Command.Handler(result.Arguments, result.Options);
+            }
+            catch (ParserException ex)
+            {
+                PrintLine($"{Red}{ex.Message}");
+            }
+            catch (ValidationException ex)
+            {
+                PrintLine($"{Yellow}{ex.ValidatorType.Name} - {Red}{ex.Message}");
+            }
         }
     }
 

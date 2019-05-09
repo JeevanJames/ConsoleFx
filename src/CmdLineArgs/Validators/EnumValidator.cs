@@ -49,7 +49,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
             string[] enumNames = Enum.GetNames(EnumType);
             StringComparison comparison = IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
             if (!enumNames.Any(enumName => parameterValue.Equals(enumName, comparison)))
-                ValidationFailed(parameterValue, Message);
+                ValidationFailed(Message, parameterValue);
             return parameterValue;
         }
     }
