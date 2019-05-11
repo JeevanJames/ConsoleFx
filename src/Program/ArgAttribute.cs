@@ -24,10 +24,6 @@ namespace ConsoleFx.Program
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public abstract class ArgAttribute : Attribute
     {
-        protected ArgAttribute()
-        {
-        }
-
         protected ArgAttribute(string name)
         {
             if (name is null)
@@ -43,10 +39,6 @@ namespace ConsoleFx.Program
 
     public sealed class OptionAttribute : ArgAttribute
     {
-        public OptionAttribute()
-        {
-        }
-
         public OptionAttribute(string name)
             : base(name)
         {
@@ -55,10 +47,6 @@ namespace ConsoleFx.Program
 
     public sealed class ArgumentAttribute : ArgAttribute
     {
-        public ArgumentAttribute()
-        {
-        }
-
         public ArgumentAttribute(string name)
             : base(name)
         {

@@ -24,6 +24,9 @@ using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineArgs.Validators;
 using ConsoleFx.Program;
 
+using static ConsoleFx.ConsoleExtensions.Clr;
+using static ConsoleFx.ConsoleExtensions.ConsoleEx;
+
 namespace TestHarness
 {
     internal sealed class ProgramTest : TestBase
@@ -41,7 +44,8 @@ namespace TestHarness
         {
         }
 
-        public FileInfo Source { get; set; }
+        [Argument("source")]
+        public FileInfo SourceFile { get; set; }
 
         public DirectoryInfo Destination { get; set; }
 
@@ -63,9 +67,11 @@ namespace TestHarness
                 .UsedAsFlag();
         }
 
-        protected override int HandleCommand(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
+        protected override int HandleCommand()
         {
-            return base.HandleCommand(arguments, options);
+            PrintLine($"Copy {Cyan}{SourceFile} {Reset}to {Green}{Destination}");
+            PrintLine($"Overwrite: {Yellow}{Overwrite}");
+            return 0;
         }
     }
 }

@@ -183,8 +183,6 @@ namespace ConsoleFx.CmdLineArgs
     public delegate string CommandCustomValidator(IReadOnlyList<object> arguments,
         IReadOnlyDictionary<string, object> options);
 
-    public delegate int CommandHandler(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options);
-
     /// <summary>
     ///     <para>Collection of <see cref="Command" /> objects.</para>
     ///     <para>

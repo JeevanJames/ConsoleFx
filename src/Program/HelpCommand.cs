@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineParser;
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Program
@@ -62,11 +63,11 @@ namespace ConsoleFx.Program
         }
 
         /// <inheritdoc />
-        protected override int HandleCommand(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
+        protected override int HandleCommand()
         {
-            if (options["help"] != null)
+            if (ParseResult.Options["help"] != null)
                 ConsoleEx.PrintLine(new ColorString().BgBlue("This is the help text"));
-            return base.HandleCommand(arguments, options);
+            return base.HandleCommand();
         }
     }
 }

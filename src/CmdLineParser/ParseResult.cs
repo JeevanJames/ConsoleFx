@@ -93,7 +93,7 @@ namespace ConsoleFx.CmdLineParser
             if (resolvedValue != null)
             {
                 Type valueType = resolvedValue.GetType();
-                if (valueType != typeof(T))
+                if (!typeof(T).IsAssignableFrom(valueType))
                     throw new InvalidOperationException($"The argument's value is of type '{valueType.FullName}' is not assignable to the specified type of '{typeof(T).FullName}'.");
             }
 
@@ -120,7 +120,7 @@ namespace ConsoleFx.CmdLineParser
             if (resolvedValue != null)
             {
                 Type valueType = resolvedValue.GetType();
-                if (valueType != typeof(T))
+                if (!typeof(T).IsAssignableFrom(valueType))
                     throw new InvalidOperationException($"The option's value is of type '{valueType.FullName}' is not assignable to the specified type of '{typeof(T).FullName}'.");
             }
 

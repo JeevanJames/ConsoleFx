@@ -17,17 +17,18 @@ limitations under the License.
 */
 #endregion
 
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 
 using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineParser;
 
 namespace ConsoleFx.Program
 {
     public class ProgramCommand : Command
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private CommandHandler _handler;
+        private Func<ParseResult, int> _handler;
 
         public ProgramCommand()
         {
@@ -43,14 +44,15 @@ namespace ConsoleFx.Program
         {
         }
 
-        public CommandHandler Handler
+        public ParseResult ParseResult { get; internal set; }
+
+        public Func<ParseResult, int> Handler
         {
-            get => _handler ?? HandleCommand;
+            get => _handler ?? (_ => HandleCommand());
             set => _handler = value;
         }
 
-        protected virtual int HandleCommand(IReadOnlyList<object> arguments,
-            IReadOnlyDictionary<string, object> options)
+        protected virtual int HandleCommand()
         {
             return 0;
         }

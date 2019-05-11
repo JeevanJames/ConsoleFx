@@ -18,9 +18,10 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using System.Reflection;
 using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineParser;
 
@@ -46,9 +47,9 @@ namespace ConsoleFx.Program
             var parser = new Parser(this, CreateArgStyle(), Grouping);
             try
             {
-                ParseResult result = parser.Parse(Environment.GetCommandLineArgs().Skip(1));
+                ParseResult = parser.Parse(Environment.GetCommandLineArgs().Skip(1));
                 AssignProperties(this);
-                return Handler(result.Arguments, result.Options);
+                return Handler(ParseResult);
             }
             catch (Exception ex)
             {
@@ -70,7 +71,44 @@ namespace ConsoleFx.Program
 
         private void AssignProperties(object instance)
         {
-            //TODO:
+            Type type = instance.GetType();
+            List<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(pi => pi.CanRead && pi.CanWrite)
+                .ToList();
+
+            foreach (PropertyInfo property in properties)
+            {
+                string argName;
+                bool hasValue;
+                object value;
+
+                Attribute attribute = Attribute.GetCustomAttribute(property, typeof(ArgAttribute), true);
+                if (attribute != null)
+                {
+                    argName = ((ArgAttribute)attribute).Name;
+                    hasValue = attribute is OptionAttribute
+                        ? ParseResult.TryGetOption(argName, out value)
+                        : ParseResult.TryGetArgument(argName, out value);
+                }
+                else
+                {
+                    argName = property.Name;
+                    hasValue = ParseResult.TryGetOption(argName, out value);
+                    if (!hasValue)
+                        hasValue = ParseResult.TryGetArgument(argName, out value);
+                }
+
+                // Only throw an exception is there is no arg found for a property with an Option
+                // or Argument attribute, as they have been explicitly marked as args.
+                if (!hasValue)
+                {
+                    if (attribute != null)
+                        throw new InvalidOperationException($"Cannot find an arg named '{argName}' to assign to the {property.Name} property.");
+                    continue;
+                }
+
+                property.SetValue(instance, value);
+            }
         }
     }
 }
