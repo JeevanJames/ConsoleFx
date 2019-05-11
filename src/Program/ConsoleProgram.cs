@@ -30,6 +30,9 @@ using ParserStyle = ConsoleFx.CmdLineParser.Style;
 
 namespace ConsoleFx.Program
 {
+    /// <summary>
+    ///     Represents a console program.
+    /// </summary>
     public class ConsoleProgram : ProgramCommand
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -65,9 +68,12 @@ namespace ConsoleFx.Program
             var parser = new Parser(this, CreateArgStyle(), Grouping);
             try
             {
-                ParseResult = parser.Parse(args);
-                AssignProperties(this);
-                return Handler(ParseResult);
+                ParseResult parseResult = parser.Parse(args);
+
+                var programCommand = (ProgramCommand)parseResult.Command;
+                programCommand.ParseResult = parseResult;
+                AssignProperties(programCommand);
+                return programCommand.Handler(ParseResult);
             }
             catch (Exception ex)
             {
@@ -89,10 +95,11 @@ namespace ConsoleFx.Program
             throw new NotSupportedException($"Unsupported argument style: '{_argStyle}'.");
         }
 
-        private void AssignProperties(object instance)
+        private void AssignProperties(ProgramCommand command)
         {
-            Type type = instance.GetType();
-            List<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            Type type = command.GetType();
+            List<PropertyInfo> properties = type
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(pi => pi.CanRead && pi.CanWrite)
                 .ToList();
 
@@ -107,15 +114,15 @@ namespace ConsoleFx.Program
                 {
                     argName = ((ArgAttribute)attribute).Name;
                     hasValue = attribute is OptionAttribute
-                        ? ParseResult.TryGetOption(argName, out value)
-                        : ParseResult.TryGetArgument(argName, out value);
+                        ? command.ParseResult.TryGetOption(argName, out value)
+                        : command.ParseResult.TryGetArgument(argName, out value);
                 }
                 else
                 {
                     argName = property.Name;
-                    hasValue = ParseResult.TryGetOption(argName, out value);
+                    hasValue = command.ParseResult.TryGetOption(argName, out value);
                     if (!hasValue)
-                        hasValue = ParseResult.TryGetArgument(argName, out value);
+                        hasValue = command.ParseResult.TryGetArgument(argName, out value);
                 }
 
                 // Only throw an exception is there is no arg found for a property with an Option
@@ -127,7 +134,7 @@ namespace ConsoleFx.Program
                     continue;
                 }
 
-                property.SetValue(instance, value);
+                property.SetValue(command, value);
             }
         }
     }

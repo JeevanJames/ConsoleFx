@@ -64,6 +64,7 @@ namespace TestHarness
         {
             [typeof(ParserTest)] = "Parser",
             [typeof(ProgramTest)] = "Console Program",
+            [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",
             [typeof(PrompterTest)] = "Prompter",
             [typeof(Program)] = "Exit",
         };

@@ -44,6 +44,10 @@ namespace TestHarness
         {
         }
 
+        public MyProgram(ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter) : base(argStyle, grouping)
+        {
+        }
+
         [Argument("source")]
         public FileInfo SourceFile { get; set; }
 

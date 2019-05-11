@@ -25,27 +25,57 @@ using ConsoleFx.CmdLineParser;
 
 namespace ConsoleFx.Program
 {
+    /// <summary>
+    ///     Represents a <see cref="Command"/> that contains a <see cref="Handler"/> to execute
+    ///     code if the command matches the command-line args.
+    /// </summary>
     public class ProgramCommand : Command
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Func<ParseResult, int> _handler;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ProgramCommand"/> class.
+        /// </summary>
         public ProgramCommand()
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ProgramCommand"/> class with the specified
+        ///     <paramref name="names"/>.
+        /// </summary>
+        /// <param name="names">The names of the command.</param>
         public ProgramCommand(params string[] names)
             : base(names)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ProgramCommand"/> class with the specified
+        ///     <paramref name="names"/> and case-sensitivity.
+        /// </summary>
+        /// <param name="caseSensitive">Indicates whether the names are case-sensitive.</param>
+        /// <param name="names">The names of the command.</param>
         public ProgramCommand(bool caseSensitive, params string[] names)
             : base(caseSensitive, names)
         {
         }
 
+        /// <summary>
+        ///     Gets the result of parsing the args of this command.
+        /// </summary>
+        /// <remarks>
+        ///     Note: This property will only be available to the <see cref="HandleCommand"/> virtual
+        ///     method, which is called after the args have been parsed.
+        /// </remarks>
         public ParseResult ParseResult { get; internal set; }
 
+        /// <summary>
+        ///     Gets or sets the delegate to call if the parsed args match this command.
+        ///     <para/>
+        ///     If not assigned, the virtual <see cref="HandleCommand"/> method is called.
+        /// </summary>
         public Func<ParseResult, int> Handler
         {
             get => _handler ?? (_ => HandleCommand());
