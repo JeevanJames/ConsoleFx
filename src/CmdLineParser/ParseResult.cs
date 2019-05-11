@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using ConsoleFx.CmdLineArgs;
@@ -31,6 +32,7 @@ namespace ConsoleFx.CmdLineParser
     /// </summary>
     public sealed class ParseResult
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ParseRun _run;
 
         internal ParseResult(ParseRun run)
@@ -128,7 +130,11 @@ namespace ConsoleFx.CmdLineParser
             return true;
         }
 
-        public IReadOnlyList<T> OptionsAsListOf<T>(string name) =>
-            Options.TryGetValue(name, out object value) ? (List<T>)value : null;
+        public bool TryGetOptions<T>(string name, out IReadOnlyList<T> values)
+        {
+            bool found = TryGetOption(name, out List<T> list, new List<T>(0));
+            values = found ? list : default;
+            return found;
+        }
     }
 }
