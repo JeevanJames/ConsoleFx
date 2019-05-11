@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+
 using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineParser;
 
@@ -34,20 +35,37 @@ namespace ConsoleFx.Program
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ArgStyle _argStyle;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleProgram"/> class with the specified
+        ///     arg style and grouping.
+        /// </summary>
+        /// <param name="argStyle">The expected argument style.</param>
+        /// <param name="grouping">The expected arg grouping.</param>
         public ConsoleProgram(ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
             _argStyle = argStyle;
             Grouping = grouping;
         }
 
+        /// <summary>
+        ///     Gets the expected grouping of the args.
+        /// </summary>
         public ArgGrouping Grouping { get; }
 
-        public int Run()
+        /// <summary>
+        ///     Runs the console program after parsing the command-line args.
+        /// </summary>
+        /// <param name="args">The args to parse.</param>
+        /// <returns>The numeric code that represents the result of the console program execution.</returns>
+        public int Run(IEnumerable<string> args = null)
         {
+            if (args is null)
+                args = Environment.GetCommandLineArgs().Skip(1);
+
             var parser = new Parser(this, CreateArgStyle(), Grouping);
             try
             {
-                ParseResult = parser.Parse(Environment.GetCommandLineArgs().Skip(1));
+                ParseResult = parser.Parse(args);
                 AssignProperties(this);
                 return Handler(ParseResult);
             }
@@ -62,8 +80,10 @@ namespace ConsoleFx.Program
         {
             switch (_argStyle)
             {
-                case ArgStyle.Unix: return new ParserStyle.UnixArgStyle();
-                case ArgStyle.Windows: return new ParserStyle.WindowsArgStyle();
+                case ArgStyle.Unix:
+                    return new ParserStyle.UnixArgStyle();
+                case ArgStyle.Windows:
+                    return new ParserStyle.WindowsArgStyle();
             }
 
             throw new NotSupportedException($"Unsupported argument style: '{_argStyle}'.");
