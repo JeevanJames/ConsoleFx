@@ -33,8 +33,6 @@ namespace TestHarness
     {
         internal override void Run()
         {
-            ColorReset = ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand;
-
             var command = new Command();
             command.AddArgument("source")
                 .FormatAs(s => s.ToUpperInvariant());

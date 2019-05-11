@@ -28,8 +28,6 @@ namespace TestHarness
     {
         internal override void Run()
         {
-            ColorReset = ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand;
-
             var prompter = new Prompter()
                 .Input("Name", "Hi, what's your name? ", q => q
                     .When(ans => true)

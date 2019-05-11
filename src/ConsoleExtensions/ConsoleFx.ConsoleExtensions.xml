@@ -158,14 +158,6 @@
             <param name="validator">Function to validate the input text.</param>
             <returns>The input entered by the user.</returns>
         </member>
-        <member name="P:ConsoleFx.ConsoleExtensions.ConsoleEx.SecretMask">
-            <summary>
-                Gets or sets the character to be used when entering a secret value using the ReadSecret
-                methods. The default is <c>'*'</c>.
-                <para />
-                Changing this value applies globally.
-            </summary>
-        </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ReadSecret(System.Boolean,System.Boolean,System.Boolean)">
             <summary>
                 Reads a stream of characters from standard output, but obscures the entered characters
@@ -315,6 +307,14 @@
             <param name="key">The key to handle.</param>
             <param name="action">The handler to call when the key is pressed.</param>
             <returns>An instance of the <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler" /> class.</returns>
+        </member>
+        <member name="P:ConsoleFx.ConsoleExtensions.ConsoleExSettings.SecretMask">
+            <summary>
+                Gets or sets the character to be used when entering a secret value using the ReadSecret
+                methods. The default is <c>'*'</c>.
+                <para />
+                Changing this value applies globally.
+            </summary>
         </member>
         <member name="T:ConsoleFx.ConsoleExtensions.ProgressBar">
             <summary>

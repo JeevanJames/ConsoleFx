@@ -24,8 +24,6 @@ namespace ConsoleFx.ConsoleExtensions
 {
     public static partial class ConsoleEx
     {
-        public static ColorResetOption ColorReset { get; set; } = ColorResetOption.DontReset;
-
         /// <summary>
         ///     Writes a <see cref="ColorString" /> object to the console.
         /// </summary>
@@ -60,11 +58,11 @@ namespace ConsoleFx.ConsoleExtensions
 
                 Console.Write(block.Text);
 
-                if (ColorReset == ColorResetOption.ResetAfterColor)
+                if (Settings.ColorReset == ColorResetOption.ResetAfterColor)
                     Console.ResetColor();
             }
 
-            if (ColorReset == ColorResetOption.ResetAfterCommand)
+            if (Settings.ColorReset == ColorResetOption.ResetAfterCommand)
                 Console.ResetColor();
         }
 
@@ -170,12 +168,5 @@ namespace ConsoleFx.ConsoleExtensions
             [CColor.BgWhite] = ConsoleColor.White,
             [CColor.BgYellow] = ConsoleColor.Yellow,
         };
-    }
-
-    public enum ColorResetOption
-    {
-        DontReset,
-        ResetAfterCommand,
-        ResetAfterColor,
     }
 }

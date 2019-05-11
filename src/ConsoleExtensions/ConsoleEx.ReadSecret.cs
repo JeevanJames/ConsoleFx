@@ -26,14 +26,6 @@ namespace ConsoleFx.ConsoleExtensions
     public static partial class ConsoleEx
     {
         /// <summary>
-        ///     Gets or sets the character to be used when entering a secret value using the ReadSecret
-        ///     methods. The default is <c>'*'</c>.
-        ///     <para />
-        ///     Changing this value applies globally.
-        /// </summary>
-        public static char SecretMask { get; set; } = '*';
-
-        /// <summary>
         ///     Reads a stream of characters from standard output, but obscures the entered characters
         ///     with a mask character.
         /// </summary>
@@ -141,7 +133,7 @@ namespace ConsoleFx.ConsoleExtensions
                     {
                         accumulatorAppender(accumulator, keyInfo.KeyChar);
                         if (!hideMask)
-                            Console.Write(SecretMask);
+                            Console.Write(Settings.SecretMask);
 
                         //Move the cursor only if hideCursor is false
                         else if (!hideCursor)

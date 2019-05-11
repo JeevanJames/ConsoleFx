@@ -30,7 +30,7 @@ namespace TestHarness
     {
         private static void Main()
         {
-            ColorReset = ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand;
+            Settings.ColorReset = ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand;
 
             try
             {
