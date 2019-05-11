@@ -157,15 +157,6 @@
                 Gets the list of specified command line options.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLineParser.ParseResult.OptionAs``1(System.String,``0)">
-            <summary>
-                Returns the typed value of the specified option.
-            </summary>
-            <typeparam name="T">The type of the value to return.</typeparam>
-            <param name="name">Name of the specified option.</param>
-            <param name="default">Default value to return if the option is not found.</param>
-            <returns>The typed value of the specified option.</returns>
-        </member>
         <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Occurrences">
             <summary>
                 Gets or sets the number of occurences of the option.

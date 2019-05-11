@@ -47,6 +47,7 @@ namespace ConsoleFx.Program
             try
             {
                 ParseResult result = parser.Parse(Environment.GetCommandLineArgs().Skip(1));
+                AssignProperties(this);
                 return Handler(result.Arguments, result.Options);
             }
             catch (Exception ex)
@@ -65,6 +66,11 @@ namespace ConsoleFx.Program
             }
 
             throw new NotSupportedException($"Unsupported argument style: '{_argStyle}'.");
+        }
+
+        private void AssignProperties(object instance)
+        {
+            //TODO:
         }
     }
 }

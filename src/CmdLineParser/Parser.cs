@@ -104,7 +104,7 @@ namespace ConsoleFx.CmdLineParser
             ProcessOptions(run.Options);
             ProcessArguments(specifiedArguments, run.Arguments);
 
-            ParseResult parseResult = CreateParseResult(run);
+            var parseResult = new ParseResult(run);
 
             CommandCustomValidator customCommandValidator = parseResult.Command.CustomValidator;
             string validationError = customCommandValidator?.Invoke(parseResult.Arguments, parseResult.Options);
@@ -346,6 +346,7 @@ namespace ConsoleFx.CmdLineParser
                 foreach (Validator validator in argument.Validators)
                     validator.Validate(argumentValue);
 
+                argumentRuns[i].Assigned = true;
                 argumentRuns[i].Value = ResolveArgumentValue(argumentRuns[i], argumentValue);
             }
         }
@@ -376,24 +377,6 @@ namespace ConsoleFx.CmdLineParser
 
             string formattedValue = argument.Formatter != null ? argument.Formatter(strValue) : strValue;
             return converter == null ? formattedValue : converter(formattedValue);
-        }
-
-        private static ParseResult CreateParseResult(ParseRun run)
-        {
-            Command finalCommand = run.Commands[run.Commands.Count - 1];
-            List<object> arguments = run.Arguments
-                .Select(ar => ar.Value)
-                .ToList();
-            Dictionary<string, object> options = run.Options
-                .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.ResolvedValue);
-
-            //foreach (Command command in run.Commands)
-            //{
-            //    IEnumerable<OptionRun> commandOptionRuns = run.Options.Where(option => option.Command == command);
-            //    foreach (OptionRun commandOptionRun in commandOptionRuns)
-            //        options.Add(commandOptionRun.Option.Name, commandOptionRun.ResolvedValue);
-            //}
-            return new ParseResult(finalCommand, arguments, options);
         }
     }
 }

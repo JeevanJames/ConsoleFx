@@ -48,9 +48,8 @@ namespace TestHarness
             var parser = new Parser(command, ArgStyle.Windows);
             try
             {
-                ParseResult result = parser.Parse("sourceFile", "destfile", "7",
+                ParseResult result = parser.Parse("sourceFile", "destfile",
                     "/v",
-                    "/trace:debug",
                     "/r:2",
                     "-log:blah",
                     "/web:https://example.com",

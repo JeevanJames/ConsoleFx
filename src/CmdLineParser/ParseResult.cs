@@ -17,9 +17,12 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineParser.Runs;
 
 namespace ConsoleFx.CmdLineParser
 {
@@ -28,12 +31,17 @@ namespace ConsoleFx.CmdLineParser
     /// </summary>
     public sealed class ParseResult
     {
-        internal ParseResult(Command command, IReadOnlyList<object> arguments,
-            IReadOnlyDictionary<string, object> options)
+        private readonly ParseRun _run;
+
+        internal ParseResult(ParseRun run)
         {
-            Command = command;
-            Arguments = arguments;
-            Options = options;
+            _run = run;
+            Command = run.Commands[run.Commands.Count - 1];
+            Arguments = run.Arguments
+                .Select(ar => ar.Value)
+                .ToList();
+            Options = run.Options
+                .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.ResolvedValue);
         }
 
         public Command Command { get; }
@@ -48,23 +56,79 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         public IReadOnlyDictionary<string, object> Options { get; }
 
-        /// <summary>
-        ///     Returns the typed value of the specified option.
-        /// </summary>
-        /// <typeparam name="T">The type of the value to return.</typeparam>
-        /// <param name="name">Name of the specified option.</param>
-        /// <param name="default">Default value to return if the option is not found.</param>
-        /// <returns>The typed value of the specified option.</returns>
-        public T OptionAs<T>(string name, T @default = default) =>
-            Options.TryGetValue(name, out object value) ? (T)value : @default;
+        public bool TryGetArgument<T>(int index, out T value, T @default = default)
+        {
+            if (index >= _run.Arguments.Count)
+            {
+                value = default;
+                return false;
+            }
+
+            ArgumentRun matchingArgument = _run.Arguments[index];
+
+            return TryGetArgument(matchingArgument, out value, @default);
+        }
+
+        public bool TryGetArgument<T>(string name, out T value, T @default = default)
+        {
+            ArgumentRun matchingArgument = _run.Arguments.FirstOrDefault(r => r.Argument.HasName(name));
+            if (matchingArgument is null)
+            {
+                value = default;
+                return false;
+            }
+
+            return TryGetArgument(matchingArgument, out value, @default);
+        }
+
+        private bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value, T @default = default)
+        {
+            if (!matchingArgument.Assigned)
+            {
+                value = @default;
+                return true;
+            }
+
+            object resolvedValue = matchingArgument.Value;
+            if (resolvedValue != null)
+            {
+                Type valueType = resolvedValue.GetType();
+                if (valueType != typeof(T))
+                    throw new InvalidOperationException($"The argument's value is of type '{valueType.FullName}' is not assignable to the specified type of '{typeof(T).FullName}'.");
+            }
+
+            value = (T)matchingArgument.Value;
+            return true;
+        }
+
+        public bool TryGetOption<T>(string name, out T value, T @default = default)
+        {
+            OptionRun matchingOption = _run.Options.FirstOrDefault(r => r.Option.HasName(name));
+            if (matchingOption is null)
+            {
+                value = default;
+                return false;
+            }
+
+            if (matchingOption.Occurrences == 0)
+            {
+                value = @default;
+                return true;
+            }
+
+            object resolvedValue = matchingOption.ResolvedValue;
+            if (resolvedValue != null)
+            {
+                Type valueType = resolvedValue.GetType();
+                if (valueType != typeof(T))
+                    throw new InvalidOperationException($"The option's value is of type '{valueType.FullName}' is not assignable to the specified type of '{typeof(T).FullName}'.");
+            }
+
+            value = (T)resolvedValue;
+            return true;
+        }
 
         public IReadOnlyList<T> OptionsAsListOf<T>(string name) =>
             Options.TryGetValue(name, out object value) ? (List<T>)value : null;
-
-        public string Option(string name) =>
-            OptionAs<string>(name);
-
-        public IReadOnlyList<string> OptionsAsList(string name) =>
-            OptionsAsListOf<string>(name);
     }
 }

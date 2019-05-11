@@ -33,6 +33,8 @@ namespace ConsoleFx.CmdLineParser.Runs
 
         internal Argument Argument { get; }
 
+        internal bool Assigned { get; set; }
+
         internal object Value { get; set; }
     }
 }
