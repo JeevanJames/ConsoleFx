@@ -313,13 +313,15 @@ namespace ConsoleFx.CmdLineParser
         /// <param name="argumentRuns">The argument run details.</param>
         private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
         {
-            // Throw exception of number of specified arguments is greater than number of defined arguments.
+            // Throw exception of number of specified arguments is greater than number of defined
+            // arguments.
             if (specifiedArguments.Count > argumentRuns.Count)
             {
                 throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
                     Messages.InvalidNumberOfArguments);
             }
 
+            // If there are no argument runs, there is nothing to process, so exit.
             if (argumentRuns.Count == 0)
                 return;
 
@@ -338,7 +340,7 @@ namespace ConsoleFx.CmdLineParser
             }
 
             // Iterate through all specified arguments and validate.
-            // If validated, run the argument handler.
+            // If validated, assign the value.
             for (var i = 0; i < specifiedArguments.Count; i++)
             {
                 string argumentValue = specifiedArguments[i];

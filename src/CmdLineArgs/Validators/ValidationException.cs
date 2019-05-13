@@ -27,16 +27,16 @@ namespace ConsoleFx.CmdLineArgs.Validators
     ///     Exception thrown as a result of a validation failure.
     /// </summary>
     [Serializable]
-    public class ValidationException : Exception
+    public sealed class ValidationException : ParserException
     {
         public ValidationException(string message, Type validatorType, string parameterValue)
-            : base(message)
+            : base(Codes.ValidationFailure, message)
         {
             ValidatorType = validatorType;
             ParameterValue = parameterValue;
         }
 
-        protected ValidationException(SerializationInfo info, StreamingContext context)
+        private ValidationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

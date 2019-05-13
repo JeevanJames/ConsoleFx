@@ -80,6 +80,7 @@ namespace ConsoleFx.CmdLineArgs
             public const int InvalidNumberOfArguments = PublicErrorCodeBase + 10;
             public const int RequiredParametersAbsent = PublicErrorCodeBase + 11;
             public const int InvalidParametersSpecified = PublicErrorCodeBase + 12;
+            public const int ValidationFailure = PublicErrorCodeBase + 13;
 
             public const int RequiredArgumentsDefinedAfterOptional = InternalErrorCodeBase - 1;
 

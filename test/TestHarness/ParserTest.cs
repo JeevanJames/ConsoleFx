@@ -77,13 +77,13 @@ namespace TestHarness
                 foreach (System.Collections.Generic.KeyValuePair<string, object> kvp in result.Options)
                     Console.WriteLine($"{kvp.Key} = {kvp.Value}");
             }
-            catch (ParserException ex)
-            {
-                PrintLine($"{Red}{ex.Message}");
-            }
             catch (ValidationException ex)
             {
                 PrintLine($"{Yellow}{ex.ValidatorType.Name} - {Red}{ex.Message}");
+            }
+            catch (ParserException ex)
+            {
+                PrintLine($"{Red}{ex.Message}");
             }
         }
     }

@@ -59,6 +59,18 @@ namespace ConsoleFx.CmdLineArgs
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
 
+        public override Argument DefaultsTo(Func<object> setter)
+        {
+            InternalDefaultsTo(setter);
+            return this;
+        }
+
+        public override Argument DefaultsTo(object defaultValue)
+        {
+            InternalDefaultsTo(defaultValue);
+            return this;
+        }
+
         /// <inheritdoc />
         public override Argument FormatAs(Func<string, string> formatter)
         {

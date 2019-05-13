@@ -37,6 +37,11 @@ namespace ConsoleFx.CmdLineArgs.Base
         }
 
         /// <summary>
+        ///     Gets or sets the optional delegate to return the arg's default value, if it is not set.
+        /// </summary>
+        public Func<object> DefaultSetter { get; set; }
+
+        /// <summary>
         ///     Gets or sets the optional delegate that allows an arg value to be custom formatted.
         ///     <para />
         ///     During parsing, the formatting is performed before any type conversion.
@@ -62,6 +67,10 @@ namespace ConsoleFx.CmdLineArgs.Base
         ///     <see cref="Type" />.
         /// </summary>
         public Converter<string, object> TypeConverter { get; set; }
+
+        public abstract TArg DefaultsTo(Func<object> setter);
+
+        public abstract TArg DefaultsTo(object defaultValue);
 
         /// <summary>
         ///     Assigns the <see cref="Formatter"/> property, which can be used to format the arg's
@@ -105,20 +114,33 @@ namespace ConsoleFx.CmdLineArgs.Base
         /// <returns>The instance of the <typeparamref name="TArg"/>.</returns>
         public abstract TArg ValidateWith(params Validator[] validators);
 
+        protected void InternalDefaultsTo(Func<object> setter)
+        {
+            if (setter is null)
+                throw new ArgumentNullException(nameof(setter));
+            DefaultSetter = setter;
+        }
+
+        protected void InternalDefaultsTo(object value)
+        {
+            DefaultSetter = () => value;
+        }
+
         protected void InternalFormatAs(Func<string, string> formatter)
         {
-            if (formatter == null)
+            if (formatter is null)
                 throw new ArgumentNullException(nameof(formatter));
             Formatter = formatter;
         }
 
         protected void InternalFormatAs(string formatStr)
         {
-            if (formatStr == null)
+            if (formatStr is null)
                 throw new ArgumentNullException(nameof(formatStr));
             if (!formatStr.Contains("{0}"))
                 throw new ArgumentException(Errors.Option_MissingPlaceholderInFormatString, nameof(formatStr));
 
+            //TODO: Should we handle null values?
             Formatter = value => string.Format(formatStr, value);
         }
 
