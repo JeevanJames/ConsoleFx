@@ -313,15 +313,15 @@ namespace ConsoleFx.CmdLineParser
         /// <param name="argumentRuns">The argument run details.</param>
         private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
         {
-            if (argumentRuns.Count == 0)
-                return;
-
             // Throw exception of number of specified arguments is greater than number of defined arguments.
             if (specifiedArguments.Count > argumentRuns.Count)
             {
                 throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
                     Messages.InvalidNumberOfArguments);
             }
+
+            if (argumentRuns.Count == 0)
+                return;
 
             // Find the number of arguments that are required.
             int requiredArgumentCount = 0;
