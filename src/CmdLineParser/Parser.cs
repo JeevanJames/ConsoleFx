@@ -341,15 +341,36 @@ namespace ConsoleFx.CmdLineParser
 
             // Iterate through all specified arguments and validate.
             // If validated, assign the value.
-            for (var i = 0; i < specifiedArguments.Count; i++)
-            {
-                string argumentValue = specifiedArguments[i];
-                Argument argument = argumentRuns[i].Argument;
-                foreach (Validator validator in argument.Validators)
-                    validator.Validate(argumentValue);
+            //for (var i = 0; i < specifiedArguments.Count; i++)
+            //{
+            //    string argumentValue = specifiedArguments[i];
+            //    Argument argument = argumentRuns[i].Argument;
+            //    foreach (Validator validator in argument.Validators)
+            //        validator.Validate(argumentValue);
 
-                argumentRuns[i].Assigned = true;
-                argumentRuns[i].Value = ResolveArgumentValue(argumentRuns[i], argumentValue);
+            //    argumentRuns[i].Assigned = true;
+            //    argumentRuns[i].Value = ResolveArgumentValue(argumentRuns[i], argumentValue);
+            //}
+            for (int i = 0; i < argumentRuns.Count; i++)
+            {
+                ArgumentRun argumentRun = argumentRuns[i];
+                Argument argument = argumentRuns[i].Argument;
+
+                // If there is a specified argument for this run.
+                if (i < specifiedArguments.Count)
+                {
+                    string argumentValue = specifiedArguments[i];
+                    foreach (Validator validator in argument.Validators)
+                        validator.Validate(argumentValue);
+
+                    argumentRun.Assigned = true;
+                    argumentRun.Value = ResolveArgumentValue(argumentRun, argumentValue);
+                }
+                else if (argument.DefaultSetter != null)
+                {
+                    argumentRun.Assigned = true;
+                    argumentRun.Value = argument.DefaultSetter();
+                }
             }
         }
 

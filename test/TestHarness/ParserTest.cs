@@ -18,14 +18,15 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 using ConsoleFx.CmdLineArgs;
 using ConsoleFx.CmdLineArgs.Validators;
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.CmdLineParser.Style;
 
-using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 using static ConsoleFx.ConsoleExtensions.Clr;
+using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
 namespace TestHarness
 {
@@ -40,7 +41,8 @@ namespace TestHarness
                 .ValidateAsString(5);
             command.AddArgument("count", isOptional: true)
                 .ValidateAsInteger(0, 100)
-                .TypedAs<int>();
+                .TypedAs<int>()
+                .DefaultsTo(8);
             command.AddOption("v")
                 .UsedAsFlag();
             command.AddOption("y")
@@ -74,7 +76,7 @@ namespace TestHarness
 
                 foreach (object arg in result.Arguments)
                     Console.WriteLine(arg?.ToString() ?? "<value not specified>");
-                foreach (System.Collections.Generic.KeyValuePair<string, object> kvp in result.Options)
+                foreach (KeyValuePair<string, object> kvp in result.Options)
                     Console.WriteLine($"{kvp.Key} = {kvp.Value}");
             }
             catch (ValidationException ex)

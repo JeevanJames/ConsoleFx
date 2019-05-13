@@ -72,6 +72,18 @@ namespace ConsoleFx.CmdLineArgs
         /// </summary>
         public OptionParameterValidators Validators { get; }
 
+        public override Option DefaultsTo(Func<object> setter)
+        {
+            InternalDefaultsTo(setter);
+            return this;
+        }
+
+        public override Option DefaultsTo(object defaultValue)
+        {
+            InternalDefaultsTo(defaultValue);
+            return this;
+        }
+
         public override Option FormatAs(Func<string, string> formatter)
         {
             InternalFormatAs(formatter);

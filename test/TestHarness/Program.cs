@@ -30,34 +30,37 @@ namespace TestHarness
     {
         private static void Main()
         {
-            Settings.ColorReset = ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand;
-
-            try
+            while (true)
             {
-                PrintLine($"What do you want to test?");
+                try
+                {
+                    Console.Clear();
 
-                string[] menuItems = MenuItems.Values.ToArray();
-                int selectedItem = SelectSingle(menuItems);
+                    PrintLine($"What do you want to test?");
 
-                Type[] testTypes = MenuItems.Keys.ToArray();
-                Type selectedType = testTypes[selectedItem];
-                if (selectedType == typeof(Program))
-                    return;
+                    string[] menuItems = MenuItems.Values.ToArray();
+                    int selectedItem = SelectSingle(menuItems);
+
+                    Type[] testTypes = MenuItems.Keys.ToArray();
+                    Type selectedType = testTypes[selectedItem];
+                    if (selectedType == typeof(Program))
+                        Environment.Exit(0);
+
+                    PrintBlank();
+
+                    var testHarness = (TestBase)Activator.CreateInstance(selectedType);
+                    testHarness.Run();
+                }
+                catch (Exception ex)
+                {
+                    PrintLine($"{Red.BgWhite}[{ex.GetType().Name}]{ex.Message}");
+                    PrintLine($"{Magenta.BgWhite}{ex.StackTrace}");
+                }
 
                 PrintBlank();
-
-                var testHarness = (TestBase)Activator.CreateInstance(selectedType);
-                testHarness.Run();
+                PrintLine($"{Black.BgYellow}Press ANY key to continue...");
+                WaitForAnyKey();
             }
-            catch (Exception ex)
-            {
-                PrintLine($"{Red.BgWhite}[{ex.GetType().Name}]{ex.Message}");
-                PrintLine($"{Magenta.BgWhite}{ex.StackTrace}");
-            }
-
-            PrintBlank();
-            PrintLine("Press any key to escape");
-            WaitForAnyKey();
         }
 
         private static readonly Dictionary<Type, string> MenuItems = new Dictionary<Type, string>

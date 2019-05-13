@@ -238,6 +238,11 @@
             </param>
             <returns>The error message string for the exception.</returns>
         </member>
+        <member name="P:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.DefaultSetter">
+            <summary>
+                Gets or sets the optional delegate to return the arg's default value, if it is not set.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLineArgs.Base.ArgumentOrOption`1.Formatter">
             <summary>
                 Gets or sets the optional delegate that allows an arg value to be custom formatted.
