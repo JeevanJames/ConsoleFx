@@ -19,7 +19,6 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ConsoleFx.ConsoleExtensions
 {
@@ -123,6 +122,9 @@ namespace ConsoleFx.ConsoleExtensions
             string[] parts = text.Split(new[] { ' ' }, StringSplitOptions.None);
             int lineWidth = Console.WindowWidth - indent - 1;
 
+            if (indentFirstLine)
+                Console.Write(indentStr);
+
             int length = 0;
             for (int i = 0; i < parts.Length; i++)
             {
@@ -148,6 +150,8 @@ namespace ConsoleFx.ConsoleExtensions
                     length++;
                 }
             }
+
+            Console.WriteLine();
         }
 
         private static readonly Dictionary<CColor, ConsoleColor> ColorMappings = new Dictionary<CColor, ConsoleColor>
