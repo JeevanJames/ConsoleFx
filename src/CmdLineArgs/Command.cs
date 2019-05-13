@@ -67,7 +67,7 @@ namespace ConsoleFx.CmdLineArgs
         {
             get
             {
-                if (_arguments == null)
+                if (_arguments is null)
                 {
                     _arguments = new Arguments();
                     IEnumerable<Argument> arguments = GetArguments();
@@ -91,7 +91,7 @@ namespace ConsoleFx.CmdLineArgs
         {
             get
             {
-                if (_options == null)
+                if (_options is null)
                 {
                     _options = new Options();
                     IEnumerable<Option> options = GetOptions();
@@ -115,7 +115,7 @@ namespace ConsoleFx.CmdLineArgs
         {
             get
             {
-                if (_commands == null)
+                if (_commands is null)
                 {
                     _commands = new Commands();
                     IEnumerable<Command> commands = GetCommands();

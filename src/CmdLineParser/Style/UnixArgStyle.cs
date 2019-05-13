@@ -65,7 +65,7 @@ namespace ConsoleFx.CmdLineParser.Style
 
             //        //If the token is not an option and we are not iterating over the parameters of an
             //        //option, then the token is an argument.
-            //        if (!optionMatch.Success && currentOption == null)
+            //        if (!optionMatch.Success && currentOption is null)
             //        {
             //            yield return token;
             //            continue;
@@ -91,7 +91,7 @@ namespace ConsoleFx.CmdLineParser.Style
             //                    (or => or.Option.ShortName != null && or.Option.ShortName.Equals(optionName, StringComparison.OrdinalIgnoreCase))
             //                : or => or.Option.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase);
             //            OptionRun option = options.FirstOrDefault(predicate);
-            //            if (option == null)
+            //            if (option is null)
             //            {
             //                throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
             //                    string.Format(Messages.InvalidOptionSpecified, optionName));

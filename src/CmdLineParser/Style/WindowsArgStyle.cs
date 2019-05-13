@@ -60,7 +60,7 @@ namespace ConsoleFx.CmdLineParser.Style
                     string specifiedOptionName = optionMatch.Groups[groupnum: 1].Value;
 
                     var availableOption = options.FirstOrDefault(or => or.Option.HasName(specifiedOptionName));
-                    if (availableOption == null)
+                    if (availableOption is null)
                     {
                         throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
                             string.Format(Messages.InvalidOptionSpecified, specifiedOptionName));

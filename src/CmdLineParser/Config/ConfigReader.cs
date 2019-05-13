@@ -58,14 +58,14 @@ namespace ConsoleFx.CmdLineParser.Config
 
         protected void AddOption(string name, IEnumerable<string> parameters)
         {
-            if (_options == null)
+            if (_options is null)
                 _options = new List<SpecifiedOption>();
             _options.Add(new SpecifiedOption(name, parameters));
         }
 
         protected void AddArgument(string value)
         {
-            if (_arguments == null)
+            if (_arguments is null)
                 _arguments = new List<string>();
             _arguments.Add(value);
         }

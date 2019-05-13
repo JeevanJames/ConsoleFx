@@ -124,7 +124,7 @@ namespace ConsoleFx.CmdLineArgs
         /// <exception cref="ArgumentNullException">Thrown if the specified delegate is null.</exception>
         public Option UsedAs(Action<OptionUsage> usageSetter)
         {
-            if (usageSetter == null)
+            if (usageSetter is null)
                 throw new ArgumentNullException(nameof(usageSetter));
             usageSetter(Usage);
             return this;
@@ -147,7 +147,7 @@ namespace ConsoleFx.CmdLineArgs
             for (int i = 0; i < validators.Length; i++)
             {
                 Validator validator = validators[i];
-                if (validator == null)
+                if (validator is null)
                     throw new ArgumentException(string.Format(Errors.Option_ValidatorIsNull, i), nameof(validators));
                 Validators.Add(validator);
             }
@@ -173,7 +173,7 @@ namespace ConsoleFx.CmdLineArgs
             for (var i = 0; i < validators.Length; i++)
             {
                 Validator validator = validators[i];
-                if (validator == null)
+                if (validator is null)
                     throw new ArgumentException(string.Format(Errors.Option_ValidatorIsNull, i), nameof(validators));
                 Validators.Add(parameterIndex, validator);
             }

@@ -53,9 +53,9 @@ namespace ConsoleFx.CmdLineArgs.Validators
         public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings, bool caseSensitive = false)
             : base(Messages.Boolean)
         {
-            if (trueStrings == null)
+            if (trueStrings is null)
                 throw new ArgumentNullException(nameof(trueStrings));
-            if (falseStrings == null)
+            if (falseStrings is null)
                 throw new ArgumentNullException(nameof(falseStrings));
 
             _trueStrings = new List<string>(trueStrings);

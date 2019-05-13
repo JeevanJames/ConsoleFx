@@ -108,7 +108,7 @@ namespace ConsoleFx.Prompter
                         }
                     }
 
-                    if (input == null || (input is string s && s.Length == 0))
+                    if (input is null || (input is string s && s.Length == 0))
                         answer = question.DefaultValue.Resolve(answers);
                     else
                         answer = input;

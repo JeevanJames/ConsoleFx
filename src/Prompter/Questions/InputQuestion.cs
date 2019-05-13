@@ -37,7 +37,7 @@ namespace ConsoleFx.Prompter.Questions
                     var question = (InputQuestion<TValue>)q;
                     if (string.IsNullOrEmpty(str))
                         str = question.DefaultValue.Resolve(ans);
-                    bool valid = (question.RawValueValidator == null) || question.RawValueValidator(str, ans).Valid;
+                    bool valid = (question.RawValueValidator is null) || question.RawValueValidator(str, ans).Valid;
                     var teq = (TextEntryQuestion<TValue>)q;
                     if (valid && teq.IsRequired)
                     {

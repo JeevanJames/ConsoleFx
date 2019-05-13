@@ -40,7 +40,7 @@ namespace ConsoleFx.Capture
         /// </exception>
         public ConsoleCapture(string fileName, string arguments = null)
         {
-            if (fileName == null)
+            if (fileName is null)
                 throw new ArgumentNullException(nameof(fileName));
             FileName = fileName;
             Arguments = arguments;

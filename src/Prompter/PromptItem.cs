@@ -43,6 +43,6 @@ namespace ConsoleFx.Prompter
         internal abstract AskerFn AskerFn { get; }
 
         internal bool CanAsk(dynamic answers) =>
-            (CanAskFn == null) || (bool)CanAskFn(answers);
+            (CanAskFn is null) || (bool)CanAskFn(answers);
     }
 }

@@ -148,9 +148,7 @@ namespace ConsoleFx.CmdLineParser
                     // Add all the options for the current command.
                     run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o)));
 
-                    // Only add the arguments from the current command to the run if a subcommand is not specified.
-                    // Arguments from the innermost command can only be used for a run. If arguments
-                    // from different levels of commands are used, then the correct order of the commands is ambiguous.
+                    // Add all the arguments for the current command.
                     run.Arguments.AddRange(currentCommand.Arguments.Select(a => new ArgumentRun(a)));
 
                     // All tokens from the current token are considered the args for the command.
@@ -165,12 +163,21 @@ namespace ConsoleFx.CmdLineParser
 
             // To avoid null-ref exceptions in case no tokens are specified, assign run.Tokens if it
             // is null.
-            if (run.Tokens == null)
+            if (run.Tokens is null)
                 run.Tokens = new List<string>(0);
 
             return run;
         }
 
+        /// <summary>
+        ///     Process the specified options by verifying their usage, validating them and executing
+        ///     their handler.
+        /// </summary>
+        /// <param name="optionRuns">The option run details.</param>
+        /// <exception cref="ParserException">
+        ///     Thrown if any of the validation or usage checks on the <see cref="OptionRun"/> objects
+        ///     fails.
+        /// </exception>
         private static void ProcessOptions(IReadOnlyList<OptionRun> optionRuns)
         {
             foreach (OptionRun or in optionRuns)
@@ -178,8 +185,15 @@ namespace ConsoleFx.CmdLineParser
                 // If the option is required, but is not specified.
                 if (or.Option.Usage.MinOccurrences > 0 && or.Occurrences == 0)
                 {
-                    throw new ParserException(ParserException.Codes.RequiredOptionAbsent,
-                        string.Format(Messages.RequiredOptionAbsent, or.Option.Name));
+                    if (or.Option.DefaultSetter is null)
+                    {
+                        throw new ParserException(ParserException.Codes.RequiredOptionAbsent,
+                            string.Format(Messages.RequiredOptionAbsent, or.Option.Name));
+                    }
+
+                    object defaultValue = or.Option.DefaultSetter();
+                    if (or.Option.Usage.MaxOccurrences > 1 || or.Option.Usage.MaxParameters > 1)
+                        or.ResolvedValue = new List<object>(1) { defaultValue };
                 }
 
                 // If the option is specified less times than the minimum expected number of times.
@@ -264,7 +278,7 @@ namespace ConsoleFx.CmdLineParser
 
             // If a custom type converter is not specified and the option's value type is not string,
             // then attempt to find a default type converter for that type, which can convert from string.
-            if (converter == null && optionType != typeof(string))
+            if (converter is null && optionType != typeof(string))
             {
                 TypeConverter typeConverter = TypeDescriptor.GetConverter(optionType);
 
@@ -296,12 +310,13 @@ namespace ConsoleFx.CmdLineParser
             if (option.Usage.MaxParameters == 1 && optionRun.Parameters.Count > 0)
                 return GetConvertedValue(optionRun.Parameters[0], option, converter);
 
+            //TODO: Change this to an internal parser exception.
             throw new InvalidOperationException("Should never reach here");
 
             object GetConvertedValue(string param, Option opt, Converter<string, object> conv)
             {
                 string formattedParameter = opt.Formatter != null ? opt.Formatter(param) : param;
-                return conv == null ? formattedParameter : conv(formattedParameter);
+                return conv is null ? formattedParameter : conv(formattedParameter);
             }
         }
 
@@ -311,10 +326,15 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         /// <param name="specifiedArguments">The list of specified arguments.</param>
         /// <param name="argumentRuns">The argument run details.</param>
+        /// <exception cref="ParserException">
+        ///     Thrown if any of the validation or usage checks on the <see cref="ArgumentRun"/> objects
+        ///     fails.
+        /// </exception>
         private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
         {
             // Throw exception of number of specified arguments is greater than number of defined
             // arguments.
+            //TODO: The error message is too generic. Change to mention the extra arguments.
             if (specifiedArguments.Count > argumentRuns.Count)
             {
                 throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
@@ -341,16 +361,6 @@ namespace ConsoleFx.CmdLineParser
 
             // Iterate through all specified arguments and validate.
             // If validated, assign the value.
-            //for (var i = 0; i < specifiedArguments.Count; i++)
-            //{
-            //    string argumentValue = specifiedArguments[i];
-            //    Argument argument = argumentRuns[i].Argument;
-            //    foreach (Validator validator in argument.Validators)
-            //        validator.Validate(argumentValue);
-
-            //    argumentRuns[i].Assigned = true;
-            //    argumentRuns[i].Value = ResolveArgumentValue(argumentRuns[i], argumentValue);
-            //}
             for (int i = 0; i < argumentRuns.Count; i++)
             {
                 ArgumentRun argumentRun = argumentRuns[i];
@@ -366,8 +376,12 @@ namespace ConsoleFx.CmdLineParser
                     argumentRun.Assigned = true;
                     argumentRun.Value = ResolveArgumentValue(argumentRun, argumentValue);
                 }
+
+                // No specified argument, but there is a default value.
                 else if (argument.DefaultSetter != null)
                 {
+                    // Note: For default values, none of the validators are run. This enables special default
+                    // values to be assigned that are outside the rules of valudation.
                     argumentRun.Assigned = true;
                     argumentRun.Value = argument.DefaultSetter();
                 }
@@ -384,7 +398,7 @@ namespace ConsoleFx.CmdLineParser
 
             // If a custom type converter is not specified and the option's value type is not string,
             // then attempt to find a default type converter for that type, which can convert from string.
-            if (converter == null && argumentType != typeof(string))
+            if (converter is null && argumentType != typeof(string))
             {
                 TypeConverter typeConverter = TypeDescriptor.GetConverter(argumentType);
 
@@ -399,7 +413,7 @@ namespace ConsoleFx.CmdLineParser
             }
 
             string formattedValue = argument.Formatter != null ? argument.Formatter(strValue) : strValue;
-            return converter == null ? formattedValue : converter(formattedValue);
+            return converter is null ? formattedValue : converter(formattedValue);
         }
     }
 }

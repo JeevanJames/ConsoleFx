@@ -113,10 +113,10 @@ namespace ConsoleFx.ConsoleExtensions
             Func<T, string> displaySelector = null) /*,
             Func<T, string> keySelector = null*/
         {
-            if (optionsList == null)
+            if (optionsList is null)
                 throw new ArgumentNullException(nameof(optionsList));
 
-            if (displaySelector == null)
+            if (displaySelector is null)
                 displaySelector = item => item.ToString();
 
             List<string> options = optionsList.Select(displaySelector).ToList();
@@ -128,7 +128,7 @@ namespace ConsoleFx.ConsoleExtensions
             if (startingIndex < 0 || startingIndex >= options.Count)
                 throw new ArgumentOutOfRangeException(nameof(settings), "Selected index in settings is out of range.");
 
-            if (checkedIndices == null)
+            if (checkedIndices is null)
                 checkedIndices = Enumerable.Empty<int>();
             if (checkedIndices.Any(c => c < 0 || c >= options.Count))
             {

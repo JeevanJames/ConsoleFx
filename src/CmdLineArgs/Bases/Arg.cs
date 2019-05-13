@@ -57,7 +57,7 @@ namespace ConsoleFx.CmdLineArgs.Base
         /// <exception cref="ArgumentException">Thrown if the <paramref name="names" /> collection is empty.</exception>
         protected Arg(IDictionary<string, bool> names)
         {
-            if (names == null)
+            if (names is null)
                 throw new ArgumentNullException(nameof(names));
             if (names.Count == 0)
                 throw new ArgumentException(Errors.Arg_No_names_specified, nameof(names));
@@ -75,7 +75,7 @@ namespace ConsoleFx.CmdLineArgs.Base
         /// <returns>An instance to the same <see cref="Arg" />, to allow for a fluent syntax.</returns>
         public Arg AddName(string name, bool caseSensitive = false)
         {
-            if (name == null)
+            if (name is null)
                 throw new ArgumentNullException(nameof(name));
             if (!NamePattern.IsMatch(name))
                 throw new ArgumentException(string.Format(Errors.Arg_Invalid_name, name), nameof(name));
@@ -147,7 +147,7 @@ namespace ConsoleFx.CmdLineArgs.Base
         /// <returns>The metadata value or the default of T if the value does not exist.</returns>
         public T Get<T>(string name)
         {
-            if (_metadata == null)
+            if (_metadata is null)
                 return default;
             return _metadata.TryGetValue(name, out var result) ? (T)result : default;
         }
@@ -160,7 +160,7 @@ namespace ConsoleFx.CmdLineArgs.Base
         /// <param name="value">The value of the metadata to set.</param>
         public void Set<T>(string name, T value)
         {
-            if (_metadata == null)
+            if (_metadata is null)
                 _metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             if (_metadata.ContainsKey(name))
                 _metadata[name] = value;

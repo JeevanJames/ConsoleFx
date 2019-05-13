@@ -36,7 +36,7 @@ namespace ConsoleFx.Prompter.Questions
         public CheckboxQuestion(string name, FunctionOrValue<string> message, IEnumerable<string> choices)
             : base(name, message)
         {
-            if (choices == null)
+            if (choices is null)
                 throw new ArgumentNullException(nameof(choices));
             _choices = choices.ToList();
 

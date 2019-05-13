@@ -111,7 +111,7 @@ namespace ConsoleFx.ConsoleExtensions
         public static void WaitForKeysLoop(IEnumerable<KeyHandler> handlers,
             Action<ConsoleKey> postKeyPress = null, IEnumerable<ConsoleKey> escapeKeys = null)
         {
-            if (handlers == null)
+            if (handlers is null)
                 throw new ArgumentNullException(nameof(handlers));
 
             List<KeyHandler> handlersList = handlers.ToList();
@@ -120,7 +120,7 @@ namespace ConsoleFx.ConsoleExtensions
                 throw new ArgumentException("Specify at least one handler.", nameof(handlers));
 
             // If the escapeKeys parameter is not specified, default it to the Escape key.
-            if (escapeKeys == null)
+            if (escapeKeys is null)
                 escapeKeys = new[] { ConsoleKey.Escape };
 
             // Ensure that none of the escape keys are specified in the handlers.

@@ -42,7 +42,7 @@ namespace ConsoleFx.Prompter
 
         internal ValidationResult(string errorMessage)
         {
-            Valid = errorMessage == null;
+            Valid = errorMessage is null;
             ErrorMessage = errorMessage;
         }
 

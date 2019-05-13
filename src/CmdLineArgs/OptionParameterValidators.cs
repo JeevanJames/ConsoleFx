@@ -120,7 +120,7 @@ namespace ConsoleFx.CmdLineArgs
             if (_option.Usage.ParameterType != OptionParameterType.Individual || parameterIndex < 0)
                 return commonValidators ?? Enumerable.Empty<Validator>();
 
-            if (!_validators.TryGetValue(parameterIndex, out ValidatorCollection indexValidators) || indexValidators == null)
+            if (!_validators.TryGetValue(parameterIndex, out ValidatorCollection indexValidators) || indexValidators is null)
                 return commonValidators ?? Enumerable.Empty<Validator>();
 
             return (commonValidators ?? Enumerable.Empty<Validator>()).Concat(indexValidators);
