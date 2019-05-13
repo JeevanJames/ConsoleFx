@@ -62,6 +62,7 @@ namespace TestHarness
 
         private static readonly Dictionary<Type, string> MenuItems = new Dictionary<Type, string>
         {
+            [typeof(ConsoleExtensionsTest)] = "ConsoleEx",
             [typeof(ParserTest)] = "Parser",
             [typeof(ProgramTest)] = "Console Program",
             [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",

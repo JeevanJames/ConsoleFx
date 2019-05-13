@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleFx.ConsoleExtensions
 {
@@ -115,21 +116,37 @@ namespace ConsoleFx.ConsoleExtensions
         /// </param>
         public static void PrintIndented(string text, int indent, bool indentFirstLine = false)
         {
-            if (text == null)
+            if (text is null)
                 throw new ArgumentNullException(nameof(text));
 
             var indentStr = new string(c: ' ', indent);
+            string[] parts = text.Split(new[] { ' ' }, StringSplitOptions.None);
             int lineWidth = Console.WindowWidth - indent - 1;
 
-            var startPos = 0;
-            while (startPos < text.Length)
+            int length = 0;
+            for (int i = 0; i < parts.Length; i++)
             {
-                int length = Math.Min(lineWidth, text.Length - startPos);
-                string str = text.Substring(startPos, length);
-                if (startPos > 0 || indentFirstLine)
+                // If the current length of the printed line plus the length of the next part if greater
+                // than the line width, we need to start the next part on the next line.
+                // Write a new line and the indent. Reset length to 0;
+                if (length + parts[i].Length > lineWidth)
+                {
+                    Console.WriteLine();
                     Console.Write(indentStr);
-                Console.WriteLine(str);
-                startPos += lineWidth;
+                    length = 0;
+                }
+
+                // Write the part to console and increment length by its length.
+                Print(parts[i]);
+                length += parts[i].Length;
+
+                // Except for the last part, write the separating space character as well.
+                // Increment length by 1.
+                if (i < parts.Length - 1)
+                {
+                    Console.Write(" ");
+                    length++;
+                }
             }
         }
 

@@ -17,10 +17,14 @@ limitations under the License.
 */
 #endregion
 
+using System.Collections.Generic;
+
 namespace ConsoleFx.ConsoleExtensions
 {
     public sealed class ConsoleExSettings
     {
+        private IList<char> _indentationLineBreakChars;
+
         public ColorResetOption ColorReset { get; set; } = ColorResetOption.ResetAfterCommand;
 
         /// <summary>
@@ -30,12 +34,34 @@ namespace ConsoleFx.ConsoleExtensions
         ///     Changing this value applies globally.
         /// </summary>
         public char SecretMask { get; set; } = '*';
+
+        public IList<char> IndentationLineBreakChars
+        {
+            get => _indentationLineBreakChars ?? (_indentationLineBreakChars = new List<char> { ' ' });
+            set => _indentationLineBreakChars = value;
+        }
     }
 
+    /// <summary>
+    ///     Determines when to automatically reset the console colors when printing a
+    ///     <see cref="ColorString"/>.
+    /// </summary>
     public enum ColorResetOption
     {
+        /// <summary>
+        ///     The default - resets the colors after each print command is executed.
+        /// </summary>
         ResetAfterCommand,
+
+        /// <summary>
+        ///     Don't reset the colors at all. Subsequent print commands will use the same colors that
+        ///     were set in the previous print command.
+        /// </summary>
         DontReset,
+
+        /// <summary>
+        ///     Reset the color after every block of color used in a print command.
+        /// </summary>
         ResetAfterColor,
     }
 }

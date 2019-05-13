@@ -316,6 +316,28 @@
                 Changing this value applies globally.
             </summary>
         </member>
+        <member name="T:ConsoleFx.ConsoleExtensions.ColorResetOption">
+            <summary>
+                Determines when to automatically reset the console colors when printing a
+                <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterCommand">
+            <summary>
+                The default - resets the colors after each print command is executed.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.ConsoleExtensions.ColorResetOption.DontReset">
+            <summary>
+                Don't reset the colors at all. Subsequent print commands will use the same colors that
+                were set in the previous print command.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterColor">
+            <summary>
+                Reset the color after every block of color used in a print command.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.ConsoleExtensions.ProgressBar">
             <summary>
                 Represents a console progress bar.
