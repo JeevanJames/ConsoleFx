@@ -69,7 +69,6 @@ The ConsoleFx.CmdLineParser package provides a sophisticated command-line argume
 
   <ItemGroup>
     <ProjectReference Include="..\CmdLineArgs\CmdLineArgs.csproj" />
-    <ProjectReference Include="..\ConsoleExtensions\ConsoleExtensions.csproj" />
   </ItemGroup>
 
 </Project>
