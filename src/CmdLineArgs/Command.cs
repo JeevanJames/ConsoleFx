@@ -19,7 +19,7 @@ limitations under the License.
 
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Text.RegularExpressions;
 using ConsoleFx.CmdLineArgs.Base;
 
 namespace ConsoleFx.CmdLineArgs
@@ -178,6 +178,8 @@ namespace ConsoleFx.CmdLineArgs
             Options.Add(option);
             return option;
         }
+
+        protected sealed override Regex NamePattern => base.NamePattern;
     }
 
     public delegate string CommandCustomValidator(IReadOnlyList<object> arguments,
