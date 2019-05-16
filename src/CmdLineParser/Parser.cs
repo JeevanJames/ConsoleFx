@@ -217,6 +217,7 @@ namespace ConsoleFx.CmdLineParser
                         string.Format(Messages.RequiredParametersAbsent, or.Option.Name));
                 }
 
+                // If the option does not specify parameters by some are specified.
                 if (or.Occurrences > 0 && or.Option.Usage.MinParameters == 0 && or.Option.Usage.MaxParameters == 0 &&
                     or.Parameters.Count > 0)
                 {

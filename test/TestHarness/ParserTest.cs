@@ -66,11 +66,13 @@ namespace TestHarness
             command.AddOption("id")
                 .UsedAsSingleParameter()
                 .ValidateAsGuid();
+            command.AddOption("multiple", "m")
+                .UsedAsUnlimitedOccurrencesAndParameters(true);
 
             var parser = new Parser(command, ArgStyle.Unix);
             try
             {
-                ParseResult result = parser.Parse("sourceFile", "destfile", "1", "2", "3", "4", "abc",
+                ParseResult result = parser.Parse("sourceFile", "destfile", "1", "2", "3", "4", "5",
                     "-v",
                     "-r=2",
                     "--log=blah",
