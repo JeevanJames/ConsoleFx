@@ -38,8 +38,8 @@ namespace ConsoleFx.CmdLineParser.Style
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping)
         {
-            var previousType = ArgumentType.NotSet;
-            var currentType = ArgumentType.NotSet;
+            ArgumentType previousType = ArgumentType.NotSet;
+            ArgumentType currentType = ArgumentType.NotSet;
 
             foreach (string token in tokens)
             {
@@ -59,25 +59,32 @@ namespace ConsoleFx.CmdLineParser.Style
 
                     string specifiedOptionName = optionMatch.Groups[groupnum: 1].Value;
 
-                    var availableOption = options.FirstOrDefault(or => or.Option.HasName(specifiedOptionName));
+                    // Find the corresponding option run for the specified option name.
+                    // If not found, throw a parse exception.
+                    OptionRun availableOption = options.SingleOrDefault(or => or.Option.HasName(specifiedOptionName));
                     if (availableOption is null)
                     {
                         throw new ParserException(ParserException.Codes.InvalidOptionSpecified,
                             string.Format(Messages.InvalidOptionSpecified, specifiedOptionName));
                     }
 
+                    // Increase the number of occurrences of the option run.
                     availableOption.Occurrences += 1;
 
-                    //If no switch parameters are specified, stop processing
+                    // If no option parameters are specified, we're done with this option.
+                    // Continue the loop to process the next token.
                     if (token.Length == specifiedOptionName.Length + 1)
                         continue;
 
+                    // Option name and its parameters must be separated by a colon.
+                    // If not, throw a parse exception.
                     if (token[specifiedOptionName.Length + 1] != ':')
                     {
                         throw new ParserException(ParserException.Codes.InvalidOptionParameterSpecifier,
                             string.Format(Messages.InvalidOptionParameterSpecifier, specifiedOptionName));
                     }
 
+                    // Match any parameters and add to the option run's Parameters property.
                     var parameterMatches = OptionParameterPattern.Matches(token, optionMatch.Length + 1);
                     foreach (Match parameterMatch in parameterMatches)
                     {
