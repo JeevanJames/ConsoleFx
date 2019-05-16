@@ -102,7 +102,7 @@ namespace ConsoleFx.CmdLineParser
 
             // Process the specified options and arguments, and resolve their values.
             ProcessOptions(run.Options);
-            ProcessArguments(specifiedArguments, run.Arguments);
+            ProcessArguments(specifiedArguments, run.Arguments, run.Commands[run.Commands.Count - 1]);
 
             var parseResult = new ParseResult(run);
 
@@ -326,17 +326,18 @@ namespace ConsoleFx.CmdLineParser
         /// </summary>
         /// <param name="specifiedArguments">The list of specified arguments.</param>
         /// <param name="argumentRuns">The argument run details.</param>
+        /// <param name="command">The <see cref="Command"/> that the arguments belong to.</param>
         /// <exception cref="ParserException">
         ///     Thrown if any of the validation or usage checks on the <see cref="ArgumentRun"/> objects
         ///     fails.
         /// </exception>
-        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
+        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns, Command command)
         {
-            // Throw exception of number of specified arguments is greater than number of defined
-            // arguments.
-            //TODO: The error message is too generic. Change to mention the extra arguments.
-            if (specifiedArguments.Count > argumentRuns.Count)
+            // Throw exception if number of specified arguments is greater than number of defined
+            // arguments. Account for repeated last arguments.
+            if (specifiedArguments.Count > argumentRuns.Count + command.LastArgumentRepeat - 1)
             {
+                //TODO: The error message is too generic. Change to mention the extra arguments.
                 throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
                     Messages.InvalidNumberOfArguments);
             }
@@ -374,21 +375,34 @@ namespace ConsoleFx.CmdLineParser
                         validator.Validate(argumentValue);
 
                     argumentRun.Assigned = true;
-                    argumentRun.Value = ResolveArgumentValue(argumentRun, argumentValue);
+                    argumentRun.Value = i == argumentRuns.Count - 1 && command.LastArgumentRepeat > 1
+                        ? ResolveArgumentValue(argumentRun, specifiedArguments, i, specifiedArguments.Count - 1)
+                        : ResolveArgumentValue(argumentRun, specifiedArguments, i, i);
                 }
 
                 // No specified argument, but there is a default value.
                 else if (argument.DefaultSetter != null)
                 {
-                    // Note: For default values, none of the validators are run. This enables special default
-                    // values to be assigned that are outside the rules of valudation.
+                    // Note: For default values, none of the validators are run. This enables special
+                    // default values to be assigned that are outside the rules of valudation.
                     argumentRun.Assigned = true;
-                    argumentRun.Value = argument.DefaultSetter();
+                    object value = argument.DefaultSetter();
+                    if (command.LastArgumentRepeat > 1)
+                    {
+                        Type argumentType = argument.Type ?? typeof(string);
+                        Type listType = typeof(List<>).MakeGenericType(argumentType);
+                        var list = (IList)Activator.CreateInstance(listType, 1);
+                        list.Add(value);
+                        argumentRun.Value = list;
+                    }
+                    else
+                        argumentRun.Value = value;
                 }
             }
         }
 
-        private static object ResolveArgumentValue(ArgumentRun argumentRun, string strValue)
+        private static object ResolveArgumentValue(ArgumentRun argumentRun, IReadOnlyList<string> specifiedArguments,
+            int startIndex, int endIndex)
         {
             Argument argument = argumentRun.Argument;
 
@@ -412,8 +426,20 @@ namespace ConsoleFx.CmdLineParser
                 converter = value => typeConverter.ConvertFromString(value);
             }
 
-            string formattedValue = argument.Formatter != null ? argument.Formatter(strValue) : strValue;
-            return converter is null ? formattedValue : converter(formattedValue);
+            if (startIndex == endIndex)
+                return GetConvertedValue(specifiedArguments[startIndex], argument, converter);
+
+            Type listType = typeof(List<>).MakeGenericType(argumentType);
+            var list = (IList)Activator.CreateInstance(listType, endIndex - startIndex + 1);
+            for (var j = startIndex; j <= endIndex; j++)
+                list.Add(GetConvertedValue(specifiedArguments[j], argument, converter));
+            return list;
+
+            object GetConvertedValue(string strValue, Argument arg, Converter<string, object> conv)
+            {
+                string formattedValue = arg.Formatter != null ? arg.Formatter(strValue) : strValue;
+                return conv is null ? formattedValue : conv(formattedValue);
+            }
         }
     }
 }

@@ -332,6 +332,11 @@
                 Gets the collection of <see cref="T:ConsoleFx.CmdLineArgs.Command" /> sub-command objects for this command.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLineArgs.Command.LastArgumentRepeat">
+            <summary>
+                Gets or sets a value indicating how many times the last argument can repeat.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.CmdLineArgs.Commands">
             <summary>
                 <para>Collection of <see cref="T:ConsoleFx.CmdLineArgs.Command" /> objects.</para>

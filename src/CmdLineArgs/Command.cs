@@ -120,6 +120,11 @@ namespace ConsoleFx.CmdLineArgs
             }
         }
 
+        /// <summary>
+        ///     Gets or sets a value indicating how many times the last argument can repeat.
+        /// </summary>
+        public int LastArgumentRepeat { get; set; } = 1;
+
         protected virtual IEnumerable<Arg> GetArgs()
         {
             yield break;

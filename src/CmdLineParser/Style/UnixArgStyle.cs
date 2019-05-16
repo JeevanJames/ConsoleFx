@@ -32,8 +32,8 @@ namespace ConsoleFx.CmdLineParser.Style
         public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options,
             IReadOnlyList<Argument> arguments)
         {
-            //If any option has variable number of parameters (i.e. ExpectedParameters = null),
-            //then the groupings is changed to DoesNotMatter.
+            // If any option has variable number of parameters (i.e. ExpectedParameters = null),
+            // then the groupings is changed to DoesNotMatter.
             if (specifiedGrouping == ArgGrouping.OptionsBeforeArguments)
             {
                 bool optionsHaveVariableParameters = options.Any(option => !option.Usage.ExpectedParameters.HasValue);
@@ -41,7 +41,7 @@ namespace ConsoleFx.CmdLineParser.Style
                     specifiedGrouping = ArgGrouping.DoesNotMatter;
             }
 
-            //If any option has unlimited parameters, then options must appear after arguments.
+            // If any option has unlimited parameters, then options must appear after arguments.
             bool optionsHaveUnlimitedParameters =
                 options.Any(option => option.Usage.MaxParameters == OptionUsage.Unlimited);
             if (specifiedGrouping != ArgGrouping.OptionsAfterArguments && optionsHaveUnlimitedParameters)
