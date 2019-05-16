@@ -50,7 +50,7 @@ namespace ConsoleFx.CmdLineParser.Style
             return specifiedGrouping;
         }
 
-        private static readonly Regex OptionPattern = new Regex(@"(--?)(\w[\w-_]+)(?:=(.+))?");
+        private static readonly Regex OptionPattern = new Regex(@"(--?)(\w[\w-_]*)(?:=(.+))?");
 
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping)
@@ -65,11 +65,10 @@ namespace ConsoleFx.CmdLineParser.Style
                 // option, then the token is an argument.
                 if (!optionMatch.Success)
                 {
+                    // If we're processing an option (currentOption != null), then it's an argument.
+                    // Otherwise, it's a parameter on the current option.
                     if (currentOption is null)
-                    {
                         yield return token;
-                        continue;
-                    }
                     else
                         currentOption.Parameters.Add(token);
                 }
@@ -120,6 +119,10 @@ namespace ConsoleFx.CmdLineParser.Style
                             matchingOption.Parameters.Add(parameterValue);
                             currentOption = null;
                         }
+
+                        // Otherwise, mark the current option as this one and process all subsequent
+                        // tokens as parameters until we encounter another option or we've reached the
+                        // max limit of parameters for this option.
                         else
                             currentOption = matchingOption;
                     }
@@ -127,10 +130,10 @@ namespace ConsoleFx.CmdLineParser.Style
                         currentOption = null;
                 }
 
-                //If we're on an option (currentOption != null) and the number of parameters has
-                //reached the maximum allowed, then we can stop handling that option by setting
-                //currentOption to null so that the next arg will be treated as a new option or
-                //argument.
+                // If we're on an option (currentOption != null) and the number of parameters has
+                // reached the maximum allowed, then we can stop handling that option by setting
+                // currentOption to null so that the next arg will be treated as a new option or
+                // argument.
                 if (currentOption != null && currentOption.Parameters.Count > currentOption.Option.Usage.MaxParameters)
                     currentOption = null;
             }

@@ -64,15 +64,15 @@ namespace TestHarness
                 .UsedAsSingleParameter()
                 .ValidateAsGuid();
 
-            var parser = new Parser(command, ArgStyle.Windows);
+            var parser = new Parser(command, ArgStyle.Unix);
             try
             {
                 ParseResult result = parser.Parse("sourceFile", "destfile",
-                    "/v",
-                    "/r:2",
-                    "-log:blah",
-                    "/web:https://example.com",
-                    "-id:{DD45218B-CE76-4714-A3B3-7F77F4A287F1}");
+                    "-v",
+                    "-r=2",
+                    "--log=blah",
+                    "--web=https://example.com",
+                    "--id={DD45218B-CE76-4714-A3B3-7F77F4A287F1}");
 
                 foreach (object arg in result.Arguments)
                     Console.WriteLine(arg?.ToString() ?? "<value not specified>");
