@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 
 using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineArgs.Base;
 using ConsoleFx.CmdLineArgs.Validators;
 
 namespace TestHarness
@@ -34,11 +35,11 @@ namespace TestHarness
         }
 
         /// <inheritdoc />
-        protected override IEnumerable<Option> GetOptions()
+        protected override IEnumerable<Arg> GetArgs()
         {
-            IEnumerable<Option> options = base.GetOptions();
-            foreach (Option option in options)
-                yield return option;
+            IEnumerable<Arg> args = base.GetArgs();
+            foreach (Arg arg in args)
+                yield return arg;
 
             yield return new Option("include", "i")
                 .UsedAsUnlimitedOccurrencesAndParameters(optional: true)

@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 
 using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineArgs.Base;
 using ConsoleFx.CmdLineArgs.Validators;
 using ConsoleFx.Program;
 
@@ -54,7 +55,7 @@ namespace TestHarness
         {
         }
 
-        protected override IEnumerable<Command> GetCommands()
+        protected override IEnumerable<Arg> GetArgs()
         {
             yield return new AddCommand();
             yield return new ListCommand();
@@ -71,7 +72,7 @@ namespace TestHarness
         [Argument("package")]
         public string PackageName { get; set; }
 
-        protected override IEnumerable<Argument> GetArguments()
+        protected override IEnumerable<Arg> GetArgs()
         {
             yield return new Argument("package")
                 .ValidateAsString(10, minLengthMessage: "Package must be at least 10 character long.");
@@ -93,7 +94,7 @@ namespace TestHarness
 
         public bool Global { get; set; }
 
-        protected override IEnumerable<Option> GetOptions()
+        protected override IEnumerable<Arg> GetArgs()
         {
             yield return new Option("global", "g")
                 .UsedAsFlag();

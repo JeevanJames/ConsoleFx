@@ -19,6 +19,7 @@ limitations under the License.
 
 using System.Collections.Generic;
 using System.Linq;
+using ConsoleFx.CmdLineArgs.Base;
 
 namespace ConsoleFx.CmdLineArgs
 {
@@ -35,11 +36,11 @@ namespace ConsoleFx.CmdLineArgs
         }
 
         /// <inheritdoc />
-        protected override IEnumerable<Option> GetOptions()
+        protected override IEnumerable<Arg> GetArgs()
         {
-            IEnumerable<Option> options = base.GetOptions();
-            foreach (Option option in options)
-                yield return option;
+            IEnumerable<Arg> args = base.GetArgs();
+            foreach (Arg arg in args)
+                yield return arg;
 
             yield return new Option("help", "h");
         }

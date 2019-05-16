@@ -20,6 +20,7 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using ConsoleFx.CmdLineArgs.Base;
@@ -72,18 +73,13 @@ namespace ConsoleFx.CmdLineArgs
                 if (_arguments is null)
                 {
                     _arguments = new Arguments();
-                    IEnumerable<Argument> arguments = GetArguments();
+                    IEnumerable<Argument> arguments = GetArgs().OfType<Argument>();
                     foreach (Argument argument in arguments)
                         _arguments.Add(argument);
                 }
 
                 return _arguments;
             }
-        }
-
-        protected virtual IEnumerable<Argument> GetArguments()
-        {
-            yield break;
         }
 
         /// <summary>
@@ -96,18 +92,13 @@ namespace ConsoleFx.CmdLineArgs
                 if (_options is null)
                 {
                     _options = new Options();
-                    IEnumerable<Option> options = GetOptions();
+                    IEnumerable<Option> options = GetArgs().OfType<Option>();
                     foreach (Option option in options)
                         _options.Add(option);
                 }
 
                 return _options;
             }
-        }
-
-        protected virtual IEnumerable<Option> GetOptions()
-        {
-            yield break;
         }
 
         /// <summary>
@@ -120,7 +111,7 @@ namespace ConsoleFx.CmdLineArgs
                 if (_commands is null)
                 {
                     _commands = new Commands();
-                    IEnumerable<Command> commands = GetCommands();
+                    IEnumerable<Command> commands = GetArgs().OfType<Command>();
                     foreach (Command command in commands)
                         _commands.Add(command);
                 }
@@ -129,7 +120,7 @@ namespace ConsoleFx.CmdLineArgs
             }
         }
 
-        protected virtual IEnumerable<Command> GetCommands()
+        protected virtual IEnumerable<Arg> GetArgs()
         {
             yield break;
         }

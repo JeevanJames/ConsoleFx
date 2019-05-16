@@ -402,7 +402,7 @@
               Looks up a localized string similar to Specify at least one validator..
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLineArgs.HelpCommand.GetOptions">
+        <member name="M:ConsoleFx.CmdLineArgs.HelpCommand.GetArgs">
             <inheritdoc />
         </member>
         <member name="M:ConsoleFx.CmdLineArgs.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">

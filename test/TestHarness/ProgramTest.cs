@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLineArgs.Base;
 using ConsoleFx.CmdLineArgs.Validators;
 using ConsoleFx.Program;
 
@@ -55,7 +56,7 @@ namespace TestHarness
 
         public bool Overwrite { get; set; }
 
-        protected override IEnumerable<Argument> GetArguments()
+        protected override IEnumerable<Arg> GetArgs()
         {
             yield return new Argument("source")
                 .ValidateAsFile(shouldExist: false)
@@ -63,10 +64,6 @@ namespace TestHarness
             yield return new Argument("destination")
                 .ValidateAsDirectory(shouldExist: false)
                 .TypedAs(dirName => new DirectoryInfo(dirName));
-        }
-
-        protected override IEnumerable<Option> GetOptions()
-        {
             yield return new Option("overwrite", "o")
                 .UsedAsFlag();
         }
