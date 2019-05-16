@@ -17,9 +17,11 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+
 using ConsoleFx.CmdLineArgs.Base;
 
 namespace ConsoleFx.CmdLineArgs
@@ -195,6 +197,32 @@ namespace ConsoleFx.CmdLineArgs
     /// </summary>
     public sealed class Commands : Args<Command>
     {
+        /// <inheritdoc />
+        /// <summary>
+        ///     While a <see cref="Command"/> does not need to have a name, a command added to the
+        ///     <see cref="Commands"/> collection needs to have a name.
+        /// </summary>
+        protected override void InsertItem(int index, Command item)
+        {
+            if (string.IsNullOrWhiteSpace(item.Name))
+                throw new ArgumentException("Sub-commands must have a name.", nameof(item));
+
+            base.InsertItem(index, item);
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     While a <see cref="Command"/> does not need to have a name, a command added to the
+        ///     <see cref="Commands"/> collection needs to have a name.
+        /// </summary>
+        protected override void SetItem(int index, Command item)
+        {
+            if (string.IsNullOrWhiteSpace(item.Name))
+                throw new ArgumentException("Sub-commands must have a name.", nameof(item));
+
+            base.SetItem(index, item);
+        }
+
         protected override string GetDuplicateErrorMessage(string name) =>
             $"Command named '{name}' already exists in the command collection.";
     }

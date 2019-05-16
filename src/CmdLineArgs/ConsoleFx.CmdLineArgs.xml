@@ -342,6 +342,20 @@
                 </para>
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Commands.InsertItem(System.Int32,ConsoleFx.CmdLineArgs.Command)">
+            <inheritdoc />
+            <summary>
+                While a <see cref="T:ConsoleFx.CmdLineArgs.Command"/> does not need to have a name, a command added to the
+                <see cref="T:ConsoleFx.CmdLineArgs.Commands"/> collection needs to have a name.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLineArgs.Commands.SetItem(System.Int32,ConsoleFx.CmdLineArgs.Command)">
+            <inheritdoc />
+            <summary>
+                While a <see cref="T:ConsoleFx.CmdLineArgs.Command"/> does not need to have a name, a command added to the
+                <see cref="T:ConsoleFx.CmdLineArgs.Commands"/> collection needs to have a name.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.CmdLineArgs.Errors">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
