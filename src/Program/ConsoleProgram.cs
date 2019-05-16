@@ -98,6 +98,9 @@ namespace ConsoleFx.Program
         private void AssignProperties(ProgramCommand command)
         {
             Type type = command.GetType();
+
+            // Get all potentially-assignable properties.
+            // i.e. all public instance properties that are read/write.
             List<PropertyInfo> properties = type
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(pi => pi.CanRead && pi.CanWrite)

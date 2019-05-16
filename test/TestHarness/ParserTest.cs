@@ -70,7 +70,7 @@ namespace TestHarness
             var parser = new Parser(command, ArgStyle.Unix);
             try
             {
-                ParseResult result = parser.Parse("sourceFile", "destfile", "1", "2", "3", "4", "5",
+                ParseResult result = parser.Parse("sourceFile", "destfile", "1", "2", "3", "4", "abc",
                     "-v",
                     "-r=2",
                     "--log=blah",
