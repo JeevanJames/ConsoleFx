@@ -194,9 +194,7 @@ namespace ConsoleFx.CmdLineParser
                             string.Format(Messages.RequiredOptionAbsent, or.Option.Name));
                     }
 
-                    object defaultValue = or.Option.DefaultSetter();
-                    if (or.Option.Usage.MaxOccurrences > 1 || or.Option.Usage.MaxParameters > 1)
-                        or.Value = new List<object>(1) { defaultValue };
+                    or.Value = GetDefaultValue(or);
                 }
 
                 // If the option is specified less times than the minimum expected number of times.
@@ -249,6 +247,8 @@ namespace ConsoleFx.CmdLineParser
 
                 if (or.Occurrences > 0)
                     or.Value = ResolveOptionParameterValues(or);
+                else if (or.Option.DefaultSetter != null)
+                    or.Value = GetDefaultValue(or);
 
                 // Option values can only null for objects. For all other value types, assign a default
                 // value.
@@ -267,6 +267,18 @@ namespace ConsoleFx.CmdLineParser
                             break;
                     }
                 }
+            }
+
+            object GetDefaultValue(OptionRun run)
+            {
+                object defaultValue = run.Option.DefaultSetter();
+
+                if (run.ValueType != OptionValueType.List)
+                    return defaultValue;
+
+                IList list = run.CreateCollection(1);
+                list.Add(defaultValue);
+                return list;
             }
         }
 
