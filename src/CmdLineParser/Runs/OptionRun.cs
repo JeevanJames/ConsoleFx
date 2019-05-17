@@ -75,6 +75,9 @@ namespace ConsoleFx.CmdLineParser.Runs
         internal List<string> Parameters { get; } = new List<string>();
 
         internal OptionValueType ValueType { get; set; }
+
+        //TODO: If this makes sense, move it to the base class.
+        internal bool Assigned { get; set; }
     }
 
     /// <summary>

@@ -245,15 +245,21 @@ namespace ConsoleFx.CmdLineParser
                     }
                 }
 
+                // If the option has been specified, try resolving its value.
+                // If not and it has a default value, set that.
+                or.Assigned = true;
                 if (or.Occurrences > 0)
                     or.Value = ResolveOptionParameterValues(or);
                 else if (or.Option.DefaultSetter != null)
                     or.Value = GetDefaultValue(or);
+                else
+                    or.Assigned = false;
 
                 // Option values can only null for objects. For all other value types, assign a default
                 // value.
                 if (or.Value is null)
                 {
+                    or.Assigned = true;
                     switch (or.ValueType)
                     {
                         case OptionValueType.List:
