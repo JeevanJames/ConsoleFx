@@ -20,7 +20,6 @@ limitations under the License.
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 using ConsoleFx.CmdLineArgs;
@@ -254,9 +253,9 @@ namespace ConsoleFx.CmdLineParser
         }
 
         /// <summary>
-        ///     Resolves an <see cref="Option" />'s value based on it's usage details. See the comments
-        ///     on the <see cref="OptionRun.Value" /> property for details on how the resolution
-        ///     is done.
+        ///     Resolves an <see cref="Option" />'s value based on it's usage details. See the
+        ///     <see cref="OptionRun.GetOptionValueType(Option)" /> method for details on how the
+        ///     resolution is done.
         /// </summary>
         /// <param name="optionRun">The <see cref="OptionRun" /> instance, whose option to resolve.</param>
         /// <returns>The value of the option.</returns>
@@ -271,12 +270,9 @@ namespace ConsoleFx.CmdLineParser
                     return optionRun.Occurrences > 0;
 
                 case OptionValueType.List:
-                    Type listType = typeof(List<>).MakeGenericType(optionRun.Type);
-                    var list = (IList)Activator.CreateInstance(listType, optionRun.Parameters.Count);
-
+                    IList list = optionRun.CreateCollection(optionRun.Parameters.Count);
                     foreach (string parameter in optionRun.Parameters)
                         list.Add(optionRun.Convert(parameter));
-
                     return list;
 
                 case OptionValueType.Object:

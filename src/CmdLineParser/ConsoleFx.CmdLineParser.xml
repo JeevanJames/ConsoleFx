@@ -143,9 +143,9 @@
         </member>
         <member name="M:ConsoleFx.CmdLineParser.Parser.ResolveOptionParameterValues(ConsoleFx.CmdLineParser.Runs.OptionRun)">
             <summary>
-                Resolves an <see cref="T:ConsoleFx.CmdLineArgs.Option" />'s value based on it's usage details. See the comments
-                on the <see cref="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Value" /> property for details on how the resolution
-                is done.
+                Resolves an <see cref="T:ConsoleFx.CmdLineArgs.Option" />'s value based on it's usage details. See the
+                <see cref="M:ConsoleFx.CmdLineParser.Runs.OptionRun.GetOptionValueType(ConsoleFx.CmdLineArgs.Option)" /> method for details on how the
+                resolution is done.
             </summary>
             <param name="optionRun">The <see cref="T:ConsoleFx.CmdLineParser.Runs.OptionRun" /> instance, whose option to resolve.</param>
             <returns>The value of the option.</returns>
@@ -181,39 +181,6 @@
         <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Occurrences">
             <summary>
                 Gets or sets the number of occurences of the option.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Value">
-            <summary>
-                Gets or sets the final value of the parameters of the option. The actual type depends
-                on how the option is setup.
-                <para />
-                If the option allows parameters, then this can be:
-                <list type="bullet">
-                    <item>
-                        <description>
-                            a <see cref="T:System.Collections.Generic.IList`1" />, if more than one parameters are allowed, or
-                        </description>
-                    </item>
-                    <item>
-                        <description>an object of type T, if only one parameter is allowed.</description>
-                    </item>
-                </list>
-                If the option does not allow parameters, then this can be:
-                <list type="bullet">
-                    <item>
-                        <description>
-                            an <see cref="T:System.Int32" /> which is the number of times the option is specified
-                            (if it allows more than one occurence), or
-                        </description>
-                    </item>
-                    <item>
-                        <description>
-                            a <see cref="T:System.Boolean" /> which is true if the option was specified otherwise
-                            false (if it allows only one occurence).
-                        </description>
-                    </item>
-                </list>
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineParser.Runs.OptionValueType">

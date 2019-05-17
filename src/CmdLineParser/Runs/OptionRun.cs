@@ -27,39 +27,12 @@ using ConsoleFx.CmdLineArgs;
 namespace ConsoleFx.CmdLineParser.Runs
 {
     [DebuggerDisplay("{Option.Name} - {Value}")]
-    public sealed class OptionRun
+    public sealed class OptionRun : ArgumentOrOptionRun<Option>
     {
-        private readonly Converter<string, object> _converter;
-
         internal OptionRun(Option option)
+            : base(option)
         {
-            Option = option;
-            Type = option.Type ?? typeof(string);
-            _converter = GetConverter(option);
             ValueType = GetOptionValueType(option);
-        }
-
-        private Converter<string, object> GetConverter(Option option)
-        {
-            Converter<string, object> converter = option.TypeConverter;
-
-            // If a custom type converter is not specified and the option's value type is not string,
-            // then attempt to find a default type converter for that type, which can convert from string.
-            if (converter is null && Type != typeof(string))
-            {
-                TypeConverter typeConverter = TypeDescriptor.GetConverter(Type);
-
-                // If a default converter cannot be found, throw an exception.
-                if (!typeConverter.CanConvertFrom(typeof(string)))
-                {
-                    throw new ParserException(-1,
-                        $"Unable to find a adequate type converter to convert parameters of the {option.Name} to type {Type.FullName}.");
-                }
-
-                converter = value => typeConverter.ConvertFromString(value);
-            }
-
-            return converter;
         }
 
         private OptionValueType GetOptionValueType(Option option)
@@ -91,9 +64,7 @@ namespace ConsoleFx.CmdLineParser.Runs
             throw new InvalidOperationException("Should never reach here.");
         }
 
-        internal Option Option { get; }
-
-        internal Type Type { get; }
+        internal Option Option => Arg;
 
         /// <summary>
         ///     Gets or sets the number of occurences of the option.
@@ -103,46 +74,7 @@ namespace ConsoleFx.CmdLineParser.Runs
         //TODO: Optimize initial capacity of this list based on the min and max parameters of the option.
         internal List<string> Parameters { get; } = new List<string>();
 
-        /// <summary>
-        ///     Gets or sets the final value of the parameters of the option. The actual type depends
-        ///     on how the option is setup.
-        ///     <para />
-        ///     If the option allows parameters, then this can be:
-        ///     <list type="bullet">
-        ///         <item>
-        ///             <description>
-        ///                 a <see cref="IList{T}" />, if more than one parameters are allowed, or
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <description>an object of type T, if only one parameter is allowed.</description>
-        ///         </item>
-        ///     </list>
-        ///     If the option does not allow parameters, then this can be:
-        ///     <list type="bullet">
-        ///         <item>
-        ///             <description>
-        ///                 an <see cref="int" /> which is the number of times the option is specified
-        ///                 (if it allows more than one occurence), or
-        ///             </description>
-        ///         </item>
-        ///         <item>
-        ///             <description>
-        ///                 a <see cref="bool" /> which is true if the option was specified otherwise
-        ///                 false (if it allows only one occurence).
-        ///             </description>
-        ///         </item>
-        ///     </list>
-        /// </summary>
-        internal object Value { get; set; }
-
         internal OptionValueType ValueType { get; set; }
-
-        internal object Convert(string value)
-        {
-            string formattedValue = Option.Formatter != null ? Option.Formatter(value) : value;
-            return _converter != null ? _converter(formattedValue) : formattedValue;
-        }
     }
 
     /// <summary>
