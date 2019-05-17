@@ -182,7 +182,8 @@ namespace ConsoleFx.CmdLineParser
         {
             foreach (OptionRun or in optionRuns)
             {
-                // If the option is required, but is not specified.
+                // If the option is required, but is not specified at all, then assign a default value,
+                // if available.
                 if (or.Option.Usage.MinOccurrences > 0 && or.Occurrences == 0)
                 {
                     if (or.Option.DefaultSetter is null)

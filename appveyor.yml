@@ -3,9 +3,11 @@ image: Visual Studio 2019 Preview
 environment:
   MYGET_API_KEY:
     secure: 3tEiaoqZlTJcJkAX+3wWyp3mbCYuJpALEFzTEaum6ACiXbWgsa1kWYGBi3TUFY7c
-  MYGET_FEED:
-    secure: YuV15P4qNR7KhAKqUhCHjzpv7aTb4QzgBDdb4COjw2s1JdMgQccy1WcAV/VGOP0ZKh4UjHdD0R0n/4Xnz1UIdQ==
+  MYGET_FEED: https://www.myget.org/F/consolefx/api/v2/package
   CODECOV_TOKEN: 9393205e-cfa3-459f-a3d4-af5c04c3410d
+  MYGET_SYMBOLS_FEED: https://www.myget.org/F/consolefx/symbols/api/v2/package
+  MYGET_SYMBOLS_API_KEY:
+    secure: 3tEiaoqZlTJcJkAX+3wWyp3mbCYuJpALEFzTEaum6ACiXbWgsa1kWYGBi3TUFY7c
 install:
 - pwsh: choco install codecov
 build_script:
@@ -19,29 +21,29 @@ deploy_script:
 - pwsh: >-
     dotnet pack ./src/Capture/Capture.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
-    dotnet nuget push ./src/Capture/bin/Release/ConsoleFx.Capture.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+    dotnet nuget push ./src/Capture/bin/Release/ConsoleFx.Capture.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
     dotnet pack ./src/CmdLineArgs/CmdLineArgs.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
-    dotnet nuget push ./src/CmdLineArgs/bin/Release/ConsoleFx.CmdLineArgs.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+    dotnet nuget push ./src/CmdLineArgs/bin/Release/ConsoleFx.CmdLineArgs.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
     dotnet pack ./src/CmdLineParser/CmdLineParser.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
-    dotnet nuget push ./src/CmdLineParser/bin/Release/ConsoleFx.CmdLineParser.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+    dotnet nuget push ./src/CmdLineParser/bin/Release/ConsoleFx.CmdLineParser.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
     dotnet pack ./src/ConsoleExtensions/ConsoleExtensions.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
-    dotnet nuget push ./src/ConsoleExtensions/bin/Release/ConsoleFx.ConsoleExtensions.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+    dotnet nuget push ./src/ConsoleExtensions/bin/Release/ConsoleFx.ConsoleExtensions.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
     dotnet pack ./src/Program/Program.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
-    dotnet nuget push ./src/Program/bin/Release/ConsoleFx.Program.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+    dotnet nuget push ./src/Program/bin/Release/ConsoleFx.Program.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
     dotnet pack ./src/Prompter/Prompter.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
-    dotnet nuget push ./src/Prompter/bin/Release/ConsoleFx.Prompter.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+    dotnet nuget push ./src/Prompter/bin/Release/ConsoleFx.Prompter.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
