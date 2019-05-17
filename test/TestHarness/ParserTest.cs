@@ -56,7 +56,8 @@ namespace TestHarness
             command.AddOption("repeat", "r")
                 .UsedAsSingleParameter()
                 .ValidateAsInteger(0, 3)
-                .TypedAs<int>();
+                .TypedAs<int>()
+                .DefaultsTo(0);
             command.AddOption("log", "l")
                 .UsedAsSingleParameter()
                 .FormatAs("Log{0}");
@@ -74,10 +75,12 @@ namespace TestHarness
             {
                 ParseResult result = parser.Parse("sourceFile", "destfile", "1", "2", "3", "4", "5",
                     "-v",
-                    "-r=2",
                     "--log=blah",
                     "--web=https://example.com",
-                    "--id={DD45218B-CE76-4714-A3B3-7F77F4A287F1}");
+                    "--id={DD45218B-CE76-4714-A3B3-7F77F4A287F1}",
+                    "-m=abc",
+                    "-m=def"
+                );
 
                 foreach (object arg in result.Arguments)
                     Console.WriteLine(arg?.ToString() ?? "<value not specified>");

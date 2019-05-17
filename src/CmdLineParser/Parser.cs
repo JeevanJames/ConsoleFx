@@ -249,6 +249,24 @@ namespace ConsoleFx.CmdLineParser
 
                 if (or.Occurrences > 0)
                     or.Value = ResolveOptionParameterValues(or);
+
+                // Option values can only null for objects. For all other value types, assign a default
+                // value.
+                if (or.Value is null)
+                {
+                    switch (or.ValueType)
+                    {
+                        case OptionValueType.List:
+                            or.Value = or.CreateCollection(0);
+                            break;
+                        case OptionValueType.Count:
+                            or.Value = 0;
+                            break;
+                        case OptionValueType.Flag:
+                            or.Value = false;
+                            break;
+                    }
+                }
             }
         }
 
