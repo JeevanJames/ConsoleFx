@@ -26,7 +26,7 @@ using ConsoleFx.CmdLineArgs;
 
 namespace ConsoleFx.CmdLineParser.Runs
 {
-    [DebuggerDisplay("{Option.ToString()} - {ResolvedValue}")]
+    [DebuggerDisplay("{Option.Name} - {Value}")]
     public sealed class OptionRun
     {
         private readonly Converter<string, object> _converter;

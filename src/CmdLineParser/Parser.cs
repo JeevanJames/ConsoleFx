@@ -351,14 +351,12 @@ namespace ConsoleFx.CmdLineParser
                 else if (argument.DefaultSetter != null)
                 {
                     // Note: For default values, none of the validators are run. This enables special
-                    // default values to be assigned that are outside the rules of valudation.
+                    // default values to be assigned that are outside the rules of validation.
                     argumentRun.Assigned = true;
                     object value = argument.DefaultSetter();
                     if (command.LastArgumentRepeat > 1)
                     {
-                        Type argumentType = argument.Type ?? typeof(string);
-                        Type listType = typeof(List<>).MakeGenericType(argumentType);
-                        var list = (IList)Activator.CreateInstance(listType, 1);
+                        IList list = argumentRun.CreateCollection(1);
                         list.Add(value);
                         argumentRun.Value = list;
                     }
@@ -371,42 +369,13 @@ namespace ConsoleFx.CmdLineParser
         private static object ResolveArgumentValue(ArgumentRun argumentRun, IReadOnlyList<string> specifiedArguments,
             int startIndex, int endIndex)
         {
-            Argument argument = argumentRun.Argument;
-
-            // If no type is specified, assume string.
-            Type argumentType = argument.Type ?? typeof(string);
-            Converter<string, object> converter = argument.TypeConverter;
-
-            // If a custom type converter is not specified and the option's value type is not string,
-            // then attempt to find a default type converter for that type, which can convert from string.
-            if (converter is null && argumentType != typeof(string))
-            {
-                TypeConverter typeConverter = TypeDescriptor.GetConverter(argumentType);
-
-                // If a default converter cannot be found, throw an exception
-                if (!typeConverter.CanConvertFrom(typeof(string)))
-                {
-                    throw new ParserException(-1,
-                        $"Unable to find a adequate type converter to convert the value of the {argument.Name} argument to type {argumentType.FullName}.");
-                }
-
-                converter = value => typeConverter.ConvertFromString(value);
-            }
-
             if (startIndex == endIndex)
-                return GetConvertedValue(specifiedArguments[startIndex], argument, converter);
+                return argumentRun.Convert(specifiedArguments[startIndex]);
 
-            Type listType = typeof(List<>).MakeGenericType(argumentType);
-            var list = (IList)Activator.CreateInstance(listType, endIndex - startIndex + 1);
+            IList list = argumentRun.CreateCollection(endIndex - startIndex + 1);
             for (var j = startIndex; j <= endIndex; j++)
-                list.Add(GetConvertedValue(specifiedArguments[j], argument, converter));
+                list.Add(argumentRun.Convert(specifiedArguments[j]));
             return list;
-
-            object GetConvertedValue(string strValue, Argument arg, Converter<string, object> conv)
-            {
-                string formattedValue = arg.Formatter != null ? arg.Formatter(strValue) : strValue;
-                return conv is null ? formattedValue : conv(formattedValue);
-            }
         }
     }
 }
