@@ -110,6 +110,11 @@
               Looks up a localized string similar to The &apos;{0}&apos; option cannot be specified more than {1} times..
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLineParser.Parser.Command">
+            <summary>
+                Gets the <see cref="P:ConsoleFx.CmdLineParser.Parser.Command"/> instance that specifies the parsing details and rules.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLineParser.Parser.Grouping">
             <summary>
                 Gets or sets how the args should be grouped.
@@ -139,7 +144,7 @@
         <member name="M:ConsoleFx.CmdLineParser.Parser.ResolveOptionParameterValues(ConsoleFx.CmdLineParser.Runs.OptionRun)">
             <summary>
                 Resolves an <see cref="T:ConsoleFx.CmdLineArgs.Option" />'s value based on it's usage details. See the comments
-                on the <see cref="P:ConsoleFx.CmdLineParser.Runs.OptionRun.ResolvedValue" /> property for details on how the resolution
+                on the <see cref="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Value" /> property for details on how the resolution
                 is done.
             </summary>
             <param name="optionRun">The <see cref="T:ConsoleFx.CmdLineParser.Runs.OptionRun" /> instance, whose option to resolve.</param>
@@ -178,7 +183,7 @@
                 Gets or sets the number of occurences of the option.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.ResolvedValue">
+        <member name="P:ConsoleFx.CmdLineParser.Runs.OptionRun.Value">
             <summary>
                 Gets or sets the final value of the parameters of the option. The actual type depends
                 on how the option is setup.
@@ -209,6 +214,13 @@
                         </description>
                     </item>
                 </list>
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLineParser.Runs.OptionValueType">
+            <summary>
+                The type of the resolved value of an option.
+                <para/>
+                Decided based on the usage specs of the option.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLineParser.Runs.ParseRun">

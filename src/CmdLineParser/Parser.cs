@@ -46,6 +46,9 @@ namespace ConsoleFx.CmdLineParser
             Grouping = grouping;
         }
 
+        /// <summary>
+        ///     Gets the <see cref="Command"/> instance that specifies the parsing details and rules.
+        /// </summary>
         public Command Command { get; }
 
         public ArgStyle ArgStyle { get; }
@@ -194,7 +197,7 @@ namespace ConsoleFx.CmdLineParser
 
                     object defaultValue = or.Option.DefaultSetter();
                     if (or.Option.Usage.MaxOccurrences > 1 || or.Option.Usage.MaxParameters > 1)
-                        or.ResolvedValue = new List<object>(1) { defaultValue };
+                        or.Value = new List<object>(1) { defaultValue };
                 }
 
                 // If the option is specified less times than the minimum expected number of times.
@@ -246,80 +249,42 @@ namespace ConsoleFx.CmdLineParser
                 }
 
                 if (or.Occurrences > 0)
-                    or.ResolvedValue = ResolveOptionParameterValues(or);
+                    or.Value = ResolveOptionParameterValues(or);
             }
         }
 
         /// <summary>
         ///     Resolves an <see cref="Option" />'s value based on it's usage details. See the comments
-        ///     on the <see cref="OptionRun.ResolvedValue" /> property for details on how the resolution
+        ///     on the <see cref="OptionRun.Value" /> property for details on how the resolution
         ///     is done.
         /// </summary>
         /// <param name="optionRun">The <see cref="OptionRun" /> instance, whose option to resolve.</param>
         /// <returns>The value of the option.</returns>
         private static object ResolveOptionParameterValues(OptionRun optionRun)
         {
-            Option option = optionRun.Option;
-
-            // If parameters are not allowed on the option...
-            if (option.Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
+            switch (optionRun.ValueType)
             {
-                // If the option can occur more than once, it's value will be an integer specifying
-                // the number of occurences.
-                if (option.Usage.MaxOccurrences > 1)
+                case OptionValueType.Count:
                     return optionRun.Occurrences;
 
-                // If the option can occur not more than once, it's value will be a bool indicating
-                // whether it was specified or not.
-                return optionRun.Occurrences > 0;
+                case OptionValueType.Flag:
+                    return optionRun.Occurrences > 0;
+
+                case OptionValueType.List:
+                    Type listType = typeof(List<>).MakeGenericType(optionRun.Type);
+                    var list = (IList)Activator.CreateInstance(listType, optionRun.Parameters.Count);
+
+                    foreach (string parameter in optionRun.Parameters)
+                        list.Add(optionRun.Convert(parameter));
+
+                    return list;
+
+                case OptionValueType.Object:
+                    return optionRun.Convert(optionRun.Parameters[0]);
             }
-
-            // If no type is specified, assume string.
-            Type optionType = option.Type ?? typeof(string);
-            Converter<string, object> converter = option.TypeConverter;
-
-            // If a custom type converter is not specified and the option's value type is not string,
-            // then attempt to find a default type converter for that type, which can convert from string.
-            if (converter is null && optionType != typeof(string))
-            {
-                TypeConverter typeConverter = TypeDescriptor.GetConverter(optionType);
-
-                // If a default converter cannot be found, throw an exception.
-                if (!typeConverter.CanConvertFrom(typeof(string)))
-                {
-                    throw new ParserException(-1,
-                        $"Unable to find a adequate type converter to convert parameters of the {option.Name} to type {optionType.FullName}.");
-                }
-
-                converter = value => typeConverter.ConvertFromString(value);
-            }
-
-            // If the option can have multiple parameter values (either because the MaxParameters usage
-            // is greater than one or because MaxParameters is one but MaxOccurences is greater than
-            // one), then the option's value is an IList<Type>.
-            if (option.Usage.MaxParameters > 1 || (option.Usage.MaxParameters == 1 && option.Usage.MaxOccurrences > 1))
-            {
-                Type listType = typeof(List<>).MakeGenericType(optionType);
-                var list = (IList)Activator.CreateInstance(listType, optionRun.Parameters.Count);
-
-                foreach (string parameter in optionRun.Parameters)
-                    list.Add(GetConvertedValue(parameter, option, converter));
-
-                return list;
-            }
-
-            // If the option only has one parameter specified, then the option's value is a string.
-            if (option.Usage.MaxParameters == 1 && optionRun.Parameters.Count > 0)
-                return GetConvertedValue(optionRun.Parameters[0], option, converter);
 
             //TODO: Change this to an internal parser exception.
             throw new InvalidOperationException("Should never reach here");
-
-            object GetConvertedValue(string param, Option opt, Converter<string, object> conv)
-            {
-                string formattedParameter = opt.Formatter != null ? opt.Formatter(param) : param;
-                return conv is null ? formattedParameter : conv(formattedParameter);
-            }
         }
 
         /// <summary>

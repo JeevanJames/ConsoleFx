@@ -43,7 +43,7 @@ namespace ConsoleFx.CmdLineParser
                 .Select(ar => ar.Value)
                 .ToList();
             Options = run.Options
-                .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.ResolvedValue);
+                .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.Value);
         }
 
         public Command Command { get; }
@@ -118,7 +118,7 @@ namespace ConsoleFx.CmdLineParser
                 return true;
             }
 
-            object resolvedValue = matchingOption.ResolvedValue;
+            object resolvedValue = matchingOption.Value;
             if (resolvedValue != null)
             {
                 Type valueType = resolvedValue.GetType();
