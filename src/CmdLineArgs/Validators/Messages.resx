@@ -156,6 +156,9 @@
   <data name="Integer_OutOfRange" xml:space="preserve">
     <value>{0} does not fall into the valid range of {1} to {2}</value>
   </data>
+  <data name="KeyValue" xml:space="preserve">
+    <value>The value you specified '{0}' should be a key value pair separated by an equal (=) symbol.</value>
+  </data>
   <data name="Lookup" xml:space="preserve">
     <value>The parameter you specified "{0}" does not match any of the allowed values: "{1}"</value>
   </data>

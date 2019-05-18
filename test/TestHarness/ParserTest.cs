@@ -69,6 +69,9 @@ namespace TestHarness
                 .ValidateAsGuid();
             command.AddOption("multiple", "m")
                 .UsedAsUnlimitedOccurrencesAndParameters(true);
+            command.AddOption("kvp")
+                .UsedAsSingleParameter(true)
+                .ValidateAsKeyValue();
 
             var parser = new Parser(command, ArgStyle.Unix);
             try
@@ -79,7 +82,8 @@ namespace TestHarness
                     "--web", "https://example.com",
                     "--id={DD45218B-CE76-4714-A3B3-7F77F4A287F1}",
                     "-m=abc",
-                    "-m=def"
+                    "-m=def",
+                    "--kvp", "key=value"
                 );
 
                 foreach (object arg in result.Arguments)

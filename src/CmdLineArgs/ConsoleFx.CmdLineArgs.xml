@@ -1015,6 +1015,11 @@
               Looks up a localized string similar to {0} does not fall into the valid range of {1} to {2}.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLineArgs.Validators.Messages.KeyValue">
+            <summary>
+              Looks up a localized string similar to The value you specified &apos;{0}&apos; should be a key value pair separated by an equal (=) symbol..
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLineArgs.Validators.Messages.Lookup">
             <summary>
               Looks up a localized string similar to The parameter you specified &quot;{0}&quot; does not match any of the allowed values: &quot;{1}&quot;.

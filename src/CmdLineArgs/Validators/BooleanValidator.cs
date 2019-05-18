@@ -71,7 +71,7 @@ namespace ConsoleFx.CmdLineArgs.Validators
             bool isFalse = _falseStrings.Any(str => str.Equals(parameterValue, _comparison));
             if (isFalse)
                 return false;
-            ValidationFailed(parameterValue, Message);
+            ValidationFailed(Message, parameterValue);
             return false;
         }
     }
