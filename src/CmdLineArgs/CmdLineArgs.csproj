@@ -37,10 +37,6 @@ The ConsoleFx.CmdLineArgs package provides abstractions for command-line argumen
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
 
