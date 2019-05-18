@@ -48,13 +48,9 @@ namespace TestHarness
         }
     }
 
+    [Program(Style = ArgStyle.Unix)]
     public sealed class MyMultiCommandProgram : ConsoleProgram
     {
-        public MyMultiCommandProgram()
-            : base(ArgStyle.Windows, ArgGrouping.DoesNotMatter)
-        {
-        }
-
         protected override IEnumerable<Arg> GetArgs()
         {
             yield return new AddCommand();
@@ -62,13 +58,9 @@ namespace TestHarness
         }
     }
 
+    [Command("add", "install")]
     public sealed class AddCommand : ProgramCommand
     {
-        public AddCommand()
-            : base("add", "install")
-        {
-        }
-
         [Argument("package")]
         public string PackageName { get; set; }
 
@@ -85,13 +77,9 @@ namespace TestHarness
         }
     }
 
+    [Command("list", "ls")]
     public sealed class ListCommand : ProgramCommand
     {
-        public ListCommand()
-            : base("list", "ls")
-        {
-        }
-
         public bool Global { get; set; }
 
         protected override IEnumerable<Arg> GetArgs()

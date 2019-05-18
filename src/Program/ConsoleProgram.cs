@@ -38,6 +38,16 @@ namespace ConsoleFx.Program
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ArgStyle _argStyle;
 
+        public ConsoleProgram()
+        {
+            ProgramAttribute programAttribute = GetType().GetCustomAttribute<ProgramAttribute>(true);
+            if (programAttribute != null)
+            {
+                _argStyle = programAttribute.Style;
+                Grouping = programAttribute.Grouping;
+            }
+        }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ConsoleProgram"/> class with the specified
         ///     arg style and grouping.

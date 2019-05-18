@@ -34,14 +34,14 @@ namespace TestHarness
         internal override void Run()
         {
             var program = new SyncDirProgram();
-            program.Run(new[] { @"D:\Temp", @"D:\Steam", @"D:\Tools" });
+            program.Run(new[] { @"D:\Temp", @"D:\Steam", @"D:\Tools", "--exclude-dir", "Steam" });
         }
     }
 
     internal sealed class SyncDirProgram : ConsoleProgram
     {
         public SyncDirProgram()
-            : base(ArgStyle.Windows, ArgGrouping.DoesNotMatter)
+            : base(ArgStyle.Unix, ArgGrouping.DoesNotMatter)
         {
             LastArgumentRepeat = byte.MaxValue;
         }
@@ -51,7 +51,7 @@ namespace TestHarness
             PrintLine($"Sync {Green}{SourceDir} {Reset}to:");
             foreach (DirectoryInfo directory in DestDirs)
             {
-                PrintLine($"    {Blue}{directory.Name}");
+                PrintLine($"    {Blue}{directory.FullName}");
             }
             PrintLine($"Top Level Only: {Black.BgYellow}{TopLevelOnly}");
             if (ExcludeDirs.Count > 0)

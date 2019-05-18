@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 using ConsoleFx.CmdLineArgs.Base;
@@ -52,6 +53,12 @@ namespace ConsoleFx.CmdLineArgs
         /// </summary>
         public Command()
         {
+            CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
+            if (commandAttribute != null)
+            {
+                foreach (string name in commandAttribute.Names)
+                    AddName(name);
+            }
         }
 
         public Command(params string[] names)

@@ -88,7 +88,8 @@ namespace ConsoleFx.CmdLineParser.Style
                     // If a short option name is specified and it has multiple characters, each
                     // character is a short name.
                     string[] optionNames = isShortOption && optionName.Length > 1
-                        ? optionName.Split() : new[] { optionName };
+                        ? optionName.Select(c => c.ToString()).ToArray()
+                        : new[] { optionName };
 
                     // Add each option to its corresponding option run.
                     foreach (string name in optionNames)

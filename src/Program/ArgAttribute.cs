@@ -29,7 +29,7 @@ namespace ConsoleFx.Program
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             if (name.Trim().Length == 0)
-                throw new ArgumentException("Specify the name of the option.", nameof(name));
+                throw new ArgumentException("Specify the name of the arg.", nameof(name));
 
             Name = name;
         }
