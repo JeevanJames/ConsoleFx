@@ -17,26 +17,14 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Base;
+using ConsoleFx.Program.HelpBuilders;
 
 namespace ConsoleFx.Program
 {
-    public static class HelpExtensions
+    public abstract class HelpBuilder
     {
-        public static TArg Description<TArg>(this TArg arg, string description)
-            where TArg : Arg
-        {
-            arg["Description"] = description;
-            return arg;
-        }
+        public abstract void DisplayHelp(ConsoleProgram program);
 
-        public static TCommand Grouping<TCommand>(this TCommand command, string groupName, string description)
-            where TCommand : Command
-        {
-            command["GroupName"] = groupName;
-            command["GroupDescription"] = description;
-            return command;
-        }
+        public static HelpBuilder Default => new DefaultHelpBuilder();
     }
 }
