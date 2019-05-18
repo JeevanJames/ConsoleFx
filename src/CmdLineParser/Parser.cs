@@ -308,11 +308,11 @@ namespace ConsoleFx.CmdLineParser
                 case OptionValueType.List:
                     IList list = optionRun.CreateCollection(optionRun.Parameters.Count);
                     foreach (string parameter in optionRun.Parameters)
-                        list.Add(optionRun.Convert(parameter));
+                        list.Add(optionRun.ResolveValue(parameter));
                     return list;
 
                 case OptionValueType.Object:
-                    return optionRun.Convert(optionRun.Parameters[0]);
+                    return optionRun.ResolveValue(optionRun.Parameters[0]);
             }
 
             //TODO: Change this to an internal parser exception.
@@ -402,11 +402,11 @@ namespace ConsoleFx.CmdLineParser
             int startIndex, int endIndex)
         {
             if (startIndex == endIndex)
-                return argumentRun.Convert(specifiedArguments[startIndex]);
+                return argumentRun.ResolveValue(specifiedArguments[startIndex]);
 
             IList list = argumentRun.CreateCollection(endIndex - startIndex + 1);
             for (var j = startIndex; j <= endIndex; j++)
-                list.Add(argumentRun.Convert(specifiedArguments[j]));
+                list.Add(argumentRun.ResolveValue(specifiedArguments[j]));
             return list;
         }
     }

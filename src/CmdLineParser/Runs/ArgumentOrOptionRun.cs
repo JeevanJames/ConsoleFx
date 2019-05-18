@@ -64,16 +64,34 @@ namespace ConsoleFx.CmdLineParser.Runs
 
         protected TArg Arg { get; }
 
+        /// <summary>
+        ///     Gets the resolved type of the arg.
+        /// </summary>
         internal Type Type { get; }
 
+        /// <summary>
+        ///     Gets or sets the resolved value of the arg.
+        /// </summary>
         internal object Value { get; set; }
 
-        internal object Convert(string value)
+        /// <summary>
+        ///     Helper method to resolve the raw string value of the arg using the formatter and type
+        ///     converter.
+        /// </summary>
+        /// <param name="rawValue">The raw string value assigned to the arg.</param>
+        /// <returns>The resolved value after applying formatter and type converter.</returns>
+        internal object ResolveValue(string rawValue)
         {
-            string formattedValue = Arg.Formatter != null ? Arg.Formatter(value) : value;
+            string formattedValue = Arg.Formatter != null ? Arg.Formatter(rawValue) : rawValue;
             return _converter != null ? _converter(formattedValue) : formattedValue;
         }
 
+        /// <summary>
+        ///     Helper method to create an <see cref="IList{T}"/> object from the arg's type details
+        ///     using reflection.
+        /// </summary>
+        /// <param name="capacity">The initial capacity of the list.</param>
+        /// <returns>The created <see cref="IList{T}"/> instance.</returns>
         internal IList CreateCollection(int capacity)
         {
             Type listType = typeof(List<>).MakeGenericType(Type);
