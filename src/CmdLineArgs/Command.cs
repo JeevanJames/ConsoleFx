@@ -43,7 +43,7 @@ namespace ConsoleFx.CmdLineArgs
         private CommandCustomValidator _customValidator;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _lastArgumentRepeat = 1;
+        private byte _lastArgumentRepeat = 1;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Command" /> class.
@@ -126,7 +126,7 @@ namespace ConsoleFx.CmdLineArgs
         /// <summary>
         ///     Gets or sets a value indicating how many times the last argument can repeat.
         /// </summary>
-        public int LastArgumentRepeat
+        public byte LastArgumentRepeat
         {
             get => _lastArgumentRepeat;
             set

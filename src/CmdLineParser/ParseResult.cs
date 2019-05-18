@@ -114,7 +114,7 @@ namespace ConsoleFx.CmdLineParser
 
             if (matchingOption.Occurrences == 0)
             {
-                value = @default;
+                value = matchingOption.Assigned ? (T)matchingOption.Value : @default;
                 return true;
             }
 
