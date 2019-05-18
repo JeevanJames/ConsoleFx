@@ -19,8 +19,8 @@ limitations under the License.
 
 using System.Collections.Generic;
 using System.IO;
+
 using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Base;
 using ConsoleFx.CmdLineArgs.Validators;
 using ConsoleFx.Program;
 

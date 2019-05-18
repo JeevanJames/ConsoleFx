@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Base;
 using ConsoleFx.CmdLineParser;
 using ConsoleFx.ConsoleExtensions;
 

@@ -24,7 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ConsoleFx.CmdLineArgs.Base
+namespace ConsoleFx.CmdLineArgs
 {
     /// <summary>
     ///     Base class for command-line args, such as commands, arguments and options.

@@ -18,7 +18,6 @@ limitations under the License.
 #endregion
 
 using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Base;
 
 namespace ConsoleFx.Program
 {

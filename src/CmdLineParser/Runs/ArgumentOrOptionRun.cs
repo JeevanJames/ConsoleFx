@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Base;
+using ConsoleFx.CmdLineArgs.Bases;
 
 namespace ConsoleFx.CmdLineParser.Runs
 {

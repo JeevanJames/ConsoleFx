@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using ConsoleFx.CmdLineArgs.Base;
+using ConsoleFx.CmdLineArgs.Bases;
 using ConsoleFx.CmdLineArgs.Validators.Bases;
 
 namespace ConsoleFx.CmdLineArgs

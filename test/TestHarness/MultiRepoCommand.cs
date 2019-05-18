@@ -17,11 +17,9 @@ limitations under the License.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Base;
 using ConsoleFx.CmdLineArgs.Validators;
 
 namespace TestHarness
