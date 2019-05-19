@@ -2,16 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>ConsoleFx.CmdLine.Program</AssemblyName>
-    <RootNamespace>ConsoleFx.CmdLine.Program</RootNamespace>
-    <LangVersion>latest</LangVersion>
+    <AssemblyName>ConsoleFx.CmdLine.Parser</AssemblyName>
+    <RootNamespace>ConsoleFx.CmdLine.Parser</RootNamespace>
+    <LangVersion>7.3</LangVersion>
     <Version>0.0.1</Version>
     <Authors>Jeevan James</Authors>
     <Company>Jeevan James</Company>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Description>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
 
-The ConsoleFx.CmdLine.Program package provides support for creating console applications.
+The ConsoleFx.CmdLine.Parser package provides a sophisticated command-line arguments parser.
 </Description>
     <Copyright>Copyright (c) 2006-2019 Jeevan James</Copyright>
     <PackageProjectUrl>https://github.com/JeevanJames/ConsoleFx/</PackageProjectUrl>
@@ -27,34 +27,18 @@ The ConsoleFx.CmdLine.Program package provides support for creating console appl
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.CmdLine.Program.xml</DocumentationFile>
+    <DocumentationFile>ConsoleFx.CmdLine.Parser.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.CmdLine.Program.xml</DocumentationFile>
+    <DocumentationFile>ConsoleFx.CmdLine.Parser.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.14.0.8411">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CmdLineArgs\CmdLineArgs.csproj" />
-    <ProjectReference Include="..\CmdLineParser\CmdLineParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,6 +54,22 @@ The ConsoleFx.CmdLine.Program package provides support for creating console appl
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.14.0.8411">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

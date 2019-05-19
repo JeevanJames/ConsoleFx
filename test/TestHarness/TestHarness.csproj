@@ -7,10 +7,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Capture\Capture.csproj" />
-    <ProjectReference Include="..\..\src\CmdLineArgs\CmdLineArgs.csproj" />
-    <ProjectReference Include="..\..\src\CmdLineParser\CmdLineParser.csproj" />
+    <ProjectReference Include="..\..\src\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\CmdLine.Parser\CmdLine.Parser.csproj" />
+    <ProjectReference Include="..\..\src\CmdLine.Program\CmdLine.Program.csproj" />
     <ProjectReference Include="..\..\src\ConsoleExtensions\ConsoleExtensions.csproj" />
-    <ProjectReference Include="..\..\src\Program\Program.csproj" />
     <ProjectReference Include="..\..\src\Prompter\Prompter.csproj" />
   </ItemGroup>
 
