@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine.Parser", "src\CmdLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine.Program", "src\CmdLine.Program\CmdLine.Program.csproj", "{0536F5F7-32BD-4D7E-96EC-996CC61666B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine.Abstractions.Tests", "test\CmdLine.Abstractions.Tests\CmdLine.Abstractions.Tests.csproj", "{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{0536F5F7-32BD-4D7E-96EC-996CC61666B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0536F5F7-32BD-4D7E-96EC-996CC61666B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0536F5F7-32BD-4D7E-96EC-996CC61666B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{4F434AEF-EB33-44FF-802A-811A731B2472} = {A663F470-1C59-42D2-B32E-AB3436EB39DD}
 		{432A3F46-B0F3-4FAC-B67B-C7248B336DCC} = {A663F470-1C59-42D2-B32E-AB3436EB39DD}
 		{0536F5F7-32BD-4D7E-96EC-996CC61666B7} = {A663F470-1C59-42D2-B32E-AB3436EB39DD}
+		{E7C5874F-8BCF-4104-A95A-5F65E27F90DD} = {2B5DD9C7-9043-4E9E-8DDD-99318CD21433}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {749E0893-E1E2-4ECD-9C74-6CC8FEE5E1D3}

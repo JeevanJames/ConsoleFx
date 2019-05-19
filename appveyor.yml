@@ -14,7 +14,7 @@ build_script:
 - pwsh: dotnet build -c Release
 test_script:
 - pwsh: >-
-    dotnet test --blame ./test/ConsoleExtensions.Tests/ConsoleExtensions.Tests.csproj /p:CollectCoverage=true /p:Exclude=\"[xunit.*]*\" /p:CoverletOutputFormat=opencover
+    dotnet test --blame /p:CollectCoverage=true /p:Exclude=\"[xunit.*]*\" /p:CoverletOutputFormat=opencover
 
     codecov -f "./test/ConsoleExtensions.Tests/coverage.opencover.xml"
 deploy_script:
