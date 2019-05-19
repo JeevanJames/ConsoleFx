@@ -19,9 +19,9 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLine;
 
-namespace ConsoleFx.CmdLineParser.Runs
+namespace ConsoleFx.CmdLine.Parser.Runs
 {
     /// <summary>
     ///     Represents the internal state of a single parse execution. This includes the commands, arguments and options that

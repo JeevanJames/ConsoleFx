@@ -1,0 +1,1070 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ConsoleFx.CmdLine.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:ConsoleFx.CmdLine.Arg">
+            <summary>
+                Base class for command-line args, such as commands, arguments and options.
+                <para />
+                Base class for <see cref="T:ConsoleFx.CmdLine.Option" />, <see cref="T:ConsoleFx.CmdLine.Argument" /> and <see cref="T:ConsoleFx.CmdLine.Command" />.
+                <para />
+                This class provides two capabilities. One is the collection of names that identify the arg and the other is
+                additional metadata that can be used by certain frameworks to add more details for an arg.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arg.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Arg" /> class.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arg.#ctor(System.Collections.Generic.IDictionary{System.String,System.Boolean})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Arg" /> class with one or more names.
+            </summary>
+            <param name="names">One or more names for the arg. The first name is considered primary.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="names" /> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="names" /> collection is empty.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arg.AddName(System.String,System.Boolean)">
+            <summary>
+                Adds a new name for the arg.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
+            <returns>An instance to the same <see cref="T:ConsoleFx.CmdLine.Arg" />, to allow for a fluent syntax.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arg.HasName(System.String)">
+            <summary>
+                Checks whether any of the args' names matches the specified name.
+            </summary>
+            <param name="name">The name to check against.</param>
+            <returns><c>true</c>, if the specified name matches any of the args' names, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Arg.Name">
+            <summary>
+                Gets the first name from all the assigned names for this arg. This represents the primary name of the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Arg.AlternateNames">
+            <summary>
+                Gets all the secondary names for the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Arg.Names">
+            <summary>
+                Gets the list of all names assigned to the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Arg.AllNames">
+            <summary>
+                Gets all the names of the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Arg.NamePattern">
+            <summary>
+                Gets a valid name pattern to verify names against.
+                <para />
+                Derived classes can override this to specify different naming rules for certain types of args.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Arg.Item(System.String)">
+            <summary>
+                Gets or sets a string metadata value.
+            </summary>
+            <param name="name">The name of the metadata value.</param>
+            <returns>The string value of the metadata.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arg.Get``1(System.String)">
+            <summary>
+                Gets a metadata value by name.
+            </summary>
+            <typeparam name="T">The type of the metadata value.</typeparam>
+            <param name="name">The name of the metadata value.</param>
+            <returns>The metadata value or the default of T if the value does not exist.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arg.Set``1(System.String,``0)">
+            <summary>
+                Sets a metadata value by name.
+            </summary>
+            <typeparam name="T">The type of the metadata value.</typeparam>
+            <param name="name">The name of the metadata value.</param>
+            <param name="value">The value of the metadata to set.</param>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Args`1">
+            <inheritdoc />
+            <summary>
+                Base class for collections of objects derived from <see cref="T:ConsoleFx.CmdLine.Arg" />.
+                <para />
+                Collections deriving from this class provide an additional indexer that can retrieve an object my its name.
+                They also prevent duplicate objects from being inserted or set on the collection.
+            </summary>
+            <typeparam name="T">The specific type of <see cref="T:ConsoleFx.CmdLine.Arg" /> that the collection will hold.</typeparam>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Args`1.Item(System.String)">
+            <summary>
+                Gets an object from the collection given either the name.
+            </summary>
+            <param name="name">The name of the object to find.</param>
+            <returns>The object, if found. Otherwise <c>null</c>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Args`1.ObjectsMatch(`0,`0)">
+            <summary>
+                Compares two <see cref="T:ConsoleFx.CmdLine.Arg" /> objects for equality. The default behavior is to check if any of their
+                names match, but deriving classes can override this behavior.
+            </summary>
+            <param name="obj1">The first <see cref="T:ConsoleFx.CmdLine.Arg" /> object to compare.</param>
+            <param name="obj2">The second <see cref="T:ConsoleFx.CmdLine.Arg" /> object to compare.</param>
+            <returns><c>true</c>, if the objects are equal, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Args`1.NamesMatch(System.String,`0)">
+            <summary>
+                Checks whether the specified object can be identified by the given name.
+            </summary>
+            <param name="name">The name to check against.</param>
+            <param name="obj">The object, whose identity to check against the name.</param>
+            <returns><c>true</c>, if the object can be identified by the given name, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Args`1.InsertItem(System.Int32,`0)">
+            <inheritdoc />
+            <summary>
+                Prevents duplicate objects from being inserted.
+            </summary>
+            <param name="index">Index to insert the new object.</param>
+            <param name="item">Object to insert.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Args`1.SetItem(System.Int32,`0)">
+            <inheritdoc />
+            <summary>
+                Prevents duplicate objects from being set in the collection.
+            </summary>
+            <param name="index">index to set the new option.</param>
+            <param name="item">Object to set.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Args`1.CheckDuplicates(`0,System.Int32)">
+            <summary>
+                Checks whether the specified object already exists in the collection.
+            </summary>
+            <param name="obj">The object to check.</param>
+            <param name="index">The index in the collection at which the object is being inserted.</param>
+            <exception cref="T:System.ArgumentException">Thrown if the object is already specified in the collection.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Args`1.GetDuplicateErrorMessage(System.String)">
+            <summary>
+                Gets the error message of the exception that is thrown if a duplicate item is
+                inserted or set in the collection.
+            </summary>
+            <param name="name">
+                The name of the duplicate item that is being inserted or set in the collection,
+                usually the <c>Name</c> property.
+            </param>
+            <returns>The error message string for the exception.</returns>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.ArgGrouping">
+            <summary>
+                Specifies how the command-line args are expected to be grouped.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.ArgGrouping.DoesNotMatter">
+            <summary>
+                Command line parameters grouping does not matter. Options and arguments can be mixed together.
+                <para/>
+                This is the default grouping.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.ArgGrouping.OptionsBeforeArguments">
+            <summary>
+                Options must be specified before arguments in the command line.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.ArgGrouping.OptionsAfterArguments">
+            <summary>
+                Options must be specified after arguments in the command line.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Argument">
+            <inheritdoc />
+            <summary>
+                Represents a non-option command-line parameter.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.#ctor(System.String,System.Boolean)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Argument" /> class.
+            </summary>
+            <param name="name">The unique name identifying the argument.</param>
+            <param name="isOptional">Indicates whether the argument is optional.</param>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Argument.IsOptional">
+            <summary>
+                Gets a value indicating whether the argument is optional. Optional arguments can only be specified after
+                all the required arguments.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Argument.Validators">
+            <summary>
+                Gets the validators for this argument.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.FormatAs(System.Func{System.String,System.String})">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.TypedAs``1(System.Converter{System.String,``0})">
+            <summary>
+                Specifies the type to convert the option parameters, with an optional custom converter.
+                If a custom converter is not specified, the type's type converter will be used.
+            </summary>
+            <typeparam name="T">The type to convert the option parameters to.</typeparam>
+            <param name="converter">Optional custom converter.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.ValidateWith(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <summary>
+                Specifies one or more validators to validate the argument.
+            </summary>
+            <param name="validators">The validators to use to validate the argument.</param>
+            <returns>The same instance of the <see cref="T:ConsoleFx.CmdLine.Argument"/> object to allow for fluent syntax.</returns>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Arguments">
+            <inheritdoc />
+            <summary>
+                Represents a collection of <see cref="T:ConsoleFx.CmdLineArgs.Argument" /> objects.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arguments.VerifyOptionalArgumentsAtEnd">
+            <summary>
+                Called whenever an argument is added or set in the collection to verify that optional arguments are
+                specified only after the required ones.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.DefaultSetter">
+            <summary>
+                Gets or sets the optional delegate to return the arg's default value, if it is not set.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.Formatter">
+            <summary>
+                Gets or sets the optional delegate that allows an arg value to be custom formatted.
+                <para />
+                During parsing, the formatting is performed before any type conversion.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.Type">
+            <summary>
+                Gets or sets the type that the arg's values should be converted to. If a
+                <see cref="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.TypeConverter" /> is specified, then it is used to perform the type
+                conversion, otherwise the framework looks for a default string-to-type type converter
+                for the expected type. If a type converter is not found, an exception is thrown during
+                the parsing.
+            </summary>
+            <remarks>
+                In the case of <see cref="T:ConsoleFx.CmdLine.Option"/>, this type applies to all parameters. In case
+                different parameters are to be converted to different types, the conversion must happen
+                outside the ConsoleFx framework.
+            </remarks>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.TypeConverter">
+            <summary>
+                Gets or sets the optional converter to convert a string arg value to the actual
+                <see cref="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.Type" />.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.FormatAs(System.Func{System.String,System.String})">
+            <summary>
+                Assigns the <see cref="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.Formatter"/> property, which can be used to format the arg's
+                value.
+            </summary>
+            <param name="formatter">The formatter delegate.</param>
+            <returns>The instance of the <typeparamref name="TArg"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the formatter delegate is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.FormatAs(System.String)">
+            <summary>
+                Assigns a format string to the arg, which will be used to format the arg's value.
+            </summary>
+            <param name="formatStr">
+                The format string, where the first format placeholder ({0}) represents the arg's value.
+            </param>
+            <returns>The instance of the <typeparamref name="TArg"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if the format string is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the format string does not contain a format placeholder ({0}).
+            </exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.TypedAs``1(System.Converter{System.String,``0})">
+            <summary>
+                Specifies the type to convert the option parameters, with an optional custom converter.
+                If a custom converter is not specified, the type's type converter will be used.
+            </summary>
+            <typeparam name="T">The type to convert the option parameters to.</typeparam>
+            <param name="converter">Optional custom converter.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.ValidateWith(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <summary>
+                Specifies one or more validators that will be used to validate the arg's values.
+            </summary>
+            <param name="validators">One or more validators.</param>
+            <returns>The instance of the <typeparamref name="TArg"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Command" /> class.
+                <para />
+                This constructor is used internally to create root commands.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.Arguments">
+            <summary>
+                Gets the collection of <see cref="T:ConsoleFx.CmdLine.Argument" /> objects for this command.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.Options">
+            <summary>
+                Gets the collection of <see cref="T:ConsoleFx.CmdLine.Option" /> objects for this command.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.Commands">
+            <summary>
+                Gets the collection of <see cref="T:ConsoleFx.CmdLine.Command" /> sub-command objects for this command.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.LastArgumentRepeat">
+            <summary>
+                Gets or sets a value indicating how many times the last argument can repeat.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Commands">
+            <summary>
+                <para>Collection of <see cref="T:ConsoleFx.CmdLine.Command" /> objects.</para>
+                <para>
+                    This collection adds special behavior to prevent duplicate command names in the
+                    collection as well as the ability to retrieve sub-commands based on the correct
+                    case-sensitivity.
+                </para>
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Commands.InsertItem(System.Int32,ConsoleFx.CmdLine.Command)">
+            <inheritdoc />
+            <summary>
+                While a <see cref="T:ConsoleFx.CmdLine.Command"/> does not need to have a name, a command added to the
+                <see cref="T:ConsoleFx.CmdLine.Commands"/> collection needs to have a name.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Commands.SetItem(System.Int32,ConsoleFx.CmdLine.Command)">
+            <inheritdoc />
+            <summary>
+                While a <see cref="T:ConsoleFx.CmdLine.Command"/> does not need to have a name, a command added to the
+                <see cref="T:ConsoleFx.CmdLine.Commands"/> collection needs to have a name.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Errors">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Errors.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Errors.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Errors.Arg_Invalid_name">
+            <summary>
+              Looks up a localized string similar to Name {0} is not a valid name..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Errors.Arg_No_names_specified">
+            <summary>
+              Looks up a localized string similar to Specify at least one name.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Errors.Arguments_Duplicate_argument">
+            <summary>
+              Looks up a localized string similar to Argument named &apos;{0}&apos; already exists in the argument collection..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Errors.Option_MissingPlaceholderInFormatString">
+            <summary>
+              Looks up a localized string similar to The specified format string should contain a format placeholder ({0}) to specify where the parameter value is inserted..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Errors.Option_ValidatorIsNull">
+            <summary>
+              Looks up a localized string similar to Validator at index {0} is null..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Errors.Option_ValidatorsNotSpecified">
+            <summary>
+              Looks up a localized string similar to Specify at least one validator..
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.HelpCommand.GetArgs">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <inheritdoc />
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Messages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.InvalidNumberOfArguments">
+            <summary>
+              Looks up a localized string similar to Invalid number of arguments specified.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.InvalidOptionParameterSpecifier">
+            <summary>
+              Looks up a localized string similar to Option &quot;{0}&quot; should be followed by a colon (:) to specify its parameters.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.InvalidOptionParametersSpecified">
+            <summary>
+              Looks up a localized string similar to Invalid parameter format for option &quot;{0}&quot;.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.InvalidOptionSpecified">
+            <summary>
+              Looks up a localized string similar to Invalid option was specified: &quot;{0}&quot;.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.InvalidParametersSpecified">
+            <summary>
+              Looks up a localized string similar to Invalid parameters specified for option &apos;{0}&apos;.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.OccurenceParameterValueNegative">
+            <summary>
+              Looks up a localized string similar to Occurence/parameter values cannot be negative.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.OptionAlreadyExists">
+            <summary>
+              Looks up a localized string similar to An option by the name &apos;{0}&apos; already exists.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.OptionsAfterParameters">
+            <summary>
+              Looks up a localized string similar to The options should be specified after the arguments.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.OptionsBeforeParameters">
+            <summary>
+              Looks up a localized string similar to The options should be specified before the arguments.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.RequiredArgumentsDefinedAfterOptional">
+            <summary>
+              Looks up a localized string similar to Cannot specify required arguments after optional ones.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.RequiredOptionAbsent">
+            <summary>
+              Looks up a localized string similar to The option &quot;{0}&quot; should be specified.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.RequiredParametersAbsent">
+            <summary>
+              Looks up a localized string similar to Required parameters absent for option &apos;{0}&apos;.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.TooFewOptions">
+            <summary>
+              Looks up a localized string similar to The &apos;{0}&apos; option should be specified at least {1} times..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Messages.TooManyOptions">
+            <summary>
+              Looks up a localized string similar to The &apos;{0}&apos; option cannot be specified more than {1} times..
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Option">
+            <inheritdoc />
+            <summary>
+                Represents an options arg.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.#ctor(System.String[])">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Option" /> class with the specified identifying names.
+            </summary>
+            <param name="names">
+                One or more unique names to identify the option. All names added will be not be case-sensitive. In case
+                you require case-sensitive option names, use the overloaded constructor.
+            </param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.#ctor(System.Boolean,System.String[])">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Option" /> class with the specified identifying names and
+                specifies whether the names are case sensitive.
+            </summary>
+            <param name="caseSensitive">Indicates whether the specified <paramref name="names" /> are case sensitive.</param>
+            <param name="names">One or more unique names to identify the option.</param>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Option.Usage">
+            <summary>
+                Gets the various usage options for the option and its parameters, including the minimum and maximum
+                allowed occurrences of the option itself, and also the minimum and maximum allowed number of parameters
+                that can be specified for each occurence.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Option.Validators">
+            <summary>
+                Gets the collection of validators that can validate some or all of the option's parameters.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.TypedAs``1(System.Converter{System.String,``0})">
+            <summary>
+                Specifies the type to convert the option parameters, with an optional custom converter.
+                If a custom converter is not specified, the type's type converter will be used.
+            </summary>
+            <typeparam name="T">The type to convert the option parameters to.</typeparam>
+            <param name="converter">Optional custom converter.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.UsedAs(System.Action{ConsoleFx.CmdLine.OptionUsage})">
+            <summary>
+                Specifies the rules of how the option is to be used - minimum and maximum number of
+                occurences, minimum and maximum number of parameters allowed, etc.
+            </summary>
+            <param name="usageSetter">Delegate that is used to specify the option usage rules.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if the specified delegate is null.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.ValidateWith(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <summary>
+                Specifies one or more validators that will be used to validate the option's parameter
+                values.
+            </summary>
+            <param name="validators">One or more validators.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if the specified validators array is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.ValidateWith(System.Int32,ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <summary>
+                Specifies one or more validators that will be used to validate the option's parameter
+                at the specified index.
+            </summary>
+            <param name="parameterIndex">The index of the option parameter to validate.</param>
+            <param name="validators">One or more validators.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if the specified validators array is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Options">
+            <summary>
+                Represents a collection of options. Note: This is not a keyed collection because the key
+                can be one of many names.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionExtensions.UsedAsFlag(ConsoleFx.CmdLine.Option,System.Boolean)">
+            <summary>
+                Specifies that the option is to be used as a flag. If the option is specified, then
+                its value is <c>true</c>, otherwise it is <c>false</c>.
+            </summary>
+            <param name="option">The <see cref="T:ConsoleFx.CmdLine.Option"/> instance.</param>
+            <param name="optional">Indicates whether the option can be specified.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionExtensions.UsedAsSingleParameter(ConsoleFx.CmdLine.Option,System.Boolean)">
+            <summary>
+                Specifies that the option is to have only a single parameter. This means that not more
+                than one occurence of the option and only one parameter for the option.
+            </summary>
+            <param name="option">The <see cref="T:ConsoleFx.CmdLine.Option"/> instance.</param>
+            <param name="optional">If <c>true</c>, then the option does not need to be specified.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.OptionParameterRequirement">
+            <summary>
+                Specifies whether the parameters for an option are required or not allowed.
+            </summary>
+            <remarks>There is no such thing as optional parameters.</remarks>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionParameterRequirement.NotAllowed">
+            <summary>
+                Parameters are not allowed for the option.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionParameterRequirement.Required">
+            <summary>
+                The option requires one or more parameters.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.OptionParameterType">
+            <summary>
+                Specify whether the parameters of an option are repeating or individual.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionParameterType.Repeating">
+            <summary>
+                The parameters are repeating and have the same meaning
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionParameterType.Individual">
+            <summary>
+                Each parameter is independent, has its own meaning and is at a specific position
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.OptionParameterValidators">
+            <summary>
+                Collection of all parameter validators of an option. The collection is grouped by parameter index.
+                A parameter index of -1 indicates validators for all parameters.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionParameterValidators.Add(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <summary>
+                Adds one or more validators that apply to all parameters.
+            </summary>
+            <param name="validators">Collection of parameters to add.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionParameterValidators.Add(System.Int32,ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <summary>
+                Adds one or more validators that apply to the parameter at the specified parameter index.
+            </summary>
+            <param name="parameterIndex">Zero-based index of the parameter to apply the validators to.</param>
+            <param name="validators">Collection of parameters to add.</param>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionParameterValidators.Count">
+            <summary>
+                Gets the total number of validators across all parameter indices.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionParameterValidators.CountOf(System.Int32)">
+            <summary>
+                Gets the total number of validators for the parameter at the specified index.
+            </summary>
+            <param name="parameterIndex">The index of the parameter to get the validator count.</param>
+            <returns>Total number of validators for the parameter at the specified index.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionParameterValidators.GetValidators(System.Int32)">
+            <summary>
+                Gets the collection of validators for the parameter at the specified index.
+            </summary>
+            <param name="parameterIndex">
+                Index of the parameter to get the validator collection. Use -1 to get the validators for
+                all parameters.
+            </param>
+            <returns>The validators for the parameters at the specified index.</returns>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.OptionRequirement">
+            <summary>
+                Specifies whether an option is required or optional.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionRequirement.Optional">
+            <summary>
+                The option is optional (this is the default). Sets the option's MinOccurences property
+                to 0 (zero) and MaxOccurences property to 1 (one). However, the MaxOccurence value can
+                be increased, and as long as the MinOccurence value is zero, it will be considered optional.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionRequirement.OptionalUnlimited">
+            <summary>
+                The option is optional. Sets the option's MinOccurences property to 0 and MaxOccurences
+                property to int.MaxValue to indicate unlimited number of occurences.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionRequirement.Required">
+            <summary>
+                The option is required. Sets the option's MinOccurences and MaxOccurences properties to 1 (one).
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionRequirement.RequiredUnlimited">
+            <summary>
+                The option is required. Sets the option's MinOccurences property to 1 and MaxOccurences
+                property to int.MaxValue to indicate unlimited number of occurences.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.OptionUsage">
+            <summary>
+                Rules for specifying an option on the command line. This includes number of occurences of
+                the option (defaults: 0 min and 1 max) and number of parameters (default: 0).
+                Additional shortcut properties (<see cref="P:ConsoleFx.CmdLine.OptionUsage.ExpectedOccurrences" />,
+                <see cref="P:ConsoleFx.CmdLine.OptionUsage.ExpectedParameters" /> and <see cref="P:ConsoleFx.CmdLine.OptionUsage.Requirement" /> allow both min and max
+                values to be set for common scenarios.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.MaxOccurrences">
+            <summary>
+                Gets or sets the maximum allowed occurrences of the option.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.MinOccurrences">
+            <summary>
+                Gets or sets the minimum allowed occurrences of the option.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.ExpectedOccurrences">
+            <summary>
+                Gets or sets the expected number of occurrences of the property.
+                Shortcut to get/set both min and max occurence values.
+                If min and max values are different, returns null.
+                If set to null, then the defaults of 0 (min) and 1 (max) are set.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.Requirement">
+            <summary>
+                Gets or sets the option's occurrences based on its requirement.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.MaxParameters">
+            <summary>
+                Gets or sets the maximum allowed number of parameters for the option.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.MinParameters">
+            <summary>
+                Gets or sets the minimum allowed number of parameters for the option.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.ParameterRequirement">
+            <summary>
+                Gets or sets the parameter occurrences based on its requirement.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.ExpectedParameters">
+            <summary>
+                Gets or sets the expected number of parameters for the option.
+                <para/>
+                This is a shortcut to getting and setting the min and max properties to the same value.
+                <para/>
+                If min and max values are different, the getter returns <c>null</c>.
+                <para/>
+                If set to <c>null</c>, then the defaults of 0 (min) and 0 (max) are set.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionUsage.SetParametersNotAllowed">
+            <summary>
+                Disallows parameters for the option.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionUsage.SetParametersRequired(System.Int32,System.Int32)">
+            <summary>
+                <para>Enforces that parameters should be specified for an option.</para>
+                <para>
+                    By default, only one parameter is required, but this can be customized by specifying
+                    the <paramref name="min"/> and <paramref name="max"/> parameters.
+                </para>
+            </summary>
+            <param name="max">The maximum number of option parameters allowed.</param>
+            <param name="min">The minimum number of option parameters required.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the <paramref name="min"/> parameter is less than zero.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="min"/> parameter is greater than the <paramref name="max"/> parameter.</exception>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionUsage.ParameterType">
+            <summary>
+                Gets or sets whether the parameters of the option are repeating (all have the same meaning) or individual
+                (each is different and can have separate validators).
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ParserException.ErrorCode">
+            <summary>
+                Gets the type of error that occurred so further logic can be applied to handling it.
+                <para/>
+                A positive error code denotes a functional error.
+                <para/>
+                A negative error code denotes an internal error code, which typically means a bug in the application or framework.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.ParserException.#ctor(System.Int32,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with an error code and message.
+            </summary>
+            <param name="errorCode">A machine readable code for the specific error that occurred.</param>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.ParserException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with an error code and message.
+            </summary>
+            <param name="errorCode">A machine readable code for the specific error that occurred.</param>
+            <param name="message">The error message.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.ParserException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1">
+            <summary>
+                Base class for validators that only have one possible type of validation failure. In this
+                case, the class provides a Message property with a default value that can be changed.
+            </summary>
+            <typeparam name="T">The actual type of the value being validated.</typeparam>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1.#ctor(System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1"/> class.
+            </summary>
+            <param name="message">The validation failure message.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="message"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="message"/> is empty or only white spaces.</exception>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1.Message">
+            <summary>
+                Gets or sets the error message to be displayed if the validation fails.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.Bases.Validator">
+            <summary>
+                Base class for all validators.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator.Validate(System.String)">
+            <summary>
+                Validates the specified parameter value and throws an exception if the validation fails.
+            </summary>
+            <param name="parameterValue">The parameter value to validate.</param>
+            <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator.ValidationFailed(System.String,System.String,System.Object[])">
+            <summary>
+                Shortcut method for throwing a failed validation exception. Use this from derived classes,
+                instead of throwing the exception directly.
+            </summary>
+            <param name="message">The validation error message.</param>
+            <param name="parameterValue">The parameter value that caused the validation to fail.</param>
+            <param name="args">Optional arguments to the message.</param>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.Bases.Validator`1">
+            <summary>
+                Base class for typed validators; i.e. validators that perform additional validations once the parameter value has
+                been converted to its native type.
+                This class breaks the validation into 2 parts - validation of the string parameter value and validation of the
+                converted typed value.
+            </summary>
+            <typeparam name="T">The type of the data being validated.</typeparam>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator`1.Validate(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator`1.ValidateAsString(System.String)">
+            <summary>
+                Validates the parameter value as a string. Converts to the actual type if the validation succeeds and returns that
+                value. This method must be overridden in derived classes.
+            </summary>
+            <param name="parameterValue">The parameter value as a string.</param>
+            <returns>The parameter value converted to its actual type.</returns>
+            <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator`1.ValidateAsActualType(`0,System.String)">
+            <summary>
+                Once the parameter has been validated as a string, it is converted to its actual type and passed here for
+                additional validations.
+                This is useful for additional validations that can only be performed on the actual typed value.
+            </summary>
+            <param name="value">The typed parameter value.</param>
+            <param name="parameterValue">The parameter value as a string.</param>
+            <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.Bases.ValidatorCollection">
+            <summary>
+                Collection of validator classes.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.BooleanValidator">
+            <summary>
+                Checks whether the parameter value is 'True' or 'False'. The check is not case sensitive.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.CompositeValidator">
+            <summary>
+                Checks if any one of the specified validators passes.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.CompositeValidator.#ctor(System.String,ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Validators.CompositeValidator"/> class.
+            </summary>
+            <param name="errorMessage">The validation failure message.</param>
+            <param name="validators">Two or more validators that form the composite validator.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="validators"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if less than 2 validators are specified.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.CompositeValidator.ValidateAsString(System.String)">
+            <inheritdoc />
+            <summary>
+                Validates the parameter value as a string. Converts to the actual type if the validation succeeds and returns that
+                value. This method must be overridden in derived classes.
+            </summary>
+            <param name="parameterValue">The parameter value as a string.</param>
+            <returns>The parameter value converted to its actual type.</returns>
+            <exception cref="T:ConsoleFx.CmdLineArgs.Validators.ValidationException">Thrown if the validation fails.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.CustomValidator.#ctor(System.Func{System.String,System.Boolean})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Validators.CustomValidator"/> class.
+            </summary>
+            <param name="validator">A delegate that represents the custom validator logic.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="validator"/> is <c>null</c>.</exception>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.EnumValidator">
+            <summary>
+                Checks if a value is a valid enum.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.GuidValidator">
+            <summary>
+                Validates whether an arg value is a valid <see cref="T:System.Guid"/>.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.Messages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Boolean">
+            <summary>
+              Looks up a localized string similar to Expecting a true/false value.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Custom">
+            <summary>
+              Looks up a localized string similar to Custom validation failed.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Directory_Missing">
+            <summary>
+              Looks up a localized string similar to The directory &apos;{0}&apos; does not exist or you do not have sufficient permissions to access it..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Directory_NameInvalid">
+            <summary>
+              Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid directory name..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Directory_PathTooLong">
+            <summary>
+              Looks up a localized string similar to The directory name you specified &apos;{0}&apos; exceeds the system-defined maximum length..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Enum">
+            <summary>
+              Looks up a localized string similar to The parameter you specified &quot;{0}&quot; does not match any of the allowed values.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.File_InvalidExtension">
+            <summary>
+              Looks up a localized string similar to The specified file &apos;{0}&apos; has an invalid extension. Valid extensions are {1}..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.File_Missing">
+            <summary>
+              Looks up a localized string similar to The file &apos;{0}&apos; does not exist or you do not have sufficient permissions to access it..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.File_NameInvalid">
+            <summary>
+              Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid file name..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.File_PathTooLong">
+            <summary>
+              Looks up a localized string similar to The file name you specified &apos;{0}&apos; exceeds the system-defined maximum length..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Guid">
+            <summary>
+              Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid GUID..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Integer_NotAnInteger">
+            <summary>
+              Looks up a localized string similar to {0} is not a valid integer.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Integer_OutOfRange">
+            <summary>
+              Looks up a localized string similar to {0} does not fall into the valid range of {1} to {2}.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.KeyValue">
+            <summary>
+              Looks up a localized string similar to The value you specified &apos;{0}&apos; should be a key value pair separated by an equal (=) symbol..
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Lookup">
+            <summary>
+              Looks up a localized string similar to The parameter you specified &quot;{0}&quot; does not match any of the allowed values: &quot;{1}&quot;.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Path">
+            <summary>
+              Looks up a localized string similar to The path &apos;{0}&apos; does not exist.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Regex">
+            <summary>
+              Looks up a localized string similar to The parameters you specified &quot;{0}&quot; does not match a valid value.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.String_MaxLength">
+            <summary>
+              Looks up a localized string similar to The parameter you specified &quot;{0}&quot; should not be more than {1} characters long.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.String_MinLength">
+            <summary>
+              Looks up a localized string similar to The parameter you specified &quot;{0}&quot; should be at least {1} characters long.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.Messages.Uri">
+            <summary>
+              Looks up a localized string similar to The parameter you specified &apos;{0}&apos; is not a valid URI..
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.ValidationException">
+            <inheritdoc />
+            <summary>
+                Exception thrown as a result of a validation failure.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.ValidationException.ValidatorType">
+            <summary>
+                Gets type of validator that caused the validation failure.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Validators.ValidationException.ParameterValue">
+            <summary>
+                Gets the parameter value that failed the validation.
+            </summary>
+        </member>
+    </members>
+</doc>

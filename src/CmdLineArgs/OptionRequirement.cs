@@ -17,7 +17,7 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Specifies whether an option is required or optional.

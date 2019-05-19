@@ -20,10 +20,10 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Validators;
-using ConsoleFx.CmdLineParser;
-using ConsoleFx.CmdLineParser.Style;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Validators;
+using ConsoleFx.CmdLine.Parser;
+using ConsoleFx.CmdLine.Parser.Style;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;

@@ -21,10 +21,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineParser.Runs;
+using ConsoleFx.CmdLine.Parser.Runs;
 
-namespace ConsoleFx.CmdLineParser.Style
+namespace ConsoleFx.CmdLine.Parser.Style
 {
     public sealed class UnixArgStyle : ArgStyle
     {

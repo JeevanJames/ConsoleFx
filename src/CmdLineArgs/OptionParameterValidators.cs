@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Collection of all parameter validators of an option. The collection is grouped by parameter index.

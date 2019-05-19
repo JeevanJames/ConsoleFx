@@ -23,9 +23,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs.Validators
+namespace ConsoleFx.CmdLine.Validators
 {
     public class FileValidator : Validator<FileInfo>
     {

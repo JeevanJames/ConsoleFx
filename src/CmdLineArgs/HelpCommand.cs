@@ -20,7 +20,7 @@ limitations under the License.
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.CmdLine
 {
     public class HelpCommand : Command
     {

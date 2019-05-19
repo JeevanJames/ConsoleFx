@@ -19,9 +19,9 @@ limitations under the License.
 
 using System.Diagnostics;
 
-using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLine;
 
-namespace ConsoleFx.CmdLineParser.Runs
+namespace ConsoleFx.CmdLine.Parser.Runs
 {
     [DebuggerDisplay("{" + nameof(Argument) + "}")]
     internal sealed class ArgumentRun : ArgumentOrOptionRun<Argument>

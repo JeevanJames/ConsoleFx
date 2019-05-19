@@ -20,9 +20,9 @@ limitations under the License.
 using System;
 using System.Linq;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs.Validators
+namespace ConsoleFx.CmdLine.Validators
 {
     /// <summary>
     ///     Checks if a value is a valid enum.

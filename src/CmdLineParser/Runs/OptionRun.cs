@@ -22,9 +22,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 
-using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLine;
 
-namespace ConsoleFx.CmdLineParser.Runs
+namespace ConsoleFx.CmdLine.Parser.Runs
 {
     [DebuggerDisplay("{Option.Name} - {Value}")]
     public sealed class OptionRun : ArgumentOrOptionRun<Option>

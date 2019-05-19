@@ -20,11 +20,11 @@ limitations under the License.
 using System.Collections.Generic;
 using System.Linq;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineParser;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Parser;
 using ConsoleFx.ConsoleExtensions;
 
-namespace ConsoleFx.Program
+namespace ConsoleFx.CmdLine.Program
 {
     public class HelpCommand : ProgramCommand
     {

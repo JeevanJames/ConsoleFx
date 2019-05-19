@@ -17,9 +17,9 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLine;
 
-namespace ConsoleFx.Program
+namespace ConsoleFx.CmdLine.Program
 {
     public static class HelpExtensions
     {

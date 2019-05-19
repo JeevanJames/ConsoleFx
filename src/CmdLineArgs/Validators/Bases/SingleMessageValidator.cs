@@ -19,7 +19,7 @@ limitations under the License.
 
 using System;
 
-namespace ConsoleFx.CmdLineArgs.Validators.Bases
+namespace ConsoleFx.CmdLine.Validators.Bases
 {
     /// <summary>
     ///     Base class for validators that only have one possible type of validation failure. In this

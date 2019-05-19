@@ -21,14 +21,14 @@ using System;
 using System.Linq;
 using System.Text;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineParser;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Parser;
 
-namespace ConsoleFx.Program.UsageBuilders
+namespace ConsoleFx.CmdLine.Program.UsageBuilders
 {
     public sealed class MetadataUsageBuilder : UsageBuilder
     {
-        public override void Display(Parser parser)
+        public override void Display(Parser.Parser parser)
         {
             Console.WriteLine(AssemblyProduct);
             Console.WriteLine(AssemblyDescription);

@@ -24,7 +24,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.CmdLine
 {
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
     public class Command : Arg

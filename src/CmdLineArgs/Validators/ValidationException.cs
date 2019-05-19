@@ -20,7 +20,7 @@ limitations under the License.
 using System;
 using System.Runtime.Serialization;
 
-namespace ConsoleFx.CmdLineArgs.Validators
+namespace ConsoleFx.CmdLine.Validators
 {
     /// <inheritdoc />
     /// <summary>

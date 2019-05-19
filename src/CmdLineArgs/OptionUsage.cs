@@ -20,7 +20,7 @@ limitations under the License.
 using System;
 using System.Diagnostics;
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Rules for specifying an option on the command line. This includes number of occurences of

@@ -17,7 +17,7 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Specify whether the parameters of an option are repeating or individual.

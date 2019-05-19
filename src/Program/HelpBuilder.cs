@@ -17,9 +17,9 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.Program.HelpBuilders;
+using ConsoleFx.CmdLine.Program.HelpBuilders;
 
-namespace ConsoleFx.Program
+namespace ConsoleFx.CmdLine.Program
 {
     public abstract class HelpBuilder
     {

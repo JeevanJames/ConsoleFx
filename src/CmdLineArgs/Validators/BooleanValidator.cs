@@ -21,9 +21,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs.Validators
+namespace ConsoleFx.CmdLine.Validators
 {
     /// <summary>
     ///     Checks whether the parameter value is 'True' or 'False'. The check is not case sensitive.

@@ -20,7 +20,7 @@ limitations under the License.
 using System;
 using System.Runtime.Serialization;
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.CmdLine
 {
     [Serializable]
     public class ParserException : Exception

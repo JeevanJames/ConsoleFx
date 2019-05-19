@@ -22,14 +22,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Validators;
-using ConsoleFx.CmdLineArgs.Validators.Bases;
-using ConsoleFx.CmdLineParser.Config;
-using ConsoleFx.CmdLineParser.Runs;
-using ConsoleFx.CmdLineParser.Style;
+using ConsoleFx.CmdLine.Parser.Config;
+using ConsoleFx.CmdLine.Parser.Runs;
+using ConsoleFx.CmdLine.Parser.Style;
+using ConsoleFx.CmdLine.Validators;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineParser
+namespace ConsoleFx.CmdLine.Parser
 {
     public sealed class Parser
     {

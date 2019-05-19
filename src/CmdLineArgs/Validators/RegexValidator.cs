@@ -20,9 +20,9 @@ limitations under the License.
 using System;
 using System.Text.RegularExpressions;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs.Validators
+namespace ConsoleFx.CmdLine.Validators
 {
     public class RegexValidator : SingleMessageValidator<string>
     {

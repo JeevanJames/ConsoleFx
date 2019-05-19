@@ -17,7 +17,7 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.Program
+namespace ConsoleFx.CmdLine.Program
 {
     public enum ArgStyle
     {

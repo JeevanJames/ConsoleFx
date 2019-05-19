@@ -19,8 +19,8 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Validators;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Validators;
 
 namespace TestHarness
 {

@@ -19,7 +19,7 @@ limitations under the License.
 
 using System;
 
-namespace ConsoleFx.Program
+namespace ConsoleFx.CmdLine.Program
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public abstract class ArgAttribute : Attribute

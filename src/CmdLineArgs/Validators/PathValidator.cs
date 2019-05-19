@@ -20,9 +20,9 @@ limitations under the License.
 using System;
 using System.IO;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs.Validators
+namespace ConsoleFx.CmdLine.Validators
 {
     [Obsolete("Use the FileValidator for files or DirectoryValidator for directories instead.")]
     public class PathValidator : Validator<string>

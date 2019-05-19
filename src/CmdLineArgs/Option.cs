@@ -21,10 +21,10 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 
-using ConsoleFx.CmdLineArgs.Bases;
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs
+namespace ConsoleFx.CmdLine
 {
     /// <inheritdoc />
     /// <summary>

@@ -21,9 +21,9 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs.Validators
+namespace ConsoleFx.CmdLine.Validators
 {
     /// <summary>
     ///     Checks if any one of the specified validators passes.

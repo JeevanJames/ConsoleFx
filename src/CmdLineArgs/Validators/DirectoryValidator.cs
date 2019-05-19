@@ -20,9 +20,9 @@ limitations under the License.
 using System;
 using System.IO;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs.Validators
+namespace ConsoleFx.CmdLine.Validators
 {
     public class DirectoryValidator : Validator<DirectoryInfo>
     {

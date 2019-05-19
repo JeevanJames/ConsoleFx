@@ -17,7 +17,7 @@ limitations under the License.
 */
 #endregion
 
-namespace ConsoleFx.CmdLineParser.Config
+namespace ConsoleFx.CmdLine.Parser.Config
 {
     public enum OverrideBehavior
     {

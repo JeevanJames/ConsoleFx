@@ -22,10 +22,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineParser.Runs;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Parser.Runs;
 
-namespace ConsoleFx.CmdLineParser
+namespace ConsoleFx.CmdLine.Parser
 {
     /// <summary>
     ///     Represents the results of parsing a set of arguments.

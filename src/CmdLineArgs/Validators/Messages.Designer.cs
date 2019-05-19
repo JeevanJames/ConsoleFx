@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleFx.CmdLineArgs.Validators {
+namespace ConsoleFx.CmdLine.Validators {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ConsoleFx.CmdLineArgs.Validators {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ConsoleFx.CmdLineArgs.Validators.Messages", typeof(Messages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ConsoleFx.CmdLine.Validators.Messages", typeof(Messages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

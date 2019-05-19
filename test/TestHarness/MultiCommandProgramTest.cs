@@ -20,9 +20,9 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Validators;
-using ConsoleFx.Program;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Validators;
+using ConsoleFx.CmdLine.Program;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;

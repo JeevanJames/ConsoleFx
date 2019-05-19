@@ -20,9 +20,9 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineArgs.Validators.Bases;
+using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLineArgs.Bases
+namespace ConsoleFx.CmdLine.Bases
 {
     public abstract class ArgumentOrOption<TArg> : Arg
         where TArg : Arg

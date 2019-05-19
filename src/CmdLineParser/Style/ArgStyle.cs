@@ -19,10 +19,10 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineParser.Runs;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Parser.Runs;
 
-namespace ConsoleFx.CmdLineParser.Style
+namespace ConsoleFx.CmdLine.Parser.Style
 {
     /// <summary>
     ///     Base class that defines the style of the arguments being parsed.

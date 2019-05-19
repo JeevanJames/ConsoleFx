@@ -19,9 +19,9 @@ limitations under the License.
 
 using System;
 
-using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLine;
 
-namespace ConsoleFx.Program
+namespace ConsoleFx.CmdLine.Program
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class ProgramAttribute : Attribute

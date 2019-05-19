@@ -22,15 +22,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using ConsoleFx.CmdLineParser;
+using ConsoleFx.CmdLine.Parser;
 
-namespace ConsoleFx.Program.UsageBuilders
+namespace ConsoleFx.CmdLine.Program.UsageBuilders
 {
     public abstract class UsageBuilder
     {
         private IReadOnlyList<Attribute> _assemblyAttributes;
 
-        public abstract void Display(Parser parser);
+        public abstract void Display(Parser.Parser parser);
 
         protected string AssemblyTitle => GetAssemblyAttribute<AssemblyTitleAttribute>(attr => attr.Title);
 

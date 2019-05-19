@@ -22,10 +22,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineArgs.Bases;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Bases;
 
-namespace ConsoleFx.CmdLineParser.Runs
+namespace ConsoleFx.CmdLine.Parser.Runs
 {
     public abstract class ArgumentOrOptionRun<TArg>
         where TArg : ArgumentOrOption<TArg>

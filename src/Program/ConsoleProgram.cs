@@ -23,12 +23,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineParser;
+using ConsoleFx.CmdLine.Parser;
 
-using ParserStyle = ConsoleFx.CmdLineParser.Style;
+using ParserStyle = ConsoleFx.CmdLine.Parser.Style;
 
-namespace ConsoleFx.Program
+namespace ConsoleFx.CmdLine.Program
 {
     /// <summary>
     ///     Represents a console program.
@@ -75,7 +74,7 @@ namespace ConsoleFx.Program
             if (args is null)
                 args = Environment.GetCommandLineArgs().Skip(1);
 
-            var parser = new Parser(this, CreateArgStyle(), Grouping);
+            var parser = new Parser.Parser(this, CreateArgStyle(), Grouping);
             try
             {
                 ParseResult parseResult = parser.Parse(args);

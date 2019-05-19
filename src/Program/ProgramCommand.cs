@@ -20,10 +20,10 @@ limitations under the License.
 using System;
 using System.Diagnostics;
 
-using ConsoleFx.CmdLineArgs;
-using ConsoleFx.CmdLineParser;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Parser;
 
-namespace ConsoleFx.Program
+namespace ConsoleFx.CmdLine.Program
 {
     /// <summary>
     ///     Represents a <see cref="Command"/> that contains a <see cref="Handler"/> to execute

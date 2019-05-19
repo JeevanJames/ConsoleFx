@@ -19,9 +19,9 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineArgs;
+using ConsoleFx.CmdLine;
 
-namespace ConsoleFx.CmdLineParser.Config
+namespace ConsoleFx.CmdLine.Parser.Config
 {
     public abstract class ConfigReader
     {

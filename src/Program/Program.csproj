@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>ConsoleFx.Program</AssemblyName>
-    <RootNamespace>ConsoleFx.Program</RootNamespace>
+    <AssemblyName>ConsoleFx.CmdLine.Program</AssemblyName>
+    <RootNamespace>ConsoleFx.CmdLine.Program</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Version>0.0.1</Version>
     <Authors>Jeevan James</Authors>
@@ -11,7 +11,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Description>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
 
-The ConsoleFx.Program package provides support for creating console applications.
+The ConsoleFx.CmdLine.Program package provides support for creating console applications.
 </Description>
     <Copyright>Copyright (c) 2006-2019 Jeevan James</Copyright>
     <PackageProjectUrl>https://github.com/JeevanJames/ConsoleFx/</PackageProjectUrl>
@@ -20,20 +20,21 @@ The ConsoleFx.Program package provides support for creating console applications
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</PackageTags>
     <PackageReleaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</PackageReleaseNotes>
+    <Product>ConsoleFx</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Program.xml</DocumentationFile>
+    <DocumentationFile>ConsoleFx.CmdLine.Program.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Program.xml</DocumentationFile>
+    <DocumentationFile>ConsoleFx.CmdLine.Program.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

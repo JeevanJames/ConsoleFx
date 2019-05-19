@@ -21,7 +21,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 
-namespace ConsoleFx.CmdLineArgs.Validators.Bases
+namespace ConsoleFx.CmdLine.Validators.Bases
 {
     /// <summary>
     ///     Base class for all validators.
