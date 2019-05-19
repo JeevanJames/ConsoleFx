@@ -24,24 +24,24 @@ deploy_script:
     dotnet nuget push ./src/Capture/bin/Release/ConsoleFx.Capture.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
-    dotnet pack ./src/CmdLineArgs/CmdLineArgs.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
+    dotnet pack ./src/CmdLine.Abstractions/CmdLine.Abstractions.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
-    dotnet nuget push ./src/CmdLineArgs/bin/Release/ConsoleFx.CmdLineArgs.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
+    dotnet nuget push ./src/CmdLine.Abstractions/bin/Release/ConsoleFx.CmdLine.Abstractions.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
-    dotnet pack ./src/CmdLineParser/CmdLineParser.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
+    dotnet pack ./src/CmdLine.Parser/CmdLine.Parser.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
-    dotnet nuget push ./src/CmdLineParser/bin/Release/ConsoleFx.CmdLineParser.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
+    dotnet nuget push ./src/CmdLine.Parser/bin/Release/ConsoleFx.CmdLine.Parser.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
+
+
+    dotnet pack ./src/CmdLine.Program/CmdLine.Program.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
+
+    dotnet nuget push ./src/CmdLine.Program/bin/Release/ConsoleFx.CmdLine.Program.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
     dotnet pack ./src/ConsoleExtensions/ConsoleExtensions.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./src/ConsoleExtensions/bin/Release/ConsoleFx.ConsoleExtensions.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
-
-
-    dotnet pack ./src/Program/Program.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
-
-    dotnet nuget push ./src/Program/bin/Release/ConsoleFx.Program.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
 
     dotnet pack ./src/Prompter/Prompter.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
