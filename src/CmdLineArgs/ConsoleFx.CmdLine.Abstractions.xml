@@ -238,22 +238,22 @@
                 specified only after the required ones.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.DefaultSetter">
+        <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.DefaultSetter">
             <summary>
                 Gets or sets the optional delegate to return the arg's default value, if it is not set.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.Formatter">
+        <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.Formatter">
             <summary>
                 Gets or sets the optional delegate that allows an arg value to be custom formatted.
                 <para />
                 During parsing, the formatting is performed before any type conversion.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.Type">
+        <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.Type">
             <summary>
                 Gets or sets the type that the arg's values should be converted to. If a
-                <see cref="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.TypeConverter" /> is specified, then it is used to perform the type
+                <see cref="P:ConsoleFx.CmdLine.ArgumentOrOption`1.TypeConverter" /> is specified, then it is used to perform the type
                 conversion, otherwise the framework looks for a default string-to-type type converter
                 for the expected type. If a type converter is not found, an exception is thrown during
                 the parsing.
@@ -264,15 +264,15 @@
                 outside the ConsoleFx framework.
             </remarks>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.TypeConverter">
+        <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.TypeConverter">
             <summary>
                 Gets or sets the optional converter to convert a string arg value to the actual
-                <see cref="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.Type" />.
+                <see cref="P:ConsoleFx.CmdLine.ArgumentOrOption`1.Type" />.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.FormatAs(System.Func{System.String,System.String})">
+        <member name="M:ConsoleFx.CmdLine.ArgumentOrOption`1.FormatAs(System.Func{System.String,System.String})">
             <summary>
-                Assigns the <see cref="P:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.Formatter"/> property, which can be used to format the arg's
+                Assigns the <see cref="P:ConsoleFx.CmdLine.ArgumentOrOption`1.Formatter"/> property, which can be used to format the arg's
                 value.
             </summary>
             <param name="formatter">The formatter delegate.</param>
@@ -281,7 +281,7 @@
                 Thrown if the formatter delegate is <c>null</c>.
             </exception>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.FormatAs(System.String)">
+        <member name="M:ConsoleFx.CmdLine.ArgumentOrOption`1.FormatAs(System.String)">
             <summary>
                 Assigns a format string to the arg, which will be used to format the arg's value.
             </summary>
@@ -294,7 +294,7 @@
                 Thrown if the format string does not contain a format placeholder ({0}).
             </exception>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.TypedAs``1(System.Converter{System.String,``0})">
+        <member name="M:ConsoleFx.CmdLine.ArgumentOrOption`1.TypedAs``1(System.Converter{System.String,``0})">
             <summary>
                 Specifies the type to convert the option parameters, with an optional custom converter.
                 If a custom converter is not specified, the type's type converter will be used.
@@ -303,7 +303,7 @@
             <param name="converter">Optional custom converter.</param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Bases.ArgumentOrOption`1.ValidateWith(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+        <member name="M:ConsoleFx.CmdLine.ArgumentOrOption`1.ValidateWith(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
             <summary>
                 Specifies one or more validators that will be used to validate the arg's values.
             </summary>

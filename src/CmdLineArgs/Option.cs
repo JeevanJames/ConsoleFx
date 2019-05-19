@@ -21,7 +21,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 
-using ConsoleFx.CmdLine.Bases;
+using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine

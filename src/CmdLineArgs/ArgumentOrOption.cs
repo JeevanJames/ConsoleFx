@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 using ConsoleFx.CmdLine.Validators.Bases;
 
-namespace ConsoleFx.CmdLine.Bases
+namespace ConsoleFx.CmdLine
 {
     public abstract class ArgumentOrOption<TArg> : Arg
         where TArg : Arg
