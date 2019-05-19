@@ -20,6 +20,7 @@ The ConsoleFx.Prompter package provides support for creating interactive experie
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</PackageTags>
     <PackageReleaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</PackageReleaseNotes>
+    <Product>ConsoleFx</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

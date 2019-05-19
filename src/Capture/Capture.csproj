@@ -20,6 +20,7 @@ The ConsoleFx.Capture package provides support for capturing console output from
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI Capture</PackageTags>
     <PackageReleaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</PackageReleaseNotes>
+    <Product>ConsoleFx</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

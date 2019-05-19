@@ -19,6 +19,7 @@ The ConsoleFx.Art package provides support for rendering ASCII art on the consol
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</PackageTags>
     <PackageReleaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</PackageReleaseNotes>
+    <Product>ConsoleFx</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
