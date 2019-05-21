@@ -19,6 +19,11 @@ test_script:
     codecov -f "./test/ConsoleExtensions.Tests/coverage.opencover.xml"
 deploy_script:
 - pwsh: >-
+    dotnet pack ./metapackage/ConsoleFx/ConsoleFx.csproj -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
+
+    dotnet nuget push ./metapackage/ConsoleFx/bin/Release/ConsoleFx.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
+
+
     dotnet pack ./src/Capture/Capture.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./src/Capture/bin/Release/ConsoleFx.Capture.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
