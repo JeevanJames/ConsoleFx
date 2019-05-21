@@ -49,7 +49,7 @@ namespace ConsoleFx.Prompter.Questions
                     return valid;
                 }
 
-                return ConsoleEx.Prompt(new ColorString().Cyan(q.Message.Resolve(ans)), (Func<string, bool>)Validator);
+                return ConsoleEx.Prompt(new ColorString().Magenta(q.Message.Resolve(ans)), (Func<string, bool>)Validator);
             };
         }
 

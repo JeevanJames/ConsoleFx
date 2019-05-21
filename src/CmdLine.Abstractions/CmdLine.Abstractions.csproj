@@ -53,10 +53,6 @@ The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-lin
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleExtensions\ConsoleExtensions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Errors.Designer.cs">
       <DependentUpon>Errors.resx</DependentUpon>
       <DesignTime>True</DesignTime>

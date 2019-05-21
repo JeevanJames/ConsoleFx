@@ -36,6 +36,7 @@ namespace ConsoleFx.Prompter
         {
             Value = value;
             Function = null;
+            IsAssigned = true;
         }
 
         /// <summary>
@@ -49,6 +50,7 @@ namespace ConsoleFx.Prompter
                 throw new ArgumentNullException(nameof(function));
             Function = function;
             Value = default;
+            IsAssigned = true;
         }
 
         /// <summary>
@@ -60,6 +62,12 @@ namespace ConsoleFx.Prompter
         ///     Gets the factory function to generate the value.
         /// </summary>
         internal Func<dynamic, TValue> Function { get; }
+
+        /// <summary>
+        ///     Gets a value indicating whether the <see cref="FunctionOrValue{TValue}"/> is assigned
+        ///     a value, i.e. whether its constructor was called.
+        /// </summary>
+        internal bool IsAssigned { get; }
 
         /// <summary>
         ///     Resolves the value of the <see cref="FunctionOrValue{TValue}"/> by either returning

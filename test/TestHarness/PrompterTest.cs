@@ -26,17 +26,25 @@ namespace TestHarness
 {
     internal sealed class PrompterTest : TestBase
     {
+        private const string NameInstructions1 = @"We need your name to address you for the rest of the questions.";
+        private const string NameInstructions2 = @"You have our guarantee that we will keep your details private.";
+        private const string NameInstructions3 = @"Please trust us.";
+
+        private const string PasswordInstructions = @"We need your password to log into your bank account and steal all your money. Make sure to type it in correctly.";
+
         internal override void Run()
         {
             var prompter = new Prompter()
                 .Input("Name", "Hi, what's your name? ", q => q
-                    .When(ans => true)
+                    .WithInstructions(NameInstructions1, NameInstructions2, NameInstructions3)
                     .ValidateWith((name, _) => name.Length >= 6)
                     .Transform(name => name.ToUpperInvariant())
                     .DefaultsTo("Jeevan"))
-                .Password("Password", "Enter password: ")
+                .Password("Password", "Enter password: ", q => q
+                    .WithInstructions(PasswordInstructions)
+                    .ValidateInputWith((password, _) => password.Length > 0))
                 .Confirm("Proceed", "Should we proceed? ", true)
-                .List<bool>("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No" },
+                .List("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No" },
                     selected => selected == 0)
                 .Text("You have decided to proceed", t => t
                     .When(ans => ans.Proceed))

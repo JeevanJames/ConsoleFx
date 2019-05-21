@@ -44,7 +44,7 @@ namespace ConsoleFx.Prompter.Questions
             _askerFn = (q, ans) =>
             {
                 var lq = (ListQuestion<TValue>)q;
-                ConsoleEx.PrintLine(q.Message.Resolve(ans));
+                ConsoleEx.PrintLine(new ColorString().Magenta(q.Message.Resolve(ans)));
                 return ConsoleEx.SelectSingle(lq._choices);
             };
         }

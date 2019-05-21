@@ -26,32 +26,8 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class Prompter : IList<PromptItem>
+    public sealed partial class Prompter
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly List<PromptItem> _promptItems = new List<PromptItem>();
-
-        public PromptItem this[int index]
-        {
-            get => _promptItems[index];
-            set => _promptItems[index] = value;
-        }
-
-        public int Count => _promptItems.Count;
-
-        public bool IsReadOnly => ((IList<PromptItem>)_promptItems).IsReadOnly;
-
-        public event EventHandler<BeforeAfterPromptEventArgs> BeforePrompt;
-
-        public event EventHandler<BetweenPromptEventArgs> BetweenPrompts;
-
-        public event EventHandler<BeforeAfterPromptEventArgs> AfterPrompt;
-
-        public void Add(PromptItem item)
-        {
-            _promptItems.Add(item);
-        }
-
         public Answers Ask()
         {
             var answers = new Answers(_promptItems.Count);
@@ -69,7 +45,8 @@ namespace ConsoleFx.Prompter
                 object answer;
 
                 // If the prompt cannot be displayed, continue the loop.
-                // If it is a question, try assigning the default value, if available.
+                // If it is a question, try assigning the default value, if available, before
+                // continuing.
                 if (!promptItem.CanAsk(answers))
                 {
                     if (promptItem is Question q)
@@ -90,6 +67,12 @@ namespace ConsoleFx.Prompter
                 }
 
                 var question = promptItem as Question;
+
+                if (question.Instructions.Count > 0)
+                {
+                    foreach (FunctionOrValue<string> instruction in question.Instructions)
+                        ConsoleEx.PrintLine(instruction.Resolve(answers));
+                }
 
                 answer = null;
                 bool validAnswer = false;
@@ -147,6 +130,34 @@ namespace ConsoleFx.Prompter
             }
 
             return answers;
+        }
+
+        public event EventHandler<BeforeAfterPromptEventArgs> BeforePrompt;
+
+        public event EventHandler<BetweenPromptEventArgs> BetweenPrompts;
+
+        public event EventHandler<BeforeAfterPromptEventArgs> AfterPrompt;
+    }
+
+    // IList<PromptItem> implementation of Prompter.
+    public sealed partial class Prompter : IList<PromptItem>
+    {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly List<PromptItem> _promptItems = new List<PromptItem>();
+
+        public PromptItem this[int index]
+        {
+            get => _promptItems[index];
+            set => _promptItems[index] = value;
+        }
+
+        public int Count => _promptItems.Count;
+
+        public bool IsReadOnly => ((IList<PromptItem>)_promptItems).IsReadOnly;
+
+        public void Add(PromptItem item)
+        {
+            _promptItems.Add(item);
         }
 
         public void Clear()

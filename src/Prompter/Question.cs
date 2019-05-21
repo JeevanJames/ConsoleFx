@@ -18,11 +18,14 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleFx.Prompter
 {
     public abstract class Question : PromptItem
     {
+        private IList<FunctionOrValue<string>> _instructions;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Question"/> class.
         /// </summary>
@@ -41,6 +44,12 @@ namespace ConsoleFx.Prompter
         /// </summary>
         public string Name { get; }
 
+        public IList<FunctionOrValue<string>> Instructions
+        {
+            get => _instructions ?? (_instructions = new List<FunctionOrValue<string>>());
+            set => _instructions = value;
+        }
+
         internal FunctionOrValue<object> DefaultValue { get; set; }
 
         internal Validator<object> RawValueValidator { get; set; }
@@ -58,6 +67,20 @@ namespace ConsoleFx.Prompter
         protected Question(string name, FunctionOrValue<string> message)
             : base(name, message)
         {
+        }
+
+        public Question<TRaw, TConverted> WithInstructions(params FunctionOrValue<string>[] instructions)
+        {
+            if (instructions is null)
+                throw new ArgumentNullException(nameof(instructions));
+
+            foreach (FunctionOrValue<string> instruction in instructions)
+            {
+                if (instruction.IsAssigned)
+                    Instructions.Add(instruction);
+            }
+
+            return this;
         }
 
         public new Question<TRaw, TConverted> When(AnswersFunc<bool> canAskFn)

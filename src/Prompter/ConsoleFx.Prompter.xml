@@ -39,6 +39,12 @@
                 Gets the factory function to generate the value.
             </summary>
         </member>
+        <member name="P:ConsoleFx.Prompter.FunctionOrValue`1.IsAssigned">
+            <summary>
+                Gets a value indicating whether the <see cref="T:ConsoleFx.Prompter.FunctionOrValue`1"/> is assigned
+                a value, i.e. whether its constructor was called.
+            </summary>
+        </member>
         <member name="M:ConsoleFx.Prompter.FunctionOrValue`1.Resolve(System.Object)">
             <summary>
                 Resolves the value of the <see cref="T:ConsoleFx.Prompter.FunctionOrValue`1"/> by either returning

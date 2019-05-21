@@ -17,12 +17,11 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Parser;
-using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.CmdLine.Program
 {
@@ -66,7 +65,7 @@ namespace ConsoleFx.CmdLine.Program
         protected override int HandleCommand()
         {
             if (ParseResult.Options["help"] != null)
-                ConsoleEx.PrintLine(new ColorString().BgBlue("This is the help text"));
+                Console.WriteLine("This is the help text");
             return base.HandleCommand();
         }
     }
