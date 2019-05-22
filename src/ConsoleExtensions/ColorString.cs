@@ -56,9 +56,11 @@ namespace ConsoleFx.ConsoleExtensions
         ///     <paramref name="initialText"/>.
         /// </summary>
         /// <param name="initialText">The initial text to add to the <see cref="ColorString"/>.</param>
-        public ColorString(string initialText)
+        /// <param name="foreColor">Optional foreground color for the text.</param>
+        /// <param name="backColor">Optional background color for the text.</param>
+        public ColorString(string initialText, CColor? foreColor = null, CColor? backColor = null)
         {
-            Text(initialText);
+            Text(initialText, foreColor, backColor);
         }
 
         /// <summary>

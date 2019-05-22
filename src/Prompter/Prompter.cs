@@ -71,7 +71,11 @@ namespace ConsoleFx.Prompter
                 if (question.Instructions.Count > 0)
                 {
                     foreach (FunctionOrValue<string> instruction in question.Instructions)
-                        ConsoleEx.PrintLine(instruction.Resolve(answers));
+                    {
+                        var cstr = new ColorString().Text(instruction.Resolve(answers),
+                            Style.Instructions.ForeColor, Style.Instructions.BackColor);
+                        ConsoleEx.PrintLine(cstr);
+                    }
                 }
 
                 answer = null;
@@ -137,6 +141,14 @@ namespace ConsoleFx.Prompter
         public event EventHandler<BetweenPromptEventArgs> BetweenPrompts;
 
         public event EventHandler<BeforeAfterPromptEventArgs> AfterPrompt;
+
+        private static Styling _style;
+
+        public static Styling Style
+        {
+            get => _style ?? (_style = Styling.NoTheme);
+            set => _style = value;
+        }
     }
 
     // IList<PromptItem> implementation of Prompter.

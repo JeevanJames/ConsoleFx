@@ -33,7 +33,8 @@ namespace ConsoleFx.Prompter.Questions
             _askerFn = (q, ans) =>
             {
                 var pq = (PasswordQuestion<TValue>)q;
-                return ConsoleEx.ReadSecret(new ColorString().Magenta(q.Message.Resolve(ans)),
+                return ConsoleEx.ReadSecret(new ColorString(q.Message.Resolve(ans),
+                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor),
                     hideCursor: pq._hideCursor, hideMask: pq._hideMask);
             };
         }

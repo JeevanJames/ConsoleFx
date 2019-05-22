@@ -27,12 +27,14 @@
                 Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> class.
             </summary>
         </member>
-        <member name="M:ConsoleFx.ConsoleExtensions.ColorString.#ctor(System.String)">
+        <member name="M:ConsoleFx.ConsoleExtensions.ColorString.#ctor(System.String,System.Nullable{ConsoleFx.ConsoleExtensions.CColor},System.Nullable{ConsoleFx.ConsoleExtensions.CColor})">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> class with the specified
                 <paramref name="initialText"/>.
             </summary>
             <param name="initialText">The initial text to add to the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.</param>
+            <param name="foreColor">Optional foreground color for the text.</param>
+            <param name="backColor">Optional background color for the text.</param>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.Text(System.String,System.Nullable{ConsoleFx.ConsoleExtensions.CColor},System.Nullable{ConsoleFx.ConsoleExtensions.CColor})">
             <summary>

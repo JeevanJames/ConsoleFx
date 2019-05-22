@@ -49,7 +49,9 @@ namespace ConsoleFx.Prompter.Questions
                     return valid;
                 }
 
-                return ConsoleEx.Prompt(new ColorString().Magenta(q.Message.Resolve(ans)), (Func<string, bool>)Validator);
+                return ConsoleEx.Prompt(new ColorString(q.Message.Resolve(ans),
+                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor),
+                    Validator);
             };
         }
 

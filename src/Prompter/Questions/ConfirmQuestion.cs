@@ -32,10 +32,12 @@ namespace ConsoleFx.Prompter.Questions
         {
             _askerFn = (q, ans) =>
             {
-                ConsoleEx.Print(new ColorString().Magenta(q.Message.Resolve(ans)));
+                ConsoleEx.Print(new ColorString(q.Message.Resolve(ans),
+                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor));
 
                 var cq = (ConfirmQuestion)q;
-                ConsoleEx.Print($"{Clr.Magenta} ({(cq._default ? 'Y' : 'y')}/{(cq._default ? 'n' : 'N')}) ");
+                ConsoleEx.Print(new ColorString($" ({(cq._default ? 'Y' : 'y')}/{(cq._default ? 'n' : 'N')}) ",
+                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor));
 
                 ConsoleKey keyPressed = ConsoleEx.WaitForKeys(ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
                 bool result = keyPressed == ConsoleKey.Enter ? cq._default : (keyPressed == ConsoleKey.Y);

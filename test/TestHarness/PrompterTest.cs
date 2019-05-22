@@ -34,6 +34,7 @@ namespace TestHarness
 
         internal override void Run()
         {
+            Prompter.Style = Styling.Colorful;
             var prompter = new Prompter()
                 .Input("Name", "Hi, what's your name? ", q => q
                     .WithInstructions(NameInstructions1, NameInstructions2, NameInstructions3)
