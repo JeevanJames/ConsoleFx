@@ -26,6 +26,9 @@ using ConsoleFx.CmdLine.Program;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System;
 
 namespace TestHarness
 {
@@ -38,39 +41,51 @@ namespace TestHarness
         }
     }
 
+    [Program(Style = ArgStyle.Unix)]
     public sealed class MyProgram : ConsoleProgram
     {
-        public MyProgram() : base(ArgStyle.Windows, ArgGrouping.DoesNotMatter)
-        {
-        }
+        [Option("tags")]
+        public IList<string> Tags { get; set; }
 
-        public MyProgram(ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter) : base(argStyle, grouping)
-        {
-        }
+        [Option("exclude-tags")]
+        public IList<string> ExcludedTags { get; set; }
 
-        [Argument("source")]
-        public FileInfo SourceFile { get; set; }
+        [Option("repos")]
+        public IList<string> Repositories { get; set; }
 
-        public DirectoryInfo Destination { get; set; }
+        [Option("exclude-repos")]
+        public IList<string> ExcludedRepositories { get; set; }
 
-        public bool Overwrite { get; set; }
+        [Option("only-me")]
+        public bool OnlyMe { get; set; }
 
         protected override IEnumerable<Arg> GetArgs()
         {
-            yield return new Argument("source")
-                .ValidateAsFile(shouldExist: false)
-                .TypedAs(fileName => new FileInfo(fileName));
-            yield return new Argument("destination")
-                .ValidateAsDirectory(shouldExist: false)
-                .TypedAs(dirName => new DirectoryInfo(dirName));
-            yield return new Option("overwrite", "o")
-                .UsedAsFlag();
+            yield return new Option("tags")
+                .UsedAsUnlimitedOccurrencesAndParameters(optional: true)
+                .ValidateWithRegex(TagPattern);
+
+            yield return new Option("exclude-tags")
+                .UsedAsUnlimitedOccurrencesAndParameters(optional: true)
+                .ValidateWithRegex(TagPattern);
+
+            yield return new Option("only-me")
+                .UsedAsFlag(optional: true);
+
+            yield return new Option("repos")
+                .UsedAsUnlimitedOccurrencesAndParameters(optional: true);
+
+            yield return new Option("exclude-repos")
+                .UsedAsUnlimitedOccurrencesAndParameters(optional: true);
         }
+
+        private static readonly Regex TagPattern = new Regex(@"^(\w[\w_-]*)$");
 
         protected override int HandleCommand()
         {
-            PrintLine($"Copy {Cyan}{SourceFile} {Reset}to {Green}{Destination}");
-            PrintLine($"Overwrite: {Yellow}{Overwrite}");
+            Tags.ToList().ForEach(Console.WriteLine);
+            ExcludedTags.ToList().ForEach(Console.WriteLine);
+
             return 0;
         }
     }

@@ -142,16 +142,6 @@ namespace ConsoleFx.CmdLine.Parser
                 }
                 else
                 {
-                    // This is the innermost command. Add any arguments from this command to the run
-                    // and then add all the remaining tokens to the run's Token collection and exit
-                    // the loop.
-
-                    // Add all the options for the current command.
-                    run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o)));
-
-                    // Add all the arguments for the current command.
-                    run.Arguments.AddRange(currentCommand.Arguments.Select(a => new ArgumentRun(a)));
-
                     // All tokens from the current token are considered the args for the command.
                     run.Tokens = new List<string>(tokens.Count - i + 1);
                     for (int j = i; j < tokens.Count; j++)
@@ -161,6 +151,12 @@ namespace ConsoleFx.CmdLine.Parser
                     break;
                 }
             }
+
+            // Add all the options for the current command.
+            run.Options.AddRange(currentCommand.Options.Select(o => new OptionRun(o)));
+
+            // Add all the arguments for the current command.
+            run.Arguments.AddRange(currentCommand.Arguments.Select(a => new ArgumentRun(a)));
 
             // To avoid null-ref exceptions in case no tokens are specified, assign run.Tokens if it
             // is null.
