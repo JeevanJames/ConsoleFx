@@ -64,6 +64,33 @@ namespace ConsoleFx.CmdLine.Program
         /// </summary>
         public ArgGrouping Grouping { get; }
 
+        //TODO: Should these ScanXXXX methods go into the Command class?
+        public void ScanExecutingAssemblyForCommands()
+        {
+            ScanAssembliesForCommands(Assembly.GetExecutingAssembly());
+        }
+
+        public void ScanAssembliesForCommands(params Assembly[] assemblies)
+        {
+            if (assemblies is null)
+                throw new ArgumentNullException(nameof(assemblies));
+            foreach (Assembly assembly in assemblies)
+            {
+                if (assembly is null)
+                    throw new ArgumentException("Assembly should not be null.", nameof(assemblies));
+                IReadOnlyList<Type> commandTypes = assembly.GetExportedTypes()
+                    .Where(type => typeof(Command).IsAssignableFrom(type))
+                    .Where(type => type.GetConstructor(Type.EmptyTypes) != null)
+                    .ToList();
+                foreach (Type commandType in commandTypes)
+                {
+                    var command = (Command)Activator.CreateInstance(commandType);
+                    if (command.Name != null)
+                        Commands.Add(command);
+                }
+            }
+        }
+
         /// <summary>
         ///     Runs the console program after parsing the command-line args.
         /// </summary>
@@ -109,6 +136,7 @@ namespace ConsoleFx.CmdLine.Program
 
             // Get all potentially-assignable properties.
             // i.e. all public instance properties that are read/write.
+            //TODO: Allow collection properties to have only getters.
             List<PropertyInfo> properties = type
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(pi => pi.CanRead && pi.CanWrite)
