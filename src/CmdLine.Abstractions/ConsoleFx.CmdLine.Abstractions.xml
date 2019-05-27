@@ -314,7 +314,8 @@
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Command" /> class.
                 <para />
-                This constructor is used internally to create root commands.
+                This constructor tries to read the command details from the
+                <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Command.Arguments">
@@ -336,6 +337,22 @@
             <summary>
                 Gets or sets a value indicating how many times the last argument can repeat.
             </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.Handler">
+            <summary>
+                Gets or sets the delegate to call if the parsed args match this command.
+                <para/>
+                If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Command.HandleCommand"/> method is called.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.ParseResult">
+            <summary>
+                Gets or sets the result of parsing the args of this command.
+            </summary>
+            <remarks>
+                Note: This property will only be available to the <see cref="M:ConsoleFx.CmdLine.Command.HandleCommand"/> virtual
+                method, which is called after the args have been parsed.
+            </remarks>
         </member>
         <member name="T:ConsoleFx.CmdLine.Commands">
             <summary>
@@ -406,12 +423,6 @@
             <summary>
               Looks up a localized string similar to Specify at least one validator..
             </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.HelpCommand.GetArgs">
-            <inheritdoc />
-        </member>
-        <member name="M:ConsoleFx.CmdLine.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
-            <inheritdoc />
         </member>
         <member name="T:ConsoleFx.CmdLine.Messages">
             <summary>
@@ -778,6 +789,16 @@
             <summary>
                 Gets or sets whether the parameters of the option are repeating (all have the same meaning) or individual
                 (each is different and can have separate validators).
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ParseResultBase.Arguments">
+            <summary>
+                Gets or sets the list of specified command line arguments.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ParseResultBase.Options">
+            <summary>
+                Gets or sets the list of specified command line options.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.ParserException.ErrorCode">

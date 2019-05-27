@@ -46,15 +46,6 @@
                 combinations mentioned.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpCommand.GetArgs">
-            <inheritdoc />
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
-            <inheritdoc />
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpCommand.HandleCommand">
-            <inheritdoc />
-        </member>
         <member name="T:ConsoleFx.CmdLine.Program.Messages">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -77,48 +68,6 @@
                 {0}
             Please contact the developer or your administrator for assistance..
              </summary>
-        </member>
-        <member name="T:ConsoleFx.CmdLine.Program.ProgramCommand">
-            <summary>
-                Represents a <see cref="T:ConsoleFx.CmdLine.Command"/> that contains a <see cref="P:ConsoleFx.CmdLine.Program.ProgramCommand.Handler"/> to execute
-                code if the command matches the command-line args.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ProgramCommand.#ctor">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ProgramCommand"/> class.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ProgramCommand.#ctor(System.String[])">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ProgramCommand"/> class with the specified
-                <paramref name="names"/>.
-            </summary>
-            <param name="names">The names of the command.</param>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ProgramCommand.#ctor(System.Boolean,System.String[])">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ProgramCommand"/> class with the specified
-                <paramref name="names"/> and case-sensitivity.
-            </summary>
-            <param name="caseSensitive">Indicates whether the names are case-sensitive.</param>
-            <param name="names">The names of the command.</param>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Program.ProgramCommand.ParseResult">
-            <summary>
-                Gets the result of parsing the args of this command.
-            </summary>
-            <remarks>
-                Note: This property will only be available to the <see cref="M:ConsoleFx.CmdLine.Program.ProgramCommand.HandleCommand"/> virtual
-                method, which is called after the args have been parsed.
-            </remarks>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Program.ProgramCommand.Handler">
-            <summary>
-                Gets or sets the delegate to call if the parsed args match this command.
-                <para/>
-                If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Program.ProgramCommand.HandleCommand"/> method is called.
-            </summary>
         </member>
     </members>
 </doc>

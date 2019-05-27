@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Parser.Runs;
 
 namespace ConsoleFx.CmdLine.Parser
@@ -30,7 +29,7 @@ namespace ConsoleFx.CmdLine.Parser
     /// <summary>
     ///     Represents the results of parsing a set of arguments.
     /// </summary>
-    public sealed class ParseResult
+    public sealed class ParseResult : ParseResultBase
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ParseRun _run;
@@ -46,19 +45,7 @@ namespace ConsoleFx.CmdLine.Parser
                 .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.Value);
         }
 
-        public Command Command { get; }
-
-        /// <summary>
-        ///     Gets the list of specified command line arguments.
-        /// </summary>
-        public IReadOnlyList<object> Arguments { get; }
-
-        /// <summary>
-        ///     Gets the list of specified command line options.
-        /// </summary>
-        public IReadOnlyDictionary<string, object> Options { get; }
-
-        public bool TryGetArgument<T>(int index, out T value, T @default = default)
+        public override bool TryGetArgument<T>(int index, out T value, T @default = default)
         {
             if (index >= _run.Arguments.Count)
             {
@@ -71,7 +58,7 @@ namespace ConsoleFx.CmdLine.Parser
             return TryGetArgument(matchingArgument, out value, @default);
         }
 
-        public bool TryGetArgument<T>(string name, out T value, T @default = default)
+        public override bool TryGetArgument<T>(string name, out T value, T @default = default)
         {
             ArgumentRun matchingArgument = _run.Arguments.FirstOrDefault(r => r.Argument.HasName(name));
             if (matchingArgument is null)
@@ -83,7 +70,7 @@ namespace ConsoleFx.CmdLine.Parser
             return TryGetArgument(matchingArgument, out value, @default);
         }
 
-        private bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value, T @default = default)
+        private static bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value, T @default = default)
         {
             if (!matchingArgument.Assigned)
             {
@@ -103,7 +90,7 @@ namespace ConsoleFx.CmdLine.Parser
             return true;
         }
 
-        public bool TryGetOption<T>(string name, out T value, T @default = default)
+        public override bool TryGetOption<T>(string name, out T value, T @default = default)
         {
             OptionRun matchingOption = _run.Options.FirstOrDefault(r => r.Option.HasName(name));
             if (matchingOption is null)
@@ -130,7 +117,7 @@ namespace ConsoleFx.CmdLine.Parser
             return true;
         }
 
-        public bool TryGetOptions<T>(string name, out IReadOnlyList<T> values)
+        public override bool TryGetOptions<T>(string name, out IReadOnlyList<T> values)
         {
             bool found = TryGetOption(name, out List<T> list, new List<T>(0));
             values = found ? list : default;

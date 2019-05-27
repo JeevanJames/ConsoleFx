@@ -19,17 +19,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestHarness", "test\TestHar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleExtensions.Tests", "test\ConsoleExtensions.Tests\ConsoleExtensions.Tests.csproj", "{956C4369-564A-4B1E-85EA-13BC117275E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine.Abstractions", "src\CmdLine.Abstractions\CmdLine.Abstractions.csproj", "{4F434AEF-EB33-44FF-802A-811A731B2472}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CmdLine.Abstractions", "src\CmdLine.Abstractions\CmdLine.Abstractions.csproj", "{4F434AEF-EB33-44FF-802A-811A731B2472}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine.Parser", "src\CmdLine.Parser\CmdLine.Parser.csproj", "{432A3F46-B0F3-4FAC-B67B-C7248B336DCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CmdLine.Parser", "src\CmdLine.Parser\CmdLine.Parser.csproj", "{432A3F46-B0F3-4FAC-B67B-C7248B336DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine.Program", "src\CmdLine.Program\CmdLine.Program.csproj", "{0536F5F7-32BD-4D7E-96EC-996CC61666B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CmdLine.Program", "src\CmdLine.Program\CmdLine.Program.csproj", "{0536F5F7-32BD-4D7E-96EC-996CC61666B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine.Abstractions.Tests", "test\CmdLine.Abstractions.Tests\CmdLine.Abstractions.Tests.csproj", "{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CmdLine.Abstractions.Tests", "test\CmdLine.Abstractions.Tests\CmdLine.Abstractions.Tests.csproj", "{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "metapackage", "metapackage", "{9F083CE0-B6DB-4C18-AB85-8EC5A0117771}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFx", "metapackage\ConsoleFx\ConsoleFx.csproj", "{19EE71E6-C15A-40E3-A34D-061268374D0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx", "metapackage\ConsoleFx\ConsoleFx.csproj", "{19EE71E6-C15A-40E3-A34D-061268374D0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,19 +46,15 @@ Global
 		{760AE779-FFDB-47AB-8B46-5A7ED2C30B4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{760AE779-FFDB-47AB-8B46-5A7ED2C30B4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FFA0E0A7-4053-4F7E-96E5-3EADB89A7487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFA0E0A7-4053-4F7E-96E5-3EADB89A7487}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFA0E0A7-4053-4F7E-96E5-3EADB89A7487}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFA0E0A7-4053-4F7E-96E5-3EADB89A7487}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67F39F28-5779-4713-99EB-28D55BA98120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67F39F28-5779-4713-99EB-28D55BA98120}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67F39F28-5779-4713-99EB-28D55BA98120}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67F39F28-5779-4713-99EB-28D55BA98120}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC0D2F35-2B45-428B-A5C0-8D7AB8FB6B18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC0D2F35-2B45-428B-A5C0-8D7AB8FB6B18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC0D2F35-2B45-428B-A5C0-8D7AB8FB6B18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC0D2F35-2B45-428B-A5C0-8D7AB8FB6B18}.Release|Any CPU.Build.0 = Release|Any CPU
 		{956C4369-564A-4B1E-85EA-13BC117275E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{956C4369-564A-4B1E-85EA-13BC117275E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{956C4369-564A-4B1E-85EA-13BC117275E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{956C4369-564A-4B1E-85EA-13BC117275E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F434AEF-EB33-44FF-802A-811A731B2472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -78,7 +74,6 @@ Global
 		{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7C5874F-8BCF-4104-A95A-5F65E27F90DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19EE71E6-C15A-40E3-A34D-061268374D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19EE71E6-C15A-40E3-A34D-061268374D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19EE71E6-C15A-40E3-A34D-061268374D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19EE71E6-C15A-40E3-A34D-061268374D0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

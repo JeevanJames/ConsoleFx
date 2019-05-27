@@ -19,8 +19,6 @@ limitations under the License.
 
 using System;
 
-using ConsoleFx.CmdLine;
-
 namespace ConsoleFx.CmdLine.Program
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]

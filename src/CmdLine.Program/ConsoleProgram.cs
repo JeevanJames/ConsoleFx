@@ -32,7 +32,7 @@ namespace ConsoleFx.CmdLine.Program
     /// <summary>
     ///     Represents a console program.
     /// </summary>
-    public class ConsoleProgram : ProgramCommand
+    public class ConsoleProgram : Command
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ArgStyle _argStyle;
@@ -79,10 +79,9 @@ namespace ConsoleFx.CmdLine.Program
             {
                 ParseResult parseResult = parser.Parse(args);
 
-                var programCommand = (ProgramCommand)parseResult.Command;
-                programCommand.ParseResult = parseResult;
-                AssignProperties(programCommand);
-                return programCommand.Handler(ParseResult);
+                parseResult.Command.ParseResult = parseResult;
+                AssignProperties(parseResult.Command);
+                return parseResult.Command.Handler(ParseResult);
             }
             catch (Exception ex)
             {
@@ -104,7 +103,7 @@ namespace ConsoleFx.CmdLine.Program
             throw new NotSupportedException($"Unsupported argument style: '{_argStyle}'.");
         }
 
-        private void AssignProperties(ProgramCommand command)
+        private static void AssignProperties(Command command)
         {
             Type type = command.GetType();
 

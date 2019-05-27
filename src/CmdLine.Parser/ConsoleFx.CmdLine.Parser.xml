@@ -168,16 +168,6 @@
                 Represents the results of parsing a set of arguments.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Parser.ParseResult.Arguments">
-            <summary>
-                Gets the list of specified command line arguments.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Parser.ParseResult.Options">
-            <summary>
-                Gets the list of specified command line options.
-            </summary>
-        </member>
         <member name="P:ConsoleFx.CmdLine.Parser.Runs.ArgumentOrOptionRun`1.Type">
             <summary>
                 Gets the resolved type of the arg.
