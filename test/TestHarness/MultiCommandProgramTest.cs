@@ -58,7 +58,7 @@ namespace TestHarness
     }
 
     [Command("add", "install")]
-    public sealed class AddCommand : ProgramCommand
+    public sealed class AddCommand : Command
     {
         [Argument("package")]
         public string PackageName { get; set; }
@@ -77,7 +77,7 @@ namespace TestHarness
     }
 
     [Command("list", "ls")]
-    public sealed class ListCommand : ProgramCommand
+    public sealed class ListCommand : Command
     {
         public bool Global { get; set; }
 

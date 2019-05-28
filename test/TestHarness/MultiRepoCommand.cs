@@ -24,7 +24,7 @@ using ConsoleFx.CmdLine.Validators;
 
 namespace TestHarness
 {
-    public class MultiRepoCommand : HelpCommand
+    public class MultiRepoCommand : Command
     {
         /// <inheritdoc />
         public MultiRepoCommand(params string[] names)
