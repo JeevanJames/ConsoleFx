@@ -17,18 +17,14 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Validators;
 using ConsoleFx.CmdLine.Program;
-
-using static ConsoleFx.ConsoleExtensions.Clr;
-using static ConsoleFx.ConsoleExtensions.ConsoleEx;
-using System.Text.RegularExpressions;
-using System.Linq;
-using System;
+using ConsoleFx.CmdLine.Validators;
 
 namespace TestHarness
 {
@@ -37,7 +33,9 @@ namespace TestHarness
         internal override void Run()
         {
             var program = new MyProgram();
-            program.Run();
+            program.ScanEntryAssemblyForCommands();
+            program.Run(new[] { "install2", "repo2" });
+            program.Run(new[] { "install2", "repo2" });
         }
     }
 
@@ -86,6 +84,26 @@ namespace TestHarness
             Tags.ToList().ForEach(Console.WriteLine);
             ExcludedTags.ToList().ForEach(Console.WriteLine);
 
+            return 0;
+        }
+    }
+
+    [Command("install2")]
+    public class Install2Command : Command
+    {
+        protected override int HandleCommand()
+        {
+            Console.WriteLine("AddCommand");
+            return 0;
+        }
+    }
+
+    [Command("repo2", typeof(Install2Command))]
+    public sealed class Repo2Command : Command
+    {
+        protected override int HandleCommand()
+        {
+            Console.WriteLine("RepoCommand");
             return 0;
         }
     }

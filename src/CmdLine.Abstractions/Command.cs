@@ -61,6 +61,16 @@ namespace ConsoleFx.CmdLine
                 foreach (string name in commandAttribute.Names)
                     AddName(name);
             }
+
+            IEnumerable<Type> childCommandTypes = DiscoveredCommands
+                .Where(kvp => kvp.Value == GetType())
+                .Select(kvp => kvp.Key);
+            foreach (Type childCommandType in childCommandTypes)
+            {
+                var command = (Command)Activator.CreateInstance(childCommandType);
+                if (command.Name != null)
+                    Commands.Add(command);
+            }
         }
 
         public Command(params string[] names)
@@ -225,6 +235,8 @@ namespace ConsoleFx.CmdLine
         }
 
         protected sealed override Regex NamePattern => base.NamePattern;
+
+        public static readonly IDictionary<Type, Type> DiscoveredCommands = new Dictionary<Type, Type>();
     }
 
     public delegate string CommandCustomValidator(IReadOnlyList<object> arguments,

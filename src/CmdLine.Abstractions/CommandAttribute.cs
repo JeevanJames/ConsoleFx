@@ -26,6 +26,17 @@ namespace ConsoleFx.CmdLine
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class CommandAttribute : Attribute
     {
+        private Type _parentType;
+
+        public CommandAttribute(string name, Type parentType)
+        {
+            if (name is null)
+                throw new ArgumentNullException(nameof(name));
+
+            Names = new[] { name };
+            ParentType = parentType;
+        }
+
         public CommandAttribute(params string[] names)
         {
             if (names is null)
@@ -37,5 +48,16 @@ namespace ConsoleFx.CmdLine
         }
 
         public IReadOnlyList<string> Names { get; }
+
+        public Type ParentType
+        {
+            get => _parentType;
+            set
+            {
+                if (value != null && !typeof(Command).IsAssignableFrom(value))
+                    throw new ArgumentException($"ParentType should be type {typeof(Command).FullName} or a derived type.", nameof(value));
+                _parentType = value;
+            }
+        }
     }
 }
