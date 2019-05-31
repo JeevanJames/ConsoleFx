@@ -124,10 +124,8 @@ namespace ConsoleFx.CmdLine.Program
             try
             {
                 ParseResult parseResult = parser.Parse(args);
-
-                parseResult.Command.ParseResult = parseResult;
-                AssignProperties(parseResult.Command);
-                return parseResult.Command.Handler(ParseResult);
+                AssignProperties(parseResult);
+                return parseResult.Command.Handler(parseResult);
             }
             catch (Exception ex)
             {
@@ -149,9 +147,9 @@ namespace ConsoleFx.CmdLine.Program
             throw new NotSupportedException($"Unsupported argument style: '{_argStyle}'.");
         }
 
-        private static void AssignProperties(Command command)
+        private static void AssignProperties(ParseResultBase parseResult)
         {
-            Type type = command.GetType();
+            Type type = parseResult.Command.GetType();
 
             // Get all potentially-assignable properties.
             // i.e. all public instance properties that are read/write.
@@ -172,15 +170,15 @@ namespace ConsoleFx.CmdLine.Program
                 {
                     argName = ((ArgAttribute)attribute).Name;
                     hasValue = attribute is OptionAttribute
-                        ? command.ParseResult.TryGetOption(argName, out value)
-                        : command.ParseResult.TryGetArgument(argName, out value);
+                        ? parseResult.TryGetOption(argName, out value)
+                        : parseResult.TryGetArgument(argName, out value);
                 }
                 else
                 {
                     argName = property.Name;
-                    hasValue = command.ParseResult.TryGetOption(argName, out value);
+                    hasValue = parseResult.TryGetOption(argName, out value);
                     if (!hasValue)
-                        hasValue = command.ParseResult.TryGetArgument(argName, out value);
+                        hasValue = parseResult.TryGetArgument(argName, out value);
                 }
 
                 // Only throw an exception is there is no arg found for a property with an Option
@@ -192,7 +190,7 @@ namespace ConsoleFx.CmdLine.Program
                     continue;
                 }
 
-                property.SetValue(command, value);
+                property.SetValue(parseResult.Command, value);
             }
         }
     }

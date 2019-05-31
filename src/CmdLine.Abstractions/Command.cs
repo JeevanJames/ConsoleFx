@@ -176,28 +176,23 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets or sets the delegate to call if the parsed args match this command.
         ///     <para/>
-        ///     If not assigned, the virtual <see cref="HandleCommand"/> method is called.
+        ///     If not assigned, the virtual <see cref="HandleCommand(ParseResultBase)"/> method is called.
         /// </summary>
         public Func<ParseResultBase, int> Handler
         {
-            get => _handler ?? (_ => HandleCommand());
+            get => _handler ?? HandleCommand;
             set => _handler = value;
+        }
+
+        protected virtual int HandleCommand(ParseResultBase parseResult)
+        {
+            return 0;
         }
 
         protected virtual int HandleCommand()
         {
             return 0;
         }
-
-        /// <summary>
-        ///     Gets or sets the result of parsing the args of this command.
-        /// </summary>
-        /// <remarks>
-        ///     Note: This property will only be available to the <see cref="HandleCommand"/> virtual
-        ///     method, which is called after the args have been parsed.
-        /// </remarks>
-        //TODO: Make the setter inaccessible to public
-        public ParseResultBase ParseResult { get; set; }
 
         public Argument AddArgument(string name, bool isOptional = false)
         {
