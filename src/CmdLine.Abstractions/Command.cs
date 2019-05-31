@@ -232,6 +232,51 @@ namespace ConsoleFx.CmdLine
         protected sealed override Regex NamePattern => base.NamePattern;
 
         public static readonly IDictionary<Type, Type> DiscoveredCommands = new Dictionary<Type, Type>();
+
+        public void ScanEntryAssemblyForCommands()
+        {
+            ScanAssembliesForCommands(Assembly.GetEntryAssembly());
+        }
+
+        public void ScanAssembliesForCommands(params Assembly[] assemblies)
+        {
+            if (assemblies is null)
+                throw new ArgumentNullException(nameof(assemblies));
+
+            foreach (Assembly assembly in assemblies)
+            {
+                if (assembly is null)
+                    throw new ArgumentException("Assembly should not be null.", nameof(assemblies));
+
+                // Look for any types that derive from Command and have a parameterless constructor.
+                // Get the command type and any parent command type specified by the Command attribute.
+                var discoveredCommands = assembly.GetExportedTypes()
+                    .Where(type => typeof(Command).IsAssignableFrom(type))
+                    .Where(type => type.GetConstructor(Type.EmptyTypes) != null)
+                    .Select(t => new
+                    {
+                        CommandType = t,
+                        t.GetCustomAttribute<CommandAttribute>(true)?.ParentType,
+                    });
+
+                // Add all discovered commands witt a non-null parent type to the DiscoveredCommands
+                // dictionary.
+                var nonRootCommands = discoveredCommands.Where(c => c.ParentType != null);
+                foreach (var nonRootCommand in nonRootCommands)
+                    DiscoveredCommands.Add(nonRootCommand.CommandType, nonRootCommand.ParentType);
+
+                // Since we are scanning from this instance, then this command is a root command.
+                // Any discovered commands that do not have a parent type will be children of this
+                // command.
+                var rootCommands = discoveredCommands.Where(c => c.ParentType is null);
+                foreach (var rootCommand in rootCommands)
+                {
+                    var command = (Command)Activator.CreateInstance(rootCommand.CommandType);
+                    if (command.Name != null)
+                        Commands.Add(command);
+                }
+            }
+        }
     }
 
     public delegate string CommandCustomValidator(IReadOnlyList<object> arguments,
