@@ -43,33 +43,6 @@ namespace ConsoleFx.ConsoleExtensions
                 Console.ResetColor();
         }
 
-        private static void SetupColorsForBlockPrinting(ColorStringBlock block)
-        {
-            if (block.ForeColor.HasValue)
-            {
-                if (block.ForeColor.Value == CColor.Reset)
-                {
-                    ConsoleColor backColor = Console.BackgroundColor;
-                    Console.ResetColor();
-                    Console.BackgroundColor = backColor;
-                }
-                else
-                    Console.ForegroundColor = ColorMappings[block.ForeColor.Value];
-            }
-
-            if (block.BackColor.HasValue)
-            {
-                if (block.BackColor.Value == CColor.BgReset)
-                {
-                    ConsoleColor foreColor = Console.ForegroundColor;
-                    Console.ResetColor();
-                    Console.ForegroundColor = foreColor;
-                }
-                else
-                    Console.BackgroundColor = ColorMappings[block.BackColor.Value];
-            }
-        }
-
         /// <summary>
         ///     Writes one or more <see cref="ColorString" /> objects to the console.
         /// </summary>
@@ -117,13 +90,12 @@ namespace ConsoleFx.ConsoleExtensions
         ///     Whether the first line should be indented or just written from the current cursor
         ///     position.
         /// </param>
-        public static void PrintIndented(string text, int indent, bool indentFirstLine = false)
+        public static void PrintIndented(ColorString text, int indent, bool indentFirstLine = false)
         {
             if (text is null)
                 throw new ArgumentNullException(nameof(text));
 
             var indentStr = new string(c: ' ', indent);
-            string[] parts = text.Split(new[] { ' ' }, StringSplitOptions.None);
             int lineWidth = Console.WindowWidth - indent - 1;
 
             if (indentFirstLine)
@@ -133,32 +105,69 @@ namespace ConsoleFx.ConsoleExtensions
             // Once the length crosses the line width, it is reset and we move to the next line.
             int length = 0;
 
-            for (int i = 0; i < parts.Length; i++)
+            foreach (ColorStringBlock block in text)
             {
-                // If the current length of the printed line plus the length of the next part if greater
-                // than the line width, we need to start the next part on the next line.
-                // Write a new line and the indent. Reset length to 0;
-                if (length + parts[i].Length > lineWidth)
+                string[] parts = block.Text.Split(new[] { ' ' }, StringSplitOptions.None);
+                for (int i = 0; i < parts.Length; i++)
                 {
-                    Console.WriteLine();
-                    Console.Write(indentStr);
-                    length = 0;
-                }
+                    // If the current length of the printed line plus the length of the next part if greater
+                    // than the line width, we need to start the next part on the next line.
+                    // Write a new line and the indent. Reset length to 0;
+                    if (length + parts[i].Length > lineWidth)
+                    {
+                        Console.WriteLine();
+                        Console.Write(indentStr);
+                        length = 0;
+                    }
 
-                // Write the part to console and increment length by its length.
-                Print(parts[i]);
-                length += parts[i].Length;
+                    // Write the part to console and increment length by its length.
+                    SetupColorsForBlockPrinting(block);
+                    Print(parts[i]);
+                    length += parts[i].Length;
 
-                // Except for the last part, write the separating space character as well.
-                // Increment length by 1.
-                if (i < parts.Length - 1)
-                {
-                    Console.Write(" ");
-                    length++;
+                    // Except for the last part, write the separating space character as well.
+                    // Increment length by 1.
+                    if (i < parts.Length - 1)
+                    {
+                        SetupColorsForBlockPrinting(block);
+                        Console.Write(" ");
+                        length++;
+                    }
                 }
             }
 
             Console.WriteLine();
+        }
+
+        /// <summary>
+        ///     Helpers method to setup the console's colors from a <see cref="ColorStringBlock"/> instance.
+        /// </summary>
+        /// <param name="block">The <see cref="ColorStringBlock"/> instance.</param>
+        private static void SetupColorsForBlockPrinting(ColorStringBlock block)
+        {
+            if (block.ForeColor.HasValue)
+            {
+                if (block.ForeColor.Value == CColor.Reset)
+                {
+                    ConsoleColor backColor = Console.BackgroundColor;
+                    Console.ResetColor();
+                    Console.BackgroundColor = backColor;
+                }
+                else
+                    Console.ForegroundColor = ColorMappings[block.ForeColor.Value];
+            }
+
+            if (block.BackColor.HasValue)
+            {
+                if (block.BackColor.Value == CColor.BgReset)
+                {
+                    ConsoleColor foreColor = Console.ForegroundColor;
+                    Console.ResetColor();
+                    Console.ForegroundColor = foreColor;
+                }
+                else
+                    Console.BackgroundColor = ColorMappings[block.BackColor.Value];
+            }
         }
 
         private static readonly Dictionary<CColor, ConsoleColor> ColorMappings = new Dictionary<CColor, ConsoleColor>

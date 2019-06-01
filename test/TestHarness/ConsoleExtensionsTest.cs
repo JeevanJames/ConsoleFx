@@ -17,7 +17,8 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.ConsoleExtensions;
+using static ConsoleFx.ConsoleExtensions.Clr;
+using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
 namespace TestHarness
 {
@@ -25,10 +26,10 @@ namespace TestHarness
     {
         internal override void Run()
         {
-            const string longStr = @"This is a very long string that I intend to use to test the ConsoleEx.PrintIndented method to prove that it can actually print a long string correctly by splitting them among at empty character occurrences. After attempting the first time, I realized that the initial string, while still long, was not long enough to properly test the method. So, I increased the length by a great deal to allow proper testing.";
+            string longStr = $@"This is a very long string that I intend to use to test the {Cyan}ConsoleEx.PrintIndented{Reset} method to prove that it can actually print a long string correctly {Black.BgYellow}by splitting them among at empty character occurrences{Reset.BgReset}. After attempting the first time, I realized that the initial string, while still long, was not long enough to properly test the method. So, I increased the length by a great deal to allow proper testing.";
 
-            ConsoleEx.PrintIndented(longStr, 8, true);
-            ConsoleEx.PrintIndented(longStr, 16, true);
+            PrintIndented(longStr, 8, true);
+            PrintIndented(longStr, 16, true);
         }
     }
 }

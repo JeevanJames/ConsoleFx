@@ -131,7 +131,7 @@
             <param name="indent">The indent to left align each line.</param>
             <param name="lines">The lines to write.</param>
         </member>
-        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.PrintIndented(System.String,System.Int32,System.Boolean)">
+        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.PrintIndented(ConsoleFx.ConsoleExtensions.ColorString,System.Int32,System.Boolean)">
             <summary>
                 Writes a long piece of text to the console such that each new line is left-aligned
                 to the same indent.
