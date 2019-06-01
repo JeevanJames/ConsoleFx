@@ -34,6 +34,7 @@ namespace TestHarness.ConsoleProgramTest
         {
             var program = new MyProgram();
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
+            program.Run("install2");
             program.Run("install2", "repo2");
         }
     }

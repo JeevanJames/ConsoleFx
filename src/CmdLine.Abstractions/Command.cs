@@ -75,12 +75,16 @@ namespace ConsoleFx.CmdLine
         private void ProcessCommandAttribute()
         {
             // Read the command attribute on this class.
-            // If present, add any names to the command.
             CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
             if (commandAttribute != null)
             {
+                // Add names from attribute
                 foreach (string name in commandAttribute.Names)
                     AddName(name);
+
+                // Throw exception if parent type is same as current type.
+                if (commandAttribute.ParentType == GetType())
+                    throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
             }
 
             // Check with the DiscoveredCommands property to check if any discovered commands have this
