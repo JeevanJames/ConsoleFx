@@ -27,7 +27,7 @@ namespace ConsoleFx.Prompter.Questions
         private bool _hideCursor;
         private bool _hideMask;
 
-        internal PasswordQuestion(string name, FunctionOrValue<string> message)
+        internal PasswordQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
             _askerFn = (q, ans) =>
@@ -56,7 +56,7 @@ namespace ConsoleFx.Prompter.Questions
 
     public sealed class PasswordQuestion : PasswordQuestion<string>
     {
-        internal PasswordQuestion(string name, FunctionOrValue<string> message)
+        internal PasswordQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
         }

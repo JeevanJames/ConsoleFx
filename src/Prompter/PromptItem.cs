@@ -17,6 +17,8 @@ limitations under the License.
 */
 #endregion
 
+using ConsoleFx.ConsoleExtensions;
+
 namespace ConsoleFx.Prompter
 {
     /// <summary>
@@ -30,7 +32,7 @@ namespace ConsoleFx.Prompter
         ///     Initializes a new instance of the <see cref="PromptItem"/> class.
         /// </summary>
         /// <param name="message">The <paramref name="message"/> to display to the user.</param>
-        protected PromptItem(FunctionOrValue<string> message)
+        protected PromptItem(FunctionOrColorString message)
         {
             Message = message;
         }
@@ -41,7 +43,7 @@ namespace ConsoleFx.Prompter
             return this;
         }
 
-        internal FunctionOrValue<string> Message { get; }
+        internal FunctionOrColorString Message { get; }
 
         internal AnswersFunc<bool> CanAskFn { get; set; }
 

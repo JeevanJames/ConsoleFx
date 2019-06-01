@@ -25,7 +25,7 @@ namespace ConsoleFx.Prompter.Questions
     {
         private readonly AskerFn _askerFn;
 
-        public MultiLineQuestion(string name, FunctionOrValue<string> message)
+        public MultiLineQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
             _askerFn = (q, ans) =>
@@ -41,7 +41,7 @@ namespace ConsoleFx.Prompter.Questions
 
     public sealed class MultiLineQuestion : MultiLineQuestion<string>
     {
-        public MultiLineQuestion(string name, FunctionOrValue<string> message)
+        public MultiLineQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
         }

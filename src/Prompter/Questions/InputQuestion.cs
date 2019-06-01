@@ -27,7 +27,7 @@ namespace ConsoleFx.Prompter.Questions
     {
         private readonly AskerFn _askerFn;
 
-        internal InputQuestion(string name, FunctionOrValue<string> message)
+        internal InputQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
             _askerFn = (q, ans) =>
@@ -50,7 +50,7 @@ namespace ConsoleFx.Prompter.Questions
                 }
 
                 return ConsoleEx.Prompt(new ColorString(q.Message.Resolve(ans),
-                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor),
+                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor).ToString(),
                     Validator);
             };
         }
@@ -60,7 +60,7 @@ namespace ConsoleFx.Prompter.Questions
 
     public sealed class InputQuestion : InputQuestion<string>
     {
-        internal InputQuestion(string name, FunctionOrValue<string> message)
+        internal InputQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
         }

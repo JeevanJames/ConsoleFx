@@ -33,7 +33,7 @@ namespace ConsoleFx.Prompter.Questions
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly AskerFn _askerFn;
 
-        public CheckboxQuestion(string name, FunctionOrValue<string> message, IEnumerable<string> choices)
+        public CheckboxQuestion(string name, FunctionOrColorString message, IEnumerable<string> choices)
             : base(name, message)
         {
             if (choices is null)

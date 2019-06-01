@@ -24,14 +24,14 @@ namespace ConsoleFx.Prompter
 {
     public abstract class Question : PromptItem
     {
-        private IList<FunctionOrValue<string>> _instructions;
+        private IList<FunctionOrColorString> _instructions;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Question"/> class.
         /// </summary>
         /// <param name="name">The name of the variable to store the answer.</param>
         /// <param name="message">The message to display to the user.</param>
-        protected Question(string name, FunctionOrValue<string> message)
+        protected Question(string name, FunctionOrColorString message)
             : base(message)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -44,9 +44,9 @@ namespace ConsoleFx.Prompter
         /// </summary>
         public string Name { get; }
 
-        public IList<FunctionOrValue<string>> Instructions
+        public IList<FunctionOrColorString> Instructions
         {
-            get => _instructions ?? (_instructions = new List<FunctionOrValue<string>>());
+            get => _instructions ?? (_instructions = new List<FunctionOrColorString>());
             set => _instructions = value;
         }
 
@@ -64,17 +64,17 @@ namespace ConsoleFx.Prompter
 
     public abstract class Question<TRaw, TConverted> : Question
     {
-        protected Question(string name, FunctionOrValue<string> message)
+        protected Question(string name, FunctionOrColorString message)
             : base(name, message)
         {
         }
 
-        public Question<TRaw, TConverted> WithInstructions(params FunctionOrValue<string>[] instructions)
+        public Question<TRaw, TConverted> WithInstructions(params FunctionOrColorString[] instructions)
         {
             if (instructions is null)
                 throw new ArgumentNullException(nameof(instructions));
 
-            foreach (FunctionOrValue<string> instruction in instructions)
+            foreach (FunctionOrColorString instruction in instructions)
             {
                 if (instruction.IsAssigned)
                     Instructions.Add(instruction);

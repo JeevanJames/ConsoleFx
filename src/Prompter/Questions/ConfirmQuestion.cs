@@ -27,7 +27,7 @@ namespace ConsoleFx.Prompter.Questions
         private readonly AskerFn _askerFn;
         private readonly bool _default;
 
-        internal ConfirmQuestion(string name, FunctionOrValue<string> message, bool @default)
+        internal ConfirmQuestion(string name, FunctionOrColorString message, bool @default)
             : base(name, message)
         {
             _askerFn = (q, ans) =>

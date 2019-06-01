@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System;
+using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
@@ -97,6 +98,51 @@ namespace ConsoleFx.Prompter
         public static implicit operator FunctionOrValue<TValue>(Func<dynamic, TValue> function)
         {
             return new FunctionOrValue<TValue>(function);
+        }
+    }
+
+    public readonly struct FunctionOrColorString
+    {
+        internal FunctionOrColorString(ColorString cstr)
+        {
+            Value = cstr;
+            Function = null;
+            IsAssigned = true;
+        }
+
+        internal FunctionOrColorString(Func<dynamic, ColorString> function)
+        {
+            if (function is null)
+                throw new ArgumentNullException(nameof(function));
+            Function = function;
+            Value = null;
+            IsAssigned = true;
+        }
+
+        internal ColorString Value { get; }
+
+        internal Func<dynamic, ColorString> Function { get; }
+
+        internal bool IsAssigned { get; }
+
+        internal ColorString Resolve(dynamic answers = null)
+        {
+            return Function != null ? Function(answers) : Value;
+        }
+
+        public static implicit operator FunctionOrColorString(ColorString cstr)
+        {
+            return new FunctionOrColorString(cstr);
+        }
+
+        public static implicit operator FunctionOrColorString(string str)
+        {
+            return new FunctionOrColorString(str);
+        }
+
+        public static implicit operator FunctionOrColorString(Func<dynamic, ColorString> function)
+        {
+            return new FunctionOrColorString(function);
         }
     }
 }

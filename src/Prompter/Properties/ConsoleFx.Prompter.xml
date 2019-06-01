@@ -73,13 +73,13 @@
                 This includes questions (<see cref="T:ConsoleFx.Prompter.Question"/>) and static text (<see cref="T:ConsoleFx.Prompter.StaticText"/>).
             </summary>
         </member>
-        <member name="M:ConsoleFx.Prompter.PromptItem.#ctor(ConsoleFx.Prompter.FunctionOrValue{System.String})">
+        <member name="M:ConsoleFx.Prompter.PromptItem.#ctor(ConsoleFx.Prompter.FunctionOrColorString)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.Prompter.PromptItem"/> class.
             </summary>
             <param name="message">The <paramref name="message"/> to display to the user.</param>
         </member>
-        <member name="M:ConsoleFx.Prompter.Question.#ctor(System.String,ConsoleFx.Prompter.FunctionOrValue{System.String})">
+        <member name="M:ConsoleFx.Prompter.Question.#ctor(System.String,ConsoleFx.Prompter.FunctionOrColorString)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.Prompter.Question"/> class.
             </summary>

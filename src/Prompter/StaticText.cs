@@ -25,7 +25,7 @@ namespace ConsoleFx.Prompter
     {
         private readonly AskerFn _askerFn;
 
-        internal StaticText(FunctionOrValue<string> message)
+        internal StaticText(FunctionOrColorString message)
             : base(message)
         {
             _askerFn = (q, ans) =>

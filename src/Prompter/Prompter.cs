@@ -70,11 +70,11 @@ namespace ConsoleFx.Prompter
 
                 if (question.Instructions.Count > 0)
                 {
-                    foreach (FunctionOrValue<string> instruction in question.Instructions)
+                    foreach (FunctionOrColorString instruction in question.Instructions)
                     {
                         var cstr = new ColorString().Text(instruction.Resolve(answers),
                             Style.Instructions.ForeColor, Style.Instructions.BackColor);
-                        ConsoleEx.PrintLine(cstr);
+                        ConsoleEx.PrintLine(cstr.ToString());
                     }
                 }
 

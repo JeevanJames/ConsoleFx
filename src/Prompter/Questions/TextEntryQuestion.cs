@@ -17,13 +17,13 @@ limitations under the License.
 */
 #endregion
 
-using System;
+using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter.Questions
 {
     public abstract class TextEntryQuestion<TValue> : Question<string, TValue>
     {
-        protected TextEntryQuestion(string name, FunctionOrValue<string> message)
+        protected TextEntryQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
         }

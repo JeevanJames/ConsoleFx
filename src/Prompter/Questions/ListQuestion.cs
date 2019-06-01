@@ -33,7 +33,7 @@ namespace ConsoleFx.Prompter.Questions
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly AskerFn _askerFn;
 
-        public ListQuestion(string name, FunctionOrValue<string> message, IEnumerable<string> choices)
+        public ListQuestion(string name, FunctionOrColorString message, IEnumerable<string> choices)
             : base(name, message)
         {
             if (choices is null)
@@ -55,7 +55,7 @@ namespace ConsoleFx.Prompter.Questions
 
     public sealed class ListQuestion : ListQuestion<int>
     {
-        public ListQuestion(string name, FunctionOrValue<string> message, IEnumerable<string> choices)
+        public ListQuestion(string name, FunctionOrColorString message, IEnumerable<string> choices)
             : base(name, message, choices)
         {
         }
