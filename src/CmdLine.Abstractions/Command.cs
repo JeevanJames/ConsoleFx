@@ -193,7 +193,7 @@ namespace ConsoleFx.CmdLine
 
         protected virtual int HandleCommand(ParseResultBase parseResult)
         {
-            return 0;
+            return HandleCommand();
         }
 
         protected virtual int HandleCommand()
@@ -240,12 +240,17 @@ namespace ConsoleFx.CmdLine
 
         public static readonly IDictionary<Type, Type> DiscoveredCommands = new Dictionary<Type, Type>();
 
-        public void ScanEntryAssemblyForCommands()
+        public void ScanEntryAssemblyForCommands(Func<Type, bool> typePredicate = null)
         {
-            ScanAssembliesForCommands(Assembly.GetEntryAssembly());
+            ScanAssembliesForCommands(new[] { Assembly.GetEntryAssembly() }, typePredicate);
         }
 
         public void ScanAssembliesForCommands(params Assembly[] assemblies)
+        {
+            ScanAssembliesForCommands((IEnumerable<Assembly>)assemblies);
+        }
+
+        public void ScanAssembliesForCommands(IEnumerable<Assembly> assemblies, Func<Type, bool> typePredicate = null)
         {
             if (assemblies is null)
                 throw new ArgumentNullException(nameof(assemblies));
@@ -264,9 +269,10 @@ namespace ConsoleFx.CmdLine
                 // Look for any types that derive from Command and have a parameterless constructor.
                 // Get the command type and any parent command type specified by the Command attribute.
                 var assemblyCommands = assembly.GetExportedTypes()
+                    .Where(type => typePredicate != null && typePredicate(type))
                     .Where(type => typeof(Command).IsAssignableFrom(type))
                     .Where(type => type.GetConstructor(Type.EmptyTypes) != null)
-                    .Select(t => (t, t.GetCustomAttribute<CommandAttribute>(true)?.ParentType));
+                    .Select(type => (type, type.GetCustomAttribute<CommandAttribute>(true)?.ParentType));
                 discoveredCommands.AddRange(assemblyCommands);
             }
 

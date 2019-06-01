@@ -26,16 +26,15 @@ using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
 using ConsoleFx.CmdLine.Validators;
 
-namespace TestHarness
+namespace TestHarness.ConsoleProgramTest
 {
-    internal sealed class ProgramTest : TestBase
+    internal sealed class Test : TestBase
     {
         internal override void Run()
         {
             var program = new MyProgram();
-            program.ScanEntryAssemblyForCommands();
-            program.Run(new[] { "install2", "repo2" });
-            program.Run(new[] { "install2", "repo2" });
+            program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
+            program.Run("install2", "repo2");
         }
     }
 

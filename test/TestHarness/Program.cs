@@ -68,7 +68,7 @@ namespace TestHarness
             [typeof(ConsoleExtensionsTest)]   = "ConsoleEx",
             [typeof(ParserTest)]              = "Parser",
             [typeof(Parser2Test)]             = "Parser 2",
-            [typeof(ProgramTest)]             = "Console Program",
+            [typeof(ConsoleProgramTest.Test)] = "Console Program",
             [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",
             [typeof(PrompterTest)]            = "Prompter",
             [typeof(Program)]                 = "Exit",
