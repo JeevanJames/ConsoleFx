@@ -19,6 +19,11 @@ limitations under the License.
 
 namespace ConsoleFx.Prompter
 {
+    /// <summary>
+    ///     Base class for any item that can be displayed by the prompter.
+    ///     <para/>
+    ///     This includes questions (<see cref="Question"/>) and static text (<see cref="StaticText"/>).
+    /// </summary>
     public abstract class PromptItem
     {
         /// <summary>
@@ -42,7 +47,9 @@ namespace ConsoleFx.Prompter
 
         internal abstract AskerFn AskerFn { get; }
 
-        internal bool CanAsk(dynamic answers) =>
-            (CanAskFn is null) || (bool)CanAskFn(answers);
+        internal bool CanAsk(dynamic answers)
+        {
+            return (CanAskFn is null) || (bool)CanAskFn(answers);
+        }
     }
 }
