@@ -27,14 +27,14 @@ The ConsoleFx.Capture package provides support for capturing console output from
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Capture.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.Capture.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Capture.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.Capture.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>ConsoleFx.CmdLine.Parser</AssemblyName>
     <RootNamespace>ConsoleFx.CmdLine.Parser</RootNamespace>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Version>0.0.1</Version>
     <Authors>Jeevan James</Authors>
     <Company>Jeevan James</Company>
@@ -27,14 +27,14 @@ The ConsoleFx.CmdLine.Parser package provides a sophisticated command-line argum
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.CmdLine.Parser.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.CmdLine.Parser.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.CmdLine.Parser.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.CmdLine.Parser.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

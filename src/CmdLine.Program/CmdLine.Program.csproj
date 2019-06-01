@@ -27,14 +27,14 @@ The ConsoleFx.CmdLine.Program package provides support for creating console appl
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.CmdLine.Program.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.CmdLine.Program.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.CmdLine.Program.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.CmdLine.Program.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

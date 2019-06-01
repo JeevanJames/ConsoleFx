@@ -32,14 +32,14 @@ The ConsoleFx.ConsoleExtensions package provides enhancements to the Console cla
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.ConsoleExtensions.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.ConsoleExtensions.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.ConsoleExtensions.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.ConsoleExtensions.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

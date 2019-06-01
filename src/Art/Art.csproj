@@ -26,14 +26,14 @@ The ConsoleFx.Art package provides support for rendering ASCII art on the consol
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Art.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.Art.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Art.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.Art.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

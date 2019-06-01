@@ -66,6 +66,13 @@
             </summary>
             <param name="function">The factory function delegate to convert.</param>
         </member>
+        <member name="T:ConsoleFx.Prompter.PromptItem">
+            <summary>
+                Base class for any item that can be displayed by the prompter.
+                <para/>
+                This includes questions (<see cref="T:ConsoleFx.Prompter.Question"/>) and static text (<see cref="T:ConsoleFx.Prompter.StaticText"/>).
+            </summary>
+        </member>
         <member name="M:ConsoleFx.Prompter.PromptItem.#ctor(ConsoleFx.Prompter.FunctionOrValue{System.String})">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.Prompter.PromptItem"/> class.

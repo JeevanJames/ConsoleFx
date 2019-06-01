@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>ConsoleFx.Prompter</AssemblyName>
     <RootNamespace>ConsoleFx.Prompter</RootNamespace>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Version>0.0.1</Version>
     <Authors>Jeevan James</Authors>
     <Company>Jeevan James</Company>
@@ -27,14 +27,14 @@ The ConsoleFx.Prompter package provides support for creating interactive experie
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Prompter.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.Prompter.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>ConsoleFx.Prompter.xml</DocumentationFile>
+    <DocumentationFile>Properties\ConsoleFx.Prompter.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
