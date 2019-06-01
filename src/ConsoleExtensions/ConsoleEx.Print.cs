@@ -32,30 +32,7 @@ namespace ConsoleFx.ConsoleExtensions
         {
             foreach (ColorStringBlock block in message)
             {
-                if (block.ForeColor.HasValue)
-                {
-                    if (block.ForeColor.Value == CColor.Reset)
-                    {
-                        ConsoleColor backColor = Console.BackgroundColor;
-                        Console.ResetColor();
-                        Console.BackgroundColor = backColor;
-                    }
-                    else
-                        Console.ForegroundColor = ColorMappings[block.ForeColor.Value];
-                }
-
-                if (block.BackColor.HasValue)
-                {
-                    if (block.BackColor.Value == CColor.BgReset)
-                    {
-                        ConsoleColor foreColor = Console.ForegroundColor;
-                        Console.ResetColor();
-                        Console.ForegroundColor = foreColor;
-                    }
-                    else
-                        Console.BackgroundColor = ColorMappings[block.BackColor.Value];
-                }
-
+                SetupColorsForBlockPrinting(block);
                 Console.Write(block.Text);
 
                 if (Settings.ColorReset == ColorResetOption.ResetAfterColor)
@@ -64,6 +41,33 @@ namespace ConsoleFx.ConsoleExtensions
 
             if (Settings.ColorReset == ColorResetOption.ResetAfterCommand)
                 Console.ResetColor();
+        }
+
+        private static void SetupColorsForBlockPrinting(ColorStringBlock block)
+        {
+            if (block.ForeColor.HasValue)
+            {
+                if (block.ForeColor.Value == CColor.Reset)
+                {
+                    ConsoleColor backColor = Console.BackgroundColor;
+                    Console.ResetColor();
+                    Console.BackgroundColor = backColor;
+                }
+                else
+                    Console.ForegroundColor = ColorMappings[block.ForeColor.Value];
+            }
+
+            if (block.BackColor.HasValue)
+            {
+                if (block.BackColor.Value == CColor.BgReset)
+                {
+                    ConsoleColor foreColor = Console.ForegroundColor;
+                    Console.ResetColor();
+                    Console.ForegroundColor = foreColor;
+                }
+                else
+                    Console.BackgroundColor = ColorMappings[block.BackColor.Value];
+            }
         }
 
         /// <summary>
@@ -125,7 +129,10 @@ namespace ConsoleFx.ConsoleExtensions
             if (indentFirstLine)
                 Console.Write(indentStr);
 
+            // Tracks the length of the strings printed on the current line.
+            // Once the length crosses the line width, it is reset and we move to the next line.
             int length = 0;
+
             for (int i = 0; i < parts.Length; i++)
             {
                 // If the current length of the printed line plus the length of the next part if greater
