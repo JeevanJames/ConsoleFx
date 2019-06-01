@@ -347,12 +347,11 @@
         </member>
         <member name="T:ConsoleFx.CmdLine.Commands">
             <summary>
-                <para>Collection of <see cref="T:ConsoleFx.CmdLine.Command" /> objects.</para>
-                <para>
-                    This collection adds special behavior to prevent duplicate command names in the
-                    collection as well as the ability to retrieve sub-commands based on the correct
-                    case-sensitivity.
-                </para>
+                Collection of <see cref="T:ConsoleFx.CmdLine.Command" /> objects.
+                <para/>
+                This collection adds special behavior to prevent duplicate command names in the
+                collection as well as the ability to retrieve sub-commands based on the correct
+                case-sensitivity.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLine.Commands.InsertItem(System.Int32,ConsoleFx.CmdLine.Command)">

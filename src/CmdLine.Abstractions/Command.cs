@@ -74,6 +74,8 @@ namespace ConsoleFx.CmdLine
 
         private void ProcessCommandAttribute()
         {
+            // Read the command attribute on this class.
+            // If present, add any names to the command.
             CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
             if (commandAttribute != null)
             {
@@ -81,6 +83,8 @@ namespace ConsoleFx.CmdLine
                     AddName(name);
             }
 
+            // Check with the DiscoveredCommands property to check if any discovered commands have this
+            // command as a parent. If so, add them to the Commands property.
             IEnumerable<Type> childCommandTypes = DiscoveredCommands
                 .Where(kvp => kvp.Value == GetType())
                 .Select(kvp => kvp.Key);
@@ -299,12 +303,11 @@ namespace ConsoleFx.CmdLine
         IReadOnlyDictionary<string, object> options);
 
     /// <summary>
-    ///     <para>Collection of <see cref="Command" /> objects.</para>
-    ///     <para>
-    ///         This collection adds special behavior to prevent duplicate command names in the
-    ///         collection as well as the ability to retrieve sub-commands based on the correct
-    ///         case-sensitivity.
-    ///     </para>
+    ///     Collection of <see cref="Command" /> objects.
+    ///     <para/>
+    ///     This collection adds special behavior to prevent duplicate command names in the
+    ///     collection as well as the ability to retrieve sub-commands based on the correct
+    ///     case-sensitivity.
     /// </summary>
     public sealed class Commands : Args<Command>
     {
