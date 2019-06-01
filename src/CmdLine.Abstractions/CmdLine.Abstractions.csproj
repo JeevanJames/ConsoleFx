@@ -28,7 +28,7 @@ The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-lin
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
     <DocumentationFile>Properties\ConsoleFx.CmdLine.Abstractions.xml</DocumentationFile>
-    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,7 +36,7 @@ The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-lin
     <WarningsAsErrors />
     <NoWarn>1701;1702;1591</NoWarn>
     <DocumentationFile>Properties\ConsoleFx.CmdLine.Abstractions.xml</DocumentationFile>
-    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
