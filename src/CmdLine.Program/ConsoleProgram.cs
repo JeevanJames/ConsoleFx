@@ -88,6 +88,11 @@ namespace ConsoleFx.CmdLine.Program
             }
         }
 
+        public int Run(params string[] args)
+        {
+            return Run((IEnumerable<string>)args);
+        }
+
         private ParserStyle.ArgStyle CreateArgStyle()
         {
             switch (_argStyle)
