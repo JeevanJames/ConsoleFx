@@ -143,6 +143,12 @@
                 position.
             </param>
         </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.SetupColorsForBlockPrinting(ConsoleFx.ConsoleExtensions.ColorStringBlock)">
+            <summary>
+                Helpers method to setup the console's colors from a <see cref="T:ConsoleFx.ConsoleExtensions.ColorStringBlock"/> instance.
+            </summary>
+            <param name="block">The <see cref="T:ConsoleFx.ConsoleExtensions.ColorStringBlock"/> instance.</param>
+        </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Prompt(ConsoleFx.ConsoleExtensions.ColorString)">
             <summary>
                 Displays a message and waits for user input.
