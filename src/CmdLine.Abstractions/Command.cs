@@ -169,7 +169,7 @@ namespace ConsoleFx.CmdLine
 
                     // Add the subcommands from the DiscoveredCommands collection created from the
                     // ScanAssembliesForCommands method.
-                    IEnumerable<Type> childCommandTypes = DiscoveredCommands
+                    IEnumerable<Type> childCommandTypes = RootCommand.DiscoveredCommands
                         .Where(kvp => kvp.Value == GetType())
                         .Select(kvp => kvp.Key);
                     foreach (Type childCommandType in childCommandTypes)
@@ -273,7 +273,7 @@ namespace ConsoleFx.CmdLine
 
         protected sealed override Regex NamePattern => base.NamePattern;
 
-        public static readonly IDictionary<Type, Type> DiscoveredCommands = new Dictionary<Type, Type>();
+        internal IDictionary<Type, Type> DiscoveredCommands { get; } = new Dictionary<Type, Type>();
 
         public void ScanEntryAssemblyForCommands(Func<Type, bool> typePredicate = null)
         {
@@ -289,11 +289,6 @@ namespace ConsoleFx.CmdLine
         {
             if (assemblies is null)
                 throw new ArgumentNullException(nameof(assemblies));
-
-            // Throw an exception of the DiscoveredCommands dictionary is not empty.
-            // This means this method can only be called once.
-            if (DiscoveredCommands.Count > 0)
-                throw new InvalidOperationException("Cannot call the ScanAssemblies method more than once.");
 
             var discoveredCommands = new List<(Type commandType, Type parentType)>();
             foreach (Assembly assembly in assemblies)
