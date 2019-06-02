@@ -29,6 +29,13 @@
             <param name="args">The args to parse.</param>
             <returns>The numeric code that represents the result of the console program execution.</returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ErrorHandler.HandleError(System.Exception)">
+            <summary>
+                Handles the specified error.
+            </summary>
+            <param name="ex">The error to be handled.</param>
+            <returns>The status code corresponding to the error.</returns>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Program.HelpBuilders.UsageType">
             <summary>
                 Describes how the program usage is to be displayed.

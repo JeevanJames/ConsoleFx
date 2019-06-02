@@ -160,7 +160,7 @@ namespace ConsoleFx.CmdLine
             {
                 if (_commands is null)
                 {
-                    _commands = new Commands();
+                    _commands = new Commands(this);
                     IEnumerable<Command> commands = GetArgs().OfType<Command>();
                     foreach (Command command in commands)
                         _commands.Add(command);
@@ -357,7 +357,6 @@ namespace ConsoleFx.CmdLine
         {
             if (string.IsNullOrWhiteSpace(item.Name))
                 throw new ArgumentException("Sub-commands must have a name.", nameof(item));
-
 
             item.ParentCommand = _parentCommand;
             base.InsertItem(index, item);
