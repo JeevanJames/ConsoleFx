@@ -83,7 +83,8 @@ namespace ConsoleFx.CmdLine.Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(ex.Message);
+                DebugOutput.Write(ex);
                 return -1;
             }
         }
