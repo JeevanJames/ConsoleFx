@@ -20,11 +20,10 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
+using ConsoleFx.CmdLine.Program.ErrorHandlers;
 using ConsoleFx.CmdLine.Validators;
 
 namespace TestHarness.ConsoleProgramTest
@@ -34,9 +33,10 @@ namespace TestHarness.ConsoleProgramTest
         internal override void Run()
         {
             var program = new MyProgram();
+            program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            //program.Run("clone", "https://github.com/JeevanJames/_project", "-r", "D:\\Temp\\MyProjects");
-            program.Run();
+            program.Run("clone", "https://github.com/JeevanJames/_project", "-rab", "D:\\Temp\\MyProjects");
+            //program.Run();
         }
     }
 

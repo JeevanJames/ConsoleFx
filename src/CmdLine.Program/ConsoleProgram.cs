@@ -24,6 +24,7 @@ using System.Linq;
 using System.Reflection;
 
 using ConsoleFx.CmdLine.Parser;
+using ConsoleFx.CmdLine.Program.ErrorHandlers;
 
 using ParserStyle = ConsoleFx.CmdLine.Parser.Style;
 
@@ -64,6 +65,8 @@ namespace ConsoleFx.CmdLine.Program
         /// </summary>
         public ArgGrouping Grouping { get; }
 
+        public ErrorHandler ErrorHandler { get; set; }
+
         /// <summary>
         ///     Runs the console program after parsing the command-line args.
         /// </summary>
@@ -83,7 +86,7 @@ namespace ConsoleFx.CmdLine.Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                (ErrorHandler ?? new DefaultErrorHandler()).HandleError(ex);
                 DebugOutput.Write(ex);
                 return -1;
             }

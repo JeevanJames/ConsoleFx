@@ -19,9 +19,9 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using ConsoleFx.CmdLine;
+using System.Reflection;
+
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
@@ -31,9 +31,10 @@ namespace TestHarness
     {
         private static void Main()
         {
-            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
-            DebugOutput.Enable();
+            //Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            //DebugOutput.Enable();
 
+            int selectedItem = 0;
             while (true)
             {
                 try
@@ -43,7 +44,7 @@ namespace TestHarness
                     PrintLine($"What do you want to test?");
 
                     string[] menuItems = MenuItems.Values.ToArray();
-                    int selectedItem = SelectSingle(menuItems);
+                    selectedItem = SelectSingle(menuItems, startingIndex: selectedItem);
 
                     Type[] testTypes = MenuItems.Keys.ToArray();
                     Type selectedType = testTypes[selectedItem];
@@ -54,6 +55,11 @@ namespace TestHarness
 
                     var testHarness = (TestBase)Activator.CreateInstance(selectedType);
                     testHarness.Run();
+                }
+                catch (TargetInvocationException ex) when (ex.InnerException != null)
+                {
+                    PrintLine($"{Red.BgWhite}[{ex.InnerException.GetType().Name}]{ex.InnerException.Message}");
+                    PrintLine($"{Magenta.BgWhite}{ex.InnerException.StackTrace}");
                 }
                 catch (Exception ex)
                 {

@@ -17,23 +17,12 @@ limitations under the License.
 */
 #endregion
 
+using System;
+
 namespace ConsoleFx.CmdLine.Program
 {
-    public static class HelpExtensions
+    public abstract class ErrorHandler
     {
-        public static TArg Description<TArg>(this TArg arg, string description)
-            where TArg : Arg
-        {
-            arg["Description"] = description;
-            return arg;
-        }
-
-        public static TCommand Grouping<TCommand>(this TCommand command, string groupName, string description)
-            where TCommand : Command
-        {
-            command["GroupName"] = groupName;
-            command["GroupDescription"] = description;
-            return command;
-        }
+        public abstract void HandleError(Exception ex);
     }
 }
