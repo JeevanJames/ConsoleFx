@@ -23,6 +23,11 @@ namespace ConsoleFx.CmdLine.Program
 {
     public abstract class ErrorHandler
     {
-        public abstract void HandleError(Exception ex);
+        /// <summary>
+        ///     Handles the specified error.
+        /// </summary>
+        /// <param name="ex">The error to be handled.</param>
+        /// <returns>The status code corresponding to the error.</returns>
+        public abstract int HandleError(Exception ex);
     }
 }

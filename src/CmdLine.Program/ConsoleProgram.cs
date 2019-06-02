@@ -67,6 +67,8 @@ namespace ConsoleFx.CmdLine.Program
 
         public ErrorHandler ErrorHandler { get; set; }
 
+        public bool DisplayHelpOnError { get; set; }
+
         /// <summary>
         ///     Runs the console program after parsing the command-line args.
         /// </summary>
@@ -86,9 +88,14 @@ namespace ConsoleFx.CmdLine.Program
             }
             catch (Exception ex)
             {
-                (ErrorHandler ?? new DefaultErrorHandler()).HandleError(ex);
+                int errorCode = (ErrorHandler ?? new DefaultErrorHandler()).HandleError(ex);
                 DebugOutput.Write(ex);
-                return -1;
+                if (DisplayHelpOnError)
+                {
+                    //TODO: Display help
+                }
+
+                return errorCode;
             }
         }
 

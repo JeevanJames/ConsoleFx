@@ -27,7 +27,7 @@ namespace ConsoleFx.CmdLine.Program.ErrorHandlers
 
         public ConsoleColor? BackColor { get; set; }
 
-        public override void HandleError(Exception ex)
+        public override int HandleError(Exception ex)
         {
             var (fg, bg) = (Console.ForegroundColor, Console.BackgroundColor);
             try
@@ -43,6 +43,8 @@ namespace ConsoleFx.CmdLine.Program.ErrorHandlers
                 Console.ForegroundColor = fg;
                 Console.BackgroundColor = bg;
             }
+
+            return -1;
         }
     }
 }

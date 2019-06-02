@@ -100,6 +100,19 @@ namespace ConsoleFx.CmdLine
             }
         }
 
+        internal Command ParentCommand { get; set; }
+
+        internal Command RootCommand
+        {
+            get
+            {
+                Command currentCommand = this;
+                while (currentCommand.ParentCommand != null)
+                    currentCommand = currentCommand.ParentCommand;
+                return currentCommand;
+            }
+        }
+
         /// <summary>
         ///     Gets the collection of <see cref="Argument" /> objects for this command.
         /// </summary>
@@ -328,6 +341,13 @@ namespace ConsoleFx.CmdLine
     /// </summary>
     public sealed class Commands : Args<Command>
     {
+        private readonly Command _parentCommand;
+
+        internal Commands(Command parentCommand)
+        {
+            _parentCommand = parentCommand;
+        }
+
         /// <inheritdoc />
         /// <summary>
         ///     While a <see cref="Command"/> does not need to have a name, a command added to the
@@ -338,6 +358,8 @@ namespace ConsoleFx.CmdLine
             if (string.IsNullOrWhiteSpace(item.Name))
                 throw new ArgumentException("Sub-commands must have a name.", nameof(item));
 
+
+            item.ParentCommand = _parentCommand;
             base.InsertItem(index, item);
         }
 
@@ -351,6 +373,7 @@ namespace ConsoleFx.CmdLine
             if (string.IsNullOrWhiteSpace(item.Name))
                 throw new ArgumentException("Sub-commands must have a name.", nameof(item));
 
+            item.ParentCommand = _parentCommand;
             base.SetItem(index, item);
         }
 
