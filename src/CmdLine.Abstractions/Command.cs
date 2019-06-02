@@ -277,7 +277,7 @@ namespace ConsoleFx.CmdLine
                 // Look for any types that derive from Command and have a parameterless constructor.
                 // Get the command type and any parent command type specified by the Command attribute.
                 var assemblyCommands = assembly.GetExportedTypes()
-                    .Where(type => typePredicate != null && typePredicate(type))
+                    .Where(type => typePredicate is null || typePredicate(type))
                     .Where(type => typeof(Command).IsAssignableFrom(type))
                     .Where(type => type.GetConstructor(Type.EmptyTypes) != null)
                     .Select(type => (type, type.GetCustomAttribute<CommandAttribute>(true)?.ParentType));
