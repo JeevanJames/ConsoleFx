@@ -288,7 +288,10 @@ namespace ConsoleFx.CmdLine
             // dictionary.
             var nonRootCommands = discoveredCommands.Where(c => c.parentType != null);
             foreach (var (commandType, parentType) in nonRootCommands)
+            {
+                DebugOutput.Write($"Discovered child: {commandType.FullName} of {parentType.FullName}");
                 DiscoveredCommands.Add(commandType, parentType);
+            }
 
             // Since we are scanning from this instance, then this command is a root command.
             // Any discovered commands that do not have a parent type will be children of this
@@ -298,6 +301,7 @@ namespace ConsoleFx.CmdLine
                 var rootCommands = discoveredCommands.Where(c => c.parentType is null);
                 foreach (var (commandType, _) in rootCommands)
                 {
+                    DebugOutput.Write($"Discovered root: {commandType.FullName}");
                     var command = (Command)Activator.CreateInstance(commandType);
                     if (command.Name != null)
                         Commands.Add(command);

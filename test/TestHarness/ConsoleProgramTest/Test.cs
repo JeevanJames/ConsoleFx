@@ -35,7 +35,8 @@ namespace TestHarness.ConsoleProgramTest
         {
             var program = new MyProgram();
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            program.Run("clone", "https://github.com/JeevanJames/_project", "-r", "D:\\Temp\\MyProjects");
+            //program.Run("clone", "https://github.com/JeevanJames/_project", "-r", "D:\\Temp\\MyProjects");
+            program.Run();
         }
     }
 
@@ -75,10 +76,10 @@ namespace TestHarness.ConsoleProgramTest
                 .DefaultsTo(new DirectoryInfo("."));
         }
 
-        private static readonly Regex TagPattern = new Regex(@"^(\w[\w_-]*)$");
-
         protected override int HandleCommand()
         {
+            Console.WriteLine(RepoUrl);
+            Console.WriteLine(ProjectRootDirectory);
             return 0;
         }
     }

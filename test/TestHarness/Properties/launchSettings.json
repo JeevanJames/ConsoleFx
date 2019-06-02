@@ -2,7 +2,7 @@
   "profiles": {
     "TestHarness": {
       "commandName": "Project",
-      "commandLineArgs": "--only-me"
+      "commandLineArgs": "clone https://github.com/JeevanJames/_project --project-root-dir D:\\Temp\\MyProjects"
     }
   }
 }
