@@ -71,6 +71,8 @@ namespace ConsoleFx.CmdLine.Parser
         /// <returns>A <see cref="ParseResult" /> instance.</returns>
         public ParseResult Parse(params string[] tokens)
         {
+            DebugOutput.Write("Tokens passed", tokens);
+
             IReadOnlyList<string> tokenList = tokens.ToList();
 
             // Creates a ParseRun instance, which specifies the sequence of commands specified and

@@ -19,8 +19,9 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-
+using ConsoleFx.CmdLine;
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
@@ -30,6 +31,9 @@ namespace TestHarness
     {
         private static void Main()
         {
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            DebugOutput.Enable();
+
             while (true)
             {
                 try

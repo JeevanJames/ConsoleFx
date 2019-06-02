@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -34,76 +35,50 @@ namespace TestHarness.ConsoleProgramTest
         {
             var program = new MyProgram();
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            program.Run("install2");
-            program.Run("install2", "repo2");
+            program.Run("clone", "https://github.com/JeevanJames/_project", "-r", "D:\\Temp\\MyProjects");
         }
     }
 
     [Program(Style = ArgStyle.Unix)]
     public sealed class MyProgram : ConsoleProgram
     {
-        [Option("tags")]
-        public IList<string> Tags { get; set; }
+    }
 
-        [Option("exclude-tags")]
-        public IList<string> ExcludedTags { get; set; }
+    [Command("clone")]
+    public sealed class CloneCommand : Command
+    {
+        public Uri RepoUrl { get; set; }
 
-        [Option("repos")]
-        public IList<string> Repositories { get; set; }
+        public string ManifestDirectory { get; set; }
 
-        [Option("exclude-repos")]
-        public IList<string> ExcludedRepositories { get; set; }
+        [Option("branch")]
+        public string Branch { get; set; }
 
-        [Option("only-me")]
-        public bool OnlyMe { get; set; }
+        [Option("project-root-dir")]
+        public DirectoryInfo ProjectRootDirectory { get; set; }
 
         protected override IEnumerable<Arg> GetArgs()
         {
-            yield return new Option("tags")
-                .UsedAsUnlimitedOccurrencesAndParameters(optional: true)
-                .ValidateWithRegex(TagPattern);
+            yield return new Argument(nameof(RepoUrl))
+                .ValidateAsUri(UriKind.Absolute)
+                .TypedAs<Uri>();
 
-            yield return new Option("exclude-tags")
-                .UsedAsUnlimitedOccurrencesAndParameters(optional: true)
-                .ValidateWithRegex(TagPattern);
+            yield return new Argument(nameof(ManifestDirectory), true);
 
-            yield return new Option("only-me")
-                .UsedAsFlag(optional: true);
+            yield return new Option("branch", "b")
+                .UsedAsSingleParameter();
 
-            yield return new Option("repos")
-                .UsedAsUnlimitedOccurrencesAndParameters(optional: true);
-
-            yield return new Option("exclude-repos")
-                .UsedAsUnlimitedOccurrencesAndParameters(optional: true);
+            yield return new Option("project-root-dir", "r")
+                .UsedAsSingleParameter()
+                .ValidateAsDirectory()
+                .TypedAs(value => new DirectoryInfo(value))
+                .DefaultsTo(new DirectoryInfo("."));
         }
 
         private static readonly Regex TagPattern = new Regex(@"^(\w[\w_-]*)$");
 
         protected override int HandleCommand()
         {
-            Tags.ToList().ForEach(Console.WriteLine);
-            ExcludedTags.ToList().ForEach(Console.WriteLine);
-
-            return 0;
-        }
-    }
-
-    [Command("install2")]
-    public class Install2Command : Command
-    {
-        protected override int HandleCommand()
-        {
-            Console.WriteLine("AddCommand");
-            return 0;
-        }
-    }
-
-    [Command("repo2", typeof(Install2Command))]
-    public sealed class Repo2Command : Command
-    {
-        protected override int HandleCommand()
-        {
-            Console.WriteLine("RepoCommand");
             return 0;
         }
     }
