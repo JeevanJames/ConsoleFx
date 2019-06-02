@@ -293,12 +293,21 @@ namespace ConsoleFx.CmdLine
             // Since we are scanning from this instance, then this command is a root command.
             // Any discovered commands that do not have a parent type will be children of this
             // command.
-            var rootCommands = discoveredCommands.Where(c => c.parentType is null);
-            foreach (var (commandType, _) in rootCommands)
+            try
             {
-                var command = (Command)Activator.CreateInstance(commandType);
-                if (command.Name != null)
-                    Commands.Add(command);
+                var rootCommands = discoveredCommands.Where(c => c.parentType is null);
+                foreach (var (commandType, _) in rootCommands)
+                {
+                    var command = (Command)Activator.CreateInstance(commandType);
+                    if (command.Name != null)
+                        Commands.Add(command);
+                }
+            }
+            catch (TargetInvocationException ex) when (ex.InnerException != null)
+            {
+                // TargetInvocationException can happen when using Activator.CreateInstance.
+                // Catch them and throw the inner exception instead, as that's the true exception.
+                throw ex.InnerException;
             }
         }
     }
