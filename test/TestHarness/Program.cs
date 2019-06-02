@@ -80,6 +80,7 @@ namespace TestHarness
             [typeof(Parser2Test)]             = "Parser 2",
             [typeof(ConsoleProgramTest.Test)] = "Console Program",
             [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",
+            [typeof(DeepMultiCommand.Test)]   = "Deep multi-command Console Program",
             [typeof(PrompterTest)]            = "Prompter",
             [typeof(Program)]                 = "Exit",
         };

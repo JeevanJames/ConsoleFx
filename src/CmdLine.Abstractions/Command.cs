@@ -89,15 +89,15 @@ namespace ConsoleFx.CmdLine
 
             // Check with the DiscoveredCommands property to check if any discovered commands have this
             // command as a parent. If so, add them to the Commands property.
-            IEnumerable<Type> childCommandTypes = DiscoveredCommands
-                .Where(kvp => kvp.Value == GetType())
-                .Select(kvp => kvp.Key);
-            foreach (Type childCommandType in childCommandTypes)
-            {
-                var command = (Command)Activator.CreateInstance(childCommandType);
-                if (command.Name != null)
-                    Commands.Add(command);
-            }
+            //IEnumerable<Type> childCommandTypes = DiscoveredCommands
+            //    .Where(kvp => kvp.Value == GetType())
+            //    .Select(kvp => kvp.Key);
+            //foreach (Type childCommandType in childCommandTypes)
+            //{
+            //    var command = (Command)Activator.CreateInstance(childCommandType);
+            //    if (command.Name != null)
+            //        Commands.Add(command);
+            //}
         }
 
         internal Command ParentCommand { get; set; }
@@ -161,9 +161,23 @@ namespace ConsoleFx.CmdLine
                 if (_commands is null)
                 {
                     _commands = new Commands(this);
+
+                    // Add the subcommands from the GetArgs method.
                     IEnumerable<Command> commands = GetArgs().OfType<Command>();
                     foreach (Command command in commands)
                         _commands.Add(command);
+
+                    // Add the subcommands from the DiscoveredCommands collection created from the
+                    // ScanAssembliesForCommands method.
+                    IEnumerable<Type> childCommandTypes = DiscoveredCommands
+                        .Where(kvp => kvp.Value == GetType())
+                        .Select(kvp => kvp.Key);
+                    foreach (Type childCommandType in childCommandTypes)
+                    {
+                        var command = (Command)Activator.CreateInstance(childCommandType);
+                        if (command.Name != null)
+                            _commands.Add(command);
+                    }
                 }
 
                 return _commands;
