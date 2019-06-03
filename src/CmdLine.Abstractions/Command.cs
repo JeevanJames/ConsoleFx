@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 namespace ConsoleFx.CmdLine
 {
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
-    public class Command : Arg
+    public partial class Command : Arg
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Arguments _arguments;
@@ -86,22 +86,16 @@ namespace ConsoleFx.CmdLine
                 if (commandAttribute.ParentType == GetType())
                     throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
             }
-
-            // Check with the DiscoveredCommands property to check if any discovered commands have this
-            // command as a parent. If so, add them to the Commands property.
-            //IEnumerable<Type> childCommandTypes = DiscoveredCommands
-            //    .Where(kvp => kvp.Value == GetType())
-            //    .Select(kvp => kvp.Key);
-            //foreach (Type childCommandType in childCommandTypes)
-            //{
-            //    var command = (Command)Activator.CreateInstance(childCommandType);
-            //    if (command.Name != null)
-            //        Commands.Add(command);
-            //}
         }
 
+        /// <summary>
+        ///     Gets or sets a reference to the parent <see cref="Command"/> of this instance.
+        /// </summary>
         internal Command ParentCommand { get; set; }
 
+        /// <summary>
+        ///     Gets the reference to the root <see cref="Command"/> instance.
+        /// </summary>
         internal Command RootCommand
         {
             get
@@ -168,7 +162,7 @@ namespace ConsoleFx.CmdLine
                         _commands.Add(command);
 
                     // Add the subcommands from the DiscoveredCommands collection created from the
-                    // ScanAssembliesForCommands method.
+                    // ScanAssembliesForCommands method in the root command.
                     IEnumerable<Type> childCommandTypes = RootCommand.DiscoveredCommands
                         .Where(kvp => kvp.Value == GetType())
                         .Select(kvp => kvp.Key);
@@ -198,11 +192,27 @@ namespace ConsoleFx.CmdLine
             }
         }
 
+        /// <summary>
+        ///     Override this method to specify the arguments, options and sub-commands of this
+        ///     <see cref="Command"/> instance.
+        /// </summary>
+        /// <returns>
+        ///     A sequence of <see cref="Argument"/>, <see cref="Option"/> and <see cref="Command"/>
+        ///     objects that belong to this <see cref="Command"/> instance.
+        /// </returns>
         protected virtual IEnumerable<Arg> GetArgs()
         {
             yield break;
         }
 
+        /// <summary>
+        ///     Gets or sets the delegate to call to perform additional validations after the tokens
+        ///     have been parsed.
+        ///     <para />
+        ///     If not assigned, the virtual
+        ///     <see cref="PerformCustomValidation(IReadOnlyList{object}, IReadOnlyDictionary{string, object})"/>
+        ///     method is called.
+        /// </summary>
         public CommandCustomValidator CustomValidator
         {
             get => _customValidator ?? PerformCustomValidation;
@@ -218,7 +228,8 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets or sets the delegate to call if the parsed args match this command.
         ///     <para/>
-        ///     If not assigned, the virtual <see cref="HandleCommand(ParseResultBase)"/> method is called.
+        ///     If not assigned, the virtual <see cref="HandleCommand(ParseResultBase)"/> method is
+        ///     called.
         /// </summary>
         public Func<ParseResultBase, int> Handler
         {
@@ -272,7 +283,11 @@ namespace ConsoleFx.CmdLine
         }
 
         protected sealed override Regex NamePattern => base.NamePattern;
+    }
 
+    // Dynamically discover commands in assemblies.
+    public partial class Command : Arg
+    {
         internal IDictionary<Type, Type> DiscoveredCommands { get; } = new Dictionary<Type, Type>();
 
         public void ScanEntryAssemblyForCommands(Func<Type, bool> typePredicate = null)
@@ -340,52 +355,4 @@ namespace ConsoleFx.CmdLine
 
     public delegate string CommandCustomValidator(IReadOnlyList<object> arguments,
         IReadOnlyDictionary<string, object> options);
-
-    /// <summary>
-    ///     Collection of <see cref="Command" /> objects.
-    ///     <para/>
-    ///     This collection adds special behavior to prevent duplicate command names in the
-    ///     collection as well as the ability to retrieve sub-commands based on the correct
-    ///     case-sensitivity.
-    /// </summary>
-    public sealed class Commands : Args<Command>
-    {
-        private readonly Command _parentCommand;
-
-        internal Commands(Command parentCommand)
-        {
-            _parentCommand = parentCommand;
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     While a <see cref="Command"/> does not need to have a name, a command added to the
-        ///     <see cref="Commands"/> collection needs to have a name.
-        /// </summary>
-        protected override void InsertItem(int index, Command item)
-        {
-            if (string.IsNullOrWhiteSpace(item.Name))
-                throw new ArgumentException("Sub-commands must have a name.", nameof(item));
-
-            item.ParentCommand = _parentCommand;
-            base.InsertItem(index, item);
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     While a <see cref="Command"/> does not need to have a name, a command added to the
-        ///     <see cref="Commands"/> collection needs to have a name.
-        /// </summary>
-        protected override void SetItem(int index, Command item)
-        {
-            if (string.IsNullOrWhiteSpace(item.Name))
-                throw new ArgumentException("Sub-commands must have a name.", nameof(item));
-
-            item.ParentCommand = _parentCommand;
-            base.SetItem(index, item);
-        }
-
-        protected override string GetDuplicateErrorMessage(string name) =>
-            $"Command named '{name}' already exists in the command collection.";
-    }
 }

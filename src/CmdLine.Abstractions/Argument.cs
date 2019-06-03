@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine
@@ -113,55 +112,6 @@ namespace ConsoleFx.CmdLine
             foreach (Validator validator in validators)
                 Validators.Add(validator);
             return this;
-        }
-    }
-
-    /// <inheritdoc />
-    /// <summary>
-    ///     Represents a collection of <see cref="T:ConsoleFx.CmdLineArgs.Argument" /> objects.
-    /// </summary>
-    public sealed class Arguments : Args<Argument>
-    {
-        protected override void InsertItem(int index, Argument item)
-        {
-            base.InsertItem(index, item);
-            VerifyOptionalArgumentsAtEnd();
-        }
-
-        protected override void SetItem(int index, Argument item)
-        {
-            base.SetItem(index, item);
-            VerifyOptionalArgumentsAtEnd();
-        }
-
-        protected override string GetDuplicateErrorMessage(string name)
-        {
-            return string.Format(Errors.Arguments_Duplicate_argument, name);
-        }
-
-        /// <summary>
-        ///     Called whenever an argument is added or set in the collection to verify that optional arguments are
-        ///     specified only after the required ones.
-        /// </summary>
-        private void VerifyOptionalArgumentsAtEnd()
-        {
-            //TODO: Try and optimize this to not traverse the whole list each time.
-            var inOptionalSet = false;
-            foreach (var argument in this)
-            {
-                if (inOptionalSet)
-                {
-                    if (!argument.IsOptional)
-                    {
-                        throw new ParserException(ParserException.Codes.RequiredArgumentsDefinedAfterOptional,
-                            Messages.RequiredArgumentsDefinedAfterOptional);
-                    }
-                }
-                else
-                {
-                    inOptionalSet = argument.IsOptional;
-                }
-            }
         }
     }
 }

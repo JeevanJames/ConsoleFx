@@ -92,6 +92,28 @@
             <param name="name">The name of the metadata value.</param>
             <param name="value">The value of the metadata to set.</param>
         </member>
+        <member name="T:ConsoleFx.CmdLine.ArgGrouping">
+            <summary>
+                Specifies how the command-line args are expected to be grouped.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.ArgGrouping.DoesNotMatter">
+            <summary>
+                Command line parameters grouping does not matter. Options and arguments can be mixed together.
+                <para/>
+                This is the default grouping.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.ArgGrouping.OptionsBeforeArguments">
+            <summary>
+                Options must be specified before arguments in the command line.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.ArgGrouping.OptionsAfterArguments">
+            <summary>
+                Options must be specified after arguments in the command line.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Args`1">
             <inheritdoc />
             <summary>
@@ -161,28 +183,6 @@
             </param>
             <returns>The error message string for the exception.</returns>
         </member>
-        <member name="T:ConsoleFx.CmdLine.ArgGrouping">
-            <summary>
-                Specifies how the command-line args are expected to be grouped.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.ArgGrouping.DoesNotMatter">
-            <summary>
-                Command line parameters grouping does not matter. Options and arguments can be mixed together.
-                <para/>
-                This is the default grouping.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.ArgGrouping.OptionsBeforeArguments">
-            <summary>
-                Options must be specified before arguments in the command line.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.ArgGrouping.OptionsAfterArguments">
-            <summary>
-                Options must be specified after arguments in the command line.
-            </summary>
-        </member>
         <member name="T:ConsoleFx.CmdLine.Argument">
             <inheritdoc />
             <summary>
@@ -225,18 +225,6 @@
             </summary>
             <param name="validators">The validators to use to validate the argument.</param>
             <returns>The same instance of the <see cref="T:ConsoleFx.CmdLine.Argument"/> object to allow for fluent syntax.</returns>
-        </member>
-        <member name="T:ConsoleFx.CmdLine.Arguments">
-            <inheritdoc />
-            <summary>
-                Represents a collection of <see cref="T:ConsoleFx.CmdLineArgs.Argument" /> objects.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Arguments.VerifyOptionalArgumentsAtEnd">
-            <summary>
-                Called whenever an argument is added or set in the collection to verify that optional arguments are
-                specified only after the required ones.
-            </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.DefaultSetter">
             <summary>
@@ -310,12 +298,34 @@
             <param name="validators">One or more validators.</param>
             <returns>The instance of the <typeparamref name="TArg"/>.</returns>
         </member>
+        <member name="T:ConsoleFx.CmdLine.Arguments">
+            <inheritdoc />
+            <summary>
+                Represents a collection of <see cref="T:ConsoleFx.CmdLineArgs.Argument" /> objects.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arguments.VerifyOptionalArgumentsAtEnd">
+            <summary>
+                Called whenever an argument is added or set in the collection to verify that optional arguments are
+                specified only after the required ones.
+            </summary>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Command.#ctor">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Command" /> class.
                 <para />
                 This constructor tries to read the command details from the
                 <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.ParentCommand">
+            <summary>
+                Gets or sets a reference to the parent <see cref="T:ConsoleFx.CmdLine.Command"/> of this instance.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.RootCommand">
+            <summary>
+                Gets the reference to the root <see cref="T:ConsoleFx.CmdLine.Command"/> instance.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Command.Arguments">
@@ -338,11 +348,32 @@
                 Gets or sets a value indicating how many times the last argument can repeat.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Command.GetArgs">
+            <summary>
+                Override this method to specify the arguments, options and sub-commands of this
+                <see cref="T:ConsoleFx.CmdLine.Command"/> instance.
+            </summary>
+            <returns>
+                A sequence of <see cref="T:ConsoleFx.CmdLine.Argument"/>, <see cref="T:ConsoleFx.CmdLine.Option"/> and <see cref="T:ConsoleFx.CmdLine.Command"/>
+                objects that belong to this <see cref="T:ConsoleFx.CmdLine.Command"/> instance.
+            </returns>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.CustomValidator">
+            <summary>
+                Gets or sets the delegate to call to perform additional validations after the tokens
+                have been parsed.
+                <para />
+                If not assigned, the virtual
+                <see cref="M:ConsoleFx.CmdLine.Command.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})"/>
+                method is called.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.Command.Handler">
             <summary>
                 Gets or sets the delegate to call if the parsed args match this command.
                 <para/>
-                If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Command.HandleCommand(ConsoleFx.CmdLine.ParseResultBase)"/> method is called.
+                If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Command.HandleCommand(ConsoleFx.CmdLine.ParseResultBase)"/> method is
+                called.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.Commands">
