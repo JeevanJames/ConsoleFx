@@ -56,8 +56,22 @@ namespace ConsoleFx.CmdLine.Parser.Style
         {
             OptionRun currentOption = null;
 
+            bool forceArguments = false;
+
             foreach (string token in tokens)
             {
+                if (token == "--")
+                {
+                    forceArguments = true;
+                    continue;
+                }
+
+                if (forceArguments)
+                {
+                    yield return token;
+                    continue;
+                }
+
                 Match optionMatch = OptionPattern.Match(token);
 
                 // If the token is not an option and we are not iterating over the parameters of an

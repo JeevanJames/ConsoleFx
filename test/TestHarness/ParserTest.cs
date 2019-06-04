@@ -42,10 +42,11 @@ namespace TestHarness
                 .FormatAs(s => s.ToUpperInvariant());
             command.AddArgument("destination")
                 .ValidateAsString(5);
-            command.AddArgument("count", isOptional: true)
+            command.AddArgument("count")
                 .ValidateAsInteger(0, 100)
                 .TypedAs<int>()
                 .DefaultsTo(8);
+            command.AddArgument("params");
             command.AddOption("v")
                 .UsedAsFlag();
             command.AddOption("y")
@@ -76,14 +77,16 @@ namespace TestHarness
             var parser = new Parser(command, ArgStyle.Unix);
             try
             {
-                ParseResult result = parser.Parse("sourceFile", "destfile", "1", "2", "3", "4", "5",
+                ParseResult result = parser.Parse("sourceFile", "destfile", "7",
                     "-vy",
                     "--log", "blah",
                     "--web", "https://example.com",
                     "--id={DD45218B-CE76-4714-A3B3-7F77F4A287F1}",
                     "-m=abc",
                     "-m=def",
-                    "--kvp", "key=value"
+                    "--kvp", "key=value",
+                    "--",
+                    "node", "--version"
                 );
 
                 foreach (object arg in result.Arguments)
