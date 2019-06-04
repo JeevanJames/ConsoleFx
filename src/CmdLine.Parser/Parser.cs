@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 using ConsoleFx.CmdLine.Parser.Config;
 using ConsoleFx.CmdLine.Parser.Runs;
 using ConsoleFx.CmdLine.Parser.Style;
@@ -30,7 +30,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Parser
 {
-    public sealed class Parser
+    public sealed partial class Parser
     {
         public Parser(Command command, ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
         {
@@ -406,5 +406,26 @@ namespace ConsoleFx.CmdLine.Parser
                 list.Add(argumentRun.ResolveValue(specifiedArguments[j]));
             return list;
         }
+    }
+
+    // Static methods
+    public sealed partial class Parser
+    {
+        public static IEnumerable<string> Tokenize(string str)
+        {
+            if (string.IsNullOrWhiteSpace(str))
+                yield break;
+
+            var match = TokenPattern.Match(str);
+
+            if (!match.Success)
+                yield break;
+
+            foreach (Capture capture in match.Groups["token"].Captures)
+                yield return capture.Value;
+        }
+
+        private static readonly Regex TokenPattern = new Regex(@"((\s*""(?<token>[^""]*)(""|$)\s*)|(\s*(?<token>[^\s""]+)\s*))*",
+            RegexOptions.Compiled | RegexOptions.ExplicitCapture);
     }
 }

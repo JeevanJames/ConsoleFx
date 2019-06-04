@@ -21,9 +21,9 @@ using System;
 using System.Collections.Generic;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Validators;
 using ConsoleFx.CmdLine.Parser;
 using ConsoleFx.CmdLine.Parser.Style;
+using ConsoleFx.CmdLine.Validators;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
