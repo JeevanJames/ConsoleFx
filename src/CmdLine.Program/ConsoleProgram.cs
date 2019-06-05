@@ -79,23 +79,56 @@ namespace ConsoleFx.CmdLine.Program
             if (args is null)
                 args = Environment.GetCommandLineArgs().Skip(1);
 
+            ParseResult parseResult = null;
+            IReadOnlyList<PrePostHandlerAttribute> attributes = null;
+
             var parser = new Parser.Parser(this, CreateArgStyle(), Grouping);
             try
             {
-                ParseResult parseResult = parser.Parse(args);
+                // Parse the args and assign to the properties in the resultant command.
+                parseResult = parser.Parse(args);
                 AssignProperties(parseResult);
+                attributes = parseResult.Command.GetType().GetCustomAttributes<PrePostHandlerAttribute>(true).ToList();
+
+                // Run all pre-handler attributes.
+                foreach (PrePostHandlerAttribute attribute in attributes)
+                    attribute.BeforeHandler(parseResult.Command);
+
+                // Execute the command handler.
                 return parseResult.Command.Handler(parseResult);
             }
             catch (Exception ex)
             {
+                // Run the exception through all attribute error handlers.
+                int? attributeErrorCode = null;
+                if (attributes != null)
+                {
+                    foreach (PrePostHandlerAttribute attribute in attributes)
+                        attributeErrorCode = attribute.OnException(ex, parseResult?.Command);
+                }
+
+                // Run the configured error handler.
                 int errorCode = (ErrorHandler ?? new DefaultErrorHandler()).HandleError(ex);
                 DebugOutput.Write(ex);
+
+                // Display help if so configured.
                 if (DisplayHelpOnError)
                 {
                     //TODO: Display help
                 }
 
-                return errorCode;
+                // If the attributes have returned an error code, use that, otherwise use the error
+                // code returned from the error handler.
+                return attributeErrorCode.GetValueOrDefault(errorCode);
+            }
+            finally
+            {
+                // Run all post-handler attributes.
+                if (attributes != null)
+                {
+                    foreach (PrePostHandlerAttribute attribute in attributes)
+                        attribute.AfterHandler(parseResult?.Command);
+                }
             }
         }
 

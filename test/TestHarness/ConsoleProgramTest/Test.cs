@@ -32,11 +32,13 @@ namespace TestHarness.ConsoleProgramTest
     {
         internal override void Run()
         {
+            Console.WriteLine($"Directory before: {Directory.GetCurrentDirectory()}");
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            program.Run("clone", "https://github.com/JeevanJames/_project", "-rab", "D:\\Temp\\MyProjects");
-            //program.Run();
+            int exitCode = program.Run("clone", "https://github.com/JeevanJames/_project", "--project-root-dir", "D:\\Temp\\MyProjects");
+            Console.WriteLine($"Exit code: {exitCode}");
+            Console.WriteLine($"Directory after: {Directory.GetCurrentDirectory()}");
         }
     }
 
@@ -46,6 +48,8 @@ namespace TestHarness.ConsoleProgramTest
     }
 
     [Command("clone")]
+    [PushDirectory]
+    [ErrorCode(-1, typeof(DateTime))]
     public sealed class CloneCommand : Command
     {
         public Uri RepoUrl { get; set; }
@@ -78,8 +82,9 @@ namespace TestHarness.ConsoleProgramTest
 
         protected override int HandleCommand()
         {
-            Console.WriteLine(RepoUrl);
-            Console.WriteLine(ProjectRootDirectory);
+            Directory.SetCurrentDirectory(Path.GetTempPath());
+            if (DateTime.Now.Ticks > 100L)
+                throw new InvalidOperationException("Invalid operation");
             return 0;
         }
     }
