@@ -65,17 +65,28 @@ namespace ConsoleFx.CmdLine.Program
         /// </summary>
         public ArgGrouping Grouping { get; }
 
+        /// <summary>
+        ///     Gets or sets the <see cref="ErrorHandler"/> to use to handle any exceptions thrown
+        ///     when parsing and executing the application.
+        /// </summary>
         public ErrorHandler ErrorHandler { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether to display help when an error occurs when
+        ///     parsing and executing the application.
+        /// </summary>
         public bool DisplayHelpOnError { get; set; }
 
         /// <summary>
         ///     Runs the console program after parsing the command-line args.
         /// </summary>
         /// <param name="args">The args to parse.</param>
-        /// <returns>The numeric code that represents the result of the console program execution.</returns>
+        /// <returns>
+        ///     The numeric code that represents the result of the console program execution.
+        /// </returns>
         public int Run(IEnumerable<string> args = null)
         {
+            // If no args specifid for this method, use the args specified on the command line.
             if (args is null)
                 args = Environment.GetCommandLineArgs().Skip(1);
 
@@ -88,7 +99,9 @@ namespace ConsoleFx.CmdLine.Program
                 // Parse the args and assign to the properties in the resultant command.
                 parseResult = parser.Parse(args);
                 AssignProperties(parseResult);
-                attributes = parseResult.Command.GetType().GetCustomAttributes<PrePostHandlerAttribute>(true).ToList();
+                attributes = parseResult.Command.GetType()
+                    .GetCustomAttributes<PrePostHandlerAttribute>(true)
+                    .ToList();
 
                 // Run all pre-handler attributes.
                 foreach (PrePostHandlerAttribute attribute in attributes)
@@ -184,7 +197,7 @@ namespace ConsoleFx.CmdLine.Program
                         hasValue = parseResult.TryGetArgument(argName, out value);
                 }
 
-                // Only throw an exception is there is no arg found for a property with an Option
+                // Only throw an exception if there is no arg found for a property with an Option
                 // or Argument attribute, as they have been explicitly marked as args.
                 if (!hasValue)
                 {

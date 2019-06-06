@@ -22,12 +22,26 @@
                 Gets the expected grouping of the args.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.ErrorHandler">
+            <summary>
+                Gets or sets the <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.ErrorHandler"/> to use to handle any exceptions thrown
+                when parsing and executing the application.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.DisplayHelpOnError">
+            <summary>
+                Gets or sets a value indicating whether to display help when an error occurs when
+                parsing and executing the application.
+            </summary>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.Run(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
                 Runs the console program after parsing the command-line args.
             </summary>
             <param name="args">The args to parse.</param>
-            <returns>The numeric code that represents the result of the console program execution.</returns>
+            <returns>
+                The numeric code that represents the result of the console program execution.
+            </returns>
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.ErrorHandler.HandleError(System.Exception)">
             <summary>

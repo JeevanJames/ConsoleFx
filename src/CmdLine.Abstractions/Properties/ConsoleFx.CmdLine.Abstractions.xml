@@ -853,6 +853,56 @@
             <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
             <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
         </member>
+        <member name="T:ConsoleFx.CmdLine.PrePostHandlerAttribute">
+            <summary>
+                Base class for attributes that can run code before or after a <see cref="T:ConsoleFx.CmdLine.Command"/> handler
+                is executed, or when an exception occurs during the execution.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.PrePostHandlerAttribute.BeforeHandler(ConsoleFx.CmdLine.Command)">
+            <summary>
+                Override this method to run code before the <see cref="T:ConsoleFx.CmdLine.Command"/> handler is executed.
+            </summary>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> to be executed.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.PrePostHandlerAttribute.OnException(System.Exception,ConsoleFx.CmdLine.Command)">
+            <summary>
+                Override this method to run code whenever the <see cref="T:ConsoleFx.CmdLine.Command"/> handler throws
+                an unhandled exception.
+            </summary>
+            <param name="ex">The thrown exception.</param>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> that was executed.</param>
+            <returns>Integer exit code that should be returned from the application.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.PrePostHandlerAttribute.AfterHandler(ConsoleFx.CmdLine.Command)">
+            <summary>
+                Override this method to run code after the <see cref="T:ConsoleFx.CmdLine.Command"/> handler is executed.
+            </summary>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> that was executed.</param>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.PushDirectoryAttribute">
+            <summary>
+                Restores the current directory to the directory that was current before the command was
+                executed.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.ErrorCodeAttribute">
+            <summary>
+                Returns the specified error code from the command if any of the specified exceptions or
+                their derivatives were thrown.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ErrorCodeAttribute.ErrorCode">
+            <summary>
+                Gets the error code to return if any of the specified exceptions was thrown.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ErrorCodeAttribute.ExceptionTypes">
+            <summary>
+                Gets the list of exception types that will return the specified error code if any of
+                the exceptions are thrown.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1">
             <summary>
                 Base class for validators that only have one possible type of validation failure. In this
