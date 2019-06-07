@@ -7,13 +7,17 @@ ConsoleFx is a suite of .NET libraries for building command-line (CLI) applicati
 
 It consists of the following packages:
 
-Package | Description
---------|------------
-`ConsoleFx.CmdLine.Program` | Write command line programs with sophisticated argument parsing, including error handling, automatic help generation and rich validation support. Supports both Unix and Windows-style arguments.
-`ConsoleFx.CmdLine.Parser` | Standalone argument parser that is used by `ConsoleFx.CmdLine.Program`. Can be used in non-console program such as Windows Forms, WPF, REPL, etc. to parse command line arguments in a similar fashion.
-`ConsoleFx.ConsoleExtensions` | Extended console capabilities like color output, prompts, inputting secrets, outputting indented text, progress bars, etc.
-`ConsoleFx.Prompter` | Rich interactive framework from getting inputs from users. Inspired by the [Inquirer.js](https://github.com/SBoudrias/Inquirer.js) framework for JavaScript.
-`ConsoleFx.Capture` | Capture of console output from other command-line applications.
+## Packages
+ConsoleFx consists of the following NuGet packages. Development packages for continuous integration builds are available on [MyGet](https://myget.org/gallery/consolefx).
+
+Package | Description | NuGet | MyGet
+--------|-------------|-------|------
+`ConsoleFx.CmdLine.Program` | Write command line programs with sophisticated argument parsing, including error handling, automatic help generation and rich validation support. Supports both Unix and Windows-style arguments. | TBD | TBD
+`ConsoleFx.CmdLine.Parser` | Standalone argument parser that is used by `ConsoleFx.CmdLine.Program`. Can be used in non-console program such as Windows Forms, WPF, REPL, etc. to parse command line arguments in a similar fashion. | TBD | TBD
+`ConsoleFx.ConsoleExtensions` | Extended console capabilities like color output, prompts, inputting secrets, outputting indented text, progress bars, etc. | TBD | TBD
+`ConsoleFx.Prompter` | Rich interactive framework from getting inputs from users. Inspired by the [Inquirer.js](https://github.com/SBoudrias/Inquirer.js) framework for JavaScript. | TBD | TBD
+`ConsoleFx.Capture` | Capture of console output from other command-line applications. | TBD | TBD
+`ConsoleFx` | Metapackage that contains all major ConsoleFx packages. | [![NuGet Version](http://img.shields.io/nuget/v/ConsoleFx.svg?style=flat)](https://www.nuget.org/packages/ConsoleFx/) [![NuGet Downloads](https://img.shields.io/nuget/dt/ConsoleFx.svg)](https://www.nuget.org/packages/ConsoleFx/) | [![ConsoleFx](https://img.shields.io/myget/consolefx/vpre/ConsoleFx.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx)
 
 The following packages are under development and expected in a future release.
 
