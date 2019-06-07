@@ -58,36 +58,36 @@ namespace TestHarness.ConsoleProgramTest
     [ErrorCode(-1, typeof(DateTime))]
     public sealed class CloneCommand : Command
     {
+        [Help("REPO_URL", "URL of the repository that contains the manifest.")]
         public Uri RepoUrl { get; set; }
 
+        [Help("MANIFEST_DIR", "Directory in the repository that contains the manifest file.")]
         public string ManifestDirectory { get; set; }
 
         [Option("branch")]
+        [Help("The branch in the repository to use to get the manifest.")]
         public string Branch { get; set; }
 
         [Option("project-root-dir")]
+        [Help("The root directory of the project.")]
         public DirectoryInfo ProjectRootDirectory { get; set; }
 
         protected override IEnumerable<Arg> GetArgs()
         {
             yield return new Argument(nameof(RepoUrl))
                 .ValidateAsUri(UriKind.Absolute)
-                .TypedAs<Uri>()
-                .Description("URL of the repository that contains the manifest.", "REPO_URL");
+                .TypedAs<Uri>();
 
-            yield return new Argument(nameof(ManifestDirectory), true)
-                .Description("Directory in the repository that contains the manifest file.", "MANIFEST_DIR");
+            yield return new Argument(nameof(ManifestDirectory), true);
 
             yield return new Option("branch", "b")
-                .UsedAsSingleParameter()
-                .Description("The branch in the repository to use to get the manifest.");
+                .UsedAsSingleParameter();
 
             yield return new Option("project-root-dir", "r")
                 .UsedAsSingleParameter()
                 .ValidateAsDirectory()
                 .TypedAs(value => new DirectoryInfo(value))
-                .DefaultsTo(new DirectoryInfo("."))
-                .Description("The root directory of the project.");
+                .DefaultsTo(new DirectoryInfo("."));
         }
 
         protected override int HandleCommand()
