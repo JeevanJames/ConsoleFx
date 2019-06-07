@@ -17,16 +17,163 @@ limitations under the License.
 */
 #endregion
 
+using System;
+using System.Linq;
+using System.Text;
+
+using static System.Console;
+
 namespace ConsoleFx.CmdLine.Program.HelpBuilders
 {
     public class DefaultHelpBuilder : HelpBuilder
     {
-        public override void DisplayHelp(ConsoleProgram program)
+        public override void DisplayHelp(Command command)
         {
-            throw new System.NotImplementedException();
+            string usage = GetSummaryUsage(command);
+            WriteLine($"Usage: {usage}");
+
+            if (command.Arguments.Count > 0)
+            {
+                WriteLine();
+                WriteLine("Arguments:");
+                PrintArgs(command.Arguments, ArgumentDescriptionPlacement);
+            }
+
+            if (command.Options.Count > 0)
+            {
+                WriteLine();
+                WriteLine("Options:");
+                PrintOptions(command.Options, OptionDescriptionPlacement);
+            }
+
+            if (command.Commands.Count > 0)
+            {
+                WriteLine();
+                WriteLine("Commands:");
+                PrintArgs(command.Commands, CommandDescriptionPlacement);
+            }
         }
 
         public UsageType UsageType { get; set; }
+
+        public ArgDescriptionPlacement ArgumentDescriptionPlacement { get; set; }
+
+        public ArgDescriptionPlacement OptionDescriptionPlacement { get; set; }
+
+        public ArgDescriptionPlacement CommandDescriptionPlacement { get; set; }
+
+        private string GetSummaryUsage(Command command)
+        {
+            var sb = new StringBuilder();
+            if (command.Commands.Count > 0)
+                sb.Append("[command] ");
+            if (command.Arguments.Count > 1)
+                sb.Append("[arguments] ");
+            else if (command.Arguments.Count == 1)
+                sb.Append("[argument] ");
+            if (command.Options.Count > 1)
+                sb.Append("[options] ");
+            else if (command.Options.Count == 1)
+                sb.Append("[option] ");
+            return sb.ToString().Trim();
+        }
+
+        private void PrintArgs<TArg>(Args<TArg> args, ArgDescriptionPlacement placement)
+            where TArg : Arg
+        {
+            if (placement == ArgDescriptionPlacement.NextLine)
+                PrintArgsOnNextLine(args);
+            else
+                PrintArgsOnSameLine(args);
+        }
+
+        private void PrintArgsOnSameLine<TArg>(Args<TArg> args)
+            where TArg : Arg
+        {
+            int longestLength = args.Aggregate(0, (longest, arg) =>
+            {
+                string resolvedName = ResolveName(arg);
+                return Math.Max(longest, resolvedName.Length);
+            });
+
+            foreach (TArg arg in args)
+            {
+                string name = ResolveName(arg);
+                string description = arg["Description"] ?? "<No description provided>";
+                WriteLine($"{Indent}{name.PadRight(longestLength)}   {description}");
+            }
+        }
+
+        private void PrintArgsOnNextLine<TArg>(Args<TArg> args)
+            where TArg : Arg
+        {
+            foreach (TArg arg in args)
+            {
+                WriteLine($"{Indent}{ResolveName(arg)}");
+                string description = arg["Description"] ?? "<No description provided>";
+                WriteLine($"{Indent}{Indent}{description}");
+                WriteLine();
+            }
+        }
+
+        private void PrintOptions(Options options, ArgDescriptionPlacement placement)
+        {
+            if (placement == ArgDescriptionPlacement.NextLine)
+                PrintOptionsOnNextLine(options);
+            else
+                PrintOptionsOnSameLine(options);
+        }
+
+        private void PrintOptionsOnNextLine(Options options)
+        {
+            foreach (Option option in options)
+            {
+                string names = BuildCombinedOptionsName(option);
+                WriteLine($"{Indent}{names}");
+
+                string description = option["Description"] ?? "<No description provided>";
+                WriteLine($"{Indent}{Indent}{description}");
+
+                WriteLine();
+            }
+        }
+
+        private void PrintOptionsOnSameLine(Options options)
+        {
+            int longestLength = options.Aggregate(0, (longest, option) =>
+            {
+                string names = BuildCombinedOptionsName(option);
+                return Math.Max(names.Length, longest);
+            });
+
+            foreach (Option option in options)
+            {
+                string names = BuildCombinedOptionsName(option);
+                string description = option["Description"] ?? "<No description provided>";
+                WriteLine($"{Indent}{names.PadRight(longestLength)}   {description}");
+            }
+        }
+
+        private string BuildCombinedOptionsName(Option option)
+        {
+            return option.AllNames
+                .Select(name => name.Length > 1 ? $"--{name}" : $"-{name}")
+                .Aggregate(new StringBuilder(), (sb, name) =>
+                {
+                    if (sb.Length > 0)
+                        sb.Append(", ");
+                    return sb.Append(name);
+                })
+                .ToString();
+        }
+
+        private string ResolveName(Arg arg)
+        {
+            string customName = arg["Name"];
+            return customName ?? arg.Name;
+        }
+
+        private const string Indent = "    ";
     }
 
     /// <summary>
@@ -45,5 +192,11 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
         ///     combinations mentioned.
         /// </summary>
         Detailed,
+    }
+
+    public enum ArgDescriptionPlacement
+    {
+        SameLine,
+        NextLine,
     }
 }

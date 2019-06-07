@@ -23,7 +23,7 @@ namespace ConsoleFx.CmdLine.Program
 {
     public abstract class HelpBuilder
     {
-        public abstract void DisplayHelp(ConsoleProgram program);
+        public abstract void DisplayHelp(Command command);
 
         public static HelpBuilder Default => new DefaultHelpBuilder();
     }

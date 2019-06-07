@@ -52,14 +52,14 @@
                 Gets all the secondary names for the arg.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Arg.Names">
-            <summary>
-                Gets the list of all names assigned to the arg.
-            </summary>
-        </member>
         <member name="P:ConsoleFx.CmdLine.Arg.AllNames">
             <summary>
                 Gets all the names of the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Arg.Names">
+            <summary>
+                Gets the list of all names assigned to the arg.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Arg.NamePattern">

@@ -21,19 +21,40 @@ namespace ConsoleFx.CmdLine.Program
 {
     public static class HelpExtensions
     {
-        public static TArg Description<TArg>(this TArg arg, string description)
-            where TArg : Arg
+        public static Argument Description(this Argument argument, string description, string name = null)
         {
-            arg["Description"] = description;
-            return arg;
+            argument["Description"] = description;
+            if (!string.IsNullOrWhiteSpace(name))
+                argument["Name"] = name;
+            return argument;
         }
 
-        public static TCommand Grouping<TCommand>(this TCommand command, string groupName, string description)
-            where TCommand : Command
+        public static Command Description(this Command command, string description, string name = null)
+        {
+            command["Description"] = description;
+            if (!string.IsNullOrWhiteSpace(name))
+                command["Name"] = name;
+            return command;
+        }
+
+        public static Option Description(this Option option, string description)
+        {
+            option["Description"] = description;
+            return option;
+        }
+
+        public static Command Grouping(this Command command, string groupName, string description)
         {
             command["GroupName"] = groupName;
             command["GroupDescription"] = description;
             return command;
+        }
+
+        public static TArg Order<TArg>(this TArg arg, int order)
+            where TArg : Arg
+        {
+            arg["Order"] = order.ToString();
+            return arg;
         }
     }
 }

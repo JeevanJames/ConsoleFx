@@ -24,6 +24,7 @@ using System.IO;
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
+using ConsoleFx.CmdLine.Program.HelpBuilders;
 using ConsoleFx.CmdLine.Validators;
 
 namespace TestHarness.ConsoleProgramTest
@@ -32,13 +33,18 @@ namespace TestHarness.ConsoleProgramTest
     {
         internal override void Run()
         {
-            Console.WriteLine($"Directory before: {Directory.GetCurrentDirectory()}");
+            var helpBuilder = new DefaultHelpBuilder
+            {
+                ArgumentDescriptionPlacement = ArgDescriptionPlacement.SameLine,
+                OptionDescriptionPlacement = ArgDescriptionPlacement.SameLine,
+            };
+            helpBuilder.DisplayHelp(new CloneCommand());
+            
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
             int exitCode = program.Run("clone", "https://github.com/JeevanJames/_project", "--project-root-dir", "D:\\Temp\\MyProjects");
             Console.WriteLine($"Exit code: {exitCode}");
-            Console.WriteLine($"Directory after: {Directory.GetCurrentDirectory()}");
         }
     }
 
@@ -66,18 +72,22 @@ namespace TestHarness.ConsoleProgramTest
         {
             yield return new Argument(nameof(RepoUrl))
                 .ValidateAsUri(UriKind.Absolute)
-                .TypedAs<Uri>();
+                .TypedAs<Uri>()
+                .Description("URL of the repository that contains the manifest.", "REPO_URL");
 
-            yield return new Argument(nameof(ManifestDirectory), true);
+            yield return new Argument(nameof(ManifestDirectory), true)
+                .Description("Directory in the repository that contains the manifest file.", "MANIFEST_DIR");
 
             yield return new Option("branch", "b")
-                .UsedAsSingleParameter();
+                .UsedAsSingleParameter()
+                .Description("The branch in the repository to use to get the manifest.");
 
             yield return new Option("project-root-dir", "r")
                 .UsedAsSingleParameter()
                 .ValidateAsDirectory()
                 .TypedAs(value => new DirectoryInfo(value))
-                .DefaultsTo(new DirectoryInfo("."));
+                .DefaultsTo(new DirectoryInfo("."))
+                .Description("The root directory of the project.");
         }
 
         protected override int HandleCommand()

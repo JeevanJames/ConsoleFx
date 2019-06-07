@@ -108,14 +108,14 @@ namespace ConsoleFx.CmdLine
         public IEnumerable<string> AlternateNames => _names.Skip(count: 1).Select(kvp => kvp.Key);
 
         /// <summary>
+        ///     Gets all the names of the arg.
+        /// </summary>
+        public IEnumerable<string> AllNames => _names.Select(kvp => kvp.Key);
+
+        /// <summary>
         ///     Gets the list of all names assigned to the arg.
         /// </summary>
         protected IDictionary<string, bool> Names => _names;
-
-        /// <summary>
-        ///     Gets all the names of the arg.
-        /// </summary>
-        internal IEnumerable<string> AllNames => _names.Select(kvp => kvp.Key);
 
         /// <summary>
         ///     Gets a valid name pattern to verify names against.
