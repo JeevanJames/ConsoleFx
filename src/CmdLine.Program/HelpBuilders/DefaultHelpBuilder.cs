@@ -65,6 +65,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
         private string GetSummaryUsage(Command command)
         {
             var sb = new StringBuilder();
+            BuildCommandNamesChain(command, sb);
             if (command.Commands.Count > 0)
                 sb.Append("[command] ");
             if (command.Arguments.Count > 1)
@@ -76,6 +77,16 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             else if (command.Options.Count == 1)
                 sb.Append("[option] ");
             return sb.ToString().Trim();
+        }
+
+        private void BuildCommandNamesChain(Command command, StringBuilder sb)
+        {
+            Command currentCommand = command;
+            while (currentCommand != null)
+            {
+                sb.Insert(0, currentCommand.Name + " ");
+                currentCommand = currentCommand.ParentCommand;
+            }
         }
 
         private void PrintArgs<TArg>(Args<TArg> args, ArgDescriptionPlacement placement)

@@ -41,20 +41,23 @@ namespace ConsoleFx.CmdLine.Program
         public ConsoleProgram()
         {
             ProgramAttribute programAttribute = GetType().GetCustomAttribute<ProgramAttribute>(true);
-            if (programAttribute != null)
-            {
-                _argStyle = programAttribute.Style;
-                Grouping = programAttribute.Grouping;
-            }
+            if (programAttribute == null)
+                throw new InvalidOperationException("Default ConsoleProgram constructor can only be used if you decorate the ConsoleProgram-derived class with the Program attribute.");
+
+            AddName(programAttribute.Name);
+            _argStyle = programAttribute.Style;
+            Grouping = programAttribute.Grouping;
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ConsoleProgram"/> class with the specified
-        ///     arg style and grouping.
+        ///     name, arg style and grouping.
         /// </summary>
+        /// <param name="name">The name of the program.</param>
         /// <param name="argStyle">The expected argument style.</param>
         /// <param name="grouping">The expected arg grouping.</param>
-        public ConsoleProgram(ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
+        public ConsoleProgram(string name, ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
+            : base(caseSensitive: false, name)
         {
             _argStyle = argStyle;
             Grouping = grouping;

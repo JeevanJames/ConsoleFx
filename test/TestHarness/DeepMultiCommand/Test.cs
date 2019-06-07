@@ -36,7 +36,7 @@ namespace TestHarness.DeepMultiCommand
         }
     }
 
-    [Program(Style = ArgStyle.Unix)]
+    [Program(nameof(MyProgram), Style = ArgStyle.Unix)]
     public sealed class MyProgram : ConsoleProgram
     {
     }

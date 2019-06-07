@@ -9,11 +9,12 @@
                 Represents a console program.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.#ctor(ConsoleFx.CmdLine.Program.ArgStyle,ConsoleFx.CmdLine.ArgGrouping)">
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.#ctor(System.String,ConsoleFx.CmdLine.Program.ArgStyle,ConsoleFx.CmdLine.ArgGrouping)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ConsoleProgram"/> class with the specified
-                arg style and grouping.
+                name, arg style and grouping.
             </summary>
+            <param name="name">The name of the program.</param>
             <param name="argStyle">The expected argument style.</param>
             <param name="grouping">The expected arg grouping.</param>
         </member>

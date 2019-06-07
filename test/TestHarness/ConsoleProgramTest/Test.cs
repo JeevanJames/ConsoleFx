@@ -48,7 +48,7 @@ namespace TestHarness.ConsoleProgramTest
         }
     }
 
-    [Program(Style = ArgStyle.Unix)]
+    [Program("ConsoleProgramTest", Style = ArgStyle.Unix)]
     public sealed class MyProgram : ConsoleProgram
     {
     }

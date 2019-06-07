@@ -41,7 +41,7 @@ namespace TestHarness
     internal sealed class SyncDirProgram : ConsoleProgram
     {
         public SyncDirProgram()
-            : base(ArgStyle.Unix, ArgGrouping.DoesNotMatter)
+            : base(nameof(SyncDirProgram), ArgStyle.Unix, ArgGrouping.DoesNotMatter)
         {
             LastArgumentRepeat = byte.MaxValue;
         }

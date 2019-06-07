@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleFx.CmdLine
 {
+    //TODO: All commands need a name. So, this check for null and assignment to "Root" can be removed.
     [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
     public partial class Command : Arg
     {
@@ -91,12 +92,12 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets or sets a reference to the parent <see cref="Command"/> of this instance.
         /// </summary>
-        internal Command ParentCommand { get; set; }
+        public Command ParentCommand { get; set; }
 
         /// <summary>
         ///     Gets the reference to the root <see cref="Command"/> instance.
         /// </summary>
-        internal Command RootCommand
+        public Command RootCommand
         {
             get
             {
