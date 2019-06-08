@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ConsoleFx.CmdLine
 {
+    [DebuggerDisplay("Command: {Command.Name}")]
     public abstract class ParseResultBase
     {
         public Command Command { get; protected set; }

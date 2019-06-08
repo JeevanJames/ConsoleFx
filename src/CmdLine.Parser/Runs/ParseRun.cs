@@ -19,19 +19,17 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLine;
-
 namespace ConsoleFx.CmdLine.Parser.Runs
 {
     /// <summary>
-    ///     Represents the internal state of a single parse execution. This includes the commands, arguments and options that
-    ///     were specified.
+    ///     Represents the internal state of a single parse execution. This includes the commands,
+    ///     arguments and options that were specified.
     /// </summary>
     internal sealed class ParseRun
     {
         /// <summary>
         ///     Gets all specified commands.
-        ///     <para/>
+        ///     <para />
         ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection
         ///     here, because we want to avoid the duplicate checks, as commands at different levels
         ///     can have the same name.

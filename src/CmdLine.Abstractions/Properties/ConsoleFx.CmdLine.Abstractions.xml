@@ -306,6 +306,9 @@
         <member name="M:ConsoleFx.CmdLine.Command.GetUniversalOptions">
             <summary>
                 Override this method to specify options that apply to all options.
+                <para />
+                This method should only be overridden in a root command object, as that is the only
+                one that is considered. The method is not called for non-root commands.
             </summary>
             <returns>Options that apply to all commands.</returns>
         </member>
@@ -346,6 +349,44 @@
                 If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Command.HandleCommand(ConsoleFx.CmdLine.ParseResultBase)"/> method is
                 called.
             </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.DiscoveredCommands">
+            <summary>
+                Gets the commands that are discovered by calling one of the <c>ScanAssemblies</c>
+                methods.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ScanEntryAssemblyForCommands(System.Func{System.Type,System.Boolean})">
+            <summary>
+                Scans the entry assembly and locates any commands objects. Add applicable commands
+                as sub-commands to this command.
+            </summary>
+            <param name="typePredicate">
+                Optional predicate that can be used to filter the discovered commands.
+            </param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ScanAssembliesForCommands(System.Reflection.Assembly[])">
+            <summary>
+                Scans the specified <paramref name="assemblies"/> and locates any commands objects.
+                Add applicable commands as sub-commands to this command.
+            </summary>
+            <param name="assemblies">The assemblies to scan.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ScanAssembliesForCommands(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Func{System.Type,System.Boolean})">
+            <summary>
+                Scans the specified <paramref name="assemblies"/> and locates any commands objects.
+                Add applicable commands as sub-commands to this command.
+            </summary>
+            <param name="assemblies">The assemblies to scan.</param>
+            <param name="typePredicate">
+                Optional predicate that can be used to filter the discovered commands.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if <paramref name="assemblies"/> is <c>null</c>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown if any assembly in the <paramref name="assemblies"/> is <c>null</c>.
+            </exception>
         </member>
         <member name="T:ConsoleFx.CmdLine.Commands">
             <summary>
