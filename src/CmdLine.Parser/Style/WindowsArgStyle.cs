@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Parser.Runs;
 
 namespace ConsoleFx.CmdLine.Parser.Style
@@ -35,6 +34,7 @@ namespace ConsoleFx.CmdLine.Parser.Style
         // -Option:Param1,Param2 or /Option:Param1,Param2
         private static readonly Regex OptionParameterPattern = new Regex(@"([\s\S\w][^,]*)");
 
+        /// <inheritdoc/>
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping)
         {
@@ -135,6 +135,13 @@ namespace ConsoleFx.CmdLine.Parser.Style
             NotSet,
             Option,
             Argument,
+        }
+
+        /// <inheritdoc/>
+        public override IEnumerable<string> GetDefaultHelpOptionNames()
+        {
+            yield return "h";
+            yield return "?";
         }
     }
 }

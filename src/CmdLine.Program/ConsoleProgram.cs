@@ -26,6 +26,7 @@ using System.Reflection;
 using ConsoleFx.CmdLine.Parser;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
 using ConsoleFx.CmdLine.Program.HelpBuilders;
+
 using ParserStyle = ConsoleFx.CmdLine.Parser.Style;
 
 namespace ConsoleFx.CmdLine.Program
@@ -35,8 +36,9 @@ namespace ConsoleFx.CmdLine.Program
     /// </summary>
     public class ConsoleProgram : Command
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ArgStyle _argStyle;
+        //[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        //private readonly ArgStyle _argStyle;
+        private readonly ParserStyle.ArgStyle _argStyle;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private HelpBuilder _helpBuilder;
@@ -48,7 +50,7 @@ namespace ConsoleFx.CmdLine.Program
                 throw new InvalidOperationException("Default ConsoleProgram constructor can only be used if you decorate the ConsoleProgram-derived class with the Program attribute.");
 
             AddName(programAttribute.Name);
-            _argStyle = programAttribute.Style;
+            _argStyle = CreateArgStyle(programAttribute.Style);
             Grouping = programAttribute.Grouping;
         }
 
@@ -62,7 +64,7 @@ namespace ConsoleFx.CmdLine.Program
         public ConsoleProgram(string name, ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
             : base(caseSensitive: false, name)
         {
-            _argStyle = argStyle;
+            _argStyle = CreateArgStyle(argStyle);
             Grouping = grouping;
         }
 
@@ -76,7 +78,7 @@ namespace ConsoleFx.CmdLine.Program
         /// </summary>
         public HelpBuilder HelpBuilder
         {
-            get => _helpBuilder ?? (_helpBuilder = new DefaultHelpBuilder("help", "h"));
+            get => _helpBuilder ?? (_helpBuilder = new DefaultHelpBuilder(_argStyle.GetDefaultHelpOptionNames().ToArray()));
             set => _helpBuilder = value;
         }
 
@@ -108,7 +110,7 @@ namespace ConsoleFx.CmdLine.Program
             ParseResult parseResult = null;
             IReadOnlyList<PrePostHandlerAttribute> attributes = null;
 
-            var parser = new Parser.Parser(this, CreateArgStyle(), Grouping);
+            var parser = new Parser.Parser(this, _argStyle, Grouping);
             try
             {
                 // Parse the args and assign to the properties in the resultant command.
@@ -187,9 +189,9 @@ namespace ConsoleFx.CmdLine.Program
             yield return option;
         }
 
-        private ParserStyle.ArgStyle CreateArgStyle()
+        private static ParserStyle.ArgStyle CreateArgStyle(ArgStyle argStyle)
         {
-            switch (_argStyle)
+            switch (argStyle)
             {
                 case ArgStyle.Unix:
                     return new ParserStyle.UnixArgStyle();
@@ -197,7 +199,7 @@ namespace ConsoleFx.CmdLine.Program
                     return new ParserStyle.WindowsArgStyle();
             }
 
-            throw new NotSupportedException($"Unsupported argument style: '{_argStyle}'.");
+            throw new NotSupportedException($"Unsupported argument style: '{argStyle}'.");
         }
 
         private static void AssignProperties(ParseResultBase parseResult)

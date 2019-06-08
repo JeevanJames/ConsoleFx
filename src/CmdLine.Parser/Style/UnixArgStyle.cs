@@ -51,6 +51,7 @@ namespace ConsoleFx.CmdLine.Parser.Style
 
         private static readonly Regex OptionPattern = new Regex(@"(--?)(\w[\w-_]*)(?:=(.+))?");
 
+        /// <inheritdoc/>
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping)
         {
@@ -151,6 +152,13 @@ namespace ConsoleFx.CmdLine.Parser.Style
                 if (currentOption != null && currentOption.Parameters.Count >= currentOption.Option.Usage.MaxParameters)
                     currentOption = null;
             }
+        }
+
+        /// <inheritdoc/>
+        public override IEnumerable<string> GetDefaultHelpOptionNames()
+        {
+            yield return "help";
+            yield return "h";
         }
     }
 }

@@ -68,6 +68,12 @@ namespace ConsoleFx.CmdLine.Parser.Style
         public abstract IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping);
 
+        /// <summary>
+        ///     Returns the default names for the help options.
+        /// </summary>
+        /// <returns>A sequence of help option names.</returns>
+        public abstract IEnumerable<string> GetDefaultHelpOptionNames();
+
         public static readonly ArgStyle Unix = new UnixArgStyle();
 
         public static readonly ArgStyle Windows = new WindowsArgStyle();

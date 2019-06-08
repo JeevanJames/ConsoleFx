@@ -229,14 +229,14 @@
         </member>
         <member name="T:ConsoleFx.CmdLine.Parser.Runs.ParseRun">
             <summary>
-                Represents the internal state of a single parse execution. This includes the commands, arguments and options that
-                were specified.
+                Represents the internal state of a single parse execution. This includes the commands,
+                arguments and options that were specified.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Parser.Runs.ParseRun.Commands">
             <summary>
                 Gets all specified commands.
-                <para/>
+                <para />
                 Note: We use a <see cref="T:System.Collections.Generic.List`1" /> instead of the <see cref="P:ConsoleFx.CmdLine.Parser.Runs.ParseRun.Commands"/> collection
                 here, because we want to avoid the duplicate checks, as commands at different levels
                 can have the same name.
@@ -295,7 +295,22 @@
             <param name="grouping">The expected arg grouping to validate.</param>
             <returns>A collection of all the identified arguments.</returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Style.ArgStyle.GetDefaultHelpOptionNames">
+            <summary>
+                Returns the default names for the help options.
+            </summary>
+            <returns>A sequence of help option names.</returns>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Parser.Style.UnixArgStyle.GetGrouping(ConsoleFx.CmdLine.ArgGrouping,System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLine.Option},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLine.Argument})">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Style.UnixArgStyle.IdentifyTokens(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLine.Parser.Runs.OptionRun},ConsoleFx.CmdLine.ArgGrouping)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Style.UnixArgStyle.GetDefaultHelpOptionNames">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Style.WindowsArgStyle.IdentifyTokens(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLine.Parser.Runs.OptionRun},ConsoleFx.CmdLine.ArgGrouping)">
             <inheritdoc/>
         </member>
         <member name="M:ConsoleFx.CmdLine.Parser.Style.WindowsArgStyle.VerifyCommandLineGrouping(ConsoleFx.CmdLine.Parser.Style.WindowsArgStyle.ArgumentType,ConsoleFx.CmdLine.Parser.Style.WindowsArgStyle.ArgumentType,ConsoleFx.CmdLine.ArgGrouping)">
@@ -306,6 +321,9 @@
             <param name="previousType">The type of the previously-checked argument.</param>
             <param name="currentType">The type of the currently-checked argument.</param>
             <param name="grouping">The expected arg grouping.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Style.WindowsArgStyle.GetDefaultHelpOptionNames">
+            <inheritdoc/>
         </member>
     </members>
 </doc>
