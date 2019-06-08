@@ -71,31 +71,37 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public OptionParameterValidators Validators { get; }
 
-        public override Option DefaultsTo(Func<object> setter)
+        public sealed override Option UnderGroups(params int[] groups)
+        {
+            InternalUnderGroups(groups);
+            return this;
+        }
+
+        public sealed override Option DefaultsTo(Func<object> setter)
         {
             InternalDefaultsTo(setter);
             return this;
         }
 
-        public override Option DefaultsTo(object defaultValue)
+        public sealed override Option DefaultsTo(object defaultValue)
         {
             InternalDefaultsTo(defaultValue);
             return this;
         }
 
-        public override Option FormatAs(Func<string, string> formatter)
+        public sealed override Option FormatAs(Func<string, string> formatter)
         {
             InternalFormatAs(formatter);
             return this;
         }
 
-        public override Option FormatAs(string formatStr)
+        public sealed override Option FormatAs(string formatStr)
         {
             InternalFormatAs(formatStr);
             return this;
         }
 
-        public override Option TypedAs(Type type, Converter<string, object> converter = null)
+        public sealed override Option TypedAs(Type type, Converter<string, object> converter = null)
         {
             InternalTypedAs(type, converter);
             return this;
@@ -108,7 +114,7 @@ namespace ConsoleFx.CmdLine
         /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
         /// <param name="converter">Optional custom converter.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
-        public override Option TypedAs<T>(Converter<string, T> converter = null)
+        public sealed override Option TypedAs<T>(Converter<string, T> converter = null)
         {
             InternalTypedAs<T>(typeof(T), converter);
             return this;

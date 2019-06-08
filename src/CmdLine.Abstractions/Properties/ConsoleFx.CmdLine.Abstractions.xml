@@ -169,6 +169,15 @@
             <param name="validators">The validators to use to validate the argument.</param>
             <returns>The same instance of the <see cref="T:ConsoleFx.CmdLine.Argument"/> object to allow for fluent syntax.</returns>
         </member>
+        <member name="T:ConsoleFx.CmdLine.ArgumentOrOption`1">
+            <summary>
+                Base class for <see cref="T:ConsoleFx.CmdLine.Argument"/> and <see cref="T:ConsoleFx.CmdLine.Option"/>, as they share a lot of
+                common properties that are not present in <see cref="T:ConsoleFx.CmdLine.Command"/>.
+            </summary>
+            <typeparam name="TArg">
+                The type of <see cref="T:ConsoleFx.CmdLine.Arg"/>; can be either <see cref="T:ConsoleFx.CmdLine.Argument"/> and <see cref="T:ConsoleFx.CmdLine.Option"/>.
+            </typeparam>
+        </member>
         <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.DefaultSetter">
             <summary>
                 Gets or sets the optional delegate to return the arg's default value, if it is not set.

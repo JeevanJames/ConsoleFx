@@ -58,32 +58,38 @@ namespace ConsoleFx.CmdLine
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
 
-        public override Argument DefaultsTo(Func<object> setter)
+        public sealed override Argument UnderGroups(params int[] groups)
+        {
+            InternalUnderGroups(groups);
+            return this;
+        }
+
+        public sealed override Argument DefaultsTo(Func<object> setter)
         {
             InternalDefaultsTo(setter);
             return this;
         }
 
-        public override Argument DefaultsTo(object defaultValue)
+        public sealed override Argument DefaultsTo(object defaultValue)
         {
             InternalDefaultsTo(defaultValue);
             return this;
         }
 
         /// <inheritdoc />
-        public override Argument FormatAs(Func<string, string> formatter)
+        public sealed override Argument FormatAs(Func<string, string> formatter)
         {
             InternalFormatAs(formatter);
             return this;
         }
 
-        public override Argument FormatAs(string formatStr)
+        public sealed override Argument FormatAs(string formatStr)
         {
             InternalFormatAs(formatStr);
             return this;
         }
 
-        public override Argument TypedAs(Type type, Converter<string, object> converter = null)
+        public sealed override Argument TypedAs(Type type, Converter<string, object> converter = null)
         {
             InternalTypedAs(type, converter);
             return this;
@@ -96,7 +102,7 @@ namespace ConsoleFx.CmdLine
         /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
         /// <param name="converter">Optional custom converter.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
-        public override Argument TypedAs<T>(Converter<string, T> converter = null)
+        public sealed override Argument TypedAs<T>(Converter<string, T> converter = null)
         {
             InternalTypedAs<T>(typeof(T), converter);
             return this;

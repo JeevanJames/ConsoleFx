@@ -19,14 +19,24 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Base class for <see cref="Argument"/> and <see cref="Option"/>, as they share a lot of
+    ///     common properties that are not present in <see cref="Command"/>.
+    /// </summary>
+    /// <typeparam name="TArg">
+    ///     The type of <see cref="Arg"/>; can be either <see cref="Argument"/> and <see cref="Option"/>.
+    /// </typeparam>
     public abstract class ArgumentOrOption<TArg> : Arg
         where TArg : Arg
     {
+        private readonly List<int> _groups = new List<int>();
+
         protected ArgumentOrOption()
         {
         }
@@ -35,6 +45,8 @@ namespace ConsoleFx.CmdLine
             : base(names)
         {
         }
+
+        public IReadOnlyList<int> Groups => _groups;
 
         /// <summary>
         ///     Gets or sets the optional delegate to return the arg's default value, if it is not set.
@@ -67,6 +79,8 @@ namespace ConsoleFx.CmdLine
         ///     <see cref="Type" />.
         /// </summary>
         public Converter<string, object> TypeConverter { get; set; }
+
+        public abstract TArg UnderGroups(params int[] groups);
 
         public abstract TArg DefaultsTo(Func<object> setter);
 
@@ -152,6 +166,13 @@ namespace ConsoleFx.CmdLine
             Type = type;
             if (converter != null)
                 TypeConverter = value => converter(value);
+        }
+
+        protected void InternalUnderGroups(IReadOnlyList<int> groups)
+        {
+            if (groups is null)
+                throw new ArgumentNullException(nameof(groups));
+            _groups.AddRange(groups);
         }
     }
 }
