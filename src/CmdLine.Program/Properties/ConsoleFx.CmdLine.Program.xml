@@ -9,6 +9,11 @@
                 Represents a console program.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ConsoleProgram"/> class.
+            </summary>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.#ctor(System.String,ConsoleFx.CmdLine.Program.ArgStyle,ConsoleFx.CmdLine.ArgGrouping)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ConsoleProgram"/> class with the specified
@@ -48,6 +53,13 @@
             <returns>
                 The numeric code that represents the result of the console program execution.
             </returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.GetUniversalOptions">
+            <summary>
+                Add help options to the command as universal options. These options will be added to
+                all commands.
+            </summary>
+            <returns>The <see cref="T:ConsoleFx.CmdLine.Option"/> that represents help.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.ErrorHandler.HandleError(System.Exception)">
             <summary>

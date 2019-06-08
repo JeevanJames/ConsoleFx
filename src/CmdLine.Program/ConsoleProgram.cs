@@ -36,13 +36,15 @@ namespace ConsoleFx.CmdLine.Program
     /// </summary>
     public class ConsoleProgram : Command
     {
-        //[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        //private readonly ArgStyle _argStyle;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ParserStyle.ArgStyle _argStyle;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private HelpBuilder _helpBuilder;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ConsoleProgram"/> class.
+        /// </summary>
         public ConsoleProgram()
         {
             ProgramAttribute programAttribute = GetType().GetCustomAttribute<ProgramAttribute>(true);
@@ -179,6 +181,11 @@ namespace ConsoleFx.CmdLine.Program
             return Run((IEnumerable<string>)args);
         }
 
+        /// <summary>
+        ///     Add help options to the command as universal options. These options will be added to
+        ///     all commands.
+        /// </summary>
+        /// <returns>The <see cref="Option"/> that represents help.</returns>
         protected sealed override IEnumerable<Option> GetUniversalOptions()
         {
             HelpBuilder helpBuilder = HelpBuilder;
@@ -217,7 +224,7 @@ namespace ConsoleFx.CmdLine.Program
             foreach (PropertyInfo property in properties)
             {
                 string argName;
-                bool hasValue;
+                bool argExists;
                 object value;
                 bool isOption = false;
 
@@ -225,7 +232,7 @@ namespace ConsoleFx.CmdLine.Program
                 if (attribute != null)
                 {
                     argName = ((ArgAttribute)attribute).Name;
-                    hasValue = attribute is OptionAttribute
+                    argExists = attribute is OptionAttribute
                         ? parseResult.TryGetOption(argName, out value)
                         : parseResult.TryGetArgument(argName, out value);
                     isOption = attribute is OptionAttribute;
@@ -233,44 +240,43 @@ namespace ConsoleFx.CmdLine.Program
                 else
                 {
                     argName = property.Name;
-                    hasValue = parseResult.TryGetOption(argName, out value);
-                    if (hasValue)
+                    argExists = parseResult.TryGetOption(argName, out value);
+                    if (argExists)
                         isOption = true;
                     else
-                        hasValue = parseResult.TryGetArgument(argName, out value);
+                        argExists = parseResult.TryGetArgument(argName, out value);
                 }
 
-                /*// Throw an exception if there is no arg found for a property with an Option or
-                // Argument attribute, as they have been explicitly marked as args.
-                if (!hasValue && attribute != null)
-                    throw new InvalidOperationException($"Cannot find an arg named '{argName}' to assign to the {property.Name} property.");*/
-
-                if (!hasValue)
-                    continue;
+                ProcessMetadataAttributes(property, parseResult, argName, isOption);
 
                 // Assign the value to the property
-                property.SetValue(parseResult.Command, value);
+                if (argExists)
+                    property.SetValue(parseResult.Command, value);
+            }
+        }
 
-                // Get any metadata attributes on the property.
-                // If there are such attributes, assign their metadata to the arg that corresponds
-                // to the property.
-                IReadOnlyList<MetadataAttribute> metadataAttributes = property
-                    .GetCustomAttributes<MetadataAttribute>(inherit: true)
-                    .ToList();
-                if (metadataAttributes.Count > 0)
+        private static void ProcessMetadataAttributes(PropertyInfo property, ParseResultBase parseResult,
+            string argName, bool isOption)
+        {
+            // Get any metadata attributes on the property.
+            // If there are such attributes, assign their metadata to the arg that corresponds
+            // to the property.
+            IReadOnlyList<MetadataAttribute> metadataAttributes = property
+                .GetCustomAttributes<MetadataAttribute>(inherit: true)
+                .ToList();
+            if (metadataAttributes.Count > 0)
+            {
+                // Find the arg that corresponds to the property.
+                Arg arg = isOption
+                    ? (Arg)parseResult.Command.Options.First(option => option.HasName(argName))
+                    : parseResult.Command.Arguments.First(argument => argument.HasName(argName));
+
+                // Assign the metadata to the arg.
+                foreach (MetadataAttribute metadataAttribute in metadataAttributes)
                 {
-                    // Find the arg that corresponds to the property.
-                    Arg arg = isOption
-                        ? (Arg)parseResult.Command.Options.First(option => option.HasName(argName))
-                        : parseResult.Command.Arguments.First(argument => argument.HasName(argName));
-
-                    // Assign the metadata to the arg.
-                    foreach (MetadataAttribute metadataAttribute in metadataAttributes)
-                    {
-                        var metadata = metadataAttribute.GetMetadata();
-                        foreach (var metadataItem in metadata)
-                            arg[metadataItem.Key] = metadataItem.Value;
-                    }
+                    var metadata = metadataAttribute.GetMetadata();
+                    foreach (var metadataItem in metadata)
+                        arg[metadataItem.Key] = metadataItem.Value;
                 }
             }
         }
