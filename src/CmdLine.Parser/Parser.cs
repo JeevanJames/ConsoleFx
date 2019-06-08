@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using ConsoleFx.CmdLine.Parser.Config;
 using ConsoleFx.CmdLine.Parser.Runs;
 using ConsoleFx.CmdLine.Parser.Style;
 using ConsoleFx.CmdLine.Validators;
@@ -123,10 +122,11 @@ namespace ConsoleFx.CmdLine.Parser
 
             // Process the specified options and arguments, and resolve their values.
             ProcessOptions(run.Options);
-            ProcessArguments(specifiedArguments, run.Arguments, run.Commands[run.Commands.Count - 1]);
+            ProcessArguments(specifiedArguments, run.Arguments);
 
             var parseResult = new ParseResult(run);
 
+            // Runs the custom validator, if it is assigned.
             CommandCustomValidator customCommandValidator = parseResult.Command.CustomValidator;
             string validationError = customCommandValidator?.Invoke(parseResult.Arguments, parseResult.Options);
             if (validationError != null)
@@ -418,21 +418,13 @@ namespace ConsoleFx.CmdLine.Parser
         /// </summary>
         /// <param name="specifiedArguments">The list of specified arguments.</param>
         /// <param name="argumentRuns">The argument run details.</param>
-        /// <param name="command">The <see cref="Command"/> that the arguments belong to.</param>
         /// <exception cref="ParserException">
         ///     Thrown if any of the validation or usage checks on the <see cref="ArgumentRun"/> objects
         ///     fails.
         /// </exception>
-        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns, Command command)
+        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
         {
-            // Throw exception if number of specified arguments is greater than number of defined
-            // arguments. Account for repeated last arguments.
-            if (specifiedArguments.Count > argumentRuns.Count + command.LastArgumentRepeat - 1)
-            {
-                //TODO: The error message is too generic. Change to mention the extra arguments.
-                throw new ParserException(ParserException.Codes.InvalidNumberOfArguments,
-                    Messages.InvalidNumberOfArguments);
-            }
+            // We already verified the number of specified arguments in the GetMatchingGroups method.
 
             // If there are no argument runs, there is nothing to process, so exit.
             if (argumentRuns.Count == 0)
@@ -467,7 +459,7 @@ namespace ConsoleFx.CmdLine.Parser
                         validator.Validate(argumentValue);
 
                     argumentRun.Assigned = true;
-                    argumentRun.Value = i == argumentRuns.Count - 1 && command.LastArgumentRepeat > 1
+                    argumentRun.Value = i == argumentRuns.Count - 1 && argument.MaxOccurences > 1
                         ? ResolveArgumentValue(argumentRun, specifiedArguments, i, specifiedArguments.Count - 1)
                         : ResolveArgumentValue(argumentRun, specifiedArguments, i, i);
                 }
@@ -479,7 +471,7 @@ namespace ConsoleFx.CmdLine.Parser
                     // default values to be assigned that are outside the rules of validation.
                     argumentRun.Assigned = true;
                     object value = argument.DefaultSetter();
-                    if (command.LastArgumentRepeat > 1)
+                    if (i == argumentRuns.Count - 1 && argument.MaxOccurences > 1)
                     {
                         IList list = argumentRun.CreateCollection(1);
                         list.Add(value);

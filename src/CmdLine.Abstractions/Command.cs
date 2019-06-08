@@ -43,9 +43,6 @@ namespace ConsoleFx.CmdLine
         private CommandCustomValidator _customValidator;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private byte _lastArgumentRepeat = 1;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Func<ParseResultBase, int> _handler;
 
         /// <summary>
@@ -209,21 +206,6 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating how many times the last argument can repeat.
-        /// </summary>
-        //TODO: Remove this in favor of the Argument.MaxOccurrences property.
-        public byte LastArgumentRepeat
-        {
-            get => _lastArgumentRepeat;
-            set
-            {
-                if (value < 1)
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                _lastArgumentRepeat = value;
-            }
-        }
-
-        /// <summary>
         ///     Override this method to specify the arguments, options and sub-commands of this
         ///     <see cref="Command"/> instance.
         /// </summary>
@@ -278,9 +260,9 @@ namespace ConsoleFx.CmdLine
             return 0;
         }
 
-        public Argument AddArgument(string name, bool isOptional = false)
+        public Argument AddArgument(string name, bool isOptional = false, byte maxOccurences = 1)
         {
-            var argument = new Argument(name, isOptional);
+            var argument = new Argument(name, isOptional, maxOccurences);
             Arguments.Add(argument);
             return argument;
         }

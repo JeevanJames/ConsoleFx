@@ -43,7 +43,6 @@ namespace TestHarness
         public SyncDirProgram()
             : base(nameof(SyncDirProgram), ArgStyle.Unix, ArgGrouping.DoesNotMatter)
         {
-            LastArgumentRepeat = byte.MaxValue;
         }
 
         protected override int HandleCommand()
@@ -78,9 +77,10 @@ namespace TestHarness
             yield return new Argument("sourcedir")
                 .ValidateAsDirectory(true)
                 .TypedAs(s => new DirectoryInfo(s));
-            yield return new Argument("destdirs")
+            yield return new Argument("destdirs", maxOccurences: byte.MaxValue)
                 .ValidateAsDirectory(true)
                 .TypedAs(s => new DirectoryInfo(s));
+
             yield return new Option("exclude-dir", "e")
                 .UsedAsUnlimitedOccurrencesAndSingleParameter(optional: true);
             yield return new Option("top-level-only", "t")

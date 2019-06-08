@@ -171,14 +171,13 @@
             <param name="optionRun">The <see cref="T:ConsoleFx.CmdLine.Parser.Runs.OptionRun" /> instance, whose option to resolve.</param>
             <returns>The value of the option.</returns>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Parser.Parser.ProcessArguments(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLine.Parser.Runs.ArgumentRun},ConsoleFx.CmdLine.Command)">
+        <member name="M:ConsoleFx.CmdLine.Parser.Parser.ProcessArguments(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLine.Parser.Runs.ArgumentRun})">
             <summary>
                 Process the specified arguments by verifying their usage, validating them and executing
                 their handlers.
             </summary>
             <param name="specifiedArguments">The list of specified arguments.</param>
             <param name="argumentRuns">The argument run details.</param>
-            <param name="command">The <see cref="P:ConsoleFx.CmdLine.Parser.Parser.Command"/> that the arguments belong to.</param>
             <exception cref="T:ConsoleFx.CmdLine.ParserException">
                 Thrown if any of the validation or usage checks on the <see cref="T:ConsoleFx.CmdLine.Parser.Runs.ArgumentRun"/> objects
                 fails.

@@ -34,10 +34,7 @@ namespace TestHarness
     {
         internal override void Run()
         {
-            var command = new Command
-            {
-                LastArgumentRepeat = 100
-            };
+            var command = new Command();
             command.AddArgument("source")
                 .FormatAs(s => s.ToUpperInvariant());
             command.AddArgument("destination")
@@ -46,7 +43,7 @@ namespace TestHarness
                 .ValidateAsInteger(0, 100)
                 .TypedAs<int>()
                 .DefaultsTo(8);
-            command.AddArgument("params");
+            command.AddArgument("params", maxOccurences: byte.MaxValue);
             command.AddOption("v")
                 .UsedAsFlag();
             command.AddOption("y")
@@ -77,7 +74,7 @@ namespace TestHarness
             var parser = new Parser(command, ArgStyle.Unix);
             try
             {
-                ParseResult result = parser.Parse("sourceFile", "destfile", "7",
+                ParseResult result = parser.Parse("sourceFile", "destfile", "7", "8",
                     "-vy",
                     "--log", "blah",
                     "--web", "https://example.com",

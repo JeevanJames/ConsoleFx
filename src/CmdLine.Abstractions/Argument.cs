@@ -44,7 +44,7 @@ namespace ConsoleFx.CmdLine
         ///     Maximum number of occurences of the last argument. Ignored if it is not the last
         ///     argument.
         /// </param>
-        public Argument(string name, bool isOptional = false, int maxOccurences = 1)
+        public Argument(string name, bool isOptional = false, byte maxOccurences = 1)
             : base(new Dictionary<string, bool> { [name] = false })
         {
             if (maxOccurences < 1)

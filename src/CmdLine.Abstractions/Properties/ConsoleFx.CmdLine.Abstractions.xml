@@ -132,7 +132,7 @@
                 Represents a non-option command-line parameter.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Argument.#ctor(System.String,System.Boolean,System.Int32)">
+        <member name="M:ConsoleFx.CmdLine.Argument.#ctor(System.String,System.Boolean,System.Byte)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Argument" /> class.
             </summary>
@@ -315,11 +315,6 @@
         <member name="P:ConsoleFx.CmdLine.Command.Commands">
             <summary>
                 Gets the collection of <see cref="T:ConsoleFx.CmdLine.Command" /> sub-command objects for this command.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Command.LastArgumentRepeat">
-            <summary>
-                Gets or sets a value indicating how many times the last argument can repeat.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLine.Command.GetArgs">
