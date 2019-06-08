@@ -137,13 +137,27 @@ namespace ConsoleFx.CmdLine
                 if (_options is null)
                 {
                     _options = new Options();
+
                     IEnumerable<Option> options = GetArgs().OfType<Option>();
                     foreach (Option option in options)
+                        _options.Add(option);
+
+                    IEnumerable<Option> additionalOptions = RootCommand.GetUniversalOptions();
+                    foreach (Option option in additionalOptions)
                         _options.Add(option);
                 }
 
                 return _options;
             }
+        }
+
+        /// <summary>
+        ///     Override this method to specify options that apply to all options.
+        /// </summary>
+        /// <returns>Options that apply to all commands.</returns>
+        protected virtual IEnumerable<Option> GetUniversalOptions()
+        {
+            yield break;
         }
 
         /// <summary>

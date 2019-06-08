@@ -25,7 +25,7 @@ using System.Reflection;
 
 using ConsoleFx.CmdLine.Parser;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
-
+using ConsoleFx.CmdLine.Program.HelpBuilders;
 using ParserStyle = ConsoleFx.CmdLine.Parser.Style;
 
 namespace ConsoleFx.CmdLine.Program
@@ -37,6 +37,9 @@ namespace ConsoleFx.CmdLine.Program
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ArgStyle _argStyle;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private HelpBuilder _helpBuilder;
 
         public ConsoleProgram()
         {
@@ -67,6 +70,15 @@ namespace ConsoleFx.CmdLine.Program
         ///     Gets the expected grouping of the args.
         /// </summary>
         public ArgGrouping Grouping { get; }
+
+        /// <summary>
+        ///     Gets or sets the <see cref="HelpBuilder"/> to use to display the help.
+        /// </summary>
+        public HelpBuilder HelpBuilder
+        {
+            get => _helpBuilder ?? (_helpBuilder = new DefaultHelpBuilder("help", "h"));
+            set => _helpBuilder = value;
+        }
 
         /// <summary>
         ///     Gets or sets the <see cref="ErrorHandler"/> to use to handle any exceptions thrown
@@ -101,7 +113,21 @@ namespace ConsoleFx.CmdLine.Program
             {
                 // Parse the args and assign to the properties in the resultant command.
                 parseResult = parser.Parse(args);
+
+                // Assign the properties on the command object from the parse result.
                 AssignProperties(parseResult);
+
+                // Check if the help option is specified. If it is, display the help and get out.
+                HelpBuilder helpBuilder = HelpBuilder;
+                if (parseResult.TryGetOption(helpBuilder.Name, out bool displayHelp))
+                {
+                    helpBuilder.DisplayHelp(parseResult.Command);
+                    return 0;
+                }
+
+                // Get any pre post attributes applied on the command.
+                // These attributes will run custom code before and after the command handler and also
+                // when an exception is thrown.
                 attributes = parseResult.Command.GetType()
                     .GetCustomAttributes<PrePostHandlerAttribute>(true)
                     .ToList();
@@ -129,9 +155,7 @@ namespace ConsoleFx.CmdLine.Program
 
                 // Display help if so configured.
                 if (DisplayHelpOnError)
-                {
-                    //TODO: Display help
-                }
+                    HelpBuilder.DisplayHelp(parseResult?.Command ?? this);
 
                 // If the attributes have returned an error code, use that, otherwise use the error
                 // code returned from the error handler.
@@ -151,6 +175,14 @@ namespace ConsoleFx.CmdLine.Program
         public int Run(params string[] args)
         {
             return Run((IEnumerable<string>)args);
+        }
+
+        protected sealed override IEnumerable<Option> GetUniversalOptions()
+        {
+            HelpBuilder helpBuilder = HelpBuilder;
+
+            var option = new Option(helpBuilder.AllNames.ToArray()).UsedAsFlag();
+            yield return option;
         }
 
         private ParserStyle.ArgStyle CreateArgStyle()

@@ -216,6 +216,7 @@ namespace ConsoleFx.CmdLine.Parser
                 }
 
                 // If the option does not specify parameters by some are specified.
+                //TODO: Possible bug. Try specifying a flag option followed by an argument, and this fails. Somewhere, the argument is being considered a parameter of the argument.
                 if (or.Occurrences > 0 && or.Option.Usage.MinParameters == 0 && or.Option.Usage.MaxParameters == 0 &&
                     or.Parameters.Count > 0)
                 {

@@ -6,67 +6,10 @@
     <members>
         <member name="T:ConsoleFx.CmdLine.Arg">
             <summary>
-                Base class for command-line args, such as commands, arguments and options.
+                Base class for command-line args, such as <see cref="T:ConsoleFx.CmdLine.Option" />, <see cref="T:ConsoleFx.CmdLine.Argument" />
+                and <see cref="T:ConsoleFx.CmdLine.Command" />.
                 <para />
-                Base class for <see cref="T:ConsoleFx.CmdLine.Option" />, <see cref="T:ConsoleFx.CmdLine.Argument" /> and <see cref="T:ConsoleFx.CmdLine.Command" />.
-                <para />
-                This class provides two capabilities. One is the collection of names that identify the arg and the other is
-                additional metadata that can be used by certain frameworks to add more details for an arg.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Arg.#ctor">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Arg" /> class.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Arg.#ctor(System.Collections.Generic.IDictionary{System.String,System.Boolean})">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Arg" /> class with one or more names.
-            </summary>
-            <param name="names">One or more names for the arg. The first name is considered primary.</param>
-            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="names" /> is <c>null</c>.</exception>
-            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="names" /> collection is empty.</exception>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Arg.AddName(System.String,System.Boolean)">
-            <summary>
-                Adds a new name for the arg.
-            </summary>
-            <param name="name">The name.</param>
-            <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
-            <returns>An instance to the same <see cref="T:ConsoleFx.CmdLine.Arg" />, to allow for a fluent syntax.</returns>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Arg.HasName(System.String)">
-            <summary>
-                Checks whether any of the args' names matches the specified name.
-            </summary>
-            <param name="name">The name to check against.</param>
-            <returns><c>true</c>, if the specified name matches any of the args' names, otherwise <c>false</c>.</returns>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Arg.Name">
-            <summary>
-                Gets the first name from all the assigned names for this arg. This represents the primary name of the arg.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Arg.AlternateNames">
-            <summary>
-                Gets all the secondary names for the arg.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Arg.AllNames">
-            <summary>
-                Gets all the names of the arg.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Arg.Names">
-            <summary>
-                Gets the list of all names assigned to the arg.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.Arg.NamePattern">
-            <summary>
-                Gets a valid name pattern to verify names against.
-                <para />
-                Derived classes can override this to specify different naming rules for certain types of args.
+                This class adds support for metadata in addition to multiple names from the base class.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Arg.Item(System.String)">
@@ -338,6 +281,12 @@
                 Gets the collection of <see cref="T:ConsoleFx.CmdLine.Option" /> objects for this command.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Command.GetUniversalOptions">
+            <summary>
+                Override this method to specify options that apply to all options.
+            </summary>
+            <returns>Options that apply to all commands.</returns>
+        </member>
         <member name="P:ConsoleFx.CmdLine.Command.Commands">
             <summary>
                 Gets the collection of <see cref="T:ConsoleFx.CmdLine.Command" /> sub-command objects for this command.
@@ -529,6 +478,67 @@
         <member name="P:ConsoleFx.CmdLine.Messages.TooManyOptions">
             <summary>
               Looks up a localized string similar to The &apos;{0}&apos; option cannot be specified more than {1} times..
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.NamedObject">
+            <summary>
+                Base class for any type that can have one or more names, each of which can be case
+                sensitive or not.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.NamedObject.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.NamedObject" /> class.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.NamedObject.#ctor(System.Collections.Generic.IDictionary{System.String,System.Boolean})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.NamedObject" /> class with one or more names.
+            </summary>
+            <param name="names">One or more names for the arg. The first name is considered primary.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="names" /> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="names" /> collection is empty.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.NamedObject.AddName(System.String,System.Boolean)">
+            <summary>
+                Adds a new name for the arg.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
+            <returns>An instance to the same <see cref="T:ConsoleFx.CmdLine.Arg" />, to allow for a fluent syntax.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.NamedObject.HasName(System.String)">
+            <summary>
+                Checks whether any of the args' names matches the specified name.
+            </summary>
+            <param name="name">The name to check against.</param>
+            <returns><c>true</c>, if the specified name matches any of the args' names, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.NamedObject.Name">
+            <summary>
+                Gets the first name from all the assigned names for this arg. This represents the primary name of the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.NamedObject.AlternateNames">
+            <summary>
+                Gets all the secondary names for the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.NamedObject.AllNames">
+            <summary>
+                Gets all the names of the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.NamedObject.Names">
+            <summary>
+                Gets the list of all names assigned to the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.NamedObject.NamePattern">
+            <summary>
+                Gets a valid name pattern to verify names against.
+                <para />
+                Derived classes can override this to specify different naming rules for certain types of args.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.Option">

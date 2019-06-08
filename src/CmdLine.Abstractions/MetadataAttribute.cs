@@ -60,7 +60,7 @@ namespace ConsoleFx.CmdLine
             if (Name != null)
                 yield return new KeyValuePair<string, string>("Name", Name);
 
-            yield return new KeyValuePair<string, string>("Description", "Description");
+            yield return new KeyValuePair<string, string>("Description", Description);
 
             yield return new KeyValuePair<string, string>("Order", Order.ToString());
         }

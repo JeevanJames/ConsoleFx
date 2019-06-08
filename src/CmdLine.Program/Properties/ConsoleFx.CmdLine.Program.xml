@@ -23,6 +23,11 @@
                 Gets the expected grouping of the args.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.HelpBuilder">
+            <summary>
+                Gets or sets the <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.HelpBuilder"/> to use to display the help.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.ErrorHandler">
             <summary>
                 Gets or sets the <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.ErrorHandler"/> to use to handle any exceptions thrown

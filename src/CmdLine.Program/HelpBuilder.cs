@@ -17,12 +17,23 @@ limitations under the License.
 */
 #endregion
 
+using System.Collections.Generic;
+
 using ConsoleFx.CmdLine.Program.HelpBuilders;
 
 namespace ConsoleFx.CmdLine.Program
 {
-    public abstract class HelpBuilder
+    public abstract class HelpBuilder : NamedObject
     {
+        protected HelpBuilder()
+        {
+        }
+
+        protected HelpBuilder(IDictionary<string, bool> names)
+            : base(names)
+        {
+        }
+
         public abstract void DisplayHelp(Command command);
 
         public static HelpBuilder Default => new DefaultHelpBuilder();

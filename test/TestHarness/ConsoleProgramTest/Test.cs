@@ -33,17 +33,10 @@ namespace TestHarness.ConsoleProgramTest
     {
         internal override void Run()
         {
-            var helpBuilder = new DefaultHelpBuilder
-            {
-                ArgumentDescriptionPlacement = ArgDescriptionPlacement.SameLine,
-                OptionDescriptionPlacement = ArgDescriptionPlacement.SameLine,
-            };
-            helpBuilder.DisplayHelp(new CloneCommand());
-            
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("clone", "https://github.com/JeevanJames/_project", "--project-root-dir", "D:\\Temp\\MyProjects");
+            int exitCode = program.Run("--help");
             Console.WriteLine($"Exit code: {exitCode}");
         }
     }

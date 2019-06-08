@@ -27,6 +27,18 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 {
     public class DefaultHelpBuilder : HelpBuilder
     {
+        public DefaultHelpBuilder(params string[] names)
+        {
+            foreach (string name in names)
+                AddName(name);
+        }
+
+        public DefaultHelpBuilder(bool caseSensitive, params string[] names)
+        {
+            foreach (string name in names)
+                AddName(name, caseSensitive);
+        }
+
         public override void DisplayHelp(Command command)
         {
             string usage = GetSummaryUsage(command);
