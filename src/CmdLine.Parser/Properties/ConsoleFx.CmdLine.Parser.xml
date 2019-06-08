@@ -124,8 +124,14 @@
         </member>
         <member name="M:ConsoleFx.CmdLine.Parser.Parser.Parse(System.String[])">
             <summary>
-                Parses the given set of tokens based on the rules specified by the <see cref="T:ConsoleFx.CmdLine.Arguments" />,
-                <see cref="T:ConsoleFx.CmdLine.Options" /> and <see cref="T:ConsoleFx.CmdLine.Commands" /> properties.
+                Parses the given set of tokens based on the rules specified by the <see cref="P:ConsoleFx.CmdLine.Parser.Parser.Command"/>.
+            </summary>
+            <param name="tokens">Token strings to parse.</param>
+            <returns>A <see cref="T:ConsoleFx.CmdLine.Parser.ParseResult" /> instance.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Parser.Parse(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+                Parses the given set of tokens based on the rules specified by the <see cref="P:ConsoleFx.CmdLine.Parser.Parser.Command"/>.
             </summary>
             <param name="tokens">Token strings to parse.</param>
             <returns>A <see cref="T:ConsoleFx.CmdLine.Parser.ParseResult" /> instance.</returns>

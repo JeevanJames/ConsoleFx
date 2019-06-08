@@ -181,7 +181,9 @@ namespace ConsoleFx.CmdLine.Program
         {
             HelpBuilder helpBuilder = HelpBuilder;
 
-            var option = new Option(helpBuilder.AllNames.ToArray()).UsedAsFlag();
+            var option = new Option(helpBuilder.AllNames.ToArray())
+                .UsedAsFlag()
+                .UnderGroups(int.MinValue);
             yield return option;
         }
 

@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using ConsoleFx.CmdLine.Parser.Config;
 using ConsoleFx.CmdLine.Parser.Runs;
 using ConsoleFx.CmdLine.Parser.Style;
@@ -58,18 +59,25 @@ namespace ConsoleFx.CmdLine.Parser
         /// </summary>
         public ArgGrouping Grouping { get; set; }
 
-        public ConfigReader ConfigReader { get; set; }
-
-        public ParseResult Parse(IEnumerable<string> tokens) =>
-            Parse(tokens.ToArray());
+        //TODO: To be implemented later
+        /* public ConfigReader ConfigReader { get; set; } */
 
         /// <summary>
-        ///     Parses the given set of tokens based on the rules specified by the <see cref="Arguments" />,
-        ///     <see cref="Options" /> and <see cref="Commands" /> properties.
+        ///     Parses the given set of tokens based on the rules specified by the <see cref="Command"/>.
         /// </summary>
         /// <param name="tokens">Token strings to parse.</param>
         /// <returns>A <see cref="ParseResult" /> instance.</returns>
         public ParseResult Parse(params string[] tokens)
+        {
+            return Parse((IEnumerable<string>)tokens);
+        }
+
+        /// <summary>
+        ///     Parses the given set of tokens based on the rules specified by the <see cref="Command"/>.
+        /// </summary>
+        /// <param name="tokens">Token strings to parse.</param>
+        /// <returns>A <see cref="ParseResult" /> instance.</returns>
+        public ParseResult Parse(IEnumerable<string> tokens)
         {
             DebugOutput.Write("Tokens passed", tokens);
 
@@ -98,6 +106,8 @@ namespace ConsoleFx.CmdLine.Parser
             // the Option instance itself. Identified arguments are returned from the method.
             List<string> specifiedArguments =
                 ArgStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
+
+            EnsureArgsInSameGroup(run, specifiedArguments);
 
             //TODO: Come back to this later
             //if (ConfigReader != null)
@@ -166,6 +176,28 @@ namespace ConsoleFx.CmdLine.Parser
                 run.Tokens = new List<string>(0);
 
             return run;
+        }
+
+        private void EnsureArgsInSameGroup(ParseRun run, IList<string> specifiedArguments)
+        {
+            if (specifiedArguments == null)
+                throw new ArgumentNullException(nameof(specifiedArguments));
+
+            IEnumerable<OptionRun> specifiedOptions = run.Options.Where(or => or.Occurrences > 0);
+            IEnumerable<int> groups = null;
+            foreach (OptionRun or in specifiedOptions)
+            {
+                if (groups is null)
+                {
+                    groups = or.Option.Groups;
+                    continue;
+                }
+
+                groups = groups.Intersect(or.Option.Groups);
+            }
+
+            if (!groups.Any())
+                throw new ParserException(-1, "Specified options do not all share the same group.");
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace TestHarness.ConsoleProgramTest
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("--help");
+            int exitCode = program.Run("clone", "--help");
             Console.WriteLine($"Exit code: {exitCode}");
         }
     }

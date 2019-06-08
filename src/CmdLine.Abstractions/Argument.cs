@@ -47,8 +47,8 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the argument is optional. Optional arguments can only be specified after
-        ///     all the required arguments.
+        ///     Gets a value indicating whether the argument is optional. Optional arguments can only
+        ///     be specified after all the required arguments.
         /// </summary>
         public bool IsOptional { get; }
 
