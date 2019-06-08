@@ -119,7 +119,7 @@ namespace ConsoleFx.CmdLine.Program
 
                 // Check if the help option is specified. If it is, display the help and get out.
                 HelpBuilder helpBuilder = HelpBuilder;
-                if (parseResult.TryGetOption(helpBuilder.Name, out bool displayHelp))
+                if (parseResult.TryGetOption(helpBuilder.Name, out bool displayHelp) && displayHelp)
                 {
                     helpBuilder.DisplayHelp(parseResult.Command);
                     return 0;
@@ -238,10 +238,10 @@ namespace ConsoleFx.CmdLine.Program
                         hasValue = parseResult.TryGetArgument(argName, out value);
                 }
 
-                // Throw an exception if there is no arg found for a property with an Option or
+                /*// Throw an exception if there is no arg found for a property with an Option or
                 // Argument attribute, as they have been explicitly marked as args.
                 if (!hasValue && attribute != null)
-                    throw new InvalidOperationException($"Cannot find an arg named '{argName}' to assign to the {property.Name} property.");
+                    throw new InvalidOperationException($"Cannot find an arg named '{argName}' to assign to the {property.Name} property.");*/
 
                 if (!hasValue)
                     continue;

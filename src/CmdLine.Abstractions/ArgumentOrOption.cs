@@ -19,7 +19,6 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using ConsoleFx.CmdLine.Validators.Bases;
 
@@ -35,7 +34,7 @@ namespace ConsoleFx.CmdLine
     public abstract class ArgumentOrOption<TArg> : Arg
         where TArg : Arg
     {
-        private readonly List<int> _groups = new List<int>();
+        private readonly List<int> _groups = new List<int> { 0 };
 
         protected ArgumentOrOption()
         {
@@ -172,6 +171,10 @@ namespace ConsoleFx.CmdLine
         {
             if (groups is null)
                 throw new ArgumentNullException(nameof(groups));
+            if (groups.Count == 0)
+                return;
+
+            _groups.Clear();
             _groups.AddRange(groups);
         }
     }

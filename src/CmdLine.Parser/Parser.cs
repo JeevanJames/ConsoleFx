@@ -107,7 +107,15 @@ namespace ConsoleFx.CmdLine.Parser
             List<string> specifiedArguments =
                 ArgStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
 
-            EnsureArgsInSameGroup(run, specifiedArguments);
+            // Get the groups that match the specified options and arguments.
+            IReadOnlyList<int> matchingGroups = GetMatchingGroups(run, specifiedArguments);
+
+            // If no groups match, we cannot proceed, so throw a parser exception.
+            if (matchingGroups.Count == 0)
+                throw new ParserException(-1, "The specified arguments and options are invalid.");
+
+            // Trim the argument and option runs to those that contain the matcing groups.
+            TrimRunsToMatchingGroups(run, matchingGroups);
 
             //TODO: Come back to this later
             //if (ConfigReader != null)
@@ -178,26 +186,81 @@ namespace ConsoleFx.CmdLine.Parser
             return run;
         }
 
-        private void EnsureArgsInSameGroup(ParseRun run, IList<string> specifiedArguments)
+        /// <summary>
+        ///     Figure out the groups that match the specified options and arguments.
+        ///     <para/>
+        ///     Only arguments and options that have those groups will be considered for further
+        ///     processing.
+        /// </summary>
+        /// <param name="run">
+        ///     The <see cref="ParseRun"/> instance that contains the specified options.
+        /// </param>
+        /// <param name="specifiedArguments">The specified arguments.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if the <paramref name="specifiedArguments"/> is <c>null</c>.
+        /// </exception>
+        private IReadOnlyList<int> GetMatchingGroups(ParseRun run, IList<string> specifiedArguments)
         {
-            if (specifiedArguments == null)
+            if (specifiedArguments is null)
                 throw new ArgumentNullException(nameof(specifiedArguments));
 
+            // Get the option runs for only the specified options.
             IEnumerable<OptionRun> specifiedOptions = run.Options.Where(or => or.Occurrences > 0);
-            IEnumerable<int> groups = null;
-            foreach (OptionRun or in specifiedOptions)
-            {
-                if (groups is null)
-                {
-                    groups = or.Option.Groups;
-                    continue;
-                }
 
+            // For the specified option runs and all the argument runs, get the distinct set of groups.
+            IEnumerable<int> groups = specifiedOptions
+                .SelectMany(or => or.Option.Groups)
+                .Union(run.Arguments.SelectMany(ar => ar.Argument.Groups))
+                .Distinct();
+
+            // Find the common groups across all specified option runs.
+            foreach (OptionRun or in specifiedOptions)
                 groups = groups.Intersect(or.Option.Groups);
+
+            //TODO: Not sure if this condition will ever be true.
+            // In case we do not have any groups remaining, throw an exception.
+            if (!groups.Any())
+                return new List<int>(0);
+
+            // For the remaining groups, check whether the number of specified arguments falls in the
+            // range of the argument runs that have the group.
+            // Add any matching groups to a list.
+            var matchingArgumentGroups = new List<int>();
+            foreach (int group in groups)
+            {
+                // Find all argument runs that have the group.
+                IList<ArgumentRun> groupArguments = run.Arguments
+                    .Where(ar => ar.Argument.Groups.Contains(group))
+                    .ToList();
+
+                // Calculate the minimum and maximum possible number of arguments that can be specified,
+                // based on the selected argument groups.
+                int minOccurences = groupArguments.Count(ar => !ar.Argument.IsOptional);
+                int maxOccurences = groupArguments.Count == 0 ? 0
+                    : groupArguments.Count + groupArguments[groupArguments.Count - 1].Argument.MaxOccurences - 1;
+
+                // If the number of specified arguments falls into the calculated range, then this
+                // group is valid, so add it to the list.
+                if (specifiedArguments.Count >= minOccurences && specifiedArguments.Count <= maxOccurences)
+                    matchingArgumentGroups.Add(group);
             }
 
-            if (!groups.Any())
-                throw new ParserException(-1, "Specified options do not all share the same group.");
+            return matchingArgumentGroups;
+        }
+
+        private void TrimRunsToMatchingGroups(ParseRun run, IReadOnlyList<int> matchingGroups)
+        {
+            for (int i = run.Options.Count - 1; i >= 0; i--)
+            {
+                if (!run.Options[i].Option.Groups.Any(grp => matchingGroups.Contains(grp)))
+                    run.Options.RemoveAt(i);
+            }
+
+            for (int i = run.Arguments.Count - 1; i >= 0; i--)
+            {
+                if (!run.Arguments[i].Argument.Groups.Any(grp => matchingGroups.Contains(grp)))
+                    run.Arguments.RemoveAt(i);
+            }
         }
 
         /// <summary>

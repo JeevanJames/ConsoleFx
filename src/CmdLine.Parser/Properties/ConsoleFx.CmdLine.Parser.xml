@@ -136,6 +136,21 @@
             <param name="tokens">Token strings to parse.</param>
             <returns>A <see cref="T:ConsoleFx.CmdLine.Parser.ParseResult" /> instance.</returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Parser.GetMatchingGroups(ConsoleFx.CmdLine.Parser.Runs.ParseRun,System.Collections.Generic.IList{System.String})">
+            <summary>
+                Figure out the groups that match the specified options and arguments.
+                <para/>
+                Only arguments and options that have those groups will be considered for further
+                processing.
+            </summary>
+            <param name="run">
+                The <see cref="T:ConsoleFx.CmdLine.Parser.Runs.ParseRun"/> instance that contains the specified options.
+            </param>
+            <param name="specifiedArguments">The specified arguments.</param>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the <paramref name="specifiedArguments"/> is <c>null</c>.
+            </exception>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Parser.Parser.ProcessOptions(System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLine.Parser.Runs.OptionRun})">
             <summary>
                 Process the specified options by verifying their usage, validating them and executing

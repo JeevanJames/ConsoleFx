@@ -40,10 +40,18 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         /// <param name="name">The unique name identifying the argument.</param>
         /// <param name="isOptional">Indicates whether the argument is optional.</param>
-        public Argument(string name, bool isOptional = false)
+        /// <param name="maxOccurences">
+        ///     Maximum number of occurences of the last argument. Ignored if it is not the last
+        ///     argument.
+        /// </param>
+        public Argument(string name, bool isOptional = false, int maxOccurences = 1)
             : base(new Dictionary<string, bool> { [name] = false })
         {
+            if (maxOccurences < 1)
+                throw new ArgumentException($"Maximum occurences for the {name} argument should not be less than one.", nameof(maxOccurences));
+
             IsOptional = isOptional;
+            MaxOccurences = maxOccurences;
         }
 
         /// <summary>
@@ -51,6 +59,8 @@ namespace ConsoleFx.CmdLine
         ///     be specified after all the required arguments.
         /// </summary>
         public bool IsOptional { get; }
+
+        public int MaxOccurences { get; }
 
         /// <summary>
         ///     Gets the validators for this argument.

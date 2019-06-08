@@ -132,12 +132,16 @@
                 Represents a non-option command-line parameter.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Argument.#ctor(System.String,System.Boolean)">
+        <member name="M:ConsoleFx.CmdLine.Argument.#ctor(System.String,System.Boolean,System.Int32)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Argument" /> class.
             </summary>
             <param name="name">The unique name identifying the argument.</param>
             <param name="isOptional">Indicates whether the argument is optional.</param>
+            <param name="maxOccurences">
+                Maximum number of occurences of the last argument. Ignored if it is not the last
+                argument.
+            </param>
         </member>
         <member name="P:ConsoleFx.CmdLine.Argument.IsOptional">
             <summary>
@@ -270,9 +274,18 @@
                 <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ProcessCommandAttribute">
+            <summary>
+                Read any <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute decorated on this class and add
+                the names specified in the attribute to this instance.
+                <para />
+                Ignore the <see cref="P:ConsoleFx.CmdLine.CommandAttribute.ParentType"/> property, as that is dealt with
+                elsewhere.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.Command.ParentCommand">
             <summary>
-                Gets or sets a reference to the parent <see cref="T:ConsoleFx.CmdLine.Command"/> of this instance.
+                Gets a reference to the parent <see cref="T:ConsoleFx.CmdLine.Command"/> of this instance.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Command.RootCommand">

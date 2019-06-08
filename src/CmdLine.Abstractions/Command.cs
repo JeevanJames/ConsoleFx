@@ -73,6 +73,13 @@ namespace ConsoleFx.CmdLine
                 AddName(name, caseSensitive);
         }
 
+        /// <summary>
+        ///     Read any <see cref="CommandAttribute"/> attribute decorated on this class and add
+        ///     the names specified in the attribute to this instance.
+        ///     <para />
+        ///     Ignore the <see cref="CommandAttribute.ParentType"/> property, as that is dealt with
+        ///     elsewhere.
+        /// </summary>
         private void ProcessCommandAttribute()
         {
             // Read the command attribute on this class.
@@ -90,9 +97,9 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <summary>
-        ///     Gets or sets a reference to the parent <see cref="Command"/> of this instance.
+        ///     Gets a reference to the parent <see cref="Command"/> of this instance.
         /// </summary>
-        public Command ParentCommand { get; set; }
+        public Command ParentCommand { get; internal set; }
 
         /// <summary>
         ///     Gets the reference to the root <see cref="Command"/> instance.
@@ -138,10 +145,15 @@ namespace ConsoleFx.CmdLine
                 {
                     _options = new Options();
 
+                    // Add the options from the GetArgs method.
                     IEnumerable<Option> options = GetArgs().OfType<Option>();
                     foreach (Option option in options)
                         _options.Add(option);
 
+                    // Add any universal options.
+                    // Universal options that apply to all commands are only specified at the root
+                    // command level.
+                    // It wouldn't make sense for non-root commands to specify universal options.
                     IEnumerable<Option> additionalOptions = RootCommand.GetUniversalOptions();
                     foreach (Option option in additionalOptions)
                         _options.Add(option);
@@ -153,6 +165,9 @@ namespace ConsoleFx.CmdLine
 
         /// <summary>
         ///     Override this method to specify options that apply to all options.
+        ///     <para />
+        ///     This method should only be overridden in a root command object, as that is the only
+        ///     one that is considered. The method is not called for non-root commands.
         /// </summary>
         /// <returns>Options that apply to all commands.</returns>
         protected virtual IEnumerable<Option> GetUniversalOptions()
@@ -196,6 +211,7 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets or sets a value indicating how many times the last argument can repeat.
         /// </summary>
+        //TODO: Remove this in favor of the Argument.MaxOccurrences property.
         public byte LastArgumentRepeat
         {
             get => _lastArgumentRepeat;
@@ -303,18 +319,48 @@ namespace ConsoleFx.CmdLine
     // Dynamically discover commands in assemblies.
     public partial class Command : Arg
     {
+        /// <summary>
+        ///     Gets the commands that are discovered by calling one of the <c>ScanAssemblies</c>
+        ///     methods.
+        /// </summary>
         internal IDictionary<Type, Type> DiscoveredCommands { get; } = new Dictionary<Type, Type>();
 
+        /// <summary>
+        ///     Scans the entry assembly and locates any commands objects. Add applicable commands
+        ///     as sub-commands to this command.
+        /// </summary>
+        /// <param name="typePredicate">
+        ///     Optional predicate that can be used to filter the discovered commands.
+        /// </param>
         public void ScanEntryAssemblyForCommands(Func<Type, bool> typePredicate = null)
         {
             ScanAssembliesForCommands(new[] { Assembly.GetEntryAssembly() }, typePredicate);
         }
 
+        /// <summary>
+        ///     Scans the specified <paramref name="assemblies"/> and locates any commands objects.
+        ///     Add applicable commands as sub-commands to this command.
+        /// </summary>
+        /// <param name="assemblies">The assemblies to scan.</param>
         public void ScanAssembliesForCommands(params Assembly[] assemblies)
         {
             ScanAssembliesForCommands((IEnumerable<Assembly>)assemblies);
         }
 
+        /// <summary>
+        ///     Scans the specified <paramref name="assemblies"/> and locates any commands objects.
+        ///     Add applicable commands as sub-commands to this command.
+        /// </summary>
+        /// <param name="assemblies">The assemblies to scan.</param>
+        /// <param name="typePredicate">
+        ///     Optional predicate that can be used to filter the discovered commands.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if <paramref name="assemblies"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if any assembly in the <paramref name="assemblies"/> is <c>null</c>.
+        /// </exception>
         public void ScanAssembliesForCommands(IEnumerable<Assembly> assemblies, Func<Type, bool> typePredicate = null)
         {
             if (assemblies is null)
