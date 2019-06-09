@@ -30,6 +30,18 @@ namespace TestHarness
     {
         internal override void Run()
         {
+            var progressBar = new ProgressBar(ProgressBar.Legacy(spec =>
+            {
+                spec.Format = "Installing package... [{bar}] {percentage}%";
+                spec.Line = 15;
+            }));
+            progressBar.Value = 10;
+            WaitForKeysLoop(new[]
+            {
+                ConsoleKey.RightArrow.HandledBy(k => progressBar.Value++),
+                ConsoleKey.LeftArrow.HandledBy(k => progressBar.Value--)
+            });
+
             string longStr = $@"This is a very long string that I intend to use to test the {Cyan}ConsoleEx.PrintIndented{Reset} method to prove that it can actually print a long string correctly {Black.BgYellow}by splitting them among at empty character occurrences{Reset.BgReset}. After attempting the first time, I realized that the initial string, while still long, was not long enough to properly test the method. So, I increased the length by a great deal to allow proper testing.";
 
             PrintIndented(longStr, 8, true);
