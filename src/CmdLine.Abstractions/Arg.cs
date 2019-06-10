@@ -44,13 +44,13 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <summary>
-        ///     Gets or sets a string metadata value.
+        ///     Gets or sets a metadata value.
         /// </summary>
         /// <param name="name">The name of the metadata value.</param>
-        /// <returns>The string value of the metadata.</returns>
-        public string this[string name]
+        /// <returns>The value of the metadata.</returns>
+        public object this[string name]
         {
-            get => Get<string>(name);
+            get => Get<object>(name);
             set => Set(name, value);
         }
 

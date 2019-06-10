@@ -122,7 +122,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             foreach (TArg arg in args)
             {
                 string name = ResolveName(arg);
-                string description = arg["Description"] ?? "<No description provided>";
+                string description = arg.Get<string>("Description") ?? "<No description provided>";
                 WriteLine($"{Indent}{name.PadRight(longestLength)}   {description}");
             }
         }
@@ -133,7 +133,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             foreach (TArg arg in args)
             {
                 WriteLine($"{Indent}{ResolveName(arg)}");
-                string description = arg["Description"] ?? "<No description provided>";
+                string description = arg.Get<string>("Description") ?? "<No description provided>";
                 WriteLine($"{Indent}{Indent}{description}");
                 WriteLine();
             }
@@ -154,7 +154,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 string names = BuildCombinedOptionsName(option);
                 WriteLine($"{Indent}{names}");
 
-                string description = option["Description"] ?? "<No description provided>";
+                string description = option.Get<string>("Description") ?? "<No description provided>";
                 WriteLine($"{Indent}{Indent}{description}");
 
                 WriteLine();
@@ -172,7 +172,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             foreach (Option option in options)
             {
                 string names = BuildCombinedOptionsName(option);
-                string description = option["Description"] ?? "<No description provided>";
+                string description = option.Get<string>("Description") ?? "<No description provided>";
                 WriteLine($"{Indent}{names.PadRight(longestLength)}   {description}");
             }
         }
@@ -192,11 +192,11 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
         private string ResolveName(Arg arg)
         {
-            string customName = arg["Name"];
+            string customName = arg.Get<string>("Name");
             return customName ?? arg.Name;
         }
 
-        private const string Indent = "    ";
+        private const string Indent = "   ";
     }
 
     /// <summary>

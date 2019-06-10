@@ -25,7 +25,7 @@ namespace ConsoleFx.CmdLine
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
     public abstract class MetadataAttribute : Attribute
     {
-        public abstract IEnumerable<KeyValuePair<string, string>> GetMetadata();
+        public abstract IEnumerable<KeyValuePair<string, object>> GetMetadata();
     }
 
     public sealed class HelpAttribute : MetadataAttribute
@@ -55,14 +55,14 @@ namespace ConsoleFx.CmdLine
 
         public int Order { get; }
 
-        public override IEnumerable<KeyValuePair<string, string>> GetMetadata()
+        public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
         {
             if (Name != null)
-                yield return new KeyValuePair<string, string>("Name", Name);
+                yield return new KeyValuePair<string, object>("Name", Name);
 
-            yield return new KeyValuePair<string, string>("Description", Description);
+            yield return new KeyValuePair<string, object>("Description", Description);
 
-            yield return new KeyValuePair<string, string>("Order", Order.ToString());
+            yield return new KeyValuePair<string, object>("Order", Order);
         }
     }
 }
