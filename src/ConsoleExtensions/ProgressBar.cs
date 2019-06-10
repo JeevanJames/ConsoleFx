@@ -57,7 +57,7 @@ namespace ConsoleFx.ConsoleExtensions
             // Validate spec properties.
             if (_spec.MinValue >= _spec.MaxValue)
                 throw new ArgumentException("Progress bar minimum value cannot be greater or equal to the maximum value.", nameof(spec));
-            if (_style.CompleteChar == _style.IncompleteChar)
+            if (_style.Complete.Char == _style.Incomplete.Char)
                 throw new ArgumentException("Progress bar complete char cannot be the same as the incomplete char.", nameof(spec));
 
             // Validate value param.
@@ -81,7 +81,11 @@ namespace ConsoleFx.ConsoleExtensions
                 ["min"] = _spec.MinValue.ToString(),
             };
 
+            // Display the progress bar with the initial value.
             Update(_value);
+
+            // Move to the next line, so that the progress bar owns it's own line.
+            Console.WriteLine();
         }
 
         public int Value
@@ -107,7 +111,12 @@ namespace ConsoleFx.ConsoleExtensions
             long incomplete = _spec.Width - complete;
             long percentage = (value * 100) / (_spec.MaxValue - _spec.MinValue);
 
-            _placeholders["bar"] = $"{new string(_style.CompleteChar, (int)complete)}{new string(_style.IncompleteChar, (int)incomplete)}";
+            ColorString cstr = new ColorString(new string(_style.Complete.Char, (int)complete), _style.Complete.ForeColor, _style.Complete.BackColor)
+                .Reset().BgReset()
+                .Text(new string(_style.Incomplete.Char, (int)incomplete), _style.Incomplete.ForeColor, _style.Incomplete.BackColor)
+                .Reset().BgReset();
+
+            _placeholders["bar"] = cstr.ToString();
             _placeholders["percentage"] = percentage.ToString().PadLeft(3);
             _placeholders["value"] = value.ToString();
 
@@ -140,7 +149,7 @@ namespace ConsoleFx.ConsoleExtensions
 
     public sealed class ProgressBarSpec
     {
-        private ColorString _format = "{0}";
+        private ColorString _format;
 
         public ProgressBarSpec()
         {
@@ -166,7 +175,7 @@ namespace ConsoleFx.ConsoleExtensions
                     throw new ArgumentNullException(nameof(value));
                 string str = value.ToString();
                 if (!BarPlaceholderPattern.IsMatch(str))
-                    throw new ArgumentException("Format should at least contain the {bar} placeholder.", nameof(value));
+                    throw new ArgumentException("Format should at least contain the <<bar>> placeholder.", nameof(value));
                 _format = value;
             }
         }
@@ -176,22 +185,65 @@ namespace ConsoleFx.ConsoleExtensions
 
     public sealed class ProgressBarStyle
     {
-        public char IncompleteChar { get; set; } = ' ';
+        public Part Complete { get; } = new Part();
 
-        public char CompleteChar { get; set; }
+        public Part Incomplete { get; } = new Part { Char = ' ' };
 
-        public static ProgressBarStyle Text(char c) => new ProgressBarStyle { CompleteChar = c };
+        public ProgressBarStyle CompleteChar(char c)
+        {
+            Complete.Char = c;
+            return this;
+        }
 
-        public static ProgressBarStyle Default => new ProgressBarStyle { CompleteChar = '=' };
+        public ProgressBarStyle CompleteForeColor(CColor? color)
+        {
+            Complete.ForeColor = color;
+            return this;
+        }
 
-        public static ProgressBarStyle Dots => new ProgressBarStyle { CompleteChar = '.' };
+        public ProgressBarStyle CompleteBackColor(CColor? color)
+        {
+            Complete.BackColor = color;
+            return this;
+        }
 
-        public static ProgressBarStyle Block => new ProgressBarStyle { CompleteChar = '█' };
+        public ProgressBarStyle IncompleteChar(char c)
+        {
+            Incomplete.Char = c;
+            return this;
+        }
 
-        public static ProgressBarStyle HalfBlock => new ProgressBarStyle { CompleteChar = '▄' };
+        public ProgressBarStyle IncompleteForeColor(CColor? color)
+        {
+            Incomplete.ForeColor = color;
+            return this;
+        }
 
-        public static ProgressBarStyle Lines => new ProgressBarStyle { CompleteChar = '≡' };
+        public ProgressBarStyle IncompleteBackColor(CColor? color)
+        {
+            Incomplete.BackColor = color;
+            return this;
+        }
 
-        public static ProgressBarStyle Shaded => new ProgressBarStyle { CompleteChar = '█', IncompleteChar = '░' };
+        public static ProgressBarStyle Default => new ProgressBarStyle().CompleteChar('=');
+
+        public static ProgressBarStyle Dots => new ProgressBarStyle().CompleteChar('.');
+
+        public static ProgressBarStyle Block => new ProgressBarStyle().CompleteChar('█');
+
+        public static ProgressBarStyle HalfBlock => new ProgressBarStyle().CompleteChar('▄');
+
+        public static ProgressBarStyle Lines => new ProgressBarStyle().CompleteChar('≡');
+
+        public static ProgressBarStyle Shaded => new ProgressBarStyle().CompleteChar('█').IncompleteChar('░');
+
+        public sealed class Part
+        {
+            public char Char { get; set; }
+
+            public CColor? ForeColor { get; set; }
+
+            public CColor? BackColor { get; set; }
+        }
     }
 }

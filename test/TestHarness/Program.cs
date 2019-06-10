@@ -81,6 +81,7 @@ namespace TestHarness
             [typeof(ConsoleProgramTest.Test)] = "Console Program",
             [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",
             [typeof(DeepMultiCommand.Test)]   = "Deep multi-command Console Program",
+            [typeof(ProgressBarTest.Test)]    = "Progress bar",
             [typeof(PrompterTest)]            = "Prompter",
             [typeof(Program)]                 = "Exit",
         };
