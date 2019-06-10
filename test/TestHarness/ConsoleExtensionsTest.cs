@@ -30,11 +30,11 @@ namespace TestHarness
     {
         internal override void Run()
         {
-            var progressBar = new ProgressBar(ProgressBar.Legacy(spec =>
+            var progressBar =ProgressBar(new ProgressBarSpec
             {
-                spec.Format = "Installing package... [{bar}] {percentage}%";
-                spec.Line = 15;
-            }));
+                Format = $"{Magenta}Installing package... {Cyan}[<<bar>>] {Yellow}<<percentage>>%",
+                Line = 15,
+            }, style: ProgressBarStyle.Shaded);
             progressBar.Value = 10;
             WaitForKeysLoop(new[]
             {

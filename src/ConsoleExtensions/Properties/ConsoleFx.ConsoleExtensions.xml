@@ -351,7 +351,7 @@
                 Represents a console progress bar.
             </summary>
         </member>
-        <member name="M:ConsoleFx.ConsoleExtensions.ProgressBar.#ctor(ConsoleFx.ConsoleExtensions.ProgressBarSpec,System.Int32)">
+        <member name="M:ConsoleFx.ConsoleExtensions.ProgressBar.#ctor(ConsoleFx.ConsoleExtensions.ProgressBarSpec,System.Int32,ConsoleFx.ConsoleExtensions.ProgressBarStyle)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.ProgressBar" /> class.
             </summary>
@@ -359,6 +359,7 @@
             <param name="value">
                 The starting value of the progress bar. Defaults to the minimum value.
             </param>
+            <param name="style">The style of the progress bar.</param>
         </member>
     </members>
 </doc>

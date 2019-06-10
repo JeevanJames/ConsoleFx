@@ -33,10 +33,7 @@ namespace ConsoleFx.ConsoleExtensions
         private readonly ProgressBarSpec _spec;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly int _line;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly int _column;
+        private readonly ProgressBarStyle _style;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Dictionary<string, string> _placeholders;
@@ -51,14 +48,16 @@ namespace ConsoleFx.ConsoleExtensions
         /// <param name="value">
         ///     The starting value of the progress bar. Defaults to the minimum value.
         /// </param>
-        public ProgressBar(ProgressBarSpec spec = null, int value = 0)
+        /// <param name="style">The style of the progress bar.</param>
+        internal ProgressBar(ProgressBarSpec spec = null, int value = 0, ProgressBarStyle style = null)
         {
             _spec = spec ?? new ProgressBarSpec();
+            _style = style ?? new ProgressBarStyle();
 
             // Validate spec properties.
             if (_spec.MinValue >= _spec.MaxValue)
                 throw new ArgumentException("Progress bar minimum value cannot be greater or equal to the maximum value.", nameof(spec));
-            if (_spec.CompleteChar == _spec.IncompleteChar)
+            if (_style.CompleteChar == _style.IncompleteChar)
                 throw new ArgumentException("Progress bar complete char cannot be the same as the incomplete char.", nameof(spec));
 
             // Validate value param.
@@ -70,8 +69,8 @@ namespace ConsoleFx.ConsoleExtensions
                 _value = value;
 
             // Assign remaining properties.
-            _line = _spec.Line.GetValueOrDefault(Console.CursorTop);
-            _column = _spec.Column.GetValueOrDefault(Console.CursorLeft);
+            Line = _spec.Line.GetValueOrDefault(Console.CursorTop);
+            Column = _spec.Column.GetValueOrDefault(Console.CursorLeft);
 
             _placeholders = new Dictionary<string, string>(5, StringComparer.OrdinalIgnoreCase)
             {
@@ -91,9 +90,9 @@ namespace ConsoleFx.ConsoleExtensions
             set => _value = Update(value);
         }
 
-        public int Line => _line;
+        public int Line { get; }
 
-        public int Column => _column;
+        public int Column { get; }
 
         private int Update(int value)
         {
@@ -108,7 +107,7 @@ namespace ConsoleFx.ConsoleExtensions
             long incomplete = _spec.Width - complete;
             long percentage = (value * 100) / (_spec.MaxValue - _spec.MinValue);
 
-            _placeholders["bar"] = $"{new string(_spec.CompleteChar, (int)complete)}{new string(_spec.IncompleteChar, (int)incomplete)}";
+            _placeholders["bar"] = $"{new string(_style.CompleteChar, (int)complete)}{new string(_style.IncompleteChar, (int)incomplete)}";
             _placeholders["percentage"] = percentage.ToString().PadLeft(3);
             _placeholders["value"] = value.ToString();
 
@@ -124,7 +123,7 @@ namespace ConsoleFx.ConsoleExtensions
             {
                 Console.CursorVisible = false;
                 Console.SetCursorPosition(Column, Line);
-                Console.Write(progressBar);
+                ConsoleEx.Print(progressBar);
             }
             finally
             {
@@ -135,28 +134,17 @@ namespace ConsoleFx.ConsoleExtensions
             return value;
         }
 
-        private static readonly Regex FormatPlaceholderPattern = new Regex(@"([^{]?){(bar|percentage|min|max|value)}([^}]?)",
+        private static readonly Regex FormatPlaceholderPattern = new Regex(@"([^<]?)\<\<(bar|percentage|min|max|value)\>\>([^>]?)",
             RegexOptions.IgnoreCase);
-
-        public static ProgressBarSpec Legacy(Action<ProgressBarSpec> configure = null)
-        {
-            var spec = new ProgressBarSpec
-            {
-                CompleteChar = '=',
-                IncompleteChar = ' ',
-            };
-            configure?.Invoke(spec);
-            return spec;
-        }
     }
 
     public sealed class ProgressBarSpec
     {
-        private string _format = "{0}";
+        private ColorString _format = "{0}";
 
         public ProgressBarSpec()
         {
-            Format = "{bar}";
+            Format = "<<bar>>";
         }
 
         public int MinValue { get; set; }
@@ -169,23 +157,41 @@ namespace ConsoleFx.ConsoleExtensions
 
         public int? Column { get; set; }
 
-        public char IncompleteChar { get; set; } = ' ';
-
-        public char CompleteChar { get; set; } = '=';
-
-        public string Format
+        public ColorString Format
         {
             get => _format;
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Invalid progress bar format.", nameof(value));
-                if (!BarPlaceholderPattern.IsMatch(value))
+                if (value is null)
+                    throw new ArgumentNullException(nameof(value));
+                string str = value.ToString();
+                if (!BarPlaceholderPattern.IsMatch(str))
                     throw new ArgumentException("Format should at least contain the {bar} placeholder.", nameof(value));
                 _format = value;
             }
         }
 
-        private static readonly Regex BarPlaceholderPattern = new Regex(@"[^{]?\{bar\}[^}]?", RegexOptions.IgnoreCase);
+        private static readonly Regex BarPlaceholderPattern = new Regex(@"[^<]?\<\<bar\>\>[^>]?", RegexOptions.IgnoreCase);
+    }
+
+    public sealed class ProgressBarStyle
+    {
+        public char IncompleteChar { get; set; } = ' ';
+
+        public char CompleteChar { get; set; }
+
+        public static ProgressBarStyle Text(char c) => new ProgressBarStyle { CompleteChar = c };
+
+        public static ProgressBarStyle Default => new ProgressBarStyle { CompleteChar = '=' };
+
+        public static ProgressBarStyle Dots => new ProgressBarStyle { CompleteChar = '.' };
+
+        public static ProgressBarStyle Block => new ProgressBarStyle { CompleteChar = '█' };
+
+        public static ProgressBarStyle HalfBlock => new ProgressBarStyle { CompleteChar = '▄' };
+
+        public static ProgressBarStyle Lines => new ProgressBarStyle { CompleteChar = '≡' };
+
+        public static ProgressBarStyle Shaded => new ProgressBarStyle { CompleteChar = '█', IncompleteChar = '░' };
     }
 }
