@@ -68,14 +68,7 @@ namespace ConsoleFx.CmdLine.Validators
         public static Argument ValidateAsEnum(this Argument argument, Type enumType, bool ignoreCase = true,
             string message = null)
         {
-            if (enumType is null)
-                throw new ArgumentNullException(nameof(enumType));
-            if (!enumType.IsEnum)
-                throw new ArgumentException("Specified type is not an enum.", nameof(enumType));
-
-            var validator = new EnumValidator(enumType, ignoreCase);
-            if (message != null)
-                validator.Message = message;
+            EnumValidator validator = CreateValidator(enumType, ignoreCase, message);
             return argument.ValidateWith(validator);
         }
 
@@ -91,14 +84,7 @@ namespace ConsoleFx.CmdLine.Validators
         public static Option ValidateAsEnum(this Option option, Type enumType, bool ignoreCase = true,
             int parameterIndex = -1, string message = null)
         {
-            if (enumType is null)
-                throw new ArgumentNullException(nameof(enumType));
-            if (!enumType.IsEnum)
-                throw new ArgumentException("Specified type is not an enum.", nameof(enumType));
-
-            var validator = new EnumValidator(enumType, ignoreCase);
-            if (message != null)
-                validator.Message = message;
+            EnumValidator validator = CreateValidator(enumType, ignoreCase, message);
             return option.ValidateWith(parameterIndex, validator).TypedAs(enumType);
         }
 
@@ -110,6 +96,20 @@ namespace ConsoleFx.CmdLine.Validators
             if (message != null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator).TypedAs<TEnum>();
+        }
+
+        private static EnumValidator CreateValidator(Type enumType, bool ignoreCase, string message)
+        {
+            if (enumType is null)
+                throw new ArgumentNullException(nameof(enumType));
+            if (!enumType.IsEnum)
+                throw new ArgumentException("Specified type is not an enum.", nameof(enumType));
+
+            var validator = new EnumValidator(enumType, ignoreCase);
+            if (message != null)
+                validator.Message = message;
+
+            return validator;
         }
     }
 }

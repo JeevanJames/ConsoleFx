@@ -68,6 +68,12 @@
             <param name="ex">The error to be handled.</param>
             <returns>The status code corresponding to the error.</returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpBuilder.DisplayHelp(ConsoleFx.CmdLine.Command)">
+            <summary>
+                Override this method to display the help for the specified <paramref name="command"/>.
+            </summary>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> for which to display help.</param>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Program.HelpBuilders.UsageType">
             <summary>
                 Describes how the program usage is to be displayed.

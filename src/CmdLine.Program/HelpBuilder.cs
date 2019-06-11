@@ -34,8 +34,10 @@ namespace ConsoleFx.CmdLine.Program
         {
         }
 
+        /// <summary>
+        ///     Override this method to display the help for the specified <paramref name="command"/>.
+        /// </summary>
+        /// <param name="command">The <see cref="Command"/> for which to display help.</param>
         public abstract void DisplayHelp(Command command);
-
-        public static HelpBuilder Default => new DefaultHelpBuilder();
     }
 }
