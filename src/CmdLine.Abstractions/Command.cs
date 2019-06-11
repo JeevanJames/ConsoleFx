@@ -53,19 +53,19 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public Command()
         {
-            ProcessCommandAttribute();
+            ProcessCommandAttributes();
         }
 
         public Command(params string[] names)
         {
-            ProcessCommandAttribute();
+            ProcessCommandAttributes();
             foreach (string name in names)
                 AddName(name);
         }
 
         public Command(bool caseSensitive, params string[] names)
         {
-            ProcessCommandAttribute();
+            ProcessCommandAttributes();
             foreach (string name in names)
                 AddName(name, caseSensitive);
         }
@@ -77,7 +77,7 @@ namespace ConsoleFx.CmdLine
         ///     Ignore the <see cref="CommandAttribute.ParentType"/> property, as that is dealt with
         ///     elsewhere.
         /// </summary>
-        private void ProcessCommandAttribute()
+        private void ProcessCommandAttributes()
         {
             // Read the command attribute on this class.
             CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
@@ -91,6 +91,11 @@ namespace ConsoleFx.CmdLine
                 if (commandAttribute.ParentType == GetType())
                     throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
             }
+
+            // Read any metadata attributes.
+            IEnumerable<MetadataAttribute> metadataAttributes = GetType().GetCustomAttributes<MetadataAttribute>(inherit: true);
+            foreach (MetadataAttribute metadataAttribute in metadataAttributes)
+                metadataAttribute.AssignMetadata(this);
         }
 
         /// <summary>

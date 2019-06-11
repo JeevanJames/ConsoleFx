@@ -17,44 +17,73 @@ limitations under the License.
 */
 #endregion
 
+using System;
+
 namespace ConsoleFx.CmdLine.Program
 {
     public static class HelpExtensions
     {
-        public static Argument Description(this Argument argument, string description, string name = null)
+        public static Argument Help(this Argument argument, string description, string name = null)
         {
-            argument["Description"] = description;
+            if (description is null)
+                throw new ArgumentNullException(nameof(description));
+            argument[Keys.Description] = description;
             if (!string.IsNullOrWhiteSpace(name))
-                argument["Name"] = name;
+                argument[Keys.Name] = name;
             return argument;
         }
 
-        public static Command Description(this Command command, string description, string name = null)
+        public static Command Help(this Command command, string description, string name = null)
         {
-            command["Description"] = description;
+            if (description is null)
+                throw new ArgumentNullException(nameof(description));
+            command[Keys.Description] = description;
             if (!string.IsNullOrWhiteSpace(name))
-                command["Name"] = name;
+                command[Keys.Name] = name;
             return command;
         }
 
-        public static Option Description(this Option option, string description)
+        public static Option Help(this Option option, string description)
         {
-            option["Description"] = description;
+            if (description is null)
+                throw new ArgumentNullException(nameof(description));
+            option[Keys.Description] = description;
             return option;
         }
 
-        public static Command Grouping(this Command command, string groupName, string description)
+        public static TArg Category<TArg>(this TArg arg, string name, string description)
+            where TArg : Arg
         {
-            command["GroupName"] = groupName;
-            command["GroupDescription"] = description;
-            return command;
+            arg[Keys.CategoryName] = name;
+            arg[Keys.CategoryDescription] = description;
+            return arg;
         }
 
         public static TArg Order<TArg>(this TArg arg, int order)
             where TArg : Arg
         {
-            arg["Order"] = order.ToString();
+            arg[Keys.Order] = order.ToString();
             return arg;
+        }
+
+        public static TArg HideHelp<TArg>(this TArg arg)
+            where TArg : Arg
+        {
+            arg[Keys.Hide] = true;
+            return arg;
+        }
+
+        public static class Keys
+        {
+            public const string Name = "Name";
+            public const string Description = "Description";
+
+            public const string CategoryName = "CategoryName";
+            public const string CategoryDescription = "CategoryDescription";
+
+            public const string Order = "Order";
+
+            public const string Hide = "HideHelp";
         }
     }
 }

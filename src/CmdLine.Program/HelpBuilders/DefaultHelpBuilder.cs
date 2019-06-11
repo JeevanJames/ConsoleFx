@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -44,26 +45,9 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             string usage = GetSummaryUsage(command);
             WriteLine($"Usage: {usage}");
 
-            if (command.Arguments.Count > 0)
-            {
-                WriteLine();
-                WriteLine("Arguments:");
-                PrintArgs(command.Arguments, ArgumentDescriptionPlacement);
-            }
-
-            if (command.Options.Count > 0)
-            {
-                WriteLine();
-                WriteLine("Options:");
-                PrintOptions(command.Options, OptionDescriptionPlacement);
-            }
-
-            if (command.Commands.Count > 0)
-            {
-                WriteLine();
-                WriteLine("Commands:");
-                PrintArgs(command.Commands, CommandDescriptionPlacement);
-            }
+            PrintArgs(command.Arguments, ArgumentDescriptionPlacement, "Arguments");
+            PrintOptions(command.Options, OptionDescriptionPlacement, "Options");
+            PrintArgs(command.Commands, CommandDescriptionPlacement, "Commands");
         }
 
         public UsageType UsageType { get; set; }
@@ -101,16 +85,32 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             }
         }
 
-        private void PrintArgs<TArg>(Args<TArg> args, ArgDescriptionPlacement placement)
+        private void PrintArgs<TArg>(Args<TArg> args, ArgDescriptionPlacement placement, string defaultCategoryName)
             where TArg : Arg
         {
-            if (placement == ArgDescriptionPlacement.NextLine)
-                PrintArgsOnNextLine(args);
-            else
-                PrintArgsOnSameLine(args);
+            if (args.Count == 0)
+                return;
+
+            IEnumerable<IGrouping<string, TArg>> categories = args.GroupBy(arg => arg.Get<string>(HelpExtensions.Keys.CategoryName), StringComparer.OrdinalIgnoreCase);
+            foreach (var category in categories)
+            {
+                List<TArg> categoryArgs = category
+                    .Where(arg => !arg.Get<bool>(HelpExtensions.Keys.Hide))
+                    .OrderBy(arg => arg.Get<int>(HelpExtensions.Keys.Order))
+                    .ToList();
+                if (categoryArgs.Count == 0)
+                    continue;
+
+                WriteLine();
+                WriteLine(category.Key ?? defaultCategoryName);
+                if (placement == ArgDescriptionPlacement.NextLine)
+                    PrintArgsOnNextLine(categoryArgs);
+                else
+                    PrintArgsOnSameLine(categoryArgs);
+            }
         }
 
-        private void PrintArgsOnSameLine<TArg>(Args<TArg> args)
+        private void PrintArgsOnSameLine<TArg>(IReadOnlyList<TArg> args)
             where TArg : Arg
         {
             int longestLength = args.Aggregate(0, (longest, arg) =>
@@ -127,7 +127,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             }
         }
 
-        private void PrintArgsOnNextLine<TArg>(Args<TArg> args)
+        private void PrintArgsOnNextLine<TArg>(IReadOnlyList<TArg> args)
             where TArg : Arg
         {
             foreach (TArg arg in args)
@@ -139,15 +139,31 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             }
         }
 
-        private void PrintOptions(Options options, ArgDescriptionPlacement placement)
+        private void PrintOptions(Options options, ArgDescriptionPlacement placement, string defaultCategoryName)
         {
-            if (placement == ArgDescriptionPlacement.NextLine)
-                PrintOptionsOnNextLine(options);
-            else
-                PrintOptionsOnSameLine(options);
+            if (options.Count == 0)
+                return;
+
+            IEnumerable<IGrouping<string, Option>> categories = options.GroupBy(option => option.Get<string>(HelpExtensions.Keys.CategoryName), StringComparer.OrdinalIgnoreCase);
+            foreach (IGrouping<string, Option> category in categories)
+            {
+                List<Option> categoryOptions = category
+                    .Where(option => !option.Get<bool>(HelpExtensions.Keys.Hide))
+                    .OrderBy(option => option.Get<int>(HelpExtensions.Keys.Order))
+                    .ToList();
+                if (categoryOptions.Count == 0)
+                    continue;
+
+                WriteLine();
+                WriteLine(category.Key ?? defaultCategoryName);
+                if (placement == ArgDescriptionPlacement.NextLine)
+                    PrintOptionsOnNextLine(categoryOptions);
+                else
+                    PrintOptionsOnSameLine(categoryOptions);
+            }
         }
 
-        private void PrintOptionsOnNextLine(Options options)
+        private void PrintOptionsOnNextLine(List<Option> options)
         {
             foreach (Option option in options)
             {
@@ -161,7 +177,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             }
         }
 
-        private void PrintOptionsOnSameLine(Options options)
+        private void PrintOptionsOnSameLine(List<Option> options)
         {
             int longestLength = options.Aggregate(0, (longest, option) =>
             {

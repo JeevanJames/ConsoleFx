@@ -274,7 +274,7 @@
                 <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Command.ProcessCommandAttribute">
+        <member name="M:ConsoleFx.CmdLine.Command.ProcessCommandAttributes">
             <summary>
                 Read any <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute decorated on this class and add
                 the names specified in the attribute to this instance.
@@ -537,6 +537,14 @@
             <summary>
               Looks up a localized string similar to The &apos;{0}&apos; option cannot be specified more than {1} times..
             </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.MetadataAttribute.AssignMetadata``1(``0)">
+            <summary>
+                Helper method to assign the metadata values from this attribute to the specified
+                <paramref name="arg"/>.
+            </summary>
+            <typeparam name="TArg">The type of arg.</typeparam>
+            <param name="arg">The arg to assign the metadata to.</param>
         </member>
         <member name="T:ConsoleFx.CmdLine.NamedObject">
             <summary>

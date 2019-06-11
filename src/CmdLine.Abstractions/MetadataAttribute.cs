@@ -22,47 +22,23 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.CmdLine
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public abstract class MetadataAttribute : Attribute
     {
         public abstract IEnumerable<KeyValuePair<string, object>> GetMetadata();
-    }
 
-    public sealed class HelpAttribute : MetadataAttribute
-    {
-        public HelpAttribute(string description)
+        /// <summary>
+        ///     Helper method to assign the metadata values from this attribute to the specified
+        ///     <paramref name="arg"/>.
+        /// </summary>
+        /// <typeparam name="TArg">The type of arg.</typeparam>
+        /// <param name="arg">The arg to assign the metadata to.</param>
+        public void AssignMetadata<TArg>(TArg arg)
+            where TArg : Arg
         {
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("Description should be specified.", nameof(description));
-
-            Description = description;
-        }
-
-        public HelpAttribute(string name, string description)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name should be specified.", nameof(name));
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("Description should be specified.", nameof(description));
-
-            Name = name;
-            Description = description;
-        }
-
-        public string Name { get; }
-
-        public string Description { get; }
-
-        public int Order { get; }
-
-        public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
-        {
-            if (Name != null)
-                yield return new KeyValuePair<string, object>("Name", Name);
-
-            yield return new KeyValuePair<string, object>("Description", Description);
-
-            yield return new KeyValuePair<string, object>("Order", Order);
+            IEnumerable<KeyValuePair<string, object>> metadata = GetMetadata();
+            foreach (KeyValuePair<string, object> metadataItem in metadata)
+                arg.Set(metadataItem.Key, metadataItem.Value);
         }
     }
 }

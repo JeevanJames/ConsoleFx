@@ -192,7 +192,8 @@ namespace ConsoleFx.CmdLine.Program
 
             var option = new Option(helpBuilder.AllNames.ToArray())
                 .UsedAsFlag()
-                .UnderGroups(int.MinValue);
+                .UnderGroups(int.MinValue)
+                .HideHelp();
             yield return option;
         }
 
@@ -273,11 +274,7 @@ namespace ConsoleFx.CmdLine.Program
 
                 // Assign the metadata to the arg.
                 foreach (MetadataAttribute metadataAttribute in metadataAttributes)
-                {
-                    var metadata = metadataAttribute.GetMetadata();
-                    foreach (var metadataItem in metadata)
-                        arg[metadataItem.Key] = metadataItem.Value;
-                }
+                    metadataAttribute.AssignMetadata(arg);
             }
         }
     }
