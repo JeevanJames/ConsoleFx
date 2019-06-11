@@ -186,6 +186,67 @@ namespace ConsoleFx.CmdLine.Parser
             return run;
         }
 
+        private IReadOnlyList<int> GetMatchingGroups(ParseRun run, IList<string> specifiedArguments)
+        {
+            IReadOnlyList<OptionRun> specifiedOptions = run.Options.Where(or => or.Occurrences > 0).ToList();
+
+            IEnumerable<int> groups = null;
+            if (specifiedOptions.Count > 0)
+            {
+                groups = specifiedOptions[0].Option.Groups;
+                if (specifiedOptions.Count > 1)
+                {
+                    for (int i = 1; i < specifiedOptions.Count; i++)
+                    {
+                        groups = groups.Intersect(specifiedOptions[i].Option.Groups);
+                        if (!groups.Any())
+                            throw new ParserException(-1, $"The '{specifiedOptions[i - 1].Option.Name}' option cannot be specified with the '{specifiedOptions[i].Option.Name}'.");
+                    }
+                }
+            }
+
+            if (groups is null)
+                groups = run.Arguments.SelectMany(ar => ar.Argument.Groups).Distinct();
+
+            var matchingGroups = new List<int>();
+            foreach (int group in groups)
+            {
+                // Find all argument runs that have the group.
+                IList<ArgumentRun> groupArguments = run.Arguments
+                    .Where(ar => ar.Argument.Groups.Contains(group))
+                    .ToList();
+
+                // Calculate the minimum and maximum possible number of arguments that can be specified,
+                // based on the selected argument groups.
+                int minOccurences = groupArguments.Count(ar => !ar.Argument.IsOptional);
+                int maxOccurences = groupArguments.Count == 0 ? 0
+                    : groupArguments.Count + groupArguments[groupArguments.Count - 1].Argument.MaxOccurences - 1;
+
+                // If the number of specified arguments falls into the calculated range, then this
+                // group is valid, so add it to the list.
+                if (specifiedArguments.Count >= minOccurences && specifiedArguments.Count <= maxOccurences)
+                    matchingGroups.Add(group);
+            }
+
+            // In case no groups remain, we have two possibilities.
+            if (matchingGroups.Count == 0)
+            {
+                // Check if all options and arguments are optional.
+                bool allArgsOptional = run.Options.All(or => or.Option.Usage.MinOccurrences == 0) && run.Arguments.All(ar => ar.Argument.IsOptional);
+
+                // If all options and arguments are optional, then no args were specified for this
+                // command, so simply return a default of group 0.
+                if (allArgsOptional)
+                    return new[] { 0 };
+
+                // If at least one option or argument is required, then this is an invalid scenario and we should throw an exception.
+                throw new ParserException(-1, "You have specified args that do not go together.");
+            }
+
+            return matchingGroups;
+        }
+
+        /*
         /// <summary>
         ///     Figure out the groups that match the specified options and arguments.
         ///     <para/>
@@ -254,7 +315,7 @@ namespace ConsoleFx.CmdLine.Parser
             }
 
             return matchingArgumentGroups;
-        }
+        }*/
 
         private void TrimRunsToMatchingGroups(ParseRun run, IReadOnlyList<int> matchingGroups)
         {

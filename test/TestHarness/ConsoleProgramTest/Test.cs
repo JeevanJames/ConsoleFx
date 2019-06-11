@@ -36,7 +36,7 @@ namespace TestHarness.ConsoleProgramTest
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("--version", "--help");
+            int exitCode = program.Run("bleh", "--version");
             Console.WriteLine($"Exit code: {exitCode}");
         }
     }
@@ -48,12 +48,16 @@ namespace TestHarness.ConsoleProgramTest
         [Help("Displays the version of the application.")]
         public bool ShowVersion { get; set; }
 
+        [Argument("argument")]
+        [Help("Sample argument")]
+        public string Argument { get; set; }
+
         protected override int HandleCommand()
         {
             if (ShowVersion)
                 Console.WriteLine("Version: 1.0.0.1");
             else
-                Console.WriteLine("Default behavior");
+                Console.WriteLine($"Default behavior - {Argument ?? "Default value"}");
             return 0;
         }
 
@@ -61,6 +65,9 @@ namespace TestHarness.ConsoleProgramTest
         {
             yield return new Option("version")
                 .UsedAsFlag(optional: true);
+
+            yield return new Argument("argument")
+                .UnderGroups(1);
         }
     }
 
