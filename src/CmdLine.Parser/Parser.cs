@@ -201,9 +201,6 @@ namespace ConsoleFx.CmdLine.Parser
         /// </exception>
         private IReadOnlyList<int> GetMatchingGroups(ParseRun run, IList<string> specifiedArguments)
         {
-            if (specifiedArguments is null)
-                throw new ArgumentNullException(nameof(specifiedArguments));
-
             // Get the option runs for only the specified options.
             IEnumerable<OptionRun> specifiedOptions = run.Options.Where(or => or.Occurrences > 0);
 
@@ -217,10 +214,21 @@ namespace ConsoleFx.CmdLine.Parser
             foreach (OptionRun or in specifiedOptions)
                 groups = groups.Intersect(or.Option.Groups);
 
-            //TODO: Not sure if this condition will ever be true.
-            // In case we do not have any groups remaining, throw an exception.
+            // In case no groups remain, we have two possibilities.
             if (!groups.Any())
+            {
+                // Check if all options and arguments are optional.
+                bool allArgsOptional = run.Options.All(or => or.Option.Usage.MinOccurrences == 0) && run.Arguments.All(ar => ar.Argument.IsOptional);
+
+                // If all options and arguments are optional, then no args were specified for this
+                // command, so simply return a default of group 0.
+                if (allArgsOptional)
+                    return new[] { 0 };
+
+                // If at least one option or argument is required, then this is an invalid scenario and we should throw an exception.
+                // Return an empty list to indicate an error.
                 return new List<int>(0);
+            }
 
             // For the remaining groups, check whether the number of specified arguments falls in the
             // range of the argument runs that have the group.

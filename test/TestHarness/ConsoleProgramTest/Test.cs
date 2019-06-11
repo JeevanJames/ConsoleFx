@@ -36,7 +36,7 @@ namespace TestHarness.ConsoleProgramTest
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("clone", "--help");
+            int exitCode = program.Run("--version", "--help");
             Console.WriteLine($"Exit code: {exitCode}");
         }
     }
@@ -44,6 +44,24 @@ namespace TestHarness.ConsoleProgramTest
     [Program("ConsoleProgramTest", Style = ArgStyle.Unix)]
     public sealed class MyProgram : ConsoleProgram
     {
+        [Option("version")]
+        [Help("Displays the version of the application.")]
+        public bool ShowVersion { get; set; }
+
+        protected override int HandleCommand()
+        {
+            if (ShowVersion)
+                Console.WriteLine("Version: 1.0.0.1");
+            else
+                Console.WriteLine("Default behavior");
+            return 0;
+        }
+
+        protected override IEnumerable<Arg> GetArgs()
+        {
+            yield return new Option("version")
+                .UsedAsFlag(optional: true);
+        }
     }
 
     [Command("clone")]
@@ -71,7 +89,7 @@ namespace TestHarness.ConsoleProgramTest
                 .ValidateAsUri(UriKind.Absolute)
                 .TypedAs<Uri>();
 
-            yield return new Argument(nameof(ManifestDirectory), true);
+            yield return new Argument(nameof(ManifestDirectory), isOptional: true);
 
             yield return new Option("branch", "b")
                 .UsedAsSingleParameter();
@@ -85,9 +103,6 @@ namespace TestHarness.ConsoleProgramTest
 
         protected override int HandleCommand()
         {
-            Directory.SetCurrentDirectory(Path.GetTempPath());
-            if (DateTime.Now.Ticks > 100L)
-                throw new InvalidOperationException("Invalid operation");
             return 0;
         }
     }
