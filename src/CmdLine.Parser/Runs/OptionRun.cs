@@ -23,7 +23,7 @@ using System.Diagnostics;
 
 namespace ConsoleFx.CmdLine.Parser.Runs
 {
-    [DebuggerDisplay("{Option.Name} - {Value}")]
+    [DebuggerDisplay("Option: {Option.Name} - {Value} (Assigned: {Assigned})")]
     public sealed class OptionRun : ArgumentOrOptionRun<Option>
     {
         internal OptionRun(Option option)
@@ -72,9 +72,6 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         internal List<string> Parameters { get; } = new List<string>();
 
         internal OptionValueType ValueType { get; set; }
-
-        //TODO: If this makes sense, move it to the base class.
-        internal bool Assigned { get; set; }
     }
 
     /// <summary>
@@ -84,9 +81,26 @@ namespace ConsoleFx.CmdLine.Parser.Runs
     /// </summary>
     internal enum OptionValueType
     {
+        /// <summary>
+        ///     An object of any type. Used when there is a single parameter.
+        /// </summary>
         Object,
+
+        /// <summary>
+        ///     A list of any type. Used when there are more than one possible parameters.
+        /// </summary>
         List,
+
+        /// <summary>
+        ///     A count of the number of occurences of the option. Used when the option has no
+        ///     parameters, but multiple occurences.
+        /// </summary>
         Count,
+
+        /// <summary>
+        ///     A boolean flag indicating whether the option was specified. Used when the option can
+        ///     occur only once and have no occurences.
+        /// </summary>
         Flag,
     }
 }

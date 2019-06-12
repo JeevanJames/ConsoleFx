@@ -186,6 +186,19 @@ namespace ConsoleFx.CmdLine.Parser
             return run;
         }
 
+        /// <summary>
+        ///     Figure out the groups that match the specified options and arguments.
+        ///     <para/>
+        ///     Only arguments and options that have those groups will be considered for further
+        ///     processing.
+        /// </summary>
+        /// <param name="run">
+        ///     The <see cref="ParseRun"/> instance that contains the specified options.
+        /// </param>
+        /// <param name="specifiedArguments">The specified arguments.</param>
+        /// <exception cref="ParserException">
+        ///     Thrown if args from different groups are specified.
+        /// </exception>
         private IReadOnlyList<int> GetMatchingGroups(ParseRun run, IList<string> specifiedArguments)
         {
             IReadOnlyList<OptionRun> specifiedOptions = run.Options.Where(or => or.Occurrences > 0).ToList();

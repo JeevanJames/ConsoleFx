@@ -72,6 +72,11 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         internal object Value { get; set; }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether the <see cref="Value"/> property is assigned.
+        /// </summary>
+        internal bool Assigned { get; set; }
+
+        /// <summary>
         ///     Helper method to resolve the raw string value of the arg using the formatter and type
         ///     converter.
         /// </summary>
