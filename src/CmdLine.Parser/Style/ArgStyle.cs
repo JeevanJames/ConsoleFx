@@ -19,7 +19,6 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Parser.Runs;
 
 namespace ConsoleFx.CmdLine.Parser.Style

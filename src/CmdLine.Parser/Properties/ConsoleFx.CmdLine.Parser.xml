@@ -136,6 +136,21 @@
             <param name="tokens">Token strings to parse.</param>
             <returns>A <see cref="T:ConsoleFx.CmdLine.Parser.ParseResult" /> instance.</returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Parser.GetMatchingGroups(ConsoleFx.CmdLine.Parser.Runs.ParseRun,System.Collections.Generic.IList{System.String})">
+            <summary>
+                Figure out the groups that match the specified options and arguments.
+                <para/>
+                Only arguments and options that have those groups will be considered for further
+                processing.
+            </summary>
+            <param name="run">
+                The <see cref="T:ConsoleFx.CmdLine.Parser.Runs.ParseRun"/> instance that contains the specified options.
+            </param>
+            <param name="specifiedArguments">The specified arguments.</param>
+            <exception cref="T:ConsoleFx.CmdLine.ParserException">
+                Thrown if args from different groups are specified.
+            </exception>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Parser.Parser.ProcessOptions(System.Collections.Generic.IReadOnlyList{ConsoleFx.CmdLine.Parser.Runs.OptionRun})">
             <summary>
                 Process the specified options by verifying their usage, validating them and executing
@@ -183,6 +198,11 @@
                 Gets or sets the resolved value of the arg.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.Parser.Runs.ArgumentOrOptionRun`1.Assigned">
+            <summary>
+                Gets or sets a value indicating whether the <see cref="P:ConsoleFx.CmdLine.Parser.Runs.ArgumentOrOptionRun`1.Value"/> property is assigned.
+            </summary>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Parser.Runs.ArgumentOrOptionRun`1.ResolveValue(System.String)">
             <summary>
                 Helper method to resolve the raw string value of the arg using the formatter and type
@@ -209,6 +229,28 @@
                 The type of the resolved value of an option.
                 <para/>
                 Decided based on the usage specs of the option.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.Parser.Runs.OptionValueType.Object">
+            <summary>
+                An object of any type. Used when there is a single parameter.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.Parser.Runs.OptionValueType.List">
+            <summary>
+                A list of any type. Used when there are more than one possible parameters.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.Parser.Runs.OptionValueType.Count">
+            <summary>
+                A count of the number of occurences of the option. Used when the option has no
+                parameters, but multiple occurences.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.Parser.Runs.OptionValueType.Flag">
+            <summary>
+                A boolean flag indicating whether the option was specified. Used when the option can
+                occur only once and have no occurences.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.Parser.Runs.ParseRun">

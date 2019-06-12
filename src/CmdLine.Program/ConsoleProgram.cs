@@ -97,7 +97,7 @@ namespace ConsoleFx.CmdLine.Program
         public bool DisplayHelpOnError { get; set; }
 
         /// <summary>
-        ///     Runs the console program after parsing the command-line args.
+        ///     Runs the console program after parsing the specified <paramref name="args"/>.
         /// </summary>
         /// <param name="args">The args to parse.</param>
         /// <returns>
@@ -107,7 +107,7 @@ namespace ConsoleFx.CmdLine.Program
         {
             // If no args specifid for this method, use the args specified on the command line.
             if (args is null)
-                args = Environment.GetCommandLineArgs().Skip(1);
+                args = new string[0];
 
             ParseResult parseResult = null;
             IReadOnlyList<PrePostHandlerAttribute> attributes = null;
@@ -176,9 +176,27 @@ namespace ConsoleFx.CmdLine.Program
             }
         }
 
+        /// <summary>
+        ///     Runs the console program after parsing the specified <paramref name="args"/>.
+        /// </summary>
+        /// <param name="args">The args to parse.</param>
+        /// <returns>
+        ///     The numeric code that represents the result of the console program execution.
+        /// </returns>
         public int Run(params string[] args)
         {
             return Run((IEnumerable<string>)args);
+        }
+
+        /// <summary>
+        ///     Runs the console program after parsing the command line args.
+        /// </summary>
+        /// <returns>
+        ///     The numeric code that represents the result of the console program execution.
+        /// </returns>
+        public int RunWithCommandLineArgs()
+        {
+            return Run(Environment.GetCommandLineArgs().Skip(1));
         }
 
         /// <summary>

@@ -27,6 +27,7 @@ namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Collection of all parameter validators of an option. The collection is grouped by parameter index.
+    ///     <para />
     ///     A parameter index of -1 indicates validators for all parameters.
     /// </summary>
     [DebuggerDisplay("Option {_option.Name} validators")]
