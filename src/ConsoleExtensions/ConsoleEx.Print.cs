@@ -159,7 +159,7 @@ namespace ConsoleFx.ConsoleExtensions
 
             if (block.BackColor.HasValue)
             {
-                if (block.BackColor.Value == CColor.BgReset)
+                if (block.BackColor.Value == CColor.Reset)
                 {
                     ConsoleColor foreColor = Console.ForegroundColor;
                     Console.ResetColor();
@@ -188,22 +188,6 @@ namespace ConsoleFx.ConsoleExtensions
             [CColor.Red] = ConsoleColor.Red,
             [CColor.White] = ConsoleColor.White,
             [CColor.Yellow] = ConsoleColor.Yellow,
-            [CColor.BgBlack] = ConsoleColor.Black,
-            [CColor.BgBlue] = ConsoleColor.Blue,
-            [CColor.BgCyan] = ConsoleColor.Cyan,
-            [CColor.BgDkBlue] = ConsoleColor.DarkBlue,
-            [CColor.BgDkCyan] = ConsoleColor.DarkCyan,
-            [CColor.BgDkGray] = ConsoleColor.DarkGray,
-            [CColor.BgDkGreen] = ConsoleColor.DarkGreen,
-            [CColor.BgDkMagenta] = ConsoleColor.DarkMagenta,
-            [CColor.BgDkRed] = ConsoleColor.DarkRed,
-            [CColor.BgDkYellow] = ConsoleColor.DarkYellow,
-            [CColor.BgGray] = ConsoleColor.Gray,
-            [CColor.BgGreen] = ConsoleColor.Green,
-            [CColor.BgMagenta] = ConsoleColor.Magenta,
-            [CColor.BgRed] = ConsoleColor.Red,
-            [CColor.BgWhite] = ConsoleColor.White,
-            [CColor.BgYellow] = ConsoleColor.Yellow,
         };
     }
 }

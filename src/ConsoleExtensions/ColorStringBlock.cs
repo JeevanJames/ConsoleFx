@@ -56,7 +56,7 @@ namespace ConsoleFx.ConsoleExtensions
                 if (ForeColor.HasValue && BackColor.HasValue)
                     sb.Append(".");
                 if (BackColor.HasValue)
-                    sb.Append(BackColor.Value);
+                    sb.Append($"Bg{BackColor.Value}");
                 sb.Append("]");
             }
 

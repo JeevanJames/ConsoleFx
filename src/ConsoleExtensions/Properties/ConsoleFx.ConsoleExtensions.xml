@@ -6,7 +6,7 @@
     <members>
         <member name="T:ConsoleFx.ConsoleExtensions.CColor">
             <summary>
-                Foreground colors and background colors.
+                ConsoleFx console colors.
             </summary>
         </member>
         <member name="T:ConsoleFx.ConsoleExtensions.Clr">

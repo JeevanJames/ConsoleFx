@@ -29,6 +29,13 @@ namespace ConsoleFx.ConsoleExtensions.Tests
 {
     public sealed class ClrTests
     {
+        [Fact]
+        public void Test()
+        {
+            string str = Yellow.BgBlack.ToString();
+            str.ShouldBe("[Yellow.BgBlack]");
+        }
+
         [Theory, MemberData(nameof(ToString_GeneneratesCorrectString_Data))]
         public void ToString_GeneratesCorrectString(InstanceClr clr, string expectedString)
         {

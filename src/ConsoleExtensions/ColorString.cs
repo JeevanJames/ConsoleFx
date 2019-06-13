@@ -104,7 +104,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>The current instance of <see cref="ColorString" />.</returns>
         public ColorString BgReset(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgReset);
+            return Text(text, foreColor: null, CColor.Reset);
         }
 
         public ColorString Black(string text = null)
@@ -189,82 +189,82 @@ namespace ConsoleFx.ConsoleExtensions
 
         public ColorString BgBlack(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgBlack);
+            return Text(text, foreColor: null, CColor.Black);
         }
 
         public ColorString BgBlue(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgBlue);
+            return Text(text, foreColor: null, CColor.Blue);
         }
 
         public ColorString BgCyan(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgCyan);
+            return Text(text, foreColor: null, CColor.Cyan);
         }
 
         public ColorString BgDkBlue(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgDkBlue);
+            return Text(text, foreColor: null, CColor.DkBlue);
         }
 
         public ColorString BgDkCyan(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgDkCyan);
+            return Text(text, foreColor: null, CColor.DkCyan);
         }
 
         public ColorString BgDkGray(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgDkGray);
+            return Text(text, foreColor: null, CColor.DkGray);
         }
 
         public ColorString BgDkGreen(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgDkGreen);
+            return Text(text, foreColor: null, CColor.DkGreen);
         }
 
         public ColorString BgDkMagenta(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgDkMagenta);
+            return Text(text, foreColor: null, CColor.DkMagenta);
         }
 
         public ColorString BgDkRed(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgDkRed);
+            return Text(text, foreColor: null, CColor.DkRed);
         }
 
         public ColorString BgDkYellow(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgDkYellow);
+            return Text(text, foreColor: null, CColor.DkYellow);
         }
 
         public ColorString BgGray(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgGray);
+            return Text(text, foreColor: null, CColor.Gray);
         }
 
         public ColorString BgGreen(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgGreen);
+            return Text(text, foreColor: null, CColor.Green);
         }
 
         public ColorString BgMagenta(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgMagenta);
+            return Text(text, foreColor: null, CColor.Magenta);
         }
 
         public ColorString BgRed(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgRed);
+            return Text(text, foreColor: null, CColor.Red);
         }
 
         public ColorString BgWhite(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgWhite);
+            return Text(text, foreColor: null, CColor.White);
         }
 
         public ColorString BgYellow(string text = null)
         {
-            return Text(text, foreColor: null, CColor.BgYellow);
+            return Text(text, foreColor: null, CColor.Yellow);
         }
 
         /// <summary>
@@ -342,8 +342,10 @@ namespace ConsoleFx.ConsoleExtensions
                 CColor? backgroundColor = null;
                 foreach (string colorPart in colorParts)
                 {
-                    var color = (CColor)Enum.Parse(typeof(CColor), colorPart, ignoreCase: true);
-                    if (colorPart.StartsWith("Bg", StringComparison.OrdinalIgnoreCase))
+                    bool isBackground = colorPart.StartsWith("Bg", StringComparison.OrdinalIgnoreCase);
+                    string actualColorStr = isBackground ? colorPart.Substring(2) : colorPart;
+                    var color = (CColor)Enum.Parse(typeof(CColor), actualColorStr, ignoreCase: true);
+                    if (isBackground)
                         backgroundColor = color;
                     else
                         foregroundColor = color;

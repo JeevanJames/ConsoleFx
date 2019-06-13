@@ -45,7 +45,7 @@ namespace TestHarness.ProgressBarTest
             ProgressBar blocks = ConsoleEx.ProgressBar(new ProgressBarSpec
             {
                 Format = "<<percentage>>% :: Blocks progress bar [<<bar>>]"
-            }, style: ProgressBarStyle.Block.CompleteForeColor(CColor.Green).IncompleteBackColor(CColor.BgRed));
+            }, style: ProgressBarStyle.Block.CompleteForeColor(CColor.Green).IncompleteBackColor(CColor.Red));
 
             ConsoleEx.PrintBlank();
 
@@ -54,8 +54,8 @@ namespace TestHarness.ProgressBarTest
                 Format = "Lines progress bar [<<bar>>]"
             }, style: ProgressBarStyle.Lines
                 .CompleteForeColor(CColor.Green)
-                .CompleteBackColor(CColor.BgWhite)
-                .IncompleteBackColor(CColor.BgWhite));
+                .CompleteBackColor(CColor.White)
+                .IncompleteBackColor(CColor.White));
 
             var bars = new List<ProgressBar> { simple, dots, blocks, lines };
 

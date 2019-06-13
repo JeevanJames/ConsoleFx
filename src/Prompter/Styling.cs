@@ -61,12 +61,12 @@ namespace ConsoleFx.Prompter
             Question =
             {
                 ForeColor = CColor.Yellow,
-                BackColor = CColor.BgDkMagenta,
+                BackColor = CColor.DkMagenta,
             },
             Instructions =
             {
                 ForeColor = CColor.White,
-                BackColor = CColor.BgDkBlue,
+                BackColor = CColor.DkBlue,
             },
         };
     }

@@ -37,7 +37,7 @@ namespace TestHarness
             PrintIndented(longStr, 16, false);
             PrintBlank();
 
-            var cstr = new ColorString().Text("Jeevan [Yellow.BgBlack]James", CColor.Magenta, CColor.BgDkYellow);
+            var cstr = new ColorString().Text("Jeevan [Yellow.BgBlack]James", CColor.Magenta, CColor.DkYellow);
             Console.WriteLine(cstr);
             PrintLine(cstr.ToString());
         }

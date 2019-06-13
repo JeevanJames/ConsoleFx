@@ -20,7 +20,7 @@ limitations under the License.
 namespace ConsoleFx.ConsoleExtensions
 {
     /// <summary>
-    ///     Foreground colors and background colors.
+    ///     ConsoleFx console colors.
     /// </summary>
     public enum CColor
     {
@@ -41,23 +41,5 @@ namespace ConsoleFx.ConsoleExtensions
         White,
         Yellow,
         Reset,
-
-        BgBlack,
-        BgBlue,
-        BgCyan,
-        BgDkBlue,
-        BgDkCyan,
-        BgDkGray,
-        BgDkGreen,
-        BgDkMagenta,
-        BgDkRed,
-        BgDkYellow,
-        BgGray,
-        BgGreen,
-        BgMagenta,
-        BgRed,
-        BgWhite,
-        BgYellow,
-        BgReset,
     }
 }

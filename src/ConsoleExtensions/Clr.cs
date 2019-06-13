@@ -60,39 +60,39 @@ namespace ConsoleFx.ConsoleExtensions
 
         public static InstanceClr Reset => new InstanceClr(CColor.Reset, null);
 
-        public static InstanceClr BgBlack => new InstanceClr(null, CColor.BgBlack);
+        public static InstanceClr BgBlack => new InstanceClr(null, CColor.Black);
 
-        public static InstanceClr BgBlue => new InstanceClr(null, CColor.BgBlue);
+        public static InstanceClr BgBlue => new InstanceClr(null, CColor.Blue);
 
-        public static InstanceClr BgCyan => new InstanceClr(null, CColor.BgCyan);
+        public static InstanceClr BgCyan => new InstanceClr(null, CColor.Cyan);
 
-        public static InstanceClr BgDkBlue => new InstanceClr(null, CColor.BgDkBlue);
+        public static InstanceClr BgDkBlue => new InstanceClr(null, CColor.DkBlue);
 
-        public static InstanceClr BgDkCyan => new InstanceClr(null, CColor.BgDkCyan);
+        public static InstanceClr BgDkCyan => new InstanceClr(null, CColor.DkCyan);
 
-        public static InstanceClr BgDkGray => new InstanceClr(null, CColor.BgDkGray);
+        public static InstanceClr BgDkGray => new InstanceClr(null, CColor.DkGray);
 
-        public static InstanceClr BgDkGreen => new InstanceClr(null, CColor.BgDkGreen);
+        public static InstanceClr BgDkGreen => new InstanceClr(null, CColor.DkGreen);
 
-        public static InstanceClr BgDkMagenta => new InstanceClr(null, CColor.BgDkMagenta);
+        public static InstanceClr BgDkMagenta => new InstanceClr(null, CColor.DkMagenta);
 
-        public static InstanceClr BgDkRed => new InstanceClr(null, CColor.BgDkRed);
+        public static InstanceClr BgDkRed => new InstanceClr(null, CColor.DkRed);
 
-        public static InstanceClr BgDkYellow => new InstanceClr(null, CColor.BgDkYellow);
+        public static InstanceClr BgDkYellow => new InstanceClr(null, CColor.DkYellow);
 
-        public static InstanceClr BgGray => new InstanceClr(null, CColor.BgGray);
+        public static InstanceClr BgGray => new InstanceClr(null, CColor.Gray);
 
-        public static InstanceClr BgGreen => new InstanceClr(null, CColor.BgGreen);
+        public static InstanceClr BgGreen => new InstanceClr(null, CColor.Green);
 
-        public static InstanceClr BgMagenta => new InstanceClr(null, CColor.BgMagenta);
+        public static InstanceClr BgMagenta => new InstanceClr(null, CColor.Magenta);
 
-        public static InstanceClr BgRed => new InstanceClr(null, CColor.BgRed);
+        public static InstanceClr BgRed => new InstanceClr(null, CColor.Red);
 
-        public static InstanceClr BgWhite => new InstanceClr(null, CColor.BgWhite);
+        public static InstanceClr BgWhite => new InstanceClr(null, CColor.White);
 
-        public static InstanceClr BgYellow => new InstanceClr(null, CColor.BgYellow);
+        public static InstanceClr BgYellow => new InstanceClr(null, CColor.Yellow);
 
-        public static InstanceClr BgReset => new InstanceClr(null, CColor.BgReset);
+        public static InstanceClr BgReset => new InstanceClr(null, CColor.Reset);
     }
 
     public readonly struct InstanceClr
@@ -119,16 +119,17 @@ namespace ConsoleFx.ConsoleExtensions
                 return string.Empty;
 
             var sb = new StringBuilder();
-            foreach (CColor? color in _colors)
+            if (_colors[0].HasValue)
+                sb.Append(_colors[0].Value.ToString());
+            if (_colors[1].HasValue)
             {
-                if (!color.HasValue)
-                    continue;
                 if (sb.Length > 0)
                     sb.Append(".");
-                sb.Append(color.Value.ToString());
+                sb.Append("Bg").Append(_colors[1].Value.ToString());
             }
 
-            sb.Insert(0, "[").Append("]");
+            if (sb.Length > 0)
+                sb.Insert(0, "[").Append("]");
             return sb.ToString();
         }
 
@@ -166,38 +167,38 @@ namespace ConsoleFx.ConsoleExtensions
 
         public InstanceClr Reset => new InstanceClr(this, CColor.Reset, null);
 
-        public InstanceClr BgBlack => new InstanceClr(this, null, CColor.BgBlack);
+        public InstanceClr BgBlack => new InstanceClr(this, null, CColor.Black);
 
-        public InstanceClr BgBlue => new InstanceClr(this, null, CColor.BgBlue);
+        public InstanceClr BgBlue => new InstanceClr(this, null, CColor.Blue);
 
-        public InstanceClr BgCyan => new InstanceClr(this, null, CColor.BgCyan);
+        public InstanceClr BgCyan => new InstanceClr(this, null, CColor.Cyan);
 
-        public InstanceClr BgDkBlue => new InstanceClr(this, null, CColor.BgDkBlue);
+        public InstanceClr BgDkBlue => new InstanceClr(this, null, CColor.DkBlue);
 
-        public InstanceClr BgDkCyan => new InstanceClr(this, null, CColor.BgDkCyan);
+        public InstanceClr BgDkCyan => new InstanceClr(this, null, CColor.DkCyan);
 
-        public InstanceClr BgDkGray => new InstanceClr(this, null, CColor.BgDkGray);
+        public InstanceClr BgDkGray => new InstanceClr(this, null, CColor.DkGray);
 
-        public InstanceClr BgDkGreen => new InstanceClr(this, null, CColor.BgDkGreen);
+        public InstanceClr BgDkGreen => new InstanceClr(this, null, CColor.DkGreen);
 
-        public InstanceClr BgDkMagenta => new InstanceClr(this, null, CColor.BgDkMagenta);
+        public InstanceClr BgDkMagenta => new InstanceClr(this, null, CColor.DkMagenta);
 
-        public InstanceClr BgDkRed => new InstanceClr(this, null, CColor.BgDkRed);
+        public InstanceClr BgDkRed => new InstanceClr(this, null, CColor.DkRed);
 
-        public InstanceClr BgDkYellow => new InstanceClr(this, null, CColor.BgDkYellow);
+        public InstanceClr BgDkYellow => new InstanceClr(this, null, CColor.DkYellow);
 
-        public InstanceClr BgGray => new InstanceClr(this, null, CColor.BgGray);
+        public InstanceClr BgGray => new InstanceClr(this, null, CColor.Gray);
 
-        public InstanceClr BgGreen => new InstanceClr(this, null, CColor.BgGreen);
+        public InstanceClr BgGreen => new InstanceClr(this, null, CColor.Green);
 
-        public InstanceClr BgMagenta => new InstanceClr(this, null, CColor.BgMagenta);
+        public InstanceClr BgMagenta => new InstanceClr(this, null, CColor.Magenta);
 
-        public InstanceClr BgRed => new InstanceClr(this, null, CColor.BgRed);
+        public InstanceClr BgRed => new InstanceClr(this, null, CColor.Red);
 
-        public InstanceClr BgWhite => new InstanceClr(this, null, CColor.BgWhite);
+        public InstanceClr BgWhite => new InstanceClr(this, null, CColor.White);
 
-        public InstanceClr BgYellow => new InstanceClr(this, null, CColor.BgYellow);
+        public InstanceClr BgYellow => new InstanceClr(this, null, CColor.Yellow);
 
-        public InstanceClr BgReset => new InstanceClr(this, null, CColor.BgReset);
+        public InstanceClr BgReset => new InstanceClr(this, null, CColor.Reset);
     }
 }
