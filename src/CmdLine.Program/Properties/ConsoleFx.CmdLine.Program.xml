@@ -47,9 +47,26 @@
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.Run(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-                Runs the console program after parsing the command-line args.
+                Runs the console program after parsing the specified <paramref name="args"/>.
             </summary>
             <param name="args">The args to parse.</param>
+            <returns>
+                The numeric code that represents the result of the console program execution.
+            </returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.Run(System.String[])">
+            <summary>
+                Runs the console program after parsing the specified <paramref name="args"/>.
+            </summary>
+            <param name="args">The args to parse.</param>
+            <returns>
+                The numeric code that represents the result of the console program execution.
+            </returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.RunWithCommandLineArgs">
+            <summary>
+                Runs the console program after parsing the command line args.
+            </summary>
             <returns>
                 The numeric code that represents the result of the console program execution.
             </returns>

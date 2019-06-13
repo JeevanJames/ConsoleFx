@@ -739,6 +739,7 @@
         <member name="T:ConsoleFx.CmdLine.OptionParameterValidators">
             <summary>
                 Collection of all parameter validators of an option. The collection is grouped by parameter index.
+                <para />
                 A parameter index of -1 indicates validators for all parameters.
             </summary>
         </member>

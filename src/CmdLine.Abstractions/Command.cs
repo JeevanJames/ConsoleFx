@@ -26,8 +26,7 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleFx.CmdLine
 {
-    //TODO: All commands need a name. So, this check for null and assignment to "Root" can be removed.
-    [DebuggerDisplay(@"Command {Name ?? ""[Root]""}")]
+    [DebuggerDisplay(@"Command {Name}")]
     public partial class Command : Arg
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

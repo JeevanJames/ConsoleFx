@@ -490,8 +490,7 @@ namespace ConsoleFx.CmdLine.Parser
                     return optionRun.ResolveValue(optionRun.Parameters[0]);
             }
 
-            //TODO: Change this to an internal parser exception.
-            throw new InvalidOperationException("Should never reach here");
+            throw new ParserException(-1, "Should never reach here");
         }
 
         /// <summary>

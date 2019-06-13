@@ -153,8 +153,8 @@ namespace ConsoleFx.CmdLine
             if (!formatStr.Contains("{0}"))
                 throw new ArgumentException(Errors.Option_MissingPlaceholderInFormatString, nameof(formatStr));
 
-            //TODO: Should we handle null values?
-            Formatter = value => string.Format(formatStr, value);
+            Formatter = value =>
+                string.Format(formatStr, value ?? string.Empty) ?? string.Empty;
         }
 
         protected void InternalTypedAs<T>(Type type, Converter<string, T> converter = null)
