@@ -33,7 +33,7 @@ namespace ConsoleFx.ConsoleExtensions
     /// <remarks>
     ///     Internally, this class maintains a collection of text blocks, each with color information.
     /// </remarks>
-    public sealed class ColorString : IReadOnlyList<ColorStringBlock>
+    public sealed partial class ColorString
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly List<ColorStringBlock> _blocks = new List<ColorStringBlock>();
@@ -64,12 +64,13 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     <para>Adds the text to the color string with the specified foreground and background colors.</para>
-        ///     <para>The colors are optional and if not specified, they retain whatever values they were before.</para>
-        ///     <para>
-        ///         Unless you want to dynamically specify the colors, prefer using the color-specified methods like
-        ///         <see cref="Red" />.
-        ///     </para>
+        ///     Adds the text to the color string with the specified foreground and background colors.
+        ///     <para />
+        ///     The colors are optional and if not specified, they retain whatever values they were
+        ///     before.
+        ///     <para />
+        ///     Unless you want to dynamically specify the colors, prefer using the color-specified
+        ///     methods like <see cref="Red" />.
         /// </summary>
         /// <param name="text">The text to add to the color string.</param>
         /// <param name="foreColor">Optional foreground color for the text.</param>
@@ -84,13 +85,16 @@ namespace ConsoleFx.ConsoleExtensions
 
             if (text != null)
                 _blocks.Add(new ColorStringBlock(text, _currentForeColor, _currentBackColor));
+
             return this;
         }
 
         /// <summary>
         ///     Resets the foreground color.
         /// </summary>
-        /// <param name="text">Optional text to append to the color string after resetting the foreground color.</param>
+        /// <param name="text">
+        ///     Optional text to append to the color string after resetting the foreground color.
+        /// </param>
         /// <returns>The current instance of <see cref="ColorString" />.</returns>
         public ColorString Reset(string text = null)
         {
@@ -100,7 +104,9 @@ namespace ConsoleFx.ConsoleExtensions
         /// <summary>
         ///     Resets the background color.
         /// </summary>
-        /// <param name="text">Optional text to append to the color string after resetting the background color.</param>
+        /// <param name="text">
+        ///     Optional text to append to the color string after resetting the background color.
+        /// </param>
         /// <returns>The current instance of <see cref="ColorString" />.</returns>
         public ColorString BgReset(string text = null)
         {
@@ -280,51 +286,32 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     Builds a string representing just the text from the text blocks defined in this <see cref="ColorString"/>.
+        ///     Builds a string representing just the text from the text blocks defined in this
+        ///     <see cref="ColorString"/>.
         /// </summary>
-        /// <returns>A string that is just the text from all the <see cref="ColorString"/> blocks.</returns>
+        /// <returns>
+        ///     A string that is just the text from all the <see cref="ColorString"/> blocks.
+        /// </returns>
         public string ToText()
         {
             return this.Aggregate(new StringBuilder(),
                 (sb, block) => sb.Append(block.Text)).ToString();
         }
 
-        #region Interface implementations
-
-        IEnumerator<ColorStringBlock> IEnumerable<ColorStringBlock>.GetEnumerator()
-        {
-            return _blocks.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _blocks.GetEnumerator();
-        }
-
-        int IReadOnlyCollection<ColorStringBlock>.Count => _blocks.Count;
-
-        ColorStringBlock IReadOnlyList<ColorStringBlock>.this[int index] => _blocks[index];
-
-        #endregion
-
-        public static implicit operator string(ColorString cstr)
-        {
-            return cstr.ToString();
-        }
-
-        public static implicit operator ColorString(string cstr)
-        {
-            return TryParse(cstr, out ColorString colorStr) ? colorStr : null;
-        }
-
         /// <summary>
         ///     Creates an instance of a <see cref="ColorString" /> from the specified color string.
         /// </summary>
         /// <param name="cstr">The color string to parse.</param>
-        /// <param name="colorStr">The new <see cref="ColorString" /> instance created from the color string.</param>
-        /// <returns>True, if the color string could be parsed and a <see cref="ColorString" /> instance created; otherwise false.</returns>
+        /// <param name="colorStr">
+        ///     The new <see cref="ColorString" /> instance created from the color string.
+        /// </param>
+        /// <returns>
+        ///     True, if the color string could be parsed and a <see cref="ColorString" /> instance
+        ///     created; otherwise false.
+        /// </returns>
         public static bool TryParse(string cstr, out ColorString colorStr)
         {
+            // Search the string for color blocks. If none are found, just return the string.
             MatchCollection matches = ColorStringPattern.Matches(cstr);
             if (matches.Count == 0)
             {
@@ -362,5 +349,33 @@ namespace ConsoleFx.ConsoleExtensions
         private static readonly Regex ColorStringPattern = new Regex(
             @"\[((?:Bg)?(?:Dk)?(?:Black|Blue|Cyan|Gray|Green|Magenta|Red|Yellow|White|Reset)(?:\.(?:Bg)?(?:Dk)?(?:Black|Blue|Cyan|Gray|Green|Magenta|Red|Yellow|White|Reset))*)\]",
             RegexOptions.IgnoreCase);
+
+        public static implicit operator string(ColorString cstr)
+        {
+            return cstr.ToString();
+        }
+
+        public static implicit operator ColorString(string cstr)
+        {
+            return TryParse(cstr, out ColorString colorStr) ? colorStr : null;
+        }
+    }
+
+    // IReadOnlyList implementation
+    public sealed partial class ColorString : IReadOnlyList<ColorStringBlock>
+    {
+        IEnumerator<ColorStringBlock> IEnumerable<ColorStringBlock>.GetEnumerator()
+        {
+            return _blocks.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _blocks.GetEnumerator();
+        }
+
+        int IReadOnlyCollection<ColorStringBlock>.Count => _blocks.Count;
+
+        ColorStringBlock IReadOnlyList<ColorStringBlock>.this[int index] => _blocks[index];
     }
 }

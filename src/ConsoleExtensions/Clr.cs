@@ -99,12 +99,34 @@ namespace ConsoleFx.ConsoleExtensions
     {
         private readonly CColor?[] _colors;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="InstanceClr"/> struct with the specified
+        ///     <paramref name="foregroundColor"/> and <paramref name="backgroundColor"/>.
+        /// </summary>
+        /// <param name="foregroundColor">Optional foreground color.</param>
+        /// <param name="backgroundColor">Optional background color.</param>
         internal InstanceClr(CColor? foregroundColor, CColor? backgroundColor)
         {
             _colors = new CColor?[2] { foregroundColor, backgroundColor };
         }
 
-        internal InstanceClr(InstanceClr clr, CColor? foregroundColor, CColor? backgroundColor)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="InstanceClr"/> struct with the specified
+        ///     <paramref name="foregroundColor"/> and <paramref name="backgroundColor"/>.
+        ///     <para />
+        ///     If either of the colors are not specified, they are initialized from the specified
+        ///     <paramref name="clr"/> value.
+        /// </summary>
+        /// <param name="clr">
+        ///     The <see cref="InstanceClr"/> structure to initialize this instance from, if either <paramref name="foregroundColor"/> or <paramref name="backgroundColor"/> are not specified.
+        /// </param>
+        /// <param name="foregroundColor">Optional foreground color.</param>
+        /// <param name="backgroundColor">Optional background color.</param>
+        /// <remarks>
+        ///     This constructor can only be called from an <see cref="InstanceClr"/> instance only,
+        ///     hence it is private.
+        /// </remarks>
+        private InstanceClr(InstanceClr clr, CColor? foregroundColor, CColor? backgroundColor)
         {
             _colors = new CColor?[2]
             {

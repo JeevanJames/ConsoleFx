@@ -19,36 +19,23 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLineParser.Programs;
-using ConsoleFx.CmdLineParser.Validators;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Validators;
 
-namespace ConsoleFx.CmdLineParser.Tests.Commands
+namespace CmdLine.Parser.Tests.Commands
 {
-    public sealed class InstallCommand : CommandBuilder
+    [Command("install")]
+    public sealed class InstallCommand : Command
     {
-        protected override string Name => "install";
-
-        protected override string Description => "Installs a package";
-
-        protected override IEnumerable<Argument> GetArguments()
+        protected override IEnumerable<Arg> GetArgs()
         {
             yield return new Argument("package-name")
-                .Description("package-name", "Name of the package to install")
                 .ValidateAnyCondition("Invalid package name",
                     new UriValidator(),
-                    new FileValidator(true, null));
-            yield return new Argument("source", isOptional: true)
-                .Description("source", "Location of the package.");
-        }
+                    new FileValidator(shouldExist: true, allowedExtensions: null));
+            yield return new Argument("source", isOptional: true);
 
-        protected override IEnumerable<Command> GetCommands()
-        {
-            return base.GetCommands();
-        }
-
-        protected override IEnumerable<Option> GetOptions()
-        {
-            yield return new Option("save-prod").AddName("p").UsedAsFlag(true);
+            yield return new Option("save-prod", "p").UsedAsFlag(true);
             yield return new Option("save-dev", "d").UsedAsFlag(true);
             yield return new Option("save-optional", "o").UsedAsFlag(true);
             yield return new Option("no-save").UsedAsFlag(true);

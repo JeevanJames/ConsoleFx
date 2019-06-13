@@ -18,23 +18,28 @@ limitations under the License.
 #endregion
 
 using System.Collections.Generic;
-
-using ConsoleFx.CmdLineParser.Tests.Commands;
-using ConsoleFx.CmdLineParser.WindowsStyle;
+using CmdLine.Parser.Tests.Commands;
+using ConsoleFx.CmdLine;
+using ConsoleFx.CmdLine.Parser;
+using ConsoleFx.CmdLine.Parser.Style;
 
 using Xunit;
 
-namespace ConsoleFx.CmdLineParser.Tests
+using ParserTool = ConsoleFx.CmdLine.Parser.Parser;
+
+namespace CmdLine.Parser.Tests
 {
     public sealed class ParserTests
     {
-        private readonly Parser _parser;
+        private readonly ParserTool _parser;
 
         public ParserTests()
         {
-            _parser = new Parser(new WindowsParserStyle());
-            _parser.Options.Add(new Option("verbose", "v").UsedAsFlag(true));
-            _parser.Commands.Add(new InstallCommand());
+            var command = new Command("root");
+            command.Options.Add(new Option("verbose", "v").UsedAsFlag(true));
+            command.Commands.Add(new InstallCommand());
+
+            _parser = new ParserTool(command, new WindowsArgStyle());
         }
 
         [Theory, MemberData(nameof(Parse_Parses_windows_style_args_Data))]
@@ -46,7 +51,7 @@ namespace ConsoleFx.CmdLineParser.Tests
 
         public static IEnumerable<object[]> Parse_Parses_windows_style_args_Data()
         {
-            string[] tokens1 = { "install", "package-name", "/verbose", "/save-dev" };
+            string[] tokens1 = { "install", "package-name", "/save-dev" };
             yield return new object[] { tokens1 };
         }
     }

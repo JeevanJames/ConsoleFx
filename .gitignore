@@ -3,6 +3,8 @@
 
 # Project-specified
 coverage.json
+.coverage/
+coverage.opencover.xml
 
 .output/
 

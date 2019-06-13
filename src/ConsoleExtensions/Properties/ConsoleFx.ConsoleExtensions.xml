@@ -14,6 +14,32 @@
                 Structure that represents a foreground and background color.
             </summary>
         </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.InstanceClr.#ctor(System.Nullable{ConsoleFx.ConsoleExtensions.CColor},System.Nullable{ConsoleFx.ConsoleExtensions.CColor})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.InstanceClr"/> struct with the specified
+                <paramref name="foregroundColor"/> and <paramref name="backgroundColor"/>.
+            </summary>
+            <param name="foregroundColor">Optional foreground color.</param>
+            <param name="backgroundColor">Optional background color.</param>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.InstanceClr.#ctor(ConsoleFx.ConsoleExtensions.InstanceClr,System.Nullable{ConsoleFx.ConsoleExtensions.CColor},System.Nullable{ConsoleFx.ConsoleExtensions.CColor})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.InstanceClr"/> struct with the specified
+                <paramref name="foregroundColor"/> and <paramref name="backgroundColor"/>.
+                <para />
+                If either of the colors are not specified, they are initialized from the specified
+                <paramref name="clr"/> value.
+            </summary>
+            <param name="clr">
+                The <see cref="T:ConsoleFx.ConsoleExtensions.InstanceClr"/> structure to initialize this instance from, if either <paramref name="foregroundColor"/> or <paramref name="backgroundColor"/> are not specified.
+            </param>
+            <param name="foregroundColor">Optional foreground color.</param>
+            <param name="backgroundColor">Optional background color.</param>
+            <remarks>
+                This constructor can only be called from an <see cref="T:ConsoleFx.ConsoleExtensions.InstanceClr"/> instance only,
+                hence it is private.
+            </remarks>
+        </member>
         <member name="T:ConsoleFx.ConsoleExtensions.ColorString">
             <summary>
                 Represents a string that includes color information.
@@ -38,12 +64,13 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.Text(System.String,System.Nullable{ConsoleFx.ConsoleExtensions.CColor},System.Nullable{ConsoleFx.ConsoleExtensions.CColor})">
             <summary>
-                <para>Adds the text to the color string with the specified foreground and background colors.</para>
-                <para>The colors are optional and if not specified, they retain whatever values they were before.</para>
-                <para>
-                    Unless you want to dynamically specify the colors, prefer using the color-specified methods like
-                    <see cref="M:ConsoleFx.ConsoleExtensions.ColorString.Red(System.String)" />.
-                </para>
+                Adds the text to the color string with the specified foreground and background colors.
+                <para />
+                The colors are optional and if not specified, they retain whatever values they were
+                before.
+                <para />
+                Unless you want to dynamically specify the colors, prefer using the color-specified
+                methods like <see cref="M:ConsoleFx.ConsoleExtensions.ColorString.Red(System.String)" />.
             </summary>
             <param name="text">The text to add to the color string.</param>
             <param name="foreColor">Optional foreground color for the text.</param>
@@ -54,14 +81,18 @@
             <summary>
                 Resets the foreground color.
             </summary>
-            <param name="text">Optional text to append to the color string after resetting the foreground color.</param>
+            <param name="text">
+                Optional text to append to the color string after resetting the foreground color.
+            </param>
             <returns>The current instance of <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" />.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.BgReset(System.String)">
             <summary>
                 Resets the background color.
             </summary>
-            <param name="text">Optional text to append to the color string after resetting the background color.</param>
+            <param name="text">
+                Optional text to append to the color string after resetting the background color.
+            </param>
             <returns>The current instance of <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" />.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.ToString">
@@ -72,17 +103,25 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.ToText">
             <summary>
-                Builds a string representing just the text from the text blocks defined in this <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.
+                Builds a string representing just the text from the text blocks defined in this
+                <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/>.
             </summary>
-            <returns>A string that is just the text from all the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> blocks.</returns>
+            <returns>
+                A string that is just the text from all the <see cref="T:ConsoleFx.ConsoleExtensions.ColorString"/> blocks.
+            </returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ColorString.TryParse(System.String,ConsoleFx.ConsoleExtensions.ColorString@)">
             <summary>
                 Creates an instance of a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> from the specified color string.
             </summary>
             <param name="cstr">The color string to parse.</param>
-            <param name="colorStr">The new <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance created from the color string.</param>
-            <returns>True, if the color string could be parsed and a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance created; otherwise false.</returns>
+            <param name="colorStr">
+                The new <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance created from the color string.
+            </param>
+            <returns>
+                True, if the color string could be parsed and a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> instance
+                created; otherwise false.
+            </returns>
         </member>
         <member name="T:ConsoleFx.ConsoleExtensions.ColorStringBlock">
             <summary>

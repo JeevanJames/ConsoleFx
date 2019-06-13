@@ -19,11 +19,13 @@ limitations under the License.
 
 using System;
 
+using ConsoleFx.CmdLine;
+
 using Shouldly;
 
 using Xunit;
 
-namespace ConsoleFx.CmdLineParser.Tests
+namespace CmdLine.Parser.Tests
 {
     public sealed class ArgumentsTests
     {

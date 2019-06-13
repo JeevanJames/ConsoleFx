@@ -19,11 +19,13 @@ limitations under the License.
 
 using System;
 
+using ConsoleFx.CmdLine;
+
 using Shouldly;
 
 using Xunit;
 
-namespace ConsoleFx.CmdLineParser.Tests
+namespace CmdLine.Parser.Tests
 {
     public sealed class OptionsTests
     {
@@ -49,12 +51,17 @@ namespace ConsoleFx.CmdLineParser.Tests
         [InlineData("install", "ins", "insert", "ins")]
         public void Add_Throws_on_duplicate_option(string name1, string shortName1, string name2, string shortName2)
         {
-            var options = new Options
-            {
-                new Option(name1, shortName1)
-            };
+            var option1 = new Option(name1);
+            if (shortName1 != null)
+                option1.AddName(shortName1);
 
-            Should.Throw<ArgumentException>(() => options.Add(new Option(name2, shortName2)));
+            var option2 = new Option(name2);
+            if (shortName2 != null)
+                option2.AddName(shortName2);
+
+            var options = new Options { option1 };
+
+            Should.Throw<ArgumentException>(() => options.Add(option2));
         }
     }
 }
