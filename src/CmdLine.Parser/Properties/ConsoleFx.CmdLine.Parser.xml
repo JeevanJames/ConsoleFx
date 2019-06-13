@@ -183,6 +183,13 @@
                 fails.
             </exception>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Parser.Parser.Tokenize(System.String)">
+            <summary>
+                Tokenizes the specified <paramref name="str"/> with space separators and &quot; delimiters.
+            </summary>
+            <param name="str">The string to tokenize.</param>
+            <returns>The sequence of tokens.</returns>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Parser.ParseResult">
             <summary>
                 Represents the results of parsing a set of arguments.

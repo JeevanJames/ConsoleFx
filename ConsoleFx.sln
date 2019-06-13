@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "metapackage", "metapackage"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFx", "metapackage\ConsoleFx\ConsoleFx.csproj", "{19EE71E6-C15A-40E3-A34D-061268374D0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLine.Parser.Tests", "test\CmdLine.Parser.Tests\CmdLine.Parser.Tests.csproj", "{726DE503-F41C-4390-9FB6-C7936D7CFC09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{19EE71E6-C15A-40E3-A34D-061268374D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19EE71E6-C15A-40E3-A34D-061268374D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19EE71E6-C15A-40E3-A34D-061268374D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{726DE503-F41C-4390-9FB6-C7936D7CFC09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{726DE503-F41C-4390-9FB6-C7936D7CFC09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{726DE503-F41C-4390-9FB6-C7936D7CFC09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{726DE503-F41C-4390-9FB6-C7936D7CFC09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{0536F5F7-32BD-4D7E-96EC-996CC61666B7} = {A663F470-1C59-42D2-B32E-AB3436EB39DD}
 		{E7C5874F-8BCF-4104-A95A-5F65E27F90DD} = {2B5DD9C7-9043-4E9E-8DDD-99318CD21433}
 		{19EE71E6-C15A-40E3-A34D-061268374D0F} = {9F083CE0-B6DB-4C18-AB85-8EC5A0117771}
+		{726DE503-F41C-4390-9FB6-C7936D7CFC09} = {2B5DD9C7-9043-4E9E-8DDD-99318CD21433}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {749E0893-E1E2-4ECD-9C74-6CC8FEE5E1D3}

@@ -571,8 +571,8 @@ namespace ConsoleFx.CmdLine.Parser
                 return argumentRun.ResolveValue(specifiedArguments[startIndex]);
 
             IList list = argumentRun.CreateCollection(endIndex - startIndex + 1);
-            for (var j = startIndex; j <= endIndex; j++)
-                list.Add(argumentRun.ResolveValue(specifiedArguments[j]));
+            for (var i = startIndex; i <= endIndex; i++)
+                list.Add(argumentRun.ResolveValue(specifiedArguments[i]));
             return list;
         }
     }
@@ -580,12 +580,17 @@ namespace ConsoleFx.CmdLine.Parser
     // Static methods
     public sealed partial class Parser
     {
+        /// <summary>
+        ///     Tokenizes the specified <paramref name="str"/> with space separators and &quot; delimiters.
+        /// </summary>
+        /// <param name="str">The string to tokenize.</param>
+        /// <returns>The sequence of tokens.</returns>
         public static IEnumerable<string> Tokenize(string str)
         {
             if (string.IsNullOrWhiteSpace(str))
                 yield break;
 
-            var match = TokenPattern.Match(str);
+            Match match = TokenPattern.Match(str);
 
             if (!match.Success)
                 yield break;
