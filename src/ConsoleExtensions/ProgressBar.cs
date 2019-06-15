@@ -41,6 +41,11 @@ namespace ConsoleFx.ConsoleExtensions
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _value;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string _status;
+
+        private int _maxLineLength;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ProgressBar" /> class.
         /// </summary>
@@ -79,6 +84,7 @@ namespace ConsoleFx.ConsoleExtensions
                 ["value"] = value.ToString(),
                 ["max"] = _spec.MaxValue.ToString(),
                 ["min"] = _spec.MinValue.ToString(),
+                ["status"] = string.Empty,
             };
 
             // Display the progress bar with the initial value.
@@ -92,6 +98,16 @@ namespace ConsoleFx.ConsoleExtensions
         {
             get => _value;
             set => _value = Update(value);
+        }
+
+        public string Status
+        {
+            get => _status;
+            set
+            {
+                _status = value;
+                Update(Value);
+            }
         }
 
         public int Line { get; }
@@ -111,19 +127,28 @@ namespace ConsoleFx.ConsoleExtensions
             long incomplete = _spec.Width - complete;
             long percentage = (value * 100) / (_spec.MaxValue - _spec.MinValue);
 
-            ColorString cstr = new ColorString(new string(_style.Complete.Char, (int)complete), _style.Complete.ForeColor, _style.Complete.BackColor)
+            ColorString barCStr = new ColorString(new string(_style.Complete.Char, (int)complete), _style.Complete.ForeColor, _style.Complete.BackColor)
                 .Reset().BgReset()
                 .Text(new string(_style.Incomplete.Char, (int)incomplete), _style.Incomplete.ForeColor, _style.Incomplete.BackColor)
                 .Reset().BgReset();
 
-            _placeholders["bar"] = cstr.ToString();
+            _placeholders["bar"] = barCStr.ToString();
             _placeholders["percentage"] = percentage.ToString().PadLeft(3);
             _placeholders["value"] = value.ToString();
+            _placeholders["status"] = Status ?? string.Empty;
 
             // Build the final string to be displayed.
             string progressBar = FormatPlaceholderPattern.Replace(_spec.Format,
                 match => match.Groups[1].Value + _placeholders[match.Groups[2].Value] + match.Groups[3].Value);
+            ColorString progressBarCStr = progressBar;
 
+            // Figure out how much padding to add after printing the progress bar, so that no
+            // artifacts are left displayed.
+            string justText = progressBarCStr.ToText();
+            _maxLineLength = Math.Max(justText.Length, _maxLineLength);
+            string padding = new string(' ', Math.Max(0, _maxLineLength - justText.Length));
+
+            // Save current console status
             int currentLeft = Console.CursorLeft;
             int currentTop = Console.CursorTop;
             bool cursorVisible = Console.CursorVisible;
@@ -133,9 +158,11 @@ namespace ConsoleFx.ConsoleExtensions
                 Console.CursorVisible = false;
                 Console.SetCursorPosition(Column, Line);
                 ConsoleEx.Print(progressBar);
+                Console.Write(padding);
             }
             finally
             {
+                // Restore console status
                 Console.SetCursorPosition(currentLeft, currentTop);
                 Console.CursorVisible = cursorVisible;
             }
@@ -143,7 +170,7 @@ namespace ConsoleFx.ConsoleExtensions
             return value;
         }
 
-        private static readonly Regex FormatPlaceholderPattern = new Regex(@"([^<]?)\<\<(bar|percentage|min|max|value)\>\>([^>]?)",
+        private static readonly Regex FormatPlaceholderPattern = new Regex(@"([^<]?)\<\<(bar|percentage|min|max|value|status)\>\>([^>]?)",
             RegexOptions.IgnoreCase);
     }
 

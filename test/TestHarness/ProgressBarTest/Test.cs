@@ -37,21 +37,21 @@ namespace TestHarness.ProgressBarTest
 
             ProgressBar dots = ConsoleEx.ProgressBar(new ProgressBarSpec
             {
-                Format = "Dots progress bar [<<bar>>] <<percentage>>"
+                Format = "Dots progress bar [<<bar>>] <<percentage>> | <<status>>"
             }, style: ProgressBarStyle.Dots.CompleteForeColor(CColor.Green));
 
             ConsoleEx.PrintBlank();
 
             ProgressBar blocks = ConsoleEx.ProgressBar(new ProgressBarSpec
             {
-                Format = "<<percentage>>% :: Blocks progress bar [<<bar>>]"
+                Format = "<<percentage>>% :: <<status>> :: Blocks progress bar [<<bar>>]"
             }, style: ProgressBarStyle.Block.CompleteForeColor(CColor.Green).IncompleteBackColor(CColor.Red));
 
             ConsoleEx.PrintBlank();
 
             ProgressBar lines = ConsoleEx.ProgressBar(new ProgressBarSpec
             {
-                Format = "Lines progress bar [<<bar>>]"
+                Format = "Lines progress bar [<<bar>>] -- <<status>>"
             }, style: ProgressBarStyle.Lines
                 .CompleteForeColor(CColor.Green)
                 .CompleteBackColor(CColor.White)
@@ -63,6 +63,18 @@ namespace TestHarness.ProgressBarTest
             {
                 ConsoleKey.RightArrow.HandledBy(k => bars.ForEach(pb => pb.Value++)),
                 ConsoleKey.LeftArrow.HandledBy(k => bars.ForEach(pb => pb.Value--)),
+            }, postKeyPress: _ =>
+            {
+                string status;
+                if (bars[0].Value < 20)
+                    status = "Initializing";
+                else if (bars[0].Value < 60)
+                    status = "Executing";
+                else if (bars[0].Value < 80)
+                    status = "Cleaning up";
+                else
+                    status = "Shut down";
+                bars.ForEach(pb => pb.Status = status);
             });
         }
     }
