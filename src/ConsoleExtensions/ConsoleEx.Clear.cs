@@ -34,5 +34,33 @@ namespace ConsoleFx.ConsoleExtensions
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLine);
         }
+
+        public static void ClearLine(int line)
+        {
+            var state = (Console.CursorLeft, Console.CursorTop, Console.CursorVisible);
+            try
+            {
+                Console.SetCursorPosition(0, line);
+                Console.Write(new string(' ', Console.WindowWidth));
+            }
+            finally
+            {
+                Console.SetCursorPosition(state.CursorLeft, state.CursorTop);
+            }
+        }
+
+        private static void DoAndReturnToOriginalPosition(Action action)
+        {
+            var state = (Console.CursorLeft, Console.CursorTop, Console.CursorVisible);
+            try
+            {
+                action();
+            }
+            finally
+            {
+                Console.SetCursorPosition(state.CursorLeft, state.CursorTop);
+                Console.CursorVisible = state.CursorVisible;
+            }
+        }
     }
 }
