@@ -18,8 +18,11 @@ limitations under the License.
 #endregion
 
 using System;
+
 using ConsoleFx.CmdLine.Validators;
+
 using Shouldly;
+
 using Xunit;
 
 namespace CmdLine.Abstractions.Tests.Validators
