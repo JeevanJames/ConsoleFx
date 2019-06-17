@@ -35,9 +35,14 @@ namespace ConsoleFx.ConsoleExtensions
             Console.SetCursorPosition(0, currentLine);
         }
 
+        /// <summary>
+        ///     Clears the contents of the specified <paramref name="line"/> and resets the cursor to
+        ///     its original position.
+        /// </summary>
+        /// <param name="line">The index of the line to clear.</param>
         public static void ClearLine(int line)
         {
-            var state = (Console.CursorLeft, Console.CursorTop, Console.CursorVisible);
+            var (cursorLeft, cursorTop) = (Console.CursorLeft, Console.CursorTop);
             try
             {
                 Console.SetCursorPosition(0, line);
@@ -45,7 +50,7 @@ namespace ConsoleFx.ConsoleExtensions
             }
             finally
             {
-                Console.SetCursorPosition(state.CursorLeft, state.CursorTop);
+                Console.SetCursorPosition(cursorLeft, cursorTop);
             }
         }
 

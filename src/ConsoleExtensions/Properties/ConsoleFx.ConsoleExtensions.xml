@@ -166,6 +166,13 @@
                 of the line.
             </summary>
         </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.ClearLine(System.Int32)">
+            <summary>
+                Clears the contents of the specified <paramref name="line"/> and resets the cursor to
+                its original position.
+            </summary>
+            <param name="line">The index of the line to clear.</param>
+        </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Print(ConsoleFx.ConsoleExtensions.ColorString)">
             <summary>
                 Writes a <see cref="T:ConsoleFx.ConsoleExtensions.ColorString" /> object to the console.

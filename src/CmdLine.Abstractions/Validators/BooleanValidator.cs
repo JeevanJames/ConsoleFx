@@ -37,6 +37,20 @@ namespace ConsoleFx.CmdLine.Validators
         public BooleanValidator(string trueString = "true", string falseString = "false", bool caseSensitive = false)
             : base(Messages.Boolean)
         {
+            if (trueString is null)
+                throw new ArgumentNullException(nameof(trueString));
+            if (falseString is null)
+                throw new ArgumentNullException(nameof(falseString));
+            if (trueString.Trim().Length == 0)
+                throw new ArgumentException("Specify a valid true string.", nameof(trueString));
+            if (falseString.Trim().Length == 0)
+                throw new ArgumentException("Specify a valid false string.", nameof(falseString));
+
+            _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+            if (string.Equals(trueString, falseString, _comparison))
+                throw new ArgumentException("true string and false string cannot be the same");
+
             _trueStrings = new List<string>(1)
             {
                 trueString,
@@ -46,8 +60,6 @@ namespace ConsoleFx.CmdLine.Validators
             {
                 falseString,
             };
-
-            _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
         public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings, bool caseSensitive = false)
@@ -57,6 +69,19 @@ namespace ConsoleFx.CmdLine.Validators
                 throw new ArgumentNullException(nameof(trueStrings));
             if (falseStrings is null)
                 throw new ArgumentNullException(nameof(falseStrings));
+            if (!trueStrings.Any())
+                throw new ArgumentException("Must specify at least one true string", nameof(trueStrings));
+            if (!falseStrings.Any())
+                throw new ArgumentException("Must specify at least one false string", nameof(falseStrings));
+            if (trueStrings.Any(string.IsNullOrWhiteSpace))
+                throw new ArgumentException("The true strings contains one or more invalid values.", nameof(trueStrings));
+            if (falseStrings.Any(string.IsNullOrWhiteSpace))
+                throw new ArgumentException("The false strings contains one or more invalid values.", nameof(falseStrings));
+
+            IEnumerable<string> commonStrings = trueStrings.Intersect(falseStrings,
+                caseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            if (commonStrings.Any())
+                throw new ArgumentException($"The string '{commonStrings.First()}' is specified as both a true string and a false string.");
 
             _trueStrings = new List<string>(trueStrings);
             _falseStrings = new List<string>(falseStrings);
