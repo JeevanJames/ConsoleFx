@@ -34,6 +34,26 @@ namespace ConsoleFx.CmdLine.Validators
         private readonly List<string> _falseStrings;
         private readonly StringComparison _comparison;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="BooleanValidator"/> class.
+        /// </summary>
+        /// <param name="trueString">
+        ///     The string that represents a true value. Defaults to 'true'.
+        /// </param>
+        /// <param name="falseString">
+        ///     The string that represents a false value. Defaults to 'false'.
+        /// </param>
+        /// <param name="caseSensitive">
+        ///     Indicates whether the validation checks are case sensitive.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if either the <paramref name="trueString"/> or <paramref name="falseString"/> is
+        ///     <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if either thr <paramref name="trueString"/> or <paramref name="falseString"/>
+        ///     is invalid, or both are the same based on the case sensitivity rules.
+        /// </exception>
         public BooleanValidator(string trueString = "true", string falseString = "false", bool caseSensitive = false)
             : base(Messages.Boolean)
         {
