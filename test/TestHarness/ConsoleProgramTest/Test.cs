@@ -20,11 +20,12 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
-using ConsoleFx.CmdLine.Program.HelpBuilders;
 using ConsoleFx.CmdLine.Validators;
 
 namespace TestHarness.ConsoleProgramTest
@@ -36,9 +37,49 @@ namespace TestHarness.ConsoleProgramTest
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("bleh", "--version");
+            int exitCode = program.Run("exec", "--", "one", "two", "three");
             Console.WriteLine($"Exit code: {exitCode}");
         }
+    }
+
+    public abstract class ManifestCommand : Command
+    {
+    }
+
+    public abstract class RepoCommand : ManifestCommand
+    {
+        [Option("tags")]
+        [Help("Operate on only the repositories with these tags.")]
+        public IList<string> Tags { get; set; }
+
+        [Option("exclude-tags")]
+        [Help("Operate on only repositories without these tags.")]
+        public IList<string> ExcludedTags { get; set; }
+
+        [Option("only-me")]
+        [Help("Only operate on the repository of the current directory.")]
+        public bool OnlyMe { get; set; }
+
+        protected override IEnumerable<Arg> GetArgs()
+        {
+            return base.GetArgs().Concat(GetMyArgs());
+
+            IEnumerable<Arg> GetMyArgs()
+            {
+                yield return new Option("tags")
+                    .UsedAsUnlimitedOccurrencesAndParameters(optional: true)
+                    .ValidateWithRegex(TagPattern);
+
+                yield return new Option("exclude-tags")
+                    .UsedAsUnlimitedOccurrencesAndParameters(optional: true)
+                    .ValidateWithRegex(TagPattern);
+
+                yield return new Option("only-me")
+                    .UsedAsFlag(optional: true);
+            }
+        }
+
+        private static readonly Regex TagPattern = new Regex(@"^(\w[\w_-]*)$");
     }
 
     [Program("ConsoleProgramTest", Style = ArgStyle.Unix)]
@@ -70,46 +111,57 @@ namespace TestHarness.ConsoleProgramTest
                 .UnderGroups(1);
         }
     }
-
-    [Command("clone")]
-    [PushDirectory]
-    [ErrorCode(-1, typeof(DateTime))]
-    public sealed class CloneCommand : Command
+    [Command("tags")]
+    public sealed class TagsCommand : AbstractCommand
     {
-        [Help("REPO_URL", "URL of the repository that contains the manifest.")]
-        public Uri RepoUrl { get; set; }
+    }
 
-        [Help("MANIFEST_DIR", "Directory in the repository that contains the manifest file.")]
-        public string ManifestDirectory { get; set; }
-
-        [Option("branch")]
-        [Help("The branch in the repository to use to get the manifest.")]
-        public string Branch { get; set; }
-
-        [Option("project-root-dir")]
-        [Help("The root directory of the project.")]
-        public DirectoryInfo ProjectRootDirectory { get; set; }
+    [Command("list", typeof(TagsCommand))]
+    public sealed class TagsListCommand : RepoCommand
+    {
+        [Option("pretty")]
+        [Help("Displays the tags in a table")]
+        public bool PrettifyOutput { get; set; }
 
         protected override IEnumerable<Arg> GetArgs()
         {
-            yield return new Argument(nameof(RepoUrl))
-                .ValidateAsUri(UriKind.Absolute)
-                .TypedAs<Uri>();
+            return base.GetArgs().Concat(GetMyArgs());
 
-            yield return new Argument(nameof(ManifestDirectory), isOptional: true);
-
-            yield return new Option("branch", "b")
-                .UsedAsSingleParameter();
-
-            yield return new Option("project-root-dir", "r")
-                .UsedAsSingleParameter()
-                .ValidateAsDirectory()
-                .TypedAs(value => new DirectoryInfo(value))
-                .DefaultsTo(new DirectoryInfo("."));
+            IEnumerable<Arg> GetMyArgs()
+            {
+                yield return new Option("pretty", "p")
+                    .UsedAsFlag(optional: true);
+            }
         }
 
         protected override int HandleCommand()
         {
+            Console.WriteLine($"Prettify: {PrettifyOutput}");
+            return 0;
+        }
+    }
+
+    [Command("exec")]
+    public sealed class ExecCommand : RepoCommand
+    {
+        public IList<string> GitArgs { get; set; }
+
+        protected override IEnumerable<Arg> GetArgs()
+        {
+            return base.GetArgs().Concat(GetMyArgs());
+
+            IEnumerable<Arg> GetMyArgs()
+            {
+                yield return new Argument(nameof(GitArgs), maxOccurences: byte.MaxValue);
+            }
+        }
+
+        protected override int HandleCommand()
+        {
+            foreach (string arg in GitArgs)
+            {
+                Console.WriteLine(arg);
+            }
             return 0;
         }
     }

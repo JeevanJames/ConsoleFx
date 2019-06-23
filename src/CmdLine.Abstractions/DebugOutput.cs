@@ -52,10 +52,14 @@ namespace ConsoleFx.CmdLine
             var (foregroundColor, backgroundColor) = (Console.ForegroundColor, Console.BackgroundColor);
             try
             {
-                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.BackgroundColor = ConsoleColor.Black;
 
+                Console.ForegroundColor = ConsoleColor.Magenta;
+
                 Trace.WriteLine($"{Prefix}{memberName} at {sourceFilePath} (line {sourceLineNumber})");
+
+                Console.ForegroundColor = ConsoleColor.White;
+
                 if (message is null)
                     Trace.WriteLine("No message specified.");
                 else
