@@ -19,8 +19,6 @@ limitations under the License.
 
 using System.Collections.Generic;
 
-using ConsoleFx.CmdLine.Program.HelpBuilders;
-
 namespace ConsoleFx.CmdLine.Program
 {
     public abstract class HelpBuilder : NamedObject
