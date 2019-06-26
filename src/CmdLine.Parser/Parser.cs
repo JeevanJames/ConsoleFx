@@ -28,6 +28,8 @@ using ConsoleFx.CmdLine.Parser.Style;
 using ConsoleFx.CmdLine.Validators;
 using ConsoleFx.CmdLine.Validators.Bases;
 
+using RegexCapture = System.Text.RegularExpressions.Capture;
+
 namespace ConsoleFx.CmdLine.Parser
 {
     public sealed partial class Parser
@@ -595,7 +597,7 @@ namespace ConsoleFx.CmdLine.Parser
             if (!match.Success)
                 yield break;
 
-            foreach (Capture capture in match.Groups["token"].Captures)
+            foreach (RegexCapture capture in match.Groups["token"].Captures)
                 yield return capture.Value;
         }
 

@@ -97,6 +97,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 List<TArg> categoryArgs = category
                     .Where(arg => !arg.Get<bool>(HelpExtensions.Keys.Hide))
                     .OrderBy(arg => arg.Get<int>(HelpExtensions.Keys.Order))
+                    .ThenBy(arg => arg.Name)
                     .ToList();
                 if (categoryArgs.Count == 0)
                     continue;
@@ -150,6 +151,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 List<Option> categoryOptions = category
                     .Where(option => !option.Get<bool>(HelpExtensions.Keys.Hide))
                     .OrderBy(option => option.Get<int>(HelpExtensions.Keys.Order))
+                    .ThenBy(option => option.Name)
                     .ToList();
                 if (categoryOptions.Count == 0)
                     continue;
