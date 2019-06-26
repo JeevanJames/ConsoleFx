@@ -111,7 +111,7 @@ namespace CmdLine.Abstractions.Tests.Validators
         [InlineData(new[] { "Yes" }, new string[] { "No", null }, typeof(ArgumentException))]
         [InlineData(new[] { "Yes", "" }, new[] { "No" }, typeof(ArgumentException))]
         [InlineData(new[] { "Yes" }, new[] { "No", "" }, typeof(ArgumentException))]
-        [InlineData(new[] { "Yes", "T" }, new[] { "No", "T"}, typeof(ArgumentException))]
+        [InlineData(new[] { "Yes", "T" }, new[] { "No", "T" }, typeof(ArgumentException))]
         public void Invalid_custom_values_for_validators(string[] trueValues, string[] falseValues, Type expectedExceptionType)
         {
             Should.Throw(() => new BooleanValidator(trueValues, falseValues), expectedExceptionType);

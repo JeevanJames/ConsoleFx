@@ -49,7 +49,7 @@ namespace CmdLine.Parser.Tests
         {
             var arguments = new Arguments
             {
-                new Argument("install")
+                new Argument("install"),
             };
 
             Should.Throw<ArgumentException>(() => arguments.Add(new Argument("install")));
@@ -60,7 +60,7 @@ namespace CmdLine.Parser.Tests
         {
             var arguments = new Arguments
             {
-                new Argument("install", isOptional: true)
+                new Argument("install", isOptional: true),
             };
 
             Should.Throw<ParserException>(() => arguments.Add(new Argument("update")));
