@@ -17,29 +17,18 @@ limitations under the License.
 */
 #endregion
 
-using System.Collections.Generic;
-
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.ConsoleExtensions
 {
-    public abstract class HelpBuilder : NamedObject
+    public static partial class ConsoleEx
     {
-        protected HelpBuilder()
+        public static StatusLine StatusLine()
         {
+            return new StatusLine();
         }
 
-        protected HelpBuilder(IDictionary<string, bool> names)
-            : base(names)
+        public static StatusLine StatusLine(int line)
         {
-        }
-
-        /// <summary>
-        ///     Override this method to display the help for the specified <paramref name="command"/>.
-        /// </summary>
-        /// <param name="command">The <see cref="Command"/> for which to display help.</param>
-        public abstract void DisplayHelp(Command command);
-
-        public virtual void VerifyHelp(Command command)
-        {
+            return new StatusLine(line);
         }
     }
 }

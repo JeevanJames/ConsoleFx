@@ -59,10 +59,13 @@ namespace TestHarness.ProgressBarTest
 
             var bars = new List<ProgressBar> { simple, dots, blocks, lines };
 
+            var statusLine = ConsoleEx.StatusLine();
+
             ConsoleEx.WaitForKeysLoop(new[]
             {
                 ConsoleKey.RightArrow.HandledBy(k => bars.ForEach(pb => pb.Value++)),
                 ConsoleKey.LeftArrow.HandledBy(k => bars.ForEach(pb => pb.Value--)),
+                ConsoleKey.UpArrow.HandledBy(k => statusLine.Status = DateTime.Now.ToString()),
             }, postKeyPress: _ =>
             {
                 string status;
@@ -76,6 +79,8 @@ namespace TestHarness.ProgressBarTest
                     status = "Shut down";
                 bars.ForEach(pb => pb.Status = status);
             });
+
+            statusLine.Dispose();
         }
     }
 }
