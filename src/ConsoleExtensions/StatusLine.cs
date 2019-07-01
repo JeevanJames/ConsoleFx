@@ -28,11 +28,14 @@ namespace ConsoleFx.ConsoleExtensions
         public StatusLine()
         {
             Line = Console.CursorTop;
+            ConsoleEx.ClearCurrentLine();
+            Console.WriteLine();
         }
 
         public StatusLine(int line)
         {
             Line = line;
+            ConsoleEx.ClearLine(line);
         }
 
         public void Dispose()
