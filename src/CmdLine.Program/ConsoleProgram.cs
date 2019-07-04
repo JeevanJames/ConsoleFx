@@ -96,6 +96,8 @@ namespace ConsoleFx.CmdLine.Program
         /// </summary>
         public bool DisplayHelpOnError { get; set; }
 
+        public bool VerifyHelp { get; set; }
+
         /// <summary>
         ///     Runs the console program after parsing the specified <paramref name="args"/>.
         /// </summary>
@@ -123,6 +125,8 @@ namespace ConsoleFx.CmdLine.Program
 
                 // Check if the help option is specified. If it is, display the help and get out.
                 HelpBuilder helpBuilder = HelpBuilder;
+                if (VerifyHelp)
+                    helpBuilder.VerifyHelp(parseResult.Command);
                 if (parseResult.TryGetOption(helpBuilder.Name, out bool displayHelp) && displayHelp)
                 {
                     helpBuilder.DisplayHelp(parseResult.Command);

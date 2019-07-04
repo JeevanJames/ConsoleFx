@@ -19,7 +19,6 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -37,7 +36,7 @@ namespace TestHarness.ConsoleProgramTest
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("exec", "--", "one", "two", "three");
+            int exitCode = program.Run();
             Console.WriteLine($"Exit code: {exitCode}");
         }
     }

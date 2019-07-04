@@ -215,6 +215,36 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
         }
 
         private const string Indent = "   ";
+
+        public override void VerifyHelp(Command command)
+        {
+            var allCommands = new List<Command> { command };
+            int index = 0;
+            while (index < allCommands.Count)
+            {
+                Command currentCommand = allCommands[index];
+
+                Arguments arguments = currentCommand.Arguments;
+                foreach (Argument argument in arguments)
+                {
+                    string description = argument.Get<string>("Description");
+                    if (string.IsNullOrWhiteSpace(description))
+                        throw new InvalidOperationException($"Argument '{argument.Name}' under command '{currentCommand.Name}' does not have a description.");
+                }
+
+                Options options = currentCommand.Options;
+                foreach (Option option in options)
+                {
+                    string description = option.Get<string>("Description");
+                    if (string.IsNullOrWhiteSpace(description))
+                        throw new InvalidOperationException($"Option '{option.Name}' under command '{currentCommand.Name}' does not have a description.");
+                }
+
+                allCommands.AddRange(currentCommand.Commands);
+
+                index++;
+            }
+        }
     }
 
     /// <summary>
