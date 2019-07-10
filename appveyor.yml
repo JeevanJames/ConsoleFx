@@ -68,7 +68,7 @@ deploy_script:
     dotnet nuget push ./src/CmdLine.Program/bin/Release/ConsoleFx.CmdLine.Program.Sources.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
 
 
-    dotnet pack ./src/ConsoleExtensions/ConsoleExtensions.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
+    dotnet pack ./src/ConsoleExtensions/ConsoleExtensions.csproj -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./src/ConsoleExtensions/bin/Release/ConsoleFx.ConsoleExtensions.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY -ss $env:MYGET_SYMBOLS_FEED -sk $env:MYGET_SYMBOLS_API_KEY
 
