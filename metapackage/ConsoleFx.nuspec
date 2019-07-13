@@ -7,7 +7,6 @@
     <owners>Jeevan James</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">Apache-2.0</license>
-    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
     <projectUrl>https://github.com/JeevanJames/ConsoleFx/</projectUrl>
     <iconUrl>https://github.com/JeevanJames/ConsoleFx/raw/master/Logo.png</iconUrl>
     <description>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.</description>
