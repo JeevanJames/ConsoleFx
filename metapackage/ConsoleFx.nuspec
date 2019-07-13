@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>ConsoleFx</id>
+    <version>0.0.1</version>
+    <authors>Jeevan James</authors>
+    <owners>Jeevan James</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <projectUrl>https://github.com/JeevanJames/ConsoleFx/</projectUrl>
+    <iconUrl>https://github.com/JeevanJames/ConsoleFx/raw/master/Logo.png</iconUrl>
+    <description>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.</description>
+    <releaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</releaseNotes>
+    <copyright>Copyright (c) 2006-2019 Jeevan James</copyright>
+    <tags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</tags>
+    <repository type="Git" url="https://github.com/JeevanJames/ConsoleFx.git" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="ConsoleFx.CmdLine.Abstractions" version="0.0.1" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.CmdLine.Parser" version="0.0.1" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.CmdLine.Program" version="0.0.1" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.ConsoleExtensions" version="0.0.1" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.Prompter" version="0.0.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
