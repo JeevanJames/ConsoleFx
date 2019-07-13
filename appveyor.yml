@@ -25,7 +25,7 @@ deploy_script:
 - pwsh: >-
     ((Get-Content -path ./metapackage/ConsoleFx.nuspec -Raw) -replace '0.0.1','$env:APPVEYOR_BUILD_VERSION') | Set-Content -Path ./metapackage/ConsoleFx.nuspec
 
-    nuget pack ./metapackage/ ConsoleFx.nuspec -Version $env:APPVEYOR_BUILD_VERSION
+    nuget pack ./metapackage/ConsoleFx.nuspec -Version $env:APPVEYOR_BUILD_VERSION
 
     dotnet nuget push ./metapackage/ConsoleFx.$env:APPVEYOR_BUILD_VERSION.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
 
