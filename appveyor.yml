@@ -25,11 +25,11 @@ deploy_script:
 - pwsh: >-
     $version = $env:APPVEYOR_BUILD_VERSION
 
-    Write-Host '$version'
+    Write-Host $version
 
     Write-Host '$env:APPVEYOR_BUILD_VERSION'
 
-    ((Get-Content -path ./metapackage/ConsoleFx.nuspec -Raw) -replace '0.0.1','$env:APPVEYOR_BUILD_VERSION') | Set-Content -Path ./metapackage/ConsoleFx.nuspec
+    ((Get-Content -path ./metapackage/ConsoleFx.nuspec -Raw) -replace '0.0.1','$version') | Set-Content -Path ./metapackage/ConsoleFx.nuspec
 
     nuget pack ./metapackage/ConsoleFx.nuspec -OutputFileNamesWithoutVersion
 
