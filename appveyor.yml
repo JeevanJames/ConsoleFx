@@ -23,6 +23,8 @@ test_script:
     codecov -f "./test/ConsoleExtensions.Tests/coverage.opencover.xml"
 deploy_script:
 - pwsh: >-
+    Write-Host '$env:APPVEYOR_BUILD_VERSION'
+
     ((Get-Content -path ./metapackage/ConsoleFx.nuspec -Raw) -replace '0.0.1','$env:APPVEYOR_BUILD_VERSION') | Set-Content -Path ./metapackage/ConsoleFx.nuspec
 
     nuget pack ./metapackage/ConsoleFx.nuspec -OutputFileNamesWithoutVersion
