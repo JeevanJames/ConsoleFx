@@ -31,7 +31,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Capture\Capture.csproj" />
     <ProjectReference Include="..\..\src\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\CmdLine.Parser\CmdLine.Parser.csproj" />
     <ProjectReference Include="..\..\src\CmdLine.Program\CmdLine.Program.csproj" />
