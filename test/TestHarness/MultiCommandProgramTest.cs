@@ -21,8 +21,9 @@ using System;
 using System.Collections.Generic;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Validators;
 using ConsoleFx.CmdLine.Program;
+using ConsoleFx.CmdLine.Program.HelpBuilders;
+using ConsoleFx.CmdLine.Validators;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
@@ -34,6 +35,7 @@ namespace TestHarness
         internal override void Run()
         {
             var program = new MyMultiCommandProgram();
+            program.HelpBuilder = new DefaultColorHelpBuilder("help", "h");
             string argsStr = Prompt($"{DkBlue.BgWhite}Enter args: ");
 
             while (!string.IsNullOrWhiteSpace(argsStr))

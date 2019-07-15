@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -28,16 +29,28 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 {
     public class DefaultHelpBuilder : HelpBuilder
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int _indent = 4;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int _nameDescriptionSpacing = 3;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int _newLineDescriptionIndent = 7;
+
         public DefaultHelpBuilder(params string[] names)
+            : this(false, names)
         {
-            foreach (string name in names)
-                AddName(name);
         }
 
         public DefaultHelpBuilder(bool caseSensitive, params string[] names)
         {
             foreach (string name in names)
                 AddName(name, caseSensitive);
+
+            Indent = 4;
+            NameDescriptionSpacing = 3;
+            NewLineDescriptionIndent = 7;
         }
 
         public override void DisplayHelp(Command command)
@@ -45,9 +58,9 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             string usage = GetSummaryUsage(command);
             WriteLine($"Usage: {usage}");
 
-            PrintArgs(command.Arguments, ArgumentDescriptionPlacement, "Arguments");
-            PrintOptions(command.Options, OptionDescriptionPlacement, "Options");
-            PrintArgs(command.Commands, CommandDescriptionPlacement, "Commands");
+            PrintArgs(command.Arguments, ArgumentDescriptionPlacement, "Arguments", ResolveArgumentName);
+            PrintArgs(command.Options, OptionDescriptionPlacement, "Options", ResolveOptionNames);
+            PrintArgs(command.Commands, CommandDescriptionPlacement, "Commands", ResolveCommandNames);
         }
 
         public UsageType UsageType { get; set; }
@@ -57,6 +70,74 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
         public ArgDescriptionPlacement OptionDescriptionPlacement { get; set; }
 
         public ArgDescriptionPlacement CommandDescriptionPlacement { get; set; }
+
+        public int Indent
+        {
+            get => _indent;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Indent should be 0 or greater.", nameof(value));
+                _indent = value;
+                IndentStr = new string(' ', _indent);
+            }
+        }
+
+        public int NameDescriptionSpacing
+        {
+            get => _nameDescriptionSpacing;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Spacing between name and description should be 0 or greater.", nameof(value));
+                _nameDescriptionSpacing = value;
+                NameDescriptionSpacingStr = new string(' ', _nameDescriptionSpacing);
+            }
+        }
+
+        public int NewLineDescriptionIndent
+        {
+            get => _newLineDescriptionIndent;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Indentation for new line description should be 0 or greater.", nameof(value));
+                _newLineDescriptionIndent = value;
+                NewLineDescriptionIndentStr = new string(' ', _newLineDescriptionIndent);
+            }
+        }
+
+        protected string IndentStr { get; set; }
+
+        protected string NameDescriptionSpacingStr { get; set; }
+
+        protected string NewLineDescriptionIndentStr { get; set; }
+
+        /// <summary>
+        ///     Prints an arg and its description.
+        ///     <para />
+        ///     Override this method to customize the way an arg and its description are printed.
+        /// </summary>
+        /// <param name="name">The name or names for the arg.</param>
+        /// <param name="description">The description of the arg.</param>
+        /// <param name="maxNameLength">Length pf the longest arg name.</param>
+        /// <param name="placement">The placement of the description in relation to the name.</param>
+        protected virtual void PrintArg(string name, string description, int maxNameLength, ArgDescriptionPlacement placement)
+        {
+            Write(IndentStr);
+
+            if (placement == ArgDescriptionPlacement.SameLine)
+            {
+                Write($"{name.PadRight(maxNameLength)}{NameDescriptionSpacingStr}");
+            }
+            else
+            {
+                WriteLine(name);
+                Write(NewLineDescriptionIndentStr);
+            }
+
+            WriteLine(description);
+        }
 
         private string GetSummaryUsage(Command command)
         {
@@ -85,7 +166,8 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             }
         }
 
-        private void PrintArgs<TArg>(Args<TArg> args, ArgDescriptionPlacement placement, string defaultCategoryName)
+        private void PrintArgs<TArg>(Args<TArg> args, ArgDescriptionPlacement placement, string defaultCategoryName,
+            Func<TArg, string> nameResolver)
             where TArg : Arg
         {
             if (args.Count == 0)
@@ -104,100 +186,37 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
                 WriteLine();
                 WriteLine(category.Key ?? defaultCategoryName);
-                if (placement == ArgDescriptionPlacement.NextLine)
-                    PrintArgsOnNextLine(categoryArgs);
-                else
-                    PrintArgsOnSameLine(categoryArgs);
+
+                int maxNameLength = placement == ArgDescriptionPlacement.NextLine ? 0 :
+                    categoryArgs.Aggregate(0, (longest, arg) =>
+                    {
+                        string resolvedName = nameResolver(arg);
+                        return Math.Max(longest, resolvedName.Length);
+                    });
+                foreach (TArg arg in categoryArgs)
+                {
+                    string resolvedName = nameResolver(arg);
+                    string description = arg.Get<string>("Description") ?? "<No description provided>";
+                    PrintArg(resolvedName, description, maxNameLength, placement);
+                }
             }
         }
 
-        private void PrintArgsOnSameLine<TArg>(IReadOnlyList<TArg> args)
-            where TArg : Arg
+        private string ResolveCommandNames(Arg arg)
         {
-            int longestLength = args.Aggregate(0, (longest, arg) =>
-            {
-                string resolvedName = ResolveName(arg);
-                return Math.Max(longest, resolvedName.Length);
-            });
-
-            foreach (TArg arg in args)
-            {
-                string name = ResolveName(arg);
-                string description = arg.Get<string>("Description") ?? "<No description provided>";
-                WriteLine($"{Indent}{name.PadRight(longestLength)}   {description}");
-            }
+            return arg.AllNames
+                .Aggregate(new StringBuilder(), (sb, name) =>
+                {
+                    if (sb.Length > 0)
+                        sb.Append(", ");
+                    return sb.Append(name);
+                })
+                .ToString();
         }
 
-        private void PrintArgsOnNextLine<TArg>(IReadOnlyList<TArg> args)
-            where TArg : Arg
+        private string ResolveOptionNames(Arg arg)
         {
-            foreach (TArg arg in args)
-            {
-                WriteLine($"{Indent}{ResolveName(arg)}");
-                string description = arg.Get<string>("Description") ?? "<No description provided>";
-                WriteLine($"{Indent}{Indent}{description}");
-                WriteLine();
-            }
-        }
-
-        private void PrintOptions(Options options, ArgDescriptionPlacement placement, string defaultCategoryName)
-        {
-            if (options.Count == 0)
-                return;
-
-            IEnumerable<IGrouping<string, Option>> categories = options.GroupBy(option => option.Get<string>(HelpExtensions.Keys.CategoryName), StringComparer.OrdinalIgnoreCase);
-            foreach (IGrouping<string, Option> category in categories)
-            {
-                List<Option> categoryOptions = category
-                    .Where(option => !option.Get<bool>(HelpExtensions.Keys.Hide))
-                    .OrderBy(option => option.Get<int>(HelpExtensions.Keys.Order))
-                    .ThenBy(option => option.Name)
-                    .ToList();
-                if (categoryOptions.Count == 0)
-                    continue;
-
-                WriteLine();
-                WriteLine(category.Key ?? defaultCategoryName);
-                if (placement == ArgDescriptionPlacement.NextLine)
-                    PrintOptionsOnNextLine(categoryOptions);
-                else
-                    PrintOptionsOnSameLine(categoryOptions);
-            }
-        }
-
-        private void PrintOptionsOnNextLine(List<Option> options)
-        {
-            foreach (Option option in options)
-            {
-                string names = BuildCombinedOptionsName(option);
-                WriteLine($"{Indent}{names}");
-
-                string description = option.Get<string>("Description") ?? "<No description provided>";
-                WriteLine($"{Indent}{Indent}{description}");
-
-                WriteLine();
-            }
-        }
-
-        private void PrintOptionsOnSameLine(List<Option> options)
-        {
-            int longestLength = options.Aggregate(0, (longest, option) =>
-            {
-                string names = BuildCombinedOptionsName(option);
-                return Math.Max(names.Length, longest);
-            });
-
-            foreach (Option option in options)
-            {
-                string names = BuildCombinedOptionsName(option);
-                string description = option.Get<string>("Description") ?? "<No description provided>";
-                WriteLine($"{Indent}{names.PadRight(longestLength)}   {description}");
-            }
-        }
-
-        private string BuildCombinedOptionsName(Option option)
-        {
-            return option.AllNames
+            return arg.AllNames
                 .Select(name => name.Length > 1 ? $"--{name}" : $"-{name}")
                 .Aggregate(new StringBuilder(), (sb, name) =>
                 {
@@ -208,13 +227,11 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 .ToString();
         }
 
-        private string ResolveName(Arg arg)
+        private string ResolveArgumentName(Arg arg)
         {
             string customName = arg.Get<string>("Name");
             return customName ?? arg.Name;
         }
-
-        private const string Indent = "   ";
 
         public override void VerifyHelp(Command command)
         {
@@ -244,6 +261,39 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
                 index++;
             }
+        }
+    }
+
+    public class DefaultColorHelpBuilder : DefaultHelpBuilder
+    {
+        public DefaultColorHelpBuilder(params string[] names)
+            : base(names)
+        {
+        }
+
+        public DefaultColorHelpBuilder(bool caseSensitive, params string[] names)
+            : base(caseSensitive, names)
+        {
+        }
+
+        protected override void PrintArg(string name, string description, int maxNameLength, ArgDescriptionPlacement placement)
+        {
+            Write(IndentStr);
+
+            ForegroundColor = ConsoleColor.Magenta;
+            if (placement == ArgDescriptionPlacement.SameLine)
+            {
+                Write($"{name.PadRight(maxNameLength)}{NameDescriptionSpacingStr}");
+            }
+            else
+            {
+                WriteLine(name);
+                Write(NewLineDescriptionIndentStr);
+            }
+
+            ResetColor();
+
+            WriteLine(description);
         }
     }
 

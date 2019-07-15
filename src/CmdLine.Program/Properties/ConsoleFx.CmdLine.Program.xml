@@ -91,6 +91,17 @@
             </summary>
             <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> for which to display help.</param>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpBuilders.DefaultHelpBuilder.PrintArg(System.String,System.String,System.Int32,ConsoleFx.CmdLine.Program.HelpBuilders.ArgDescriptionPlacement)">
+            <summary>
+                Prints an arg and its description.
+                <para />
+                Override this method to customize the way an arg and its description are printed.
+            </summary>
+            <param name="name">The name or names for the arg.</param>
+            <param name="description">The description of the arg.</param>
+            <param name="maxNameLength">Length pf the longest arg name.</param>
+            <param name="placement">The placement of the description in relation to the name.</param>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Program.HelpBuilders.UsageType">
             <summary>
                 Describes how the program usage is to be displayed.
