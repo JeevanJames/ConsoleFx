@@ -110,6 +110,28 @@ namespace ConsoleFx.ConsoleExtensions
             }
         }
 
+        public int Min
+        {
+            get => _spec.MinValue;
+            set
+            {
+                //TODO: Validate value
+                _spec.MinValue = value;
+                _value = Update(_value);
+            }
+        }
+
+        public int Max
+        {
+            get => _spec.MaxValue;
+            set
+            {
+                //TODO: Validate value
+                _spec.MaxValue = value;
+                _value = Update(_value);
+            }
+        }
+
         public int Line { get; }
 
         public int Column { get; }
@@ -135,6 +157,8 @@ namespace ConsoleFx.ConsoleExtensions
             _placeholders["bar"] = barCStr.ToString();
             _placeholders["percentage"] = percentage.ToString().PadLeft(3);
             _placeholders["value"] = value.ToString();
+            _placeholders["max"] = _spec.MaxValue.ToString();
+            _placeholders["min"] = _spec.MinValue.ToString();
             _placeholders["status"] = Status ?? string.Empty;
 
             // Build the final string to be displayed.
