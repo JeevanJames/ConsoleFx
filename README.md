@@ -64,7 +64,6 @@ Package | Description | Dev Build
 `ConsoleFx.CmdLine.Parser` | Standalone argument parser that is used by `ConsoleFx.CmdLine.Program`. Can be used in non-console program such as Windows Forms, WPF, REPL, etc. to parse command line arguments in a similar fashion. | [![ConsoleFx.CmdLine.Parser](https://img.shields.io/myget/consolefx/v/ConsoleFx.CmdLine.Parser.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.CmdLine.Parser)
 `ConsoleFx.ConsoleExtensions` | Extended console capabilities like color output, prompts, inputting secrets, outputting indented text, progress bars, etc. | [![ConsoleFx.ConsoleExtensions](https://img.shields.io/myget/consolefx/v/ConsoleFx.ConsoleExtensions.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.ConsoleExtensions)
 `ConsoleFx.Prompter` | Rich interactive framework from getting inputs from users. Inspired by the [Inquirer.js](https://github.com/SBoudrias/Inquirer.js) framework for JavaScript. | [![ConsoleFx.Prompter](https://img.shields.io/myget/consolefx/v/ConsoleFx.Prompter.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.Prompter)
-`ConsoleFx.Capture` | Capture of console output from other command-line applications. | [![ConsoleFx.Capture](https://img.shields.io/myget/consolefx/v/ConsoleFx.Capture.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.Capture)
 
 ### Metapackage
 ConsoleFx includes a metapackage that contains all the major packages that would typically needed to build a complex console application.
