@@ -196,7 +196,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 foreach (TArg arg in categoryArgs)
                 {
                     string resolvedName = nameResolver(arg);
-                    string description = arg.Get<string>("Description") ?? "<No description provided>";
+                    string description = arg.Get<string>(HelpExtensions.Keys.Description) ?? "<No description provided>";
                     PrintArg(resolvedName, description, maxNameLength, placement);
                 }
             }
@@ -229,7 +229,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
         private string ResolveArgumentName(Arg arg)
         {
-            string customName = arg.Get<string>("Name");
+            string customName = arg.Get<string>(HelpExtensions.Keys.Name);
             return customName ?? arg.Name;
         }
 
@@ -244,7 +244,10 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 Arguments arguments = currentCommand.Arguments;
                 foreach (Argument argument in arguments)
                 {
-                    string description = argument.Get<string>("Description");
+                    bool hide = argument.Get<bool>(HelpExtensions.Keys.Hide);
+                    if (hide)
+                        continue;
+                    string description = argument.Get<string>(HelpExtensions.Keys.Description);
                     if (string.IsNullOrWhiteSpace(description))
                         throw new InvalidOperationException($"Argument '{argument.Name}' under command '{currentCommand.Name}' does not have a description.");
                 }
@@ -252,7 +255,10 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 Options options = currentCommand.Options;
                 foreach (Option option in options)
                 {
-                    string description = option.Get<string>("Description");
+                    bool hide = option.Get<bool>(HelpExtensions.Keys.Hide);
+                    if (hide)
+                        continue;
+                    string description = option.Get<string>(HelpExtensions.Keys.Description);
                     if (string.IsNullOrWhiteSpace(description))
                         throw new InvalidOperationException($"Option '{option.Name}' under command '{currentCommand.Name}' does not have a description.");
                 }
