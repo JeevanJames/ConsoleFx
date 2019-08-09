@@ -311,6 +311,12 @@ namespace ConsoleFx.ConsoleExtensions
         /// </returns>
         public static bool TryParse(string cstr, out ColorString colorStr)
         {
+            if (cstr is null)
+            {
+                colorStr = new ColorString(string.Empty);
+                return true;
+            }
+
             // Search the string for color blocks. If none are found, just return the string.
             MatchCollection matches = ColorStringPattern.Matches(cstr);
             if (matches.Count == 0)
