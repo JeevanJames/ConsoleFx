@@ -43,9 +43,11 @@ namespace ConsoleFx.CmdLine.Parser.Style
         }
 
         /// <summary>
-        ///     <para>Validate that the defined options are compatible with the parser style.</para>
-        ///     <para>An exception should be thrown if any option is invalid.</para>
-        ///     <para>An example of an invalid option is a short name longer than one character for the UNIX style parser.</para>
+        ///     Validate that the defined options are compatible with the parser style.
+        ///     <para/>
+        ///     An exception should be thrown if any option is invalid.
+        ///     <para/>
+        ///     An example of an invalid option is a short name longer than one character for the UNIX style parser.
         /// </summary>
         /// <param name="options">List of all the defined options.</param>
         public virtual void ValidateDefinedOptions(IEnumerable<Option> options)

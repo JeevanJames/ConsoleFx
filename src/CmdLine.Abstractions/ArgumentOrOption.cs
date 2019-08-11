@@ -45,6 +45,8 @@ namespace ConsoleFx.CmdLine
         {
         }
 
+        public string AssignToPropertyName { get; set; }
+
         public IReadOnlyList<int> Groups => _groups;
 
         /// <summary>
@@ -78,6 +80,11 @@ namespace ConsoleFx.CmdLine
         ///     <see cref="Type" />.
         /// </summary>
         public Converter<string, object> TypeConverter { get; set; }
+
+        public void AssignTo(string propertyName)
+        {
+            AssignToPropertyName = propertyName;
+        }
 
         public abstract TArg UnderGroups(params int[] groups);
 

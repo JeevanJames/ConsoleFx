@@ -107,7 +107,6 @@ namespace ConsoleFx.CmdLine.Program
         /// </returns>
         public int Run(IEnumerable<string> args = null)
         {
-            // If no args specifid for this method, use the args specified on the command line.
             if (args is null)
                 args = new string[0];
 

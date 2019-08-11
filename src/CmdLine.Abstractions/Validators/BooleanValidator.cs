@@ -160,4 +160,23 @@ namespace ConsoleFx.CmdLine.Validators
             return option.ValidateWith(parameterIndex, validator);
         }
     }
+
+    public sealed class BooleanValidatorAttribute : ValidatorAttribute
+    {
+        public BooleanValidatorAttribute(string trueString = "true", string falseString = "false", bool caseSensitive = false)
+            : base(
+                  typeof(BooleanValidator),
+                  new object[] { trueString, falseString, caseSensitive },
+                  new[] { typeof(string), typeof(string), typeof(bool) })
+        {
+        }
+
+        public BooleanValidatorAttribute(string[] trueStrings, string[] falseStrings, bool caseSensitive = false)
+            : base(
+                  typeof(BooleanValidator),
+                  new object[] { trueStrings, falseStrings, caseSensitive },
+                  new[] { typeof(IEnumerable<string>), typeof(IEnumerable<string>), typeof(bool) })
+        {
+        }
+    }
 }
