@@ -19,68 +19,10 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 namespace ConsoleFx.CmdLine
 {
-    /// <summary>
-    ///     Base class for attributes that can run code before or after a <see cref="Command"/> handler
-    ///     is executed, or when an exception occurs during the execution.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-    public abstract class PrePostHandlerAttribute : Attribute
-    {
-        /// <summary>
-        ///     Override this method to run code before the <see cref="Command"/> handler is executed.
-        /// </summary>
-        /// <param name="command">The <see cref="Command"/> to be executed.</param>
-        public virtual void BeforeHandler(Command command)
-        {
-        }
-
-        /// <summary>
-        ///     Override this method to run code whenever the <see cref="Command"/> handler throws
-        ///     an unhandled exception.
-        /// </summary>
-        /// <param name="ex">The thrown exception.</param>
-        /// <param name="command">The <see cref="Command"/> that was executed.</param>
-        /// <returns>Integer exit code that should be returned from the application.</returns>
-        public virtual int? OnException(Exception ex, Command command)
-        {
-            return null;
-        }
-
-        /// <summary>
-        ///     Override this method to run code after the <see cref="Command"/> handler is executed.
-        /// </summary>
-        /// <param name="command">The <see cref="Command"/> that was executed.</param>
-        public virtual void AfterHandler(Command command)
-        {
-        }
-    }
-
-    /// <summary>
-    ///     Restores the current directory to the directory that was current before the command was
-    ///     executed.
-    /// </summary>
-    public sealed class PushDirectoryAttribute : PrePostHandlerAttribute
-    {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _originalDirectory;
-
-        public override void BeforeHandler(Command command)
-        {
-            _originalDirectory = Directory.GetCurrentDirectory();
-        }
-
-        public override void AfterHandler(Command command)
-        {
-            Directory.SetCurrentDirectory(_originalDirectory);
-        }
-    }
-
     /// <summary>
     ///     Returns the specified error code from the command if any of the specified exceptions or
     ///     their derivatives were thrown.

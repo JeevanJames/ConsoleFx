@@ -19,7 +19,6 @@ limitations under the License.
 
 using System;
 using System.Diagnostics;
-using System.Globalization;
 
 using ConsoleFx.CmdLine.Validators.Bases;
 
@@ -185,15 +184,5 @@ namespace ConsoleFx.CmdLine
 
             return this;
         }
-    }
-
-    /// <summary>
-    ///     Represents a collection of options. Note: This is not a keyed collection because the key
-    ///     can be one of many names.
-    /// </summary>
-    public sealed class Options : Args<Option>
-    {
-        protected override string GetDuplicateErrorMessage(string name) =>
-            string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, name);
     }
 }
