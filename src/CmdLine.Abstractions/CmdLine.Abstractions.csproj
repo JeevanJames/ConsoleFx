@@ -87,4 +87,9 @@ The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-lin
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Declarative\" />
+    <Folder Include="Args\" />
+  </ItemGroup>
+
 </Project>

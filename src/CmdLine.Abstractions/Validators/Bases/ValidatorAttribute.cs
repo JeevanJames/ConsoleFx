@@ -24,7 +24,7 @@ using System.Reflection;
 namespace ConsoleFx.CmdLine.Validators.Bases
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
-    public abstract class ValidatorAttribute : Attribute
+    public abstract class ValidatorAttribute : Attribute, IArgApplicator<Argument>, IArgApplicator<Option>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ConstructorInfo _constructor;
@@ -52,7 +52,17 @@ namespace ConsoleFx.CmdLine.Validators.Bases
 
         public object[] Args { get; }
 
-        internal Validator CreateValidator()
+        public void Apply(Argument arg)
+        {
+            arg.Validators.Add(CreateValidator());
+        }
+
+        public void Apply(Option arg)
+        {
+            arg.Validators.Add(CreateValidator());
+        }
+
+        private Validator CreateValidator()
         {
             var validator = (Validator)_constructor.Invoke(Args);
             return validator;
