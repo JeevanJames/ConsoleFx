@@ -6,7 +6,7 @@
 	Args with the same name can be declared multiple times under a command, but with different group names.
 	Arg identity will now include group names in addition to arg name.
 [X] Support case sensitive short names, independent of the case sensitivity of the name
-[ ] Consider arguments having names so they can be referenced by the name and not just position.
+[X] Consider arguments having names so they can be referenced by the name and not just position.
 [X]		Update `Argument` objects to derive from `MetadataObject`
 [ ]		Update corresponding members in `ParseResult`
 [ ] Replace all hardcoded strings with resources

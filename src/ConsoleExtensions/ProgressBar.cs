@@ -145,9 +145,16 @@ namespace ConsoleFx.ConsoleExtensions
                 value = _spec.MaxValue;
 
             // Calculate placeholder values and update dictionary.
-            long complete = (value * _spec.Width) / (_spec.MaxValue - _spec.MinValue);
-            long incomplete = _spec.Width - complete;
-            long percentage = (value * 100) / (_spec.MaxValue - _spec.MinValue);
+            long total = _spec.MaxValue - _spec.MinValue;
+            long complete = 0, incomplete = 0, percentage = 0;
+
+            // Avoid divide by zero exceptions
+            if (total > 0)
+            {
+                complete = (value * _spec.Width) / total;
+                incomplete = _spec.Width - complete;
+                percentage = (value * 100) / total;
+            }
 
             ColorString barCStr = new ColorString(new string(_style.Complete.Char, (int)complete), _style.Complete.ForeColor, _style.Complete.BackColor)
                 .Reset().BgReset()
