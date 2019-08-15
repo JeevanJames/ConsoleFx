@@ -264,6 +264,11 @@ namespace ConsoleFx.CmdLine
             return 0;
         }
 
+        public virtual void DisplayHelp(Command command = null)
+        {
+            RootCommand.DisplayHelp(command ?? this);
+        }
+
         public Argument AddArgument(string name, bool isOptional = false, byte maxOccurences = 1)
         {
             var argument = new Argument(name, isOptional, maxOccurences);

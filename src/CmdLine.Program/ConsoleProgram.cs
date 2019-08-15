@@ -98,6 +98,13 @@ namespace ConsoleFx.CmdLine.Program
 
         public bool VerifyHelp { get; set; }
 
+        public override void DisplayHelp(Command command = null)
+        {
+            HelpBuilder helpBuilder = HelpBuilder;
+            if (helpBuilder != null)
+                helpBuilder.DisplayHelp(command ?? this);
+        }
+
         /// <summary>
         ///     Runs the console program after parsing the specified <paramref name="args"/>.
         /// </summary>
