@@ -1,5 +1,5 @@
 version: 2.0.0-build.{build}
-image: Visual Studio 2019 Preview
+image: Visual Studio 2019
 environment:
   MYGET_API_KEY:
     secure: 3tEiaoqZlTJcJkAX+3wWyp3mbCYuJpALEFzTEaum6ACiXbWgsa1kWYGBi3TUFY7c
