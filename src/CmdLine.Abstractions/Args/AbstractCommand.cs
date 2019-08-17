@@ -44,6 +44,7 @@ namespace ConsoleFx.CmdLine
 
         protected sealed override int HandleCommand(ParseResultBase parseResult)
         {
+            DisplayHelp(this);
             return 0;
         }
 
