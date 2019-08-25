@@ -4,26 +4,6 @@
         <name>ConsoleFx.CmdLine.Parser</name>
     </assembly>
     <members>
-        <member name="F:ConsoleFx.CmdLine.Parser.Config.OverrideBehavior.MergePreferSpecified">
-            <summary>
-                Merge unique values from config and specified. In case of conflict, ignore the config values.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.Parser.Config.OverrideBehavior.MergePreferConfig">
-            <summary>
-                Merge unique values from config and specified. In case of conflict, ignore the specified values.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.Parser.Config.OverrideBehavior.AlwaysSpecified">
-            <summary>
-                If available, use only specified values and ignore config values.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.Parser.Config.OverrideBehavior.AlwaysConfig">
-            <summary>
-                If available, use only config values and ignore specified values.
-            </summary>
-        </member>
         <member name="T:ConsoleFx.CmdLine.Parser.Messages">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.

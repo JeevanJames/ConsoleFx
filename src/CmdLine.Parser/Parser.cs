@@ -118,10 +118,6 @@ namespace ConsoleFx.CmdLine.Parser
             // Trim the argument and option runs to those that contain the matcing groups.
             TrimRunsToMatchingGroups(run, matchingGroups);
 
-            //TODO: Come back to this later
-            //if (ConfigReader != null)
-            //    specifiedArguments = ConfigReader.Run(specifiedArguments, Options);
-
             // Process the specified options and arguments, and resolve their values.
             ProcessOptions(run.Options);
             ProcessArguments(specifiedArguments, run.Arguments);
