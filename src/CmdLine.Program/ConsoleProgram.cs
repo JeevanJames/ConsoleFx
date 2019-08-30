@@ -48,7 +48,7 @@ namespace ConsoleFx.CmdLine.Program
         public ConsoleProgram()
         {
             ProgramAttribute programAttribute = GetType().GetCustomAttribute<ProgramAttribute>(true);
-            if (programAttribute == null)
+            if (programAttribute is null)
                 throw new InvalidOperationException("Default ConsoleProgram constructor can only be used if you decorate the ConsoleProgram-derived class with the Program attribute.");
 
             AddName(programAttribute.Name);

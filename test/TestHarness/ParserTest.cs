@@ -76,7 +76,7 @@ namespace TestHarness
             {
                 ParseResult result = parser.Parse("sourceFile", "destfile", "7", "8",
                     "-vy",
-                    "--log", "blah",
+                    "--log", "blah-bleh",
                     "--web", "https://example.com",
                     "--id={DD45218B-CE76-4714-A3B3-7F77F4A287F1}",
                     "-m=abc",

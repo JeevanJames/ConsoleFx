@@ -49,7 +49,7 @@ namespace ConsoleFx.CmdLine.Parser.Style
             return specifiedGrouping;
         }
 
-        private static readonly Regex OptionPattern = new Regex(@"(--?)(\w[\w-_]*)(?:=(.+))?");
+        private static readonly Regex OptionPattern = new Regex(@"^(--?)(\w[\w-_]*)(?:=(.+))?$");
 
         /// <inheritdoc/>
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
