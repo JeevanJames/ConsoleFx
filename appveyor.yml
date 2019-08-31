@@ -15,5 +15,6 @@ build_script:
 - pwsh: ./.build/build.ps1
 test_script:
 - pwsh: ./.build/test.ps1
+- pwsh: ./.build/cc-codecov.ps1
 deploy_script:
 - pwsh: ./.build/deploy.ps1
