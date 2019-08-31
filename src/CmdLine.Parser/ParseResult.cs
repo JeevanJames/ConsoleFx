@@ -45,7 +45,7 @@ namespace ConsoleFx.CmdLine.Parser
                 .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.Value);
         }
 
-        public override bool TryGetArgument<T>(int index, out T value, T @default = default)
+        public override bool TryGetArgument<T>(int index, out T value, T defaultValue = default)
         {
             if (index >= _run.Arguments.Count)
             {
@@ -55,10 +55,10 @@ namespace ConsoleFx.CmdLine.Parser
 
             ArgumentRun matchingArgument = _run.Arguments[index];
 
-            return TryGetArgument(matchingArgument, out value, @default);
+            return TryGetArgument(matchingArgument, out value, defaultValue);
         }
 
-        public override bool TryGetArgument<T>(string name, out T value, T @default = default)
+        public override bool TryGetArgument<T>(string name, out T value, T defaultValue = default)
         {
             ArgumentRun matchingArgument = _run.Arguments.FirstOrDefault(r => r.Argument.HasName(name));
             if (matchingArgument is null)
@@ -67,7 +67,7 @@ namespace ConsoleFx.CmdLine.Parser
                 return false;
             }
 
-            return TryGetArgument(matchingArgument, out value, @default);
+            return TryGetArgument(matchingArgument, out value, defaultValue);
         }
 
         private static bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value, T @default = default)
@@ -90,7 +90,7 @@ namespace ConsoleFx.CmdLine.Parser
             return true;
         }
 
-        public override bool TryGetOption<T>(string name, out T value, T @default = default)
+        public override bool TryGetOption<T>(string name, out T value, T defaultValue = default)
         {
             OptionRun matchingOption = _run.Options.FirstOrDefault(r => r.Option.HasName(name));
             if (matchingOption is null)
@@ -101,7 +101,7 @@ namespace ConsoleFx.CmdLine.Parser
 
             if (matchingOption.Occurrences == 0)
             {
-                value = matchingOption.Assigned ? (T)matchingOption.Value : @default;
+                value = matchingOption.Assigned ? (T)matchingOption.Value : defaultValue;
                 return true;
             }
 

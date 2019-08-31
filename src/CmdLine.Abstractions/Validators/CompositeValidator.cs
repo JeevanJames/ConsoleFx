@@ -57,7 +57,7 @@ namespace ConsoleFx.CmdLine.Validators
         /// </summary>
         /// <param name="parameterValue">The parameter value as a string.</param>
         /// <returns>The parameter value converted to its actual type.</returns>
-        /// <exception cref="T:ConsoleFx.CmdLineArgs.Validators.ValidationException">Thrown if the validation fails.</exception>
+        /// <exception cref="ValidationException">Thrown if the validation fails.</exception>
         protected override string ValidateAsString(string parameterValue)
         {
             bool anyValidatorPassed = _validators.Any(validator =>

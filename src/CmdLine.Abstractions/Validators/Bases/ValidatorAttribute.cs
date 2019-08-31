@@ -36,9 +36,15 @@ namespace ConsoleFx.CmdLine.Validators.Bases
             if (!typeof(Validator).IsAssignableFrom(validatorType))
                 throw new ArgumentException("Specified type is not a validator.", nameof(validatorType));
 
+#if NET45
             if (argTypes is null)
                 argTypes = new Type[0];
             Args = args ?? new object[0];
+#else
+            if (argTypes is null)
+                argTypes = Array.Empty<Type>();
+            Args = args ?? Array.Empty<object>();
+#endif
 
             if (argTypes.Length != Args.Length)
                 throw new ArgumentException("Number of arguments does not match number of argument types.", nameof(args));
@@ -52,6 +58,7 @@ namespace ConsoleFx.CmdLine.Validators.Bases
 
         public object[] Args { get; }
 
+        //TODO: Are these 2 methods being used?
         public void Apply(Argument arg)
         {
             arg.Validators.Add(CreateValidator());

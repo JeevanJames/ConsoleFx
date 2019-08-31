@@ -257,7 +257,7 @@
         <member name="T:ConsoleFx.CmdLine.Arguments">
             <inheritdoc />
             <summary>
-                Represents a collection of <see cref="T:ConsoleFx.CmdLineArgs.Argument" /> objects.
+                Represents a collection of <see cref="T:ConsoleFx.CmdLine.Argument" /> objects.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLine.Arguments.VerifyOptionalArgumentsAtEnd">
@@ -1136,7 +1136,7 @@
             </summary>
             <param name="parameterValue">The parameter value as a string.</param>
             <returns>The parameter value converted to its actual type.</returns>
-            <exception cref="T:ConsoleFx.CmdLineArgs.Validators.ValidationException">Thrown if the validation fails.</exception>
+            <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
         </member>
         <member name="M:ConsoleFx.CmdLine.Validators.CustomValidator.#ctor(System.Func{System.String,System.Boolean})">
             <summary>

@@ -27,7 +27,6 @@ namespace ConsoleFx.CmdLine
     public static class DebugOutput
     {
         private const string Prefix = "[CONSOLEFX] ";
-        private static readonly string Separator = new string('=', 40);
 
         private static bool _enabled;
 

@@ -37,11 +37,11 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public IReadOnlyDictionary<string, object> Options { get; protected set; }
 
-        public abstract bool TryGetArgument<T>(int index, out T value, T @default = default);
+        public abstract bool TryGetArgument<T>(int index, out T value, T defaultValue = default);
 
-        public abstract bool TryGetArgument<T>(string name, out T value, T @default = default);
+        public abstract bool TryGetArgument<T>(string name, out T value, T defaultValue = default);
 
-        public abstract bool TryGetOption<T>(string name, out T value, T @default = default);
+        public abstract bool TryGetOption<T>(string name, out T value, T defaultValue = default);
 
         public abstract bool TryGetOptions<T>(string name, out IReadOnlyList<T> values);
     }

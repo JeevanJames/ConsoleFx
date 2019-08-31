@@ -21,7 +21,7 @@ namespace ConsoleFx.CmdLine
 {
     /// <inheritdoc />
     /// <summary>
-    ///     Represents a collection of <see cref="T:ConsoleFx.CmdLineArgs.Argument" /> objects.
+    ///     Represents a collection of <see cref="Argument" /> objects.
     /// </summary>
     public sealed class Arguments : Args<Argument>
     {

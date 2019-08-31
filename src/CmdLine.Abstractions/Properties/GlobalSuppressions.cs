@@ -82,3 +82,8 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Major Code Smell",
     "S1135:Track uses of TODO tags",
     Justification = "TODO tags should be allowed to be committed to version control, as they indicate pending work.")]
+
+// Roslynator
+[assembly: SuppressMessage("Design",
+    "RCS1194:Implement exception constructors.",
+    Justification = "No good reason to disallow custom constructors (except for the serialization ctor).")]
