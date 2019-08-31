@@ -4,9 +4,16 @@
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>ConsoleFx.ConsoleExtensions</AssemblyName>
     <RootNamespace>ConsoleFx.ConsoleExtensions</RootNamespace>
+
+    <!-- Build properties -->
     <LangVersion>latest</LangVersion>
-    <!-- NuGet publishing properties -->
-    <Version>0.0.1</Version>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>Properties\ConsoleFx.ConsoleExtensions.xml</DocumentationFile>
+    
+    <!-- Package properties -->
+    <Version>0.1.0</Version>
     <Authors>Jeevan James</Authors>
     <Company>Jeevan James</Company>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -21,25 +28,12 @@ The ConsoleFx.ConsoleExtensions package provides enhancements to the Console cla
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</PackageTags>
     <PackageReleaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</PackageReleaseNotes>
-    <!-- Source Link properties-->
+    <Product>ConsoleFx</Product>
+
+    <!-- SourceLink properties-->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <Product>ConsoleFx</Product>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>Properties\ConsoleFx.ConsoleExtensions.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>Properties\ConsoleFx.ConsoleExtensions.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
