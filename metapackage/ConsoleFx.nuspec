@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>ConsoleFx</id>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <authors>Jeevan James</authors>
     <owners>Jeevan James</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -16,11 +16,11 @@
     <repository type="Git" url="https://github.com/JeevanJames/ConsoleFx.git" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="ConsoleFx.CmdLine.Abstractions" version="0.0.1" exclude="Build,Analyzers" />
-        <dependency id="ConsoleFx.CmdLine.Parser" version="0.0.1" exclude="Build,Analyzers" />
-        <dependency id="ConsoleFx.CmdLine.Program" version="0.0.1" exclude="Build,Analyzers" />
-        <dependency id="ConsoleFx.ConsoleExtensions" version="0.0.1" exclude="Build,Analyzers" />
-        <dependency id="ConsoleFx.Prompter" version="0.0.1" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.CmdLine.Abstractions" version="0.1.0" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.CmdLine.Parser" version="0.1.0" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.CmdLine.Program" version="0.1.0" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.ConsoleExtensions" version="0.1.0" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.Prompter" version="0.1.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
