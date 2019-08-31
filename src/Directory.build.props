@@ -30,6 +30,7 @@
 
     <ItemGroup>
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+        <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
     </ItemGroup>
 
     <ItemGroup>
