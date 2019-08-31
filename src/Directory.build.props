@@ -10,7 +10,7 @@
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
-        <NoWarn>1701;1702;1591</NoWarn>
+        <NoWarn>1701;1702;1591;NU5105</NoWarn>
 
         <!-- Package properties -->
         <Version>0.1.0</Version>
