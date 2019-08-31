@@ -26,6 +26,9 @@
         <PackageReleaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</PackageReleaseNotes>
         <Product>ConsoleFx</Product>
         <NeutralLanguage>en-US</NeutralLanguage>
+
+        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)ConsoleFx.ruleset</CodeAnalysisRuleSet>
+
     </PropertyGroup>
 
     <ItemGroup>
