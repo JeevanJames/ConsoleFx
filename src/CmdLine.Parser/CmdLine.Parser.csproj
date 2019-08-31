@@ -4,36 +4,9 @@
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>ConsoleFx.CmdLine.Parser</AssemblyName>
     <RootNamespace>ConsoleFx.CmdLine.Parser</RootNamespace>
-
-    <!-- Build properties -->
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>Properties\ConsoleFx.CmdLine.Parser.xml</DocumentationFile>
-
-    <!-- Package properties -->
-    <Version>0.1.0</Version>
-    <Authors>Jeevan James</Authors>
-    <Company>Jeevan James</Company>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Description>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
-
-The ConsoleFx.CmdLine.Parser package provides a sophisticated command-line arguments parser.
-</Description>
-    <Copyright>Copyright (c) 2006-2019 Jeevan James</Copyright>
-    <PackageProjectUrl>https://github.com/JeevanJames/ConsoleFx/</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/JeevanJames/ConsoleFx/raw/master/Logo.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/JeevanJames/ConsoleFx.git</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <PackageTags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</PackageTags>
-    <PackageReleaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</PackageReleaseNotes>
-    <Product>ConsoleFx</Product>
+    <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
+    <Description>$(ProductDescription)The ConsoleFx.CmdLine.Parser package provides a sophisticated command-line arguments parser.</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Messages.Designer.cs">
@@ -48,17 +21,6 @@ The ConsoleFx.CmdLine.Parser package provides a sophisticated command-line argum
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.16.0.8981">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

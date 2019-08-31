@@ -4,15 +4,8 @@
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>ConsoleFx.CmdLine.Abstractions</AssemblyName>
     <RootNamespace>ConsoleFx.CmdLine</RootNamespace>
-
-    <!-- Build properties -->
-    <DocumentationFile>Properties\ConsoleFx.CmdLine.Abstractions.xml</DocumentationFile>
-
-    <!-- Package properties -->
-    <Description>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
-
-The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-line argument concepts..
-</Description>
+    <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile> 
+    <Description>$(ProductDescription)The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-line argument concepts.</Description>
   </PropertyGroup>
 
   <ItemGroup>

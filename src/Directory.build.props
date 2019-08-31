@@ -1,11 +1,18 @@
 <Project>
 
     <PropertyGroup>
+        <ProductDescription>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.
+
+
+</ProductDescription>
+
+        <!-- Build properties -->
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <NoWarn>1701;1702;1591</NoWarn>
 
+        <!-- Package properties -->
         <Version>0.1.0</Version>
         <Authors>Jeevan James</Authors>
         <Company>Jeevan James</Company>
