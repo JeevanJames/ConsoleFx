@@ -24,7 +24,7 @@ using System.Linq;
 using System.Reflection;
 
 using ConsoleFx.CmdLine;
-
+using TestHarness.Prompter;
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
@@ -78,14 +78,14 @@ namespace TestHarness
 
         private static readonly Dictionary<Type, string> MenuItems = new Dictionary<Type, string>
         {
-            [typeof(ConsoleExtensionsTest)]   = "ConsoleEx",
-            [typeof(ParserTest)]              = "Parser",
-            [typeof(Parser2Test)]             = "Parser 2",
+            [typeof(Parser.Test)]             = "Parser",
+            [typeof(Parser2.Test)]             = "Parser 2",
             [typeof(ConsoleProgramTest.Test)] = "Console Program",
+            [typeof(ConsoleExtensions.Test)]  = "ConsoleEx",
             [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",
             [typeof(DeepMultiCommand.Test)]   = "Deep multi-command Console Program",
             [typeof(ProgressBarTest.Test)]    = "Progress bar",
-            [typeof(PrompterTest)]            = "Prompter",
+            [typeof(Test)]            = "Prompter",
             [typeof(ConsoleCaptureTest.Test)] = "Console Capture",
             [typeof(Program)]                 = "Exit",
         };

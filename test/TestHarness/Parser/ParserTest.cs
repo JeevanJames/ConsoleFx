@@ -28,9 +28,9 @@ using ConsoleFx.CmdLine.Validators;
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
-namespace TestHarness
+namespace TestHarness.Parser
 {
-    internal sealed class ParserTest : TestBase
+    internal sealed class Test : TestBase
     {
         internal override void Run()
         {
@@ -71,7 +71,7 @@ namespace TestHarness
                 .UsedAsSingleParameter(true)
                 .ValidateAsKeyValue();
 
-            var parser = new Parser(command, ArgStyle.Unix);
+            var parser = new ConsoleFx.CmdLine.Parser.Parser(command, ArgStyle.Unix);
             try
             {
                 ParseResult result = parser.Parse("sourceFile", "destfile", "7", "8",

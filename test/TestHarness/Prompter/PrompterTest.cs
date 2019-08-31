@@ -17,15 +17,16 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Prompter;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
-namespace TestHarness
+using CFxPrompter = ConsoleFx.Prompter.Prompter;
+
+namespace TestHarness.Prompter
 {
-    internal sealed class PrompterTest : TestBase
+    internal sealed class Test : TestBase
     {
         private const string NameInstructions1 = @"We need your name to address you for the rest of the questions.";
         private readonly string NameInstructions2 = $@"You have {Red.BgWhite}our guarantee{Reset.BgReset} that we will keep your details private.";
@@ -35,8 +36,8 @@ namespace TestHarness
 
         internal override void Run()
         {
-            Prompter.Style = Styling.Colorful;
-            var prompter = new Prompter()
+            CFxPrompter.Style = Styling.Colorful;
+            var prompter = new CFxPrompter()
                 .Input("Name", $"Hi, what's your {Green.BgDkYellow}name? ", q => q
                     .WithInstructions(NameInstructions1, NameInstructions2, NameInstructions3)
                     .ValidateWith((name, _) => name.Length >= 6)

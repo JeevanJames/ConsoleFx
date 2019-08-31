@@ -27,9 +27,9 @@ using ConsoleFx.CmdLine.Program;
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
-namespace TestHarness
+namespace TestHarness.Parser2
 {
-    internal sealed class Parser2Test : TestBase
+    internal sealed class Test : TestBase
     {
         internal override void Run()
         {
@@ -49,9 +49,7 @@ namespace TestHarness
         {
             PrintLine($"Sync {Green}{SourceDir} {Reset}to:");
             foreach (DirectoryInfo directory in DestDirs)
-            {
                 PrintLine($"    {Blue}{directory.FullName}");
-            }
             PrintLine($"Top Level Only: {Black.BgYellow}{TopLevelOnly}");
             if (ExcludeDirs.Count > 0)
             {

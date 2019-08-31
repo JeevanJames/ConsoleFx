@@ -24,9 +24,9 @@ using ConsoleFx.ConsoleExtensions;
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
-namespace TestHarness
+namespace TestHarness.ConsoleExtensions
 {
-    internal sealed class ConsoleExtensionsTest : TestBase
+    internal sealed class Test : TestBase
     {
         internal override void Run()
         {
