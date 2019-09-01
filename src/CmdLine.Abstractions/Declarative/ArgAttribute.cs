@@ -51,5 +51,9 @@ namespace ConsoleFx.CmdLine
             : base(name)
         {
         }
+
+        public bool IsOptional { get; set; }
+
+        public byte MaxOccurences { get; set; } = 1;
     }
 }

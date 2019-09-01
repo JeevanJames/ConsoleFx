@@ -22,6 +22,15 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Base class for any attribute that can assign metadata to an <see cref="Arg"/>.
+    ///     <para/>
+    ///     The framework locates such attributes decorated on args and automatically assigns them to
+    ///     the metadata of the arg.
+    /// </summary>
+    /// <remarks>
+    ///     An example of metadata attributes are the Help attributes.
+    /// </remarks>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public abstract class MetadataAttribute : Attribute
     {
@@ -36,9 +45,47 @@ namespace ConsoleFx.CmdLine
         public void AssignMetadata<TArg>(TArg arg)
             where TArg : Arg
         {
+            // Validate applicable args for this attribute.
+            //TODO: Simplify code
+            ArgType applicableArgs = GetApplicableArgTypes();
+            switch (arg)
+            {
+                case Argument _:
+                    if ((applicableArgs & ArgType.Argument) != ArgType.Argument)
+                        throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
+                    break;
+                case Option _:
+                    if ((applicableArgs & ArgType.Option) != ArgType.Option)
+                        throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
+                    break;
+                case Command _:
+                    if ((applicableArgs & ArgType.Command) != ArgType.Command)
+                        throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
+                    break;
+            }
+
             IEnumerable<KeyValuePair<string, object>> metadata = GetMetadata();
             foreach (KeyValuePair<string, object> metadataItem in metadata)
                 arg.Set(metadataItem.Key, metadataItem.Value);
         }
+
+        /// <summary>
+        ///     Specifies the types of args that this attribute can apply to.
+        /// </summary>
+        /// <returns>The applicable arg types.</returns>
+        protected virtual ArgType GetApplicableArgTypes()
+        {
+            return ArgType.All;
+        }
+    }
+
+    [Flags]
+    public enum ArgType
+    {
+        Option = 1,
+        Argument = 2,
+        Command = 4,
+        ArgumentsAndOptions = Argument | Option,
+        All = Argument | Option | Command,
     }
 }

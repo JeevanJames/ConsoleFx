@@ -125,40 +125,13 @@ namespace ConsoleFx.CmdLine
                     _arguments.AddRange(GetArgs().OfType<Argument>());
 
                     // Add arguments from the properties in this class.
-                    _arguments.AddRange(GetPropertyArguments());
+                    IReadOnlyList<Argument> propertyArguments = GetPropertyArgs<Argument, ArgumentAttribute>(
+                        attr => new Argument(attr.Name, attr.IsOptional, attr.MaxOccurences));
+                    _arguments.AddRange(propertyArguments);
                 }
 
                 return _arguments;
             }
-        }
-
-        private IReadOnlyList<Argument> GetPropertyArguments()
-        {
-            IEnumerable<PropertyInfo> argumentProperties = GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(prop => prop.GetCustomAttribute<ArgumentAttribute>(true) != null);
-
-            if (!argumentProperties.Any())
-#if NET45
-                return new Argument[0];
-#else
-                return Array.Empty<Argument>();
-#endif
-
-            var arguments = new List<Argument>();
-
-            foreach (PropertyInfo property in argumentProperties)
-                arguments.Add(GetPropertyArgument(property));
-
-            return arguments;
-        }
-
-        private Argument GetPropertyArgument(PropertyInfo property)
-        {
-            ArgumentAttribute attribute = property.GetCustomAttribute<ArgumentAttribute>(true);
-
-            var argument = new Argument(attribute.Name);
-            return argument;
         }
 
         /// <summary>
@@ -175,6 +148,11 @@ namespace ConsoleFx.CmdLine
                     // Add options from the GetArgs method.
                     _options.AddRange(GetArgs().OfType<Option>());
 
+                    // Add options from the properties in this class.
+                    IReadOnlyList<Option> propertyOptions = GetPropertyArgs<Option, OptionAttribute>(
+                        attr => new Option(attr.Name));
+                    _options.AddRange(propertyOptions);
+
                     // Add any universal options.
                     // Universal options that apply to all commands are only specified at the root
                     // command level.
@@ -186,6 +164,50 @@ namespace ConsoleFx.CmdLine
 
                 return _options;
             }
+        }
+
+        /// <summary>
+        ///     Common method to read the properties of this <see cref="Command"/> class and create
+        ///     <see cref="Argument"/> and <see cref="Option"/> instances from the property metadata.
+        /// </summary>
+        /// <typeparam name="TArg">
+        ///     The type of arg being handled, <see cref="Argument"/> or <see cref="Option"/>.
+        /// </typeparam>
+        /// <typeparam name="TArgAttribute">The type of sttribute identifying the arg.</typeparam>
+        /// <param name="argFactory">A delegate that creates the arg from the attribute.</param>
+        /// <returns>An instance of the arg, based on the property's metadata.</returns>
+        private IReadOnlyList<TArg> GetPropertyArgs<TArg, TArgAttribute>(Func<TArgAttribute, TArg> argFactory)
+            where TArg : Arg
+            where TArgAttribute : Attribute
+        {
+            IEnumerable<PropertyInfo> argProperties = GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(prop => prop.GetCustomAttribute<TArgAttribute>(true) != null);
+
+            if (!argProperties.Any())
+#if NET45
+                return new TArg[0];
+#else
+                return Array.Empty<TArg>();
+#endif
+
+            var args = new List<TArg>();
+
+            foreach (PropertyInfo property in argProperties)
+            {
+                TArgAttribute attribute = property.GetCustomAttribute<TArgAttribute>(true);
+                TArg arg = argFactory(attribute);
+
+                IEnumerable<IArgApplicator<TArg>> applicatorAttrs = property
+                    .GetCustomAttributes()
+                    .OfType<IArgApplicator<TArg>>();
+                foreach (IArgApplicator<TArg> applicatorAttr in applicatorAttrs)
+                    applicatorAttr.Apply(arg);
+
+                args.Add(arg);
+            }
+
+            return args;
         }
 
         /// <summary>

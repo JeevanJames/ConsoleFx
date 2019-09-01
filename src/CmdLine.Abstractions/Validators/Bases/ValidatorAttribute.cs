@@ -71,8 +71,7 @@ namespace ConsoleFx.CmdLine.Validators.Bases
 
         private Validator CreateValidator()
         {
-            var validator = (Validator)_constructor.Invoke(Args);
-            return validator;
+            return (Validator)_constructor.Invoke(Args);
         }
     }
 }

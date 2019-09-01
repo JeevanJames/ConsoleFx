@@ -336,6 +336,18 @@
                 Gets the collection of <see cref="T:ConsoleFx.CmdLine.Option" /> objects for this command.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Command.GetPropertyArgs``2(System.Func{``1,``0})">
+            <summary>
+                Common method to read the properties of this <see cref="T:ConsoleFx.CmdLine.Command"/> class and create
+                <see cref="T:ConsoleFx.CmdLine.Argument"/> and <see cref="T:ConsoleFx.CmdLine.Option"/> instances from the property metadata.
+            </summary>
+            <typeparam name="TArg">
+                The type of arg being handled, <see cref="T:ConsoleFx.CmdLine.Argument"/> or <see cref="T:ConsoleFx.CmdLine.Option"/>.
+            </typeparam>
+            <typeparam name="TArgAttribute">The type of sttribute identifying the arg.</typeparam>
+            <param name="argFactory">A delegate that creates the arg from the attribute.</param>
+            <returns>An instance of the arg, based on the property's metadata.</returns>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Command.GetUniversalOptions">
             <summary>
                 Override this method to specify options that apply to all options.
@@ -840,6 +852,17 @@
                 the exceptions are thrown.
             </summary>
         </member>
+        <member name="T:ConsoleFx.CmdLine.MetadataAttribute">
+            <summary>
+                Base class for any attribute that can assign metadata to an <see cref="T:ConsoleFx.CmdLine.Arg"/>.
+                <para/>
+                The framework locates such attributes decorated on args and automatically assigns them to
+                the metadata of the arg.
+            </summary>
+            <remarks>
+                An example of metadata attributes are the Help attributes.
+            </remarks>
+        </member>
         <member name="M:ConsoleFx.CmdLine.MetadataAttribute.AssignMetadata``1(``0)">
             <summary>
                 Helper method to assign the metadata values from this attribute to the specified
@@ -847,6 +870,12 @@
             </summary>
             <typeparam name="TArg">The type of arg.</typeparam>
             <param name="arg">The arg to assign the metadata to.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.MetadataAttribute.GetApplicableArgTypes">
+            <summary>
+                Specifies the types of args that this attribute can apply to.
+            </summary>
+            <returns>The applicable arg types.</returns>
         </member>
         <member name="T:ConsoleFx.CmdLine.PrePostHandlerAttribute">
             <summary>
