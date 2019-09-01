@@ -177,7 +177,7 @@ namespace ConsoleFx.CmdLine
         /// <param name="argFactory">A delegate that creates the arg from the attribute.</param>
         /// <returns>An instance of the arg, based on the property's metadata.</returns>
         private IReadOnlyList<TArg> GetPropertyArgs<TArg, TArgAttribute>(Func<TArgAttribute, TArg> argFactory)
-            where TArg : Arg
+            where TArg : ArgumentOrOption<TArg>
             where TArgAttribute : Attribute
         {
             IEnumerable<PropertyInfo> argProperties = GetType()
@@ -195,9 +195,16 @@ namespace ConsoleFx.CmdLine
 
             foreach (PropertyInfo property in argProperties)
             {
+                // Verify property is usable
+                if (!property.CanRead || !property.CanWrite)
+                    throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType.FullName} cannot be decorated with an {typeof(TArgAttribute).Name} attribute because it is not a read/write property.");
+
+                //TODO: More checks
+
                 // Create the arg instance
                 TArgAttribute attribute = property.GetCustomAttribute<TArgAttribute>(true);
                 TArg arg = argFactory(attribute);
+                arg.AssignedProperty = property;
 
                 // Apply any IArgApplicator<> attributes to the arg
                 IEnumerable<IArgApplicator<TArg>> applicatorAttrs = property
