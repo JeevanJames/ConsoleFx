@@ -68,38 +68,38 @@ namespace ConsoleFx.CmdLine
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
 
-        public sealed override Argument UnderGroups(params int[] groups)
+        public override Argument UnderGroups(params int[] groups)
         {
             InternalUnderGroups(groups);
             return this;
         }
 
-        public sealed override Argument DefaultsTo(Func<object> setter)
+        public override Argument DefaultsTo(Func<object> setter)
         {
             InternalDefaultsTo(setter);
             return this;
         }
 
-        public sealed override Argument DefaultsTo(object defaultValue)
+        public override Argument DefaultsTo(object defaultValue)
         {
             InternalDefaultsTo(defaultValue);
             return this;
         }
 
         /// <inheritdoc />
-        public sealed override Argument FormatAs(Func<string, string> formatter)
+        public override Argument FormatAs(Func<string, string> formatter)
         {
             InternalFormatAs(formatter);
             return this;
         }
 
-        public sealed override Argument FormatAs(string formatStr)
+        public override Argument FormatAs(string formatStr)
         {
             InternalFormatAs(formatStr);
             return this;
         }
 
-        public sealed override Argument TypeAs(Type type, Converter<string, object> converter = null)
+        public override Argument TypeAs(Type type, Converter<string, object> converter = null)
         {
             InternalTypeAs(type, converter);
             return this;
@@ -112,7 +112,7 @@ namespace ConsoleFx.CmdLine
         /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
         /// <param name="converter">Optional custom converter.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
-        public sealed override Argument TypeAs<T>(Converter<string, T> converter = null)
+        public override Argument TypeAs<T>(Converter<string, T> converter = null)
         {
             InternalTypeAs<T>(typeof(T), converter);
             return this;
@@ -123,7 +123,7 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         /// <param name="validators">The validators to use to validate the argument.</param>
         /// <returns>The same instance of the <see cref="Argument"/> object to allow for fluent syntax.</returns>
-        public override sealed Argument ValidateWith(params Validator[] validators)
+        public override Argument ValidateWith(params Validator[] validators)
         {
             foreach (Validator validator in validators)
                 Validators.Add(validator);

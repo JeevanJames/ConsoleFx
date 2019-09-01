@@ -70,37 +70,37 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public OptionParameterValidators Validators { get; }
 
-        public sealed override Option UnderGroups(params int[] groups)
+        public override Option UnderGroups(params int[] groups)
         {
             InternalUnderGroups(groups);
             return this;
         }
 
-        public sealed override Option DefaultsTo(Func<object> setter)
+        public override Option DefaultsTo(Func<object> setter)
         {
             InternalDefaultsTo(setter);
             return this;
         }
 
-        public sealed override Option DefaultsTo(object defaultValue)
+        public override Option DefaultsTo(object defaultValue)
         {
             InternalDefaultsTo(defaultValue);
             return this;
         }
 
-        public sealed override Option FormatAs(Func<string, string> formatter)
+        public override Option FormatAs(Func<string, string> formatter)
         {
             InternalFormatAs(formatter);
             return this;
         }
 
-        public sealed override Option FormatAs(string formatStr)
+        public override Option FormatAs(string formatStr)
         {
             InternalFormatAs(formatStr);
             return this;
         }
 
-        public sealed override Option TypeAs(Type type, Converter<string, object> converter = null)
+        public override Option TypeAs(Type type, Converter<string, object> converter = null)
         {
             InternalTypeAs(type, converter);
             return this;
@@ -113,7 +113,7 @@ namespace ConsoleFx.CmdLine
         /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
         /// <param name="converter">Optional custom converter.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
-        public sealed override Option TypeAs<T>(Converter<string, T> converter = null)
+        public override Option TypeAs<T>(Converter<string, T> converter = null)
         {
             InternalTypeAs<T>(typeof(T), converter);
             return this;
@@ -142,7 +142,7 @@ namespace ConsoleFx.CmdLine
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the specified validators array is null.</exception>
         /// <exception cref="ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
-        public override sealed Option ValidateWith(params Validator[] validators)
+        public override Option ValidateWith(params Validator[] validators)
         {
             if (validators is null)
                 throw new ArgumentNullException(nameof(validators));
