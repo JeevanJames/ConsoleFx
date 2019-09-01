@@ -21,6 +21,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 
 namespace ConsoleFx.CmdLine.Parser.Runs
 {
@@ -33,6 +35,8 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         {
             Arg = arg;
             Type = arg.Type ?? typeof(string);
+
+            // Pre-determine the type converter needed for this arg.
             _converter = GetConverter(arg);
         }
 
@@ -40,23 +44,25 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         {
             Converter<string, object> converter = arg.TypeConverter;
 
-            // If a custom type converter is not specified and the option's value type is not string,
-            // then attempt to find a default type converter for that type, which can convert from string.
-            if (converter is null && Type != typeof(string))
+            if (converter != null || Type == typeof(string))
+                return converter;
+
+            // Look for a type converter that can convert from string.
+            TypeConverter typeConverter = TypeDescriptor.GetConverter(Type);
+            if (typeConverter.CanConvertFrom(typeof(string)))
+                return value => typeConverter.ConvertFromString(value);
+
+            // Look for a public constructor that accepts a single string parameter.
+            ConstructorInfo stringCtor = Type.GetConstructors().SingleOrDefault(ctor =>
             {
-                TypeConverter typeConverter = TypeDescriptor.GetConverter(Type);
+                ParameterInfo[] parameters = ctor.GetParameters();
+                return parameters.Length == 1 && parameters[0].ParameterType == typeof(string);
+            });
+            if (stringCtor != null)
+                return value => stringCtor.Invoke(new object[] { value });
 
-                // If a default converter cannot be found, throw an exception.
-                if (!typeConverter.CanConvertFrom(typeof(string)))
-                {
-                    throw new ParserException(-1,
-                        $"Unable to find a adequate type converter to convert parameters of the {arg.Name} to type {Type.FullName}.");
-                }
-
-                converter = value => typeConverter.ConvertFromString(value);
-            }
-
-            return converter;
+            throw new ParserException(-1,
+                $"Unable to determine an adequate way to convert parameters of {arg.Name} to type {Type.FullName}. Please specify a converter delegate for this arg.");
         }
 
         protected TArg Arg { get; }
@@ -97,8 +103,7 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         internal IList CreateCollection(int capacity)
         {
             Type listType = typeof(List<>).MakeGenericType(Type);
-            var list = (IList)Activator.CreateInstance(listType, capacity);
-            return list;
+            return (IList)Activator.CreateInstance(listType, capacity);
         }
     }
 }

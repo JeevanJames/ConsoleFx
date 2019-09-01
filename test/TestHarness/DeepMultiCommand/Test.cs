@@ -65,7 +65,7 @@ namespace TestHarness.DeepMultiCommand
         {
             yield return new Argument(nameof(RemoteUrl))
                 .ValidateAsUri()
-                .TypedAs<Uri>();
+                .TypeAs<Uri>();
         }
 
         protected override int HandleCommand()

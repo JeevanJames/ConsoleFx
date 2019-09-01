@@ -85,7 +85,7 @@ namespace ConsoleFx.CmdLine.Validators
             int parameterIndex = -1, string message = null)
         {
             EnumValidator validator = CreateValidator(enumType, ignoreCase, message);
-            return option.ValidateWith(parameterIndex, validator).TypedAs(enumType);
+            return option.ValidateWith(parameterIndex, validator).TypeAs(enumType);
         }
 
         public static Option ValidateAsEnum<TEnum>(this Option option, bool ignoreCase = true, int parameterIndex = -1,
@@ -95,7 +95,7 @@ namespace ConsoleFx.CmdLine.Validators
             var validator = new EnumValidator<TEnum>(ignoreCase);
             if (message != null)
                 validator.Message = message;
-            return option.ValidateWith(parameterIndex, validator).TypedAs<TEnum>();
+            return option.ValidateWith(parameterIndex, validator).TypeAs<TEnum>();
         }
 
         private static EnumValidator CreateValidator(Type enumType, bool ignoreCase, string message)

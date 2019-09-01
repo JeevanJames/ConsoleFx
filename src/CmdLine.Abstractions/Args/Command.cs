@@ -26,7 +26,7 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleFx.CmdLine
 {
-    [DebuggerDisplay(@"Command {Name}")]
+    [DebuggerDisplay("Command {Name}")]
     public partial class Command : Arg
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -56,15 +56,15 @@ namespace ConsoleFx.CmdLine
         }
 
         public Command(params string[] names)
+            : this()
         {
-            ProcessCommandAttributes();
             foreach (string name in names)
                 AddName(name);
         }
 
         public Command(bool caseSensitive, params string[] names)
+            : this()
         {
-            ProcessCommandAttributes();
             foreach (string name in names)
                 AddName(name, caseSensitive);
         }
@@ -91,7 +91,7 @@ namespace ConsoleFx.CmdLine
                     throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
             }
 
-            // Read any metadata attributes.
+            // Read any metadata attributes and assign them to this command.
             IEnumerable<MetadataAttribute> metadataAttributes = GetType().GetCustomAttributes<MetadataAttribute>(inherit: true);
             foreach (MetadataAttribute metadataAttribute in metadataAttributes)
                 metadataAttribute.AssignMetadata(this);

@@ -76,7 +76,7 @@ namespace ConsoleFx.CmdLine.Validators
                 validator.NotAnIntegerMessage = notAnIntegerMessage;
             if (outOfRangeMessage != null)
                 validator.OutOfRangeMessage = outOfRangeMessage;
-            return option.ValidateWith(parameterIndex, validator).TypedAs<long>();
+            return option.ValidateWith(parameterIndex, validator).TypeAs<long>();
         }
     }
 }

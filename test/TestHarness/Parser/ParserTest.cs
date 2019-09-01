@@ -41,7 +41,7 @@ namespace TestHarness.Parser
                 .ValidateAsString(5);
             command.AddArgument("count")
                 .ValidateAsInteger(0, 100)
-                .TypedAs<int>()
+                .TypeAs<int>()
                 .DefaultsTo(8);
             command.AddArgument("params", maxOccurences: byte.MaxValue);
             command.AddOption("v")
@@ -50,11 +50,11 @@ namespace TestHarness.Parser
                 .UsedAsFlag();
             command.AddOption("trace", "t")
                 .UsedAsSingleParameter()
-                .ValidateAsEnum<TraceLevel>().TypedAs<string>();
+                .ValidateAsEnum<TraceLevel>().TypeAs<string>();
             command.AddOption("repeat", "r")
                 .UsedAsSingleParameter()
                 .ValidateAsInteger(0, 3)
-                .TypedAs<int>()
+                .TypeAs<int>()
                 .DefaultsTo(0);
             command.AddOption("log", "l")
                 .UsedAsSingleParameter()

@@ -99,9 +99,9 @@ namespace ConsoleFx.CmdLine
             return this;
         }
 
-        public sealed override Argument TypedAs(Type type, Converter<string, object> converter = null)
+        public sealed override Argument TypeAs(Type type, Converter<string, object> converter = null)
         {
-            InternalTypedAs(type, converter);
+            InternalTypeAs(type, converter);
             return this;
         }
 
@@ -112,9 +112,9 @@ namespace ConsoleFx.CmdLine
         /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
         /// <param name="converter">Optional custom converter.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
-        public sealed override Argument TypedAs<T>(Converter<string, T> converter = null)
+        public sealed override Argument TypeAs<T>(Converter<string, T> converter = null)
         {
-            InternalTypedAs<T>(typeof(T), converter);
+            InternalTypeAs<T>(typeof(T), converter);
             return this;
         }
 

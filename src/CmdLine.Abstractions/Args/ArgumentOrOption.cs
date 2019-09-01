@@ -45,7 +45,7 @@ namespace ConsoleFx.CmdLine
         {
         }
 
-        public string AssignToPropertyName { get; set; }
+        public string AssignedPropertyName { get; set; }
 
         public IReadOnlyList<int> Groups => _groups;
 
@@ -83,7 +83,7 @@ namespace ConsoleFx.CmdLine
 
         public void AssignTo(string propertyName)
         {
-            AssignToPropertyName = propertyName;
+            AssignedPropertyName = propertyName;
         }
 
         public abstract TArg UnderGroups(params int[] groups);
@@ -94,7 +94,7 @@ namespace ConsoleFx.CmdLine
 
         /// <summary>
         ///     Assigns the <see cref="Formatter"/> property, which can be used to format the arg's
-        ///     value.
+        ///     string value.
         /// </summary>
         /// <param name="formatter">The formatter delegate.</param>
         /// <returns>The instance of the <typeparamref name="TArg"/>.</returns>
@@ -116,7 +116,7 @@ namespace ConsoleFx.CmdLine
         /// </exception>
         public abstract TArg FormatAs(string formatStr);
 
-        public abstract TArg TypedAs(Type type, Converter<string, object> converter = null);
+        public abstract TArg TypeAs(Type type, Converter<string, object> converter = null);
 
         /// <summary>
         ///     Specifies the type to convert the option parameters, with an optional custom converter.
@@ -125,7 +125,7 @@ namespace ConsoleFx.CmdLine
         /// <typeparam name="T">The type to convert the option parameters to.</typeparam>
         /// <param name="converter">Optional custom converter.</param>
         /// <returns>The instance of the <see cref="Option"/>.</returns>
-        public abstract TArg TypedAs<T>(Converter<string, T> converter = null);
+        public abstract TArg TypeAs<T>(Converter<string, T> converter = null);
 
         /// <summary>
         ///     Specifies one or more validators that will be used to validate the arg's values.
@@ -164,7 +164,7 @@ namespace ConsoleFx.CmdLine
                 string.Format(formatStr, value ?? string.Empty) ?? string.Empty;
         }
 
-        protected void InternalTypedAs<T>(Type type, Converter<string, T> converter = null)
+        protected void InternalTypeAs<T>(Type type, Converter<string, T> converter = null)
         {
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
