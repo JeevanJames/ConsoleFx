@@ -52,14 +52,24 @@ namespace ConsoleFx.CmdLine.Parser.Runs
             if (typeConverter.CanConvertFrom(typeof(string)))
                 return value => typeConverter.ConvertFromString(value);
 
+            // Look for constructors on the type that can be used to instantiate an instance.
+            IEnumerable<ConstructorInfo> ctors = Type.GetConstructors()
+                .Where(ctor => ctor.GetParameters().Length == 1);
+
             // Look for a public constructor that accepts a single string parameter.
-            ConstructorInfo stringCtor = Type.GetConstructors().SingleOrDefault(ctor =>
-            {
-                ParameterInfo[] parameters = ctor.GetParameters();
-                return parameters.Length == 1 && parameters[0].ParameterType == typeof(string);
-            });
+            ConstructorInfo stringCtor = ctors
+                .SingleOrDefault(ctor => ctor.GetParameters()[0].ParameterType == typeof(string));
             if (stringCtor != null)
                 return value => stringCtor.Invoke(new object[] { value });
+
+            // Look for a public constructor that accepts a single object parameter.
+            ConstructorInfo objectCtor = ctors
+                .SingleOrDefault(ctor => ctor.GetParameters()[0].ParameterType == typeof(object));
+            if (objectCtor != null)
+                return value => objectCtor.Invoke(new object[] { value });
+
+            //TODO: Should we also look for factory methods on the type? Static methods that accept
+            //a single parameter and return an instance of the type.
 
             throw new ParserException(-1,
                 $"Unable to determine an adequate way to convert parameters of {arg.Name} to type {Type.FullName}. Please specify a converter delegate for this arg.");
