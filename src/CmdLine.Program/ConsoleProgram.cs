@@ -126,8 +126,22 @@ namespace ConsoleFx.CmdLine.Program
                 // Parse the args and assign to the properties in the resultant command.
                 parseResult = parser.Parse(args);
 
+                // Update any args in the command object that have an assigned property name, but the
+                // property type has not yet been calculated.
+                //UpdatePropertiesFromNames(parseResult);
+
                 // Assign the properties on the command object from the parse result.
-                AssignProperties(parseResult);
+                //AssignProperties(parseResult);
+                AssignProperties(parseResult, parseResult.Command.Arguments, (pr, name) =>
+                {
+                    bool exists = pr.TryGetArgument(name, out object value);
+                    return (exists, value);
+                });
+                AssignProperties(parseResult, parseResult.Command.Options, (pr, name) =>
+                {
+                    bool exists = pr.TryGetOption(name, out object value);
+                    return (exists, value);
+                });
 
                 // Check if the help option is specified. If it is, display the help and get out.
                 HelpBuilder helpBuilder = HelpBuilder;
@@ -238,71 +252,28 @@ namespace ConsoleFx.CmdLine.Program
             throw new NotSupportedException($"Unsupported argument style: '{argStyle}'.");
         }
 
-        private static void AssignProperties(ParseResultBase parseResult)
+        private static void AssignProperties<TArg>(ParseResultBase parseResult, IReadOnlyList<TArg> args,
+            Func<ParseResultBase, string, (bool exists, object value)> valueGetter)
+            where TArg : ArgumentOrOption<TArg>
         {
             Type type = parseResult.Command.GetType();
 
-            // Get all potentially-assignable properties.
-            // i.e. all public instance properties that are read/write.
-            //TODO: Allow collection properties to have only getters.
-            List<PropertyInfo> properties = type
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(pi => pi.CanRead && pi.CanWrite)
-                .ToList();
-
-            foreach (PropertyInfo property in properties)
+            foreach (TArg arg in args)
             {
-                string argName;
-                bool argExists;
-                object value;
-                bool isOption = false;
+                if (arg.AssignedPropertyName is null && arg.AssignedProperty is null)
+                    continue;
 
-                Attribute attribute = Attribute.GetCustomAttribute(property, typeof(ArgAttribute), true);
-                if (attribute != null)
+                if (arg.AssignedProperty is null)
                 {
-                    argName = ((ArgAttribute)attribute).Name;
-                    argExists = attribute is OptionAttribute
-                        ? parseResult.TryGetOption(argName, out value)
-                        : parseResult.TryGetArgument(argName, out value);
-                    isOption = attribute is OptionAttribute;
-                }
-                else
-                {
-                    argName = property.Name;
-                    argExists = parseResult.TryGetOption(argName, out value);
-                    if (argExists)
-                        isOption = true;
-                    else
-                        argExists = parseResult.TryGetArgument(argName, out value);
+                    PropertyInfo property = type.GetProperty(arg.AssignedPropertyName);
+                    if (property is null)
+                        throw new ParserException(-1, $"Cannot find a property named {arg.AssignedPropertyName} to be assigned to the {arg.Name} arg.");
+                    arg.AssignedProperty = property;
                 }
 
-                ProcessMetadataAttributes(property, parseResult, argName, isOption);
-
-                // Assign the value to the property
-                if (argExists)
-                    property.SetValue(parseResult.Command, value);
-            }
-        }
-
-        private static void ProcessMetadataAttributes(PropertyInfo property, ParseResultBase parseResult,
-            string argName, bool isOption)
-        {
-            // Get any metadata attributes on the property.
-            // If there are such attributes, assign their metadata to the arg that corresponds
-            // to the property.
-            IReadOnlyList<MetadataAttribute> metadataAttributes = property
-                .GetCustomAttributes<MetadataAttribute>(inherit: true)
-                .ToList();
-            if (metadataAttributes.Count > 0)
-            {
-                // Find the arg that corresponds to the property.
-                Arg arg = isOption
-                    ? (Arg)parseResult.Command.Options.First(option => option.HasName(argName))
-                    : parseResult.Command.Arguments.First(argument => argument.HasName(argName));
-
-                // Assign the metadata to the arg.
-                foreach (MetadataAttribute metadataAttribute in metadataAttributes)
-                    metadataAttribute.AssignMetadata(arg);
+                (bool exists, object value) valueDetails = valueGetter(parseResult, arg.Name);
+                if (valueDetails.exists)
+                    arg.AssignedProperty.SetValue(parseResult.Command, valueDetails.value);
             }
         }
     }

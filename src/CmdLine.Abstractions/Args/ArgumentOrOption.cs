@@ -89,6 +89,8 @@ namespace ConsoleFx.CmdLine
 
         public void AssignTo(string propertyName)
         {
+            if (string.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentException("Property name cannot be null or whitespace.", nameof(propertyName));
             AssignedPropertyName = propertyName;
         }
 

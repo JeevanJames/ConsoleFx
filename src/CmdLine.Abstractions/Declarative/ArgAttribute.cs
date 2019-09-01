@@ -45,6 +45,35 @@ namespace ConsoleFx.CmdLine
         }
     }
 
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
+    public abstract class OptionApplicatorAttribute : Attribute, IArgApplicator<Option>
+    {
+        public abstract void Apply(Option arg);
+    }
+
+    public sealed class FlagAttribute : OptionApplicatorAttribute
+    {
+        public override void Apply(Option arg)
+        {
+            arg.UsedAsFlag();
+        }
+    }
+
+    public sealed class SingleParameterAttribute : OptionApplicatorAttribute
+    {
+        public SingleParameterAttribute(bool optional = true)
+        {
+            Optional = optional;
+        }
+
+        public bool Optional { get; }
+
+        public override void Apply(Option arg)
+        {
+            arg.UsedAsSingleParameter(Optional);
+        }
+    }
+
     public sealed class ArgumentAttribute : ArgAttribute
     {
         public ArgumentAttribute(string name)
