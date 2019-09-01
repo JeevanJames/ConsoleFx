@@ -74,6 +74,12 @@
             <param name="name">The name of the object to find.</param>
             <returns>The object, if found. Otherwise <c>null</c>.</returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Args`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+                Helper method to add multiple args to the collection.
+            </summary>
+            <param name="args">The args to add.</param>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Args`1.ObjectsMatch(`0,`0)">
             <summary>
                 Compares two <see cref="T:ConsoleFx.CmdLine.Arg" /> objects for equality. The default behavior is to check if any of their
@@ -207,6 +213,12 @@
                 The type of <see cref="T:ConsoleFx.CmdLine.Arg"/>; can be either <see cref="T:ConsoleFx.CmdLine.Argument"/> and <see cref="T:ConsoleFx.CmdLine.Option"/>.
             </typeparam>
         </member>
+        <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.AssignedProperty">
+            <summary>
+                Gets or sets the reference to the property in the containing <see cref="T:ConsoleFx.CmdLine.Command"/>
+                instance, which should be set with the parsed value for this arg.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.DefaultSetter">
             <summary>
                 Gets or sets the optional delegate to return the arg's default value, if it is not set.
@@ -301,11 +313,7 @@
         </member>
         <member name="M:ConsoleFx.CmdLine.Command.ProcessCommandAttributes">
             <summary>
-                Read any <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute decorated on this class and add
-                the names specified in the attribute to this instance.
-                <para />
-                Ignore the <see cref="P:ConsoleFx.CmdLine.CommandAttribute.ParentType"/> property, as that is dealt with
-                elsewhere.
+                Handle any attributes specified on the command.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Command.ParentCommand">
@@ -407,6 +415,15 @@
             <exception cref="T:System.ArgumentException">
                 Thrown if any assembly in the <paramref name="assemblies"/> is <c>null</c>.
             </exception>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.CommandCustomValidator">
+            <summary>
+                Encapsulates a method that performs custom validation once a <see cref="T:ConsoleFx.CmdLine.Command"/> instance
+                has been initialized.
+            </summary>
+            <param name="arguments">The arguments passed to the command.</param>
+            <param name="options">The options passed to the command.</param>
+            <returns>A validation error message, if the validation fails; otherwise <c>null</c>.</returns>
         </member>
         <member name="T:ConsoleFx.CmdLine.Commands">
             <summary>

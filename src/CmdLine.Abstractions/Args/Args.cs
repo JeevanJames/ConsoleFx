@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -40,6 +41,19 @@ namespace ConsoleFx.CmdLine
         /// <param name="name">The name of the object to find.</param>
         /// <returns>The object, if found. Otherwise <c>null</c>.</returns>
         public T this[string name] => this.FirstOrDefault(item => NamesMatch(name, item));
+
+        /// <summary>
+        ///     Helper method to add multiple args to the collection.
+        /// </summary>
+        /// <param name="args">The args to add.</param>
+        public void AddRange(IEnumerable<T> args)
+        {
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            foreach (T arg in args)
+                Add(arg);
+        }
 
         /// <summary>
         ///     Compares two <see cref="Arg" /> objects for equality. The default behavior is to check if any of their

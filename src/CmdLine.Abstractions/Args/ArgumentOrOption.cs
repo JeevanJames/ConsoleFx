@@ -19,7 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-
+using System.Reflection;
 using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine
@@ -44,6 +44,12 @@ namespace ConsoleFx.CmdLine
             : base(names)
         {
         }
+
+        /// <summary>
+        ///     Gets or sets the reference to the property in the containing <see cref="Command"/>
+        ///     instance, which should be set with the parsed value for this arg.
+        /// </summary>
+        internal PropertyInfo AssignedProperty { get; set; }
 
         internal string AssignedPropertyName { get; set; }
 

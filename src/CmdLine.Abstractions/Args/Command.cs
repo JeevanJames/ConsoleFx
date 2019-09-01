@@ -55,13 +55,6 @@ namespace ConsoleFx.CmdLine
             ProcessCommandAttributes();
         }
 
-        public Command(params string[] names)
-            : this()
-        {
-            foreach (string name in names)
-                AddName(name);
-        }
-
         public Command(bool caseSensitive, params string[] names)
             : this()
         {
@@ -69,12 +62,13 @@ namespace ConsoleFx.CmdLine
                 AddName(name, caseSensitive);
         }
 
+        public Command(params string[] names)
+            : this(caseSensitive: false, names)
+        {
+        }
+
         /// <summary>
-        ///     Read any <see cref="CommandAttribute"/> attribute decorated on this class and add
-        ///     the names specified in the attribute to this instance.
-        ///     <para />
-        ///     Ignore the <see cref="CommandAttribute.ParentType"/> property, as that is dealt with
-        ///     elsewhere.
+        ///     Handle any attributes specified on the command.
         /// </summary>
         private void ProcessCommandAttributes()
         {
@@ -86,7 +80,7 @@ namespace ConsoleFx.CmdLine
                 foreach (string name in commandAttribute.Names)
                     AddName(name);
 
-                // Throw exception if parent type is same as current type.
+                // The parent type is same as current type.
                 if (commandAttribute.ParentType == GetType())
                     throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
             }
@@ -126,13 +120,45 @@ namespace ConsoleFx.CmdLine
                 if (_arguments is null)
                 {
                     _arguments = new Arguments();
-                    IEnumerable<Argument> arguments = GetArgs().OfType<Argument>();
-                    foreach (Argument argument in arguments)
-                        _arguments.Add(argument);
+
+                    // Add arguments from the GetArgs method.
+                    _arguments.AddRange(GetArgs().OfType<Argument>());
+
+                    // Add arguments from the properties in this class.
+                    _arguments.AddRange(GetPropertyArguments());
                 }
 
                 return _arguments;
             }
+        }
+
+        private IReadOnlyList<Argument> GetPropertyArguments()
+        {
+            IEnumerable<PropertyInfo> argumentProperties = GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(prop => prop.GetCustomAttribute<ArgumentAttribute>(true) != null);
+
+            if (!argumentProperties.Any())
+#if NET45
+                return new Argument[0];
+#else
+                return Array.Empty<Argument>();
+#endif
+
+            var arguments = new List<Argument>();
+
+            foreach (PropertyInfo property in argumentProperties)
+                arguments.Add(GetPropertyArgument(property));
+
+            return arguments;
+        }
+
+        private Argument GetPropertyArgument(PropertyInfo property)
+        {
+            ArgumentAttribute attribute = property.GetCustomAttribute<ArgumentAttribute>(true);
+
+            var argument = new Argument(attribute.Name);
+            return argument;
         }
 
         /// <summary>
@@ -146,10 +172,8 @@ namespace ConsoleFx.CmdLine
                 {
                     _options = new Options();
 
-                    // Add the options from the GetArgs method.
-                    IEnumerable<Option> options = GetArgs().OfType<Option>();
-                    foreach (Option option in options)
-                        _options.Add(option);
+                    // Add options from the GetArgs method.
+                    _options.AddRange(GetArgs().OfType<Option>());
 
                     // Add any universal options.
                     // Universal options that apply to all commands are only specified at the root
@@ -187,10 +211,8 @@ namespace ConsoleFx.CmdLine
                 {
                     _commands = new Commands(this);
 
-                    // Add the subcommands from the GetArgs method.
-                    IEnumerable<Command> commands = GetArgs().OfType<Command>();
-                    foreach (Command command in commands)
-                        _commands.Add(command);
+                    // Add subcommands from the GetArgs method.
+                    _commands.AddRange(GetArgs().OfType<Command>());
 
                     // Add the subcommands from the DiscoveredCommands collection created from the
                     // ScanAssembliesForCommands method in the root command.
@@ -374,7 +396,7 @@ namespace ConsoleFx.CmdLine
             }
 
             // Add all discovered commands with a non-null parent type to the DiscoveredCommands
-            // dictionary.
+            // dictionary. These will be used when their corresponding parent commands are instantiated.
             var nonRootCommands = discoveredCommands.Where(c => c.parentType != null);
             foreach (var (commandType, parentType) in nonRootCommands)
             {
@@ -390,7 +412,7 @@ namespace ConsoleFx.CmdLine
                 var rootCommands = discoveredCommands.Where(c => c.parentType is null);
                 foreach (var (commandType, _) in rootCommands)
                 {
-                    DebugOutput.Write($"Discovered root: {commandType.FullName}");
+                    DebugOutput.Write($"Discovered root child: {commandType.FullName}");
                     var command = (Command)Activator.CreateInstance(commandType);
                     if (command.Name != null)
                         Commands.Add(command);
@@ -405,6 +427,13 @@ namespace ConsoleFx.CmdLine
         }
     }
 
+    /// <summary>
+    ///     Encapsulates a method that performs custom validation once a <see cref="Command"/> instance
+    ///     has been initialized.
+    /// </summary>
+    /// <param name="arguments">The arguments passed to the command.</param>
+    /// <param name="options">The options passed to the command.</param>
+    /// <returns>A validation error message, if the validation fails; otherwise <c>null</c>.</returns>
     public delegate string CommandCustomValidator(IReadOnlyList<object> arguments,
         IReadOnlyDictionary<string, object> options);
 }
