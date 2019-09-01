@@ -74,10 +74,10 @@ namespace TestHarness.Parser2
         {
             yield return new Argument("sourcedir")
                 .ValidateAsDirectory(true)
-                .TypeAs(s => new DirectoryInfo(s));
+                .TypeAs<DirectoryInfo>();
             yield return new Argument("destdirs", maxOccurences: byte.MaxValue)
                 .ValidateAsDirectory(true)
-                .TypeAs(s => new DirectoryInfo(s));
+                .TypeAs<DirectoryInfo>();
 
             yield return new Option("exclude-dir", "e")
                 .UsedAsUnlimitedOccurrencesAndSingleParameter(optional: true);

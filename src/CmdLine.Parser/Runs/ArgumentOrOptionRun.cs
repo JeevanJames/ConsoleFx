@@ -68,8 +68,7 @@ namespace ConsoleFx.CmdLine.Parser.Runs
             if (objectCtor != null)
                 return value => objectCtor.Invoke(new object[] { value });
 
-            //TODO: Should we also look for factory methods on the type? Static methods that accept
-            //a single parameter and return an instance of the type.
+            //TODO: Should we also look for factory methods on the type? Static methods that accept a single parameter and return an instance of the type.
 
             throw new ParserException(-1,
                 $"Unable to determine an adequate way to convert parameters of {arg.Name} to type {Type.FullName}. Please specify a converter delegate for this arg.");

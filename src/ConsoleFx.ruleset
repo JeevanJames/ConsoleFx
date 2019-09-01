@@ -698,6 +698,7 @@
     <Rule Id="SA1402" Action="None" _Description="File may only contain a single class" _Justification="Primary classes should be in separate files, but supporting classes should be allowed to be next to their primary classes." />
     <!-- StyleCop.CSharp.LayoutRules -->
     <Rule Id="SA1503" Action="None" _Description="Braces must not be omitted" _Justification="No braces needed for single line blocks." />
+    <Rule Id="SA1512" Action="None" _Description="A single-line comment within C# code is followed by a blank line." _Justification="This is preventing special comments like TODO, which need to be on their own line."/>
     <Rule Id="SA1520" Action="None" _Description="Use braces consistently" _Justification="Brace usage justified according to block size." />
     <!-- StyleCop.CSharp.DocumentationRules -->
     <Rule Id="SA1633" Action="None" _Description="File must have header" _Justification="Nice to have, but this rule does not allow file headers in a region." />
@@ -710,8 +711,6 @@
   </Rules>
   <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
     <!-- Design -->
-    <Rule Id="RCS1194" Action="None"
-          _Description="Implement exception constructors."
-          _Justification="No good reason to disallow custom constructors (except for the serialization ctor)."/>
+    <Rule Id="RCS1194" Action="None" _Description="Implement exception constructors." _Justification="No good reason to disallow custom constructors (except for the serialization ctor)." />
   </Rules>
 </RuleSet>
