@@ -63,12 +63,12 @@ namespace ConsoleFx.CmdLine
         ///     allowed occurrences of the option itself, and also the minimum and maximum allowed number of parameters
         ///     that can be specified for each occurence.
         /// </summary>
-        public OptionUsage Usage { get; } = new OptionUsage();
+        internal OptionUsage Usage { get; } = new OptionUsage();
 
         /// <summary>
         ///     Gets the collection of validators that can validate some or all of the option's parameters.
         /// </summary>
-        public OptionParameterValidators Validators { get; }
+        internal OptionParameterValidators Validators { get; }
 
         public override Option UnderGroups(params int[] groups)
         {

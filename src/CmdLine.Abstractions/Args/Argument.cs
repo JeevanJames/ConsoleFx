@@ -66,7 +66,7 @@ namespace ConsoleFx.CmdLine
         ///     Gets the validators for this argument.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
+        internal ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
 
         public override Argument UnderGroups(params int[] groups)
         {

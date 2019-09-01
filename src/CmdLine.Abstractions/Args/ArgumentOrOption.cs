@@ -45,21 +45,21 @@ namespace ConsoleFx.CmdLine
         {
         }
 
-        public string AssignedPropertyName { get; set; }
+        internal string AssignedPropertyName { get; set; }
 
-        public IReadOnlyList<int> Groups => _groups;
+        internal IReadOnlyList<int> Groups => _groups;
 
         /// <summary>
         ///     Gets or sets the optional delegate to return the arg's default value, if it is not set.
         /// </summary>
-        public Func<object> DefaultSetter { get; set; }
+        internal Func<object> DefaultSetter { get; set; }
 
         /// <summary>
         ///     Gets or sets the optional delegate that allows an arg value to be custom formatted.
         ///     <para />
         ///     During parsing, the formatting is performed before any type conversion.
         /// </summary>
-        public Func<string, string> Formatter { get; set; }
+        internal Func<string, string> Formatter { get; set; }
 
         /// <summary>
         ///     Gets or sets the type that the arg's values should be converted to. If a
@@ -73,13 +73,13 @@ namespace ConsoleFx.CmdLine
         ///     different parameters are to be converted to different types, the conversion must happen
         ///     outside the ConsoleFx framework.
         /// </remarks>
-        public Type Type { get; set; }
+        internal Type Type { get; set; }
 
         /// <summary>
         ///     Gets or sets the optional converter to convert a string arg value to the actual
         ///     <see cref="Type" />.
         /// </summary>
-        public Converter<string, object> TypeConverter { get; set; }
+        internal Converter<string, object> TypeConverter { get; set; }
 
         public void AssignTo(string propertyName)
         {
