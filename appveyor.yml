@@ -9,6 +9,7 @@ environment:
   MYGET_SYMBOLS_API_KEY:
     secure: 3tEiaoqZlTJcJkAX+3wWyp3mbCYuJpALEFzTEaum6ACiXbWgsa1kWYGBi3TUFY7c
 install:
+- pwsh: dotnet --list-sdks
 - pwsh: choco install codecov
 - ps: ./.build/install-dotnet-sdk.ps1
 build_script:
