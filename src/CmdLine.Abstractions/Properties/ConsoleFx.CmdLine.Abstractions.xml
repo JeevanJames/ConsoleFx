@@ -149,15 +149,39 @@
                 be specified after all the required arguments.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.Argument.MaxOccurences">
+            <summary>
+                Gets the maximum number of times the argument can be specified.
+                <para/>
+                This only applies to the last argument. All other arguments can only be specified once.
+                If this is not the last argument, this property is ignored and assumed to be one.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.Argument.Validators">
             <summary>
                 Gets the validators for this argument.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.UnderGroups(System.Int32[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.DefaultsTo(System.Func{System.Object})">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.DefaultsTo(System.Object)">
+            <inheritdoc/>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Argument.FormatAs(System.Func{System.String,System.String})">
             <inheritdoc />
         </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.FormatAs(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.TypeAs(System.Type,System.Converter{System.String,System.Object})">
+            <inheritdoc/>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Argument.TypeAs``1(System.Converter{System.String,``0})">
+            <inheritdoc/>
             <summary>
                 Specifies the type to convert the option parameters, with an optional custom converter.
                 If a custom converter is not specified, the type's type converter will be used.
@@ -167,6 +191,7 @@
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLine.Argument.ValidateWith(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <inheritdoc/>
             <summary>
                 Specifies one or more validators to validate the argument.
             </summary>
@@ -502,7 +527,26 @@
                 Gets the collection of validators that can validate some or all of the option's parameters.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Option.UnderGroups(System.Int32[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.DefaultsTo(System.Func{System.Object})">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.DefaultsTo(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.FormatAs(System.Func{System.String,System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.FormatAs(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.TypeAs(System.Type,System.Converter{System.String,System.Object})">
+            <inheritdoc/>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Option.TypeAs``1(System.Converter{System.String,``0})">
+            <inheritdoc/>
             <summary>
                 Specifies the type to convert the option parameters, with an optional custom converter.
                 If a custom converter is not specified, the type's type converter will be used.
@@ -521,6 +565,7 @@
             <exception cref="T:System.ArgumentNullException">Thrown if the specified delegate is null.</exception>
         </member>
         <member name="M:ConsoleFx.CmdLine.Option.ValidateWith(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+            <inheritdoc/>
             <summary>
                 Specifies one or more validators that will be used to validate the option's parameter
                 values.

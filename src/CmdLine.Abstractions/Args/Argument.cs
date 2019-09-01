@@ -60,6 +60,12 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public bool IsOptional { get; }
 
+        /// <summary>
+        ///     Gets the maximum number of times the argument can be specified.
+        ///     <para/>
+        ///     This only applies to the last argument. All other arguments can only be specified once.
+        ///     If this is not the last argument, this property is ignored and assumed to be one.
+        /// </summary>
         public int MaxOccurences { get; }
 
         /// <summary>
@@ -68,18 +74,21 @@ namespace ConsoleFx.CmdLine
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         internal ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
 
+        /// <inheritdoc/>
         public override Argument UnderGroups(params int[] groups)
         {
             InternalUnderGroups(groups);
             return this;
         }
 
+        /// <inheritdoc/>
         public override Argument DefaultsTo(Func<object> setter)
         {
             InternalDefaultsTo(setter);
             return this;
         }
 
+        /// <inheritdoc/>
         public override Argument DefaultsTo(object defaultValue)
         {
             InternalDefaultsTo(defaultValue);
@@ -93,18 +102,21 @@ namespace ConsoleFx.CmdLine
             return this;
         }
 
+        /// <inheritdoc/>
         public override Argument FormatAs(string formatStr)
         {
             InternalFormatAs(formatStr);
             return this;
         }
 
+        /// <inheritdoc/>
         public override Argument TypeAs(Type type, Converter<string, object> converter = null)
         {
             InternalTypeAs(type, converter);
             return this;
         }
 
+        /// <inheritdoc/>
         /// <summary>
         ///     Specifies the type to convert the option parameters, with an optional custom converter.
         ///     If a custom converter is not specified, the type's type converter will be used.
@@ -118,6 +130,7 @@ namespace ConsoleFx.CmdLine
             return this;
         }
 
+        /// <inheritdoc/>
         /// <summary>
         ///     Specifies one or more validators to validate the argument.
         /// </summary>

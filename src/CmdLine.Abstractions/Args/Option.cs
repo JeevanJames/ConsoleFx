@@ -70,42 +70,49 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         internal OptionParameterValidators Validators { get; }
 
+        /// <inheritdoc/>
         public override Option UnderGroups(params int[] groups)
         {
             InternalUnderGroups(groups);
             return this;
         }
 
+        /// <inheritdoc/>
         public override Option DefaultsTo(Func<object> setter)
         {
             InternalDefaultsTo(setter);
             return this;
         }
 
+        /// <inheritdoc/>
         public override Option DefaultsTo(object defaultValue)
         {
             InternalDefaultsTo(defaultValue);
             return this;
         }
 
+        /// <inheritdoc/>
         public override Option FormatAs(Func<string, string> formatter)
         {
             InternalFormatAs(formatter);
             return this;
         }
 
+        /// <inheritdoc/>
         public override Option FormatAs(string formatStr)
         {
             InternalFormatAs(formatStr);
             return this;
         }
 
+        /// <inheritdoc/>
         public override Option TypeAs(Type type, Converter<string, object> converter = null)
         {
             InternalTypeAs(type, converter);
             return this;
         }
 
+        /// <inheritdoc/>
         /// <summary>
         ///     Specifies the type to convert the option parameters, with an optional custom converter.
         ///     If a custom converter is not specified, the type's type converter will be used.
@@ -134,6 +141,7 @@ namespace ConsoleFx.CmdLine
             return this;
         }
 
+        /// <inheritdoc/>
         /// <summary>
         ///     Specifies one or more validators that will be used to validate the option's parameter
         ///     values.
