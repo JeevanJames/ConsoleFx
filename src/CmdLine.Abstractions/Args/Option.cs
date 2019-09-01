@@ -71,6 +71,13 @@ namespace ConsoleFx.CmdLine
         internal OptionParameterValidators Validators { get; }
 
         /// <inheritdoc/>
+        public override Option AssignTo(string propertyName)
+        {
+            InternalAssignTo(propertyName);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public override Option UnderGroups(params int[] groups)
         {
             InternalUnderGroups(groups);

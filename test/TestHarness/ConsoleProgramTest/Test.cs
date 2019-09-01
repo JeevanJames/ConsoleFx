@@ -19,13 +19,9 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
-using ConsoleFx.CmdLine.Validators;
 
 namespace TestHarness.ConsoleProgramTest
 {
@@ -36,7 +32,7 @@ namespace TestHarness.ConsoleProgramTest
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("Jeevan", "--last-name", "James", "--cool");
+            int exitCode = program.Run("Jeevan", "--last-name", "James", "-v");
             Console.WriteLine($"Exit code: {exitCode}");
         }
     }
@@ -53,11 +49,21 @@ namespace TestHarness.ConsoleProgramTest
         [Option("cool"), Flag]
         public bool IsCool { get; set; }
 
+        public bool Verbose { get; set; }
+
         protected override int HandleCommand()
         {
             Console.WriteLine($"Name: {FirstName} {LastName}");
             Console.WriteLine($"Is cool: {IsCool}");
+            Console.WriteLine($"Verbose: {Verbose}");
             return 0;
+        }
+
+        protected override IEnumerable<Arg> GetArgs()
+        {
+            yield return new Option("verbose", "v")
+                .UsedAsFlag()
+                .AssignTo(nameof(Verbose));
         }
     }
 }

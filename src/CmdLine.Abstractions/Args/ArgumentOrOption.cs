@@ -87,12 +87,7 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         internal Converter<string, object> TypeConverter { get; set; }
 
-        public void AssignTo(string propertyName)
-        {
-            if (string.IsNullOrWhiteSpace(propertyName))
-                throw new ArgumentException("Property name cannot be null or whitespace.", nameof(propertyName));
-            AssignedPropertyName = propertyName;
-        }
+        public abstract TArg AssignTo(string propertyName);
 
         public abstract TArg UnderGroups(params int[] groups);
 
@@ -141,6 +136,13 @@ namespace ConsoleFx.CmdLine
         /// <param name="validators">One or more validators.</param>
         /// <returns>The instance of the <typeparamref name="TArg"/>.</returns>
         public abstract TArg ValidateWith(params Validator[] validators);
+
+        protected void InternalAssignTo(string propertyName)
+        {
+            if (string.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentException("Property name cannot be null or whitespace.", nameof(propertyName));
+            AssignedPropertyName = propertyName;
+        }
 
         protected void InternalDefaultsTo(Func<object> setter)
         {

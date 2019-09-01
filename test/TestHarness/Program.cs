@@ -37,6 +37,8 @@ namespace TestHarness
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             DebugOutput.Enable();
 
+            Console.CancelKeyPress += Console_CancelKeyPress;
+
             int selectedItem = 0;
             while (true)
             {
@@ -74,6 +76,12 @@ namespace TestHarness
                 PrintLine($"{Black.BgYellow}Press ANY key to continue...");
                 WaitForAnyKey();
             }
+        }
+
+        private static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+        {
+            e.Cancel = false;
+            Process.GetCurrentProcess().Kill();
         }
 
         private static readonly Dictionary<Type, string> MenuItems = new Dictionary<Type, string>

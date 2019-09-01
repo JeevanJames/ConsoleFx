@@ -75,6 +75,13 @@ namespace ConsoleFx.CmdLine
         internal ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
 
         /// <inheritdoc/>
+        public override Argument AssignTo(string propertyName)
+        {
+            InternalAssignTo(propertyName);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public override Argument UnderGroups(params int[] groups)
         {
             InternalUnderGroups(groups);

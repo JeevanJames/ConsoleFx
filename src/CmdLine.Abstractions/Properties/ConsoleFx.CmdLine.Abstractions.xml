@@ -168,6 +168,9 @@
                 Gets the validators for this argument.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.AssignTo(System.String)">
+            <inheritdoc/>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Argument.UnderGroups(System.Int32[])">
             <inheritdoc/>
         </member>
@@ -555,6 +558,9 @@
             <summary>
                 Gets the collection of validators that can validate some or all of the option's parameters.
             </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Option.AssignTo(System.String)">
+            <inheritdoc/>
         </member>
         <member name="M:ConsoleFx.CmdLine.Option.UnderGroups(System.Int32[])">
             <inheritdoc/>
