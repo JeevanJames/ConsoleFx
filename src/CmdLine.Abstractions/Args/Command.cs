@@ -195,14 +195,21 @@ namespace ConsoleFx.CmdLine
 
             foreach (PropertyInfo property in argProperties)
             {
+                // Create the arg instance
                 TArgAttribute attribute = property.GetCustomAttribute<TArgAttribute>(true);
                 TArg arg = argFactory(attribute);
 
+                // Apply any IArgApplicator<> attributes to the arg
                 IEnumerable<IArgApplicator<TArg>> applicatorAttrs = property
                     .GetCustomAttributes()
                     .OfType<IArgApplicator<TArg>>();
                 foreach (IArgApplicator<TArg> applicatorAttr in applicatorAttrs)
                     applicatorAttr.Apply(arg);
+
+                // Apply any metadata attributes to the arg
+                IEnumerable<MetadataAttribute> metadataAttrs = property.GetCustomAttributes<MetadataAttribute>(true);
+                foreach (MetadataAttribute metadataAttr in metadataAttrs)
+                    metadataAttr.AssignMetadata(arg);
 
                 args.Add(arg);
             }
