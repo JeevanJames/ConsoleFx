@@ -32,7 +32,7 @@ namespace TestHarness.ConsoleProgramTest
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("Jeevan", "--last-name", "James", "-v");
+            int exitCode = program.Run("Jeevan", "-v", "--trait", "Handsome", "--trait", "Awesome");
             Console.WriteLine($"Exit code: {exitCode}");
         }
     }
@@ -43,19 +43,24 @@ namespace TestHarness.ConsoleProgramTest
         [Argument("name")]
         public string FirstName { get; set; }
 
-        [Option("last-name"), SingleParameter(false)]
-        public string LastName { get; set; }
-
         [Option("cool"), Flag]
         public bool IsCool { get; set; }
 
         public bool Verbose { get; set; }
 
+        [Option("trait", Usage = CommonUsage.UnlimitedOccurrencesSingleParameter)]
+        public IList<string> Traits { get; set; }
+
         protected override int HandleCommand()
         {
-            Console.WriteLine($"Name: {FirstName} {LastName}");
+            Console.WriteLine($"Name: {FirstName}");
             Console.WriteLine($"Is cool: {IsCool}");
             Console.WriteLine($"Verbose: {Verbose}");
+            Console.WriteLine("Traits:");
+            foreach (string trait in Traits)
+            {
+                Console.WriteLine($"    {trait}");
+            }
             return 0;
         }
 
@@ -64,6 +69,11 @@ namespace TestHarness.ConsoleProgramTest
             yield return new Option("verbose", "v")
                 .UsedAsFlag()
                 .AssignTo(nameof(Verbose));
+        }
+
+        protected override void SetupOptions(Options options)
+        {
+            options["trait"].AddName("t");
         }
     }
 }

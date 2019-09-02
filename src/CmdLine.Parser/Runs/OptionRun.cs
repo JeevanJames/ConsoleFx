@@ -17,7 +17,6 @@ limitations under the License.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -29,36 +28,22 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         internal OptionRun(Option option)
             : base(option)
         {
-            ValueType = GetOptionValueType(option);
-        }
+            ValueType = option.GetOptionValueType();
 
-        private OptionValueType GetOptionValueType(Option option)
-        {
-            // If parameters are not allowed on the option...
-            if (option.Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
+            // Optimize the size of the Parameters list based on the value type.
+            switch (ValueType)
             {
-                // If the option can occur more than once, it's value will be an integer specifying
-                // the number of occurences.
-                if (option.Usage.MaxOccurrences > 1)
-                    return OptionValueType.Count;
-
-                // If the option can occur not more than once, it's value will be a bool indicating
-                // whether it was specified or not.
-                return OptionValueType.Flag;
+                case OptionValueType.Flag:
+                case OptionValueType.Count:
+                    Parameters = new List<string>(0);
+                    break;
+                case OptionValueType.Object:
+                    Parameters = new List<string>(1);
+                    break;
+                default:
+                    Parameters = new List<string>();
+                    break;
             }
-
-            // If the option can have multiple parameter values (either because the MaxParameters usage
-            // is greater than one or because MaxParameters is one but MaxOccurences is greater than
-            // one), then the option's value is an IList<Type>.
-            if (option.Usage.MaxParameters > 1 || (option.Usage.MaxParameters > 0 && option.Usage.MaxOccurrences > 1))
-                return OptionValueType.List;
-
-            // If the option only has one parameter specified, then the option's value is a string.
-            if (option.Usage.MaxParameters == 1 && option.Usage.MaxOccurrences == 1)
-                return OptionValueType.Object;
-
-            //TODO: Change this to an internal parser exception.
-            throw new InvalidOperationException("Should never reach here.");
         }
 
         internal Option Option => Arg;
@@ -68,39 +53,8 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         /// </summary>
         internal int Occurrences { get; set; }
 
-        //TODO: Optimize initial capacity of this list based on the min and max parameters of the option.
-        internal List<string> Parameters { get; } = new List<string>();
+        internal List<string> Parameters { get; }
 
-        internal OptionValueType ValueType { get; set; }
-    }
-
-    /// <summary>
-    ///     The type of the resolved value of an option.
-    ///     <para/>
-    ///     Decided based on the usage specs of the option.
-    /// </summary>
-    internal enum OptionValueType
-    {
-        /// <summary>
-        ///     An object of any type. Used when there is a single parameter.
-        /// </summary>
-        Object,
-
-        /// <summary>
-        ///     A list of any type. Used when there are more than one possible parameters.
-        /// </summary>
-        List,
-
-        /// <summary>
-        ///     A count of the number of occurences of the option. Used when the option has no
-        ///     parameters, but multiple occurences.
-        /// </summary>
-        Count,
-
-        /// <summary>
-        ///     A boolean flag indicating whether the option was specified. Used when the option can
-        ///     occur only once and have no occurences.
-        /// </summary>
-        Flag,
+        internal OptionValueType ValueType { get; }
     }
 }

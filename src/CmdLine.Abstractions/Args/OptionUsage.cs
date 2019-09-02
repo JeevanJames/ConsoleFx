@@ -88,8 +88,8 @@ namespace ConsoleFx.CmdLine
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
-                _minOccurrences = value.GetValueOrDefault(Defaults.MinOccurrences);
-                _maxOccurrences = value.GetValueOrDefault(Defaults.MaxOccurrences);
+                _minOccurrences = value ?? Defaults.MinOccurrences;
+                _maxOccurrences = value ?? Defaults.MaxOccurrences;
             }
         }
 

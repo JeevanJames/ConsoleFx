@@ -145,7 +145,7 @@
         <member name="M:ConsoleFx.CmdLine.Parser.Parser.ResolveOptionParameterValues(ConsoleFx.CmdLine.Parser.Runs.OptionRun)">
             <summary>
                 Resolves an <see cref="T:ConsoleFx.CmdLine.Option" />'s value based on it's usage details. See the
-                <see cref="M:ConsoleFx.CmdLine.Parser.Runs.OptionRun.GetOptionValueType(ConsoleFx.CmdLine.Option)" /> method for details on how the
+                <see cref="M:ConsoleFx.CmdLine.Option.GetOptionValueType" /> method for details on how the
                 resolution is done.
             </summary>
             <param name="optionRun">The <see cref="T:ConsoleFx.CmdLine.Parser.Runs.OptionRun" /> instance, whose option to resolve.</param>
@@ -209,35 +209,6 @@
         <member name="P:ConsoleFx.CmdLine.Parser.Runs.OptionRun.Occurrences">
             <summary>
                 Gets or sets the number of occurences of the option.
-            </summary>
-        </member>
-        <member name="T:ConsoleFx.CmdLine.Parser.Runs.OptionValueType">
-            <summary>
-                The type of the resolved value of an option.
-                <para/>
-                Decided based on the usage specs of the option.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.Parser.Runs.OptionValueType.Object">
-            <summary>
-                An object of any type. Used when there is a single parameter.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.Parser.Runs.OptionValueType.List">
-            <summary>
-                A list of any type. Used when there are more than one possible parameters.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.Parser.Runs.OptionValueType.Count">
-            <summary>
-                A count of the number of occurences of the option. Used when the option has no
-                parameters, but multiple occurences.
-            </summary>
-        </member>
-        <member name="F:ConsoleFx.CmdLine.Parser.Runs.OptionValueType.Flag">
-            <summary>
-                A boolean flag indicating whether the option was specified. Used when the option can
-                occur only once and have no occurences.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.Parser.Runs.ParseRun">

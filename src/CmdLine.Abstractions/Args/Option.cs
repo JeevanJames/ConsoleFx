@@ -199,5 +199,68 @@ namespace ConsoleFx.CmdLine
 
             return this;
         }
+
+        /// <summary>
+        ///     Figures out the expected type of an option's value, based on the option's usage details.
+        /// </summary>
+        /// <returns>An <see cref="OptionValueType"/> enum specifying the expected value type.</returns>
+        internal OptionValueType GetOptionValueType()
+        {
+            // If parameters are not allowed on the option...
+            if (Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
+            {
+                // If the option can occur more than once, it's value will be an integer specifying
+                // the number of occurences.
+                if (Usage.MaxOccurrences > 1)
+                    return OptionValueType.Count;
+
+                // If the option can occur not more than once, it's value will be a bool indicating
+                // whether it was specified or not.
+                return OptionValueType.Flag;
+            }
+
+            // If the option can have multiple parameter values (either because the MaxParameters usage
+            // is greater than one or because MaxParameters is one but MaxOccurences is greater than
+            // one), then the option's value is an IList<Type>.
+            if (Usage.MaxParameters > 1 || (Usage.MaxParameters > 0 && Usage.MaxOccurrences > 1))
+                return OptionValueType.List;
+
+            // If the option only has one parameter specified, then the option's value is a string.
+            if (Usage.MaxParameters == 1 && Usage.MaxOccurrences == 1)
+                return OptionValueType.Object;
+
+            //TODO: Change this to an internal parser exception.
+            throw new InvalidOperationException("Should never reach here.");
+        }
+    }
+
+    /// <summary>
+    ///     The type of the resolved value of an option.
+    ///     <para/>
+    ///     Decided based on the usage specs of the option.
+    /// </summary>
+    internal enum OptionValueType
+    {
+        /// <summary>
+        ///     An object of any type. Used when there is a single parameter.
+        /// </summary>
+        Object,
+
+        /// <summary>
+        ///     A list of any type. Used when there are more than one possible parameters.
+        /// </summary>
+        List,
+
+        /// <summary>
+        ///     A count of the number of occurences of the option. Used when the option has no
+        ///     parameters, but multiple occurences.
+        /// </summary>
+        Count,
+
+        /// <summary>
+        ///     A boolean flag indicating whether the option was specified. Used when the option can
+        ///     occur only once and have no occurences.
+        /// </summary>
+        Flag,
     }
 }

@@ -149,8 +149,12 @@ namespace ConsoleFx.CmdLine.Parser.Style
                 // reached the maximum allowed, then we can stop handling that option by setting
                 // currentOption to null so that the next arg will be treated as a new option or
                 // argument.
-                if (currentOption != null && currentOption.Parameters.Count >= currentOption.Option.Usage.MaxParameters)
-                    currentOption = null;
+                if (currentOption != null)
+                {
+                    int maxParameters = currentOption.Option.Usage.MaxOccurrences * currentOption.Option.Usage.MaxParameters;
+                    if (currentOption.Parameters.Count >= maxParameters)
+                        currentOption = null;
+                }
             }
         }
 

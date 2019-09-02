@@ -128,6 +128,8 @@ namespace ConsoleFx.CmdLine
                     IReadOnlyList<Argument> propertyArguments = GetPropertyArgs<Argument, ArgumentAttribute>(
                         attr => new Argument(attr.Name, attr.IsOptional, attr.MaxOccurences));
                     _arguments.AddRange(propertyArguments);
+
+                    SetupArguments(_arguments);
                 }
 
                 return _arguments;
@@ -160,6 +162,8 @@ namespace ConsoleFx.CmdLine
                     IEnumerable<Option> additionalOptions = RootCommand.GetUniversalOptions();
                     foreach (Option option in additionalOptions)
                         _options.Add(option);
+
+                    SetupOptions(_options);
                 }
 
                 return _options;
@@ -211,7 +215,7 @@ namespace ConsoleFx.CmdLine
                     .GetCustomAttributes()
                     .OfType<IArgApplicator<TArg>>();
                 foreach (IArgApplicator<TArg> applicatorAttr in applicatorAttrs)
-                    applicatorAttr.Apply(arg);
+                    applicatorAttr.Apply(arg, property);
 
                 // Apply any metadata attributes to the arg
                 IEnumerable<MetadataAttribute> metadataAttrs = property.GetCustomAttributes<MetadataAttribute>(true);
@@ -278,6 +282,14 @@ namespace ConsoleFx.CmdLine
         protected virtual IEnumerable<Arg> GetArgs()
         {
             yield break;
+        }
+
+        protected virtual void SetupArguments(Arguments arguments)
+        {
+        }
+
+        protected virtual void SetupOptions(Options options)
+        {
         }
 
         /// <summary>

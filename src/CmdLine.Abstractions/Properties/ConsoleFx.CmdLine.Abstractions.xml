@@ -621,6 +621,41 @@
             <exception cref="T:System.ArgumentNullException">Thrown if the specified validators array is null.</exception>
             <exception cref="T:System.ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Option.GetOptionValueType">
+            <summary>
+                Figures out the expected type of an option's value, based on the option's usage details.
+            </summary>
+            <returns>An <see cref="T:ConsoleFx.CmdLine.OptionValueType"/> enum specifying the expected value type.</returns>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.OptionValueType">
+            <summary>
+                The type of the resolved value of an option.
+                <para/>
+                Decided based on the usage specs of the option.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionValueType.Object">
+            <summary>
+                An object of any type. Used when there is a single parameter.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionValueType.List">
+            <summary>
+                A list of any type. Used when there are more than one possible parameters.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionValueType.Count">
+            <summary>
+                A count of the number of occurences of the option. Used when the option has no
+                parameters, but multiple occurences.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.OptionValueType.Flag">
+            <summary>
+                A boolean flag indicating whether the option was specified. Used when the option can
+                occur only once and have no occurences.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.CmdLine.OptionParameterRequirement">
             <summary>
                 Specifies whether the parameters for an option are required or not allowed.

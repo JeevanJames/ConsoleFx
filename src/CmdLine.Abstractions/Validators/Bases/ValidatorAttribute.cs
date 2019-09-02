@@ -58,13 +58,12 @@ namespace ConsoleFx.CmdLine.Validators.Bases
 
         public object[] Args { get; }
 
-        //TODO: Are these 2 methods being used?
-        public void Apply(Argument arg)
+        public void Apply(Argument arg, PropertyInfo property)
         {
             arg.Validators.Add(CreateValidator());
         }
 
-        public void Apply(Option arg)
+        public void Apply(Option arg, PropertyInfo property)
         {
             arg.Validators.Add(CreateValidator());
         }

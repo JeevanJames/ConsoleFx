@@ -17,11 +17,13 @@ limitations under the License.
 */
 #endregion
 
+using System.Reflection;
+
 namespace ConsoleFx.CmdLine
 {
     public interface IArgApplicator<in TArg>
-        where TArg : Arg
+        where TArg : ArgumentOrOption<TArg>
     {
-        void Apply(TArg arg);
+        void Apply(TArg arg, PropertyInfo property);
     }
 }
