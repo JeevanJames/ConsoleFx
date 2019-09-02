@@ -23,14 +23,37 @@ namespace ConsoleFx.CmdLine
 {
     public interface INamedObject
     {
+        /// <summary>
+        ///     Adds a new name for the arg.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
         void AddName(string name, bool caseSensitive = false);
 
+        /// <summary>
+        ///     Checks whether any of the args' names matches the specified name.
+        /// </summary>
+        /// <param name="name">The name to check against.</param>
+        /// <returns>
+        ///     <c>true</c>, if the specified name matches any of the args' names, otherwise
+        ///     <c>false</c>.
+        /// </returns>
         bool HasName(string name);
 
+        /// <summary>
+        ///     Gets the first name from all the assigned names for this arg. This represents the
+        ///     primary name of the arg.
+        /// </summary>
         string Name { get; }
 
+        /// <summary>
+        ///     Gets all the secondary names for the arg.
+        /// </summary>
         IEnumerable<string> AlternateNames { get; }
 
+        /// <summary>
+        ///     Gets all the names of the arg.
+        /// </summary>
         IEnumerable<string> AllNames { get; }
     }
 }

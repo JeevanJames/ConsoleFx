@@ -77,7 +77,10 @@ namespace ConsoleFx.CmdLine
         ///     Checks whether any of the args' names matches the specified name.
         /// </summary>
         /// <param name="name">The name to check against.</param>
-        /// <returns><c>true</c>, if the specified name matches any of the args' names, otherwise <c>false</c>.</returns>
+        /// <returns>
+        ///     <c>true</c>, if the specified name matches any of the args' names, otherwise
+        ///     <c>false</c>.
+        /// </returns>
         public bool HasName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -92,7 +95,8 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <summary>
-        ///     Gets the first name from all the assigned names for this arg. This represents the primary name of the arg.
+        ///     Gets the first name from all the assigned names for this arg. This represents the
+        ///     primary name of the arg.
         /// </summary>
         public string Name => _names.Count == 0 ? null : _names.First().Key;
 
@@ -105,11 +109,6 @@ namespace ConsoleFx.CmdLine
         ///     Gets all the names of the arg.
         /// </summary>
         public IEnumerable<string> AllNames => _names.Select(kvp => kvp.Key);
-
-        /// <summary>
-        ///     Gets the list of all names assigned to the arg.
-        /// </summary>
-        protected IDictionary<string, bool> Names => _names;
 
         /// <summary>
         ///     Gets a valid name pattern to verify names against.

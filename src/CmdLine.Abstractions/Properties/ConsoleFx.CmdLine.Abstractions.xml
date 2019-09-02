@@ -489,6 +489,39 @@
             <param name="name">The name of the metadata value.</param>
             <param name="value">The value of the metadata to set.</param>
         </member>
+        <member name="M:ConsoleFx.CmdLine.INamedObject.AddName(System.String,System.Boolean)">
+            <summary>
+                Adds a new name for the arg.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.INamedObject.HasName(System.String)">
+            <summary>
+                Checks whether any of the args' names matches the specified name.
+            </summary>
+            <param name="name">The name to check against.</param>
+            <returns>
+                <c>true</c>, if the specified name matches any of the args' names, otherwise
+                <c>false</c>.
+            </returns>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.INamedObject.Name">
+            <summary>
+                Gets the first name from all the assigned names for this arg. This represents the
+                primary name of the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.INamedObject.AlternateNames">
+            <summary>
+                Gets all the secondary names for the arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.INamedObject.AllNames">
+            <summary>
+                Gets all the names of the arg.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.CmdLine.NamedObject">
             <summary>
                 Base class for any type that can have one or more names, each of which can be case
@@ -520,11 +553,15 @@
                 Checks whether any of the args' names matches the specified name.
             </summary>
             <param name="name">The name to check against.</param>
-            <returns><c>true</c>, if the specified name matches any of the args' names, otherwise <c>false</c>.</returns>
+            <returns>
+                <c>true</c>, if the specified name matches any of the args' names, otherwise
+                <c>false</c>.
+            </returns>
         </member>
         <member name="P:ConsoleFx.CmdLine.NamedObject.Name">
             <summary>
-                Gets the first name from all the assigned names for this arg. This represents the primary name of the arg.
+                Gets the first name from all the assigned names for this arg. This represents the
+                primary name of the arg.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.NamedObject.AlternateNames">
@@ -535,11 +572,6 @@
         <member name="P:ConsoleFx.CmdLine.NamedObject.AllNames">
             <summary>
                 Gets all the names of the arg.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.NamedObject.Names">
-            <summary>
-                Gets the list of all names assigned to the arg.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.NamedObject.NamePattern">
