@@ -126,7 +126,7 @@ namespace ConsoleFx.CmdLine
 
                     // Add arguments from the properties in this class.
                     IReadOnlyList<Argument> propertyArguments = GetPropertyArgs<Argument, ArgumentAttribute>(
-                        attr => new Argument(attr.Name, attr.IsOptional, attr.MaxOccurences));
+                        attr => new Argument(attr.Order, attr.IsOptional, attr.MaxOccurences));
                     _arguments.AddRange(propertyArguments);
 
                     SetupArguments(_arguments);
@@ -339,9 +339,9 @@ namespace ConsoleFx.CmdLine
             RootCommand.DisplayHelp(command ?? this);
         }
 
-        public Argument AddArgument(string name, bool isOptional = false, byte maxOccurences = 1)
+        public Argument AddArgument(int order = 0, bool isOptional = false, byte maxOccurences = 1)
         {
-            var argument = new Argument(name, isOptional, maxOccurences);
+            var argument = new Argument(order, isOptional, maxOccurences);
             Arguments.Add(argument);
             return argument;
         }

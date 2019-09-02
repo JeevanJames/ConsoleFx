@@ -138,11 +138,11 @@
                 Represents a non-option command-line parameter.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Argument.#ctor(System.String,System.Boolean,System.Byte)">
+        <member name="M:ConsoleFx.CmdLine.Argument.#ctor(System.Int32,System.Boolean,System.Byte)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Argument" /> class.
             </summary>
-            <param name="name">The unique name identifying the argument.</param>
+            <param name="order">The order in which the argument appears.</param>
             <param name="isOptional">Indicates whether the argument is optional.</param>
             <param name="maxOccurences">
                 Maximum number of occurences of the last argument. Ignored if it is not the last
@@ -206,6 +206,23 @@
             </summary>
             <param name="validators">The validators to use to validate the argument.</param>
             <returns>The same instance of the <see cref="T:ConsoleFx.CmdLine.Argument"/> object to allow for fluent syntax.</returns>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.ArgumentValueType">
+            <summary>
+                The type of the resolved value of an option.
+                <para/>
+                Decided based on the usage specs of the option.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.ArgumentValueType.Object">
+            <summary>
+                An object of any type.
+            </summary>
+        </member>
+        <member name="F:ConsoleFx.CmdLine.ArgumentValueType.List">
+            <summary>
+                A list of any type. Can you be used for the last argument.
+            </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.ArgumentOrOption`1">
             <summary>
@@ -621,7 +638,7 @@
             <exception cref="T:System.ArgumentNullException">Thrown if the specified validators array is null.</exception>
             <exception cref="T:System.ArgumentException">Thrown if no validators are specified or if any of the specified validators is null.</exception>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Option.GetOptionValueType">
+        <member name="M:ConsoleFx.CmdLine.Option.GetValueType">
             <summary>
                 Figures out the expected type of an option's value, based on the option's usage details.
             </summary>

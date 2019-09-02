@@ -29,7 +29,7 @@ namespace ConsoleFx.CmdLine
     /// <summary>
     ///     Represents a non-option command-line parameter.
     /// </summary>
-    [DebuggerDisplay("Argument {Name} [{Validators.Count} validators]")]
+    [DebuggerDisplay("Argument {Order} [{Validators.Count} validators]")]
     public sealed class Argument : ArgumentOrOption<Argument>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -38,21 +38,24 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Initializes a new instance of the <see cref="Argument" /> class.
         /// </summary>
-        /// <param name="name">The unique name identifying the argument.</param>
+        /// <param name="order">The order in which the argument appears.</param>
         /// <param name="isOptional">Indicates whether the argument is optional.</param>
         /// <param name="maxOccurences">
         ///     Maximum number of occurences of the last argument. Ignored if it is not the last
         ///     argument.
         /// </param>
-        public Argument(string name, bool isOptional = false, byte maxOccurences = 1)
-            : base(new Dictionary<string, bool> { [name] = false })
+        public Argument(int order = 0, bool isOptional = false, byte maxOccurences = 1)
+            : base(new Dictionary<string, bool> { [Guid.NewGuid().ToString()] = false })
         {
             if (maxOccurences < 1)
-                throw new ArgumentException($"Maximum occurences for the {name} argument should not be less than one.", nameof(maxOccurences));
+                throw new ArgumentException($"Maximum occurences for the argument should not be less than one.", nameof(maxOccurences));
 
+            Order = order;
             IsOptional = isOptional;
             MaxOccurences = maxOccurences;
         }
+
+        public int Order { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the argument is optional. Optional arguments can only
@@ -149,5 +152,28 @@ namespace ConsoleFx.CmdLine
                 Validators.Add(validator);
             return this;
         }
+
+        internal ArgumentValueType GetValueType()
+        {
+            return MaxOccurences > 1 ? ArgumentValueType.List : ArgumentValueType.Object;
+        }
+    }
+
+    /// <summary>
+    ///     The type of the resolved value of an option.
+    ///     <para/>
+    ///     Decided based on the usage specs of the option.
+    /// </summary>
+    internal enum ArgumentValueType
+    {
+        /// <summary>
+        ///     An object of any type.
+        /// </summary>
+        Object,
+
+        /// <summary>
+        ///     A list of any type. Can you be used for the last argument.
+        /// </summary>
+        List,
     }
 }

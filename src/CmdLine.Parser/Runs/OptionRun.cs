@@ -28,7 +28,7 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         internal OptionRun(Option option)
             : base(option)
         {
-            ValueType = option.GetOptionValueType();
+            ValueType = option.GetValueType();
 
             // Optimize the size of the Parameters list based on the value type.
             switch (ValueType)

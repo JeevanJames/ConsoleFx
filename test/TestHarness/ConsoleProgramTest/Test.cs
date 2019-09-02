@@ -40,7 +40,7 @@ namespace TestHarness.ConsoleProgramTest
     [Program("my-program")]
     public sealed class MyProgram : ConsoleProgram
     {
-        [Argument("name")]
+        [Argument]
         public string FirstName { get; set; }
 
         [Option("cool")]

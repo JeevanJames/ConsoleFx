@@ -63,7 +63,7 @@ namespace TestHarness.DeepMultiCommand
 
         protected override IEnumerable<Arg> GetArgs()
         {
-            yield return new Argument(nameof(RemoteUrl))
+            yield return new Argument()
                 .ValidateAsUri()
                 .TypeAs<Uri>();
         }

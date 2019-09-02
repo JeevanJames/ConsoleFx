@@ -18,13 +18,11 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class OptionAttribute : Attribute, IArgApplicator<Option>
+    public sealed class OptionAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
     {
         public OptionAttribute(string name)
         {
@@ -56,7 +54,7 @@ namespace ConsoleFx.CmdLine
                     break;
             }
 
-            OptionValueType expectedValueType = arg.GetOptionValueType();
+            OptionValueType expectedValueType = arg.GetValueType();
             switch (expectedValueType)
             {
                 case OptionValueType.Count:
@@ -81,24 +79,6 @@ namespace ConsoleFx.CmdLine
                 default:
                     throw new InvalidOperationException($"Unexpected OptionValueType value of {expectedValueType}.");
             }
-        }
-
-        private static Type GetCollectionItemType(PropertyInfo property)
-        {
-            Type type = property.PropertyType;
-
-            if (!type.IsGenericType)
-                return null;
-
-            Type[] genericArgs = type.GetGenericArguments();
-            if (genericArgs.Length != 1)
-                return null;
-
-            Type collectionType = typeof(IEnumerable<>).MakeGenericType(genericArgs[0]);
-            if (!collectionType.IsAssignableFrom(type))
-                return null;
-
-            return genericArgs[0];
         }
     }
 }

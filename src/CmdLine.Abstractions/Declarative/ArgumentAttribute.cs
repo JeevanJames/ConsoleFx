@@ -18,21 +18,37 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class ArgumentAttribute : Attribute
+    public sealed class ArgumentAttribute : ArgumentOrOptionAttribute, IArgApplicator<Argument>
     {
-        public ArgumentAttribute(string name)
-        {
-            Name = name;
-        }
-
-        public string Name { get; }
+        public int Order { get; set; }
 
         public bool IsOptional { get; set; }
 
         public byte MaxOccurences { get; set; } = 1;
+
+        void IArgApplicator<Argument>.Apply(Argument arg, PropertyInfo property)
+        {
+            ArgumentValueType expectedValueType = arg.GetValueType();
+            switch (expectedValueType)
+            {
+                case ArgumentValueType.Object:
+                    if (property.PropertyType != typeof(string))
+                        arg.TypeAs(property.PropertyType);
+                    break;
+                case ArgumentValueType.List:
+                    Type itemType = GetCollectionItemType(property);
+                    if (itemType is null)
+                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType.FullName} should be a generic collection type like IEnumerable<T> or List<T>.");
+                    if (itemType != typeof(string))
+                        arg.TypeAs(itemType);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Unexpected OptionValueType value of {expectedValueType}.");
+            }
+        }
     }
 }

@@ -35,15 +35,15 @@ namespace TestHarness.Parser
         internal override void Run()
         {
             var command = new Command();
-            command.AddArgument("source")
+            command.AddArgument()
                 .FormatAs(s => s.ToUpperInvariant());
-            command.AddArgument("destination")
+            command.AddArgument()
                 .ValidateAsString(5);
-            command.AddArgument("count")
+            command.AddArgument()
                 .ValidateAsInteger(0, 100)
                 .TypeAs<int>()
                 .DefaultsTo(8);
-            command.AddArgument("params", maxOccurences: byte.MaxValue);
+            command.AddArgument(maxOccurences: byte.MaxValue);
             command.AddOption("v")
                 .UsedAsFlag();
             command.AddOption("y")

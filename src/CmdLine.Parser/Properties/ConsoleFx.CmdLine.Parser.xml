@@ -145,7 +145,7 @@
         <member name="M:ConsoleFx.CmdLine.Parser.Parser.ResolveOptionParameterValues(ConsoleFx.CmdLine.Parser.Runs.OptionRun)">
             <summary>
                 Resolves an <see cref="T:ConsoleFx.CmdLine.Option" />'s value based on it's usage details. See the
-                <see cref="M:ConsoleFx.CmdLine.Option.GetOptionValueType" /> method for details on how the
+                <see cref="M:ConsoleFx.CmdLine.Option.GetValueType" /> method for details on how the
                 resolution is done.
             </summary>
             <param name="optionRun">The <see cref="T:ConsoleFx.CmdLine.Parser.Runs.OptionRun" /> instance, whose option to resolve.</param>

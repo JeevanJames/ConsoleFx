@@ -204,7 +204,7 @@ namespace ConsoleFx.CmdLine
         ///     Figures out the expected type of an option's value, based on the option's usage details.
         /// </summary>
         /// <returns>An <see cref="OptionValueType"/> enum specifying the expected value type.</returns>
-        internal OptionValueType GetOptionValueType()
+        internal OptionValueType GetValueType()
         {
             // If parameters are not allowed on the option...
             if (Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)

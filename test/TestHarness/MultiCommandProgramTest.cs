@@ -63,13 +63,13 @@ namespace TestHarness
     [Help("Installs a package")]
     public sealed class AddCommand : Command
     {
-        [Argument("package")]
+        [Argument]
         [Help("package-name", "The name of the package to install")]
         public string PackageName { get; set; }
 
         protected override IEnumerable<Arg> GetArgs()
         {
-            yield return new Argument("package")
+            yield return new Argument()
                 .ValidateAsString(10, minLengthMessage: "Package must be at least 10 character long.");
         }
 

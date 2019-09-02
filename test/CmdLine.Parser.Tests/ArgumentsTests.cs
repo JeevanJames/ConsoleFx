@@ -34,9 +34,9 @@ namespace CmdLine.Parser.Tests
         {
             var arguments = new Arguments
             {
-                new Argument("install"),
-                new Argument("uninstall"),
-                new Argument("update"),
+                new Argument(),
+                new Argument(),
+                new Argument(),
             };
 
             arguments.ShouldNotBeNull();
@@ -49,10 +49,10 @@ namespace CmdLine.Parser.Tests
         {
             var arguments = new Arguments
             {
-                new Argument("install"),
+                new Argument(),
             };
 
-            Should.Throw<ArgumentException>(() => arguments.Add(new Argument("install")));
+            Should.Throw<ArgumentException>(() => arguments.Add(new Argument()));
         }
 
         [Fact]
@@ -60,10 +60,10 @@ namespace CmdLine.Parser.Tests
         {
             var arguments = new Arguments
             {
-                new Argument("install", isOptional: true),
+                new Argument(isOptional: true),
             };
 
-            Should.Throw<ParserException>(() => arguments.Add(new Argument("update")));
+            Should.Throw<ParserException>(() => arguments.Add(new Argument()));
         }
     }
 }

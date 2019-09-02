@@ -72,10 +72,10 @@ namespace TestHarness.Parser2
 
         protected override IEnumerable<Arg> GetArgs()
         {
-            yield return new Argument("sourcedir")
+            yield return new Argument()
                 .ValidateAsDirectory(true)
                 .TypeAs<DirectoryInfo>();
-            yield return new Argument("destdirs", maxOccurences: byte.MaxValue)
+            yield return new Argument(maxOccurences: byte.MaxValue)
                 .ValidateAsDirectory(true)
                 .TypeAs<DirectoryInfo>();
 

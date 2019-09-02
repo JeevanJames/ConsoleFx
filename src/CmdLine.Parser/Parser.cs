@@ -463,7 +463,7 @@ namespace ConsoleFx.CmdLine.Parser
 
         /// <summary>
         ///     Resolves an <see cref="Option" />'s value based on it's usage details. See the
-        ///     <see cref="Option.GetOptionValueType" /> method for details on how the
+        ///     <see cref="Option.GetValueType" /> method for details on how the
         ///     resolution is done.
         /// </summary>
         /// <param name="optionRun">The <see cref="OptionRun" /> instance, whose option to resolve.</param>

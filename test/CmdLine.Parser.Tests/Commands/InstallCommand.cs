@@ -29,11 +29,11 @@ namespace CmdLine.Parser.Tests.Commands
     {
         protected override IEnumerable<Arg> GetArgs()
         {
-            yield return new Argument("package-name")
+            yield return new Argument()
                 .ValidateAnyCondition("Invalid package name",
                     new UriValidator(),
                     new FileValidator(shouldExist: true, allowedExtensions: null));
-            yield return new Argument("source", isOptional: true);
+            yield return new Argument(isOptional: true);
 
             yield return new Option("save-prod", "p").UsedAsFlag(true);
             yield return new Option("save-dev", "d").UsedAsFlag(true);
