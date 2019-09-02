@@ -29,7 +29,7 @@ namespace ConsoleFx.CmdLine
     ///     Base class for any type that can have one or more names, each of which can be case
     ///     sensitive or not.
     /// </summary>
-    public abstract class NamedObject
+    public abstract class NamedObject : INamedObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Dictionary<string, bool> _names = new Dictionary<string, bool>();
@@ -64,15 +64,13 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
-        /// <returns>An instance to the same <see cref="Arg" />, to allow for a fluent syntax.</returns>
-        public NamedObject AddName(string name, bool caseSensitive = false)
+        public void AddName(string name, bool caseSensitive = false)
         {
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             if (!NamePattern.IsMatch(name))
                 throw new ArgumentException(string.Format(Errors.Arg_Invalid_name, name), nameof(name));
             _names.Add(name, caseSensitive);
-            return this;
         }
 
         /// <summary>

@@ -29,7 +29,7 @@ namespace ConsoleFx.CmdLine
     ///     <para />
     ///     This class adds support for metadata in addition to multiple names from the base class.
     /// </summary>
-    public abstract class Arg : NamedObject
+    public abstract class Arg : NamedObject, IMetadataObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Dictionary<string, object> _metadata;
@@ -43,37 +43,23 @@ namespace ConsoleFx.CmdLine
         {
         }
 
-        /// <summary>
-        ///     Gets or sets a metadata value.
-        /// </summary>
-        /// <param name="name">The name of the metadata value.</param>
-        /// <returns>The value of the metadata.</returns>
-        public object this[string name]
+        /// <inheritdoc />
+        object IMetadataObject.this[string name]
         {
-            get => Get<object>(name);
-            set => Set(name, value);
+            get => ((IMetadataObject)this).Get<object>(name);
+            set => ((IMetadataObject)this).Set(name, value);
         }
 
-        /// <summary>
-        ///     Gets a metadata value by name.
-        /// </summary>
-        /// <typeparam name="T">The type of the metadata value.</typeparam>
-        /// <param name="name">The name of the metadata value.</param>
-        /// <returns>The metadata value or the default of T if the value does not exist.</returns>
-        public T Get<T>(string name)
+        /// <inheritdoc />
+        T IMetadataObject.Get<T>(string name)
         {
             if (_metadata is null)
                 return default;
             return _metadata.TryGetValue(name, out var result) ? (T)result : default;
         }
 
-        /// <summary>
-        ///     Sets a metadata value by name.
-        /// </summary>
-        /// <typeparam name="T">The type of the metadata value.</typeparam>
-        /// <param name="name">The name of the metadata value.</param>
-        /// <param name="value">The value of the metadata to set.</param>
-        public void Set<T>(string name, T value)
+        /// <inheritdoc />
+        void IMetadataObject.Set<T>(string name, T value)
         {
             if (_metadata is null)
                 _metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);

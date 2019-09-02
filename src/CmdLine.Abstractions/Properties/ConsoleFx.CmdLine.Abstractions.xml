@@ -34,28 +34,14 @@
                 This class adds support for metadata in addition to multiple names from the base class.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Arg.Item(System.String)">
-            <summary>
-                Gets or sets a metadata value.
-            </summary>
-            <param name="name">The name of the metadata value.</param>
-            <returns>The value of the metadata.</returns>
+        <member name="P:ConsoleFx.CmdLine.Arg.ConsoleFx#CmdLine#IMetadataObject#Item(System.String)">
+            <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.Arg.Get``1(System.String)">
-            <summary>
-                Gets a metadata value by name.
-            </summary>
-            <typeparam name="T">The type of the metadata value.</typeparam>
-            <param name="name">The name of the metadata value.</param>
-            <returns>The metadata value or the default of T if the value does not exist.</returns>
+        <member name="M:ConsoleFx.CmdLine.Arg.ConsoleFx#CmdLine#IMetadataObject#Get``1(System.String)">
+            <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.Arg.Set``1(System.String,``0)">
-            <summary>
-                Sets a metadata value by name.
-            </summary>
-            <typeparam name="T">The type of the metadata value.</typeparam>
-            <param name="name">The name of the metadata value.</param>
-            <param name="value">The value of the metadata to set.</param>
+        <member name="M:ConsoleFx.CmdLine.Arg.ConsoleFx#CmdLine#IMetadataObject#Set``1(System.String,``0)">
+            <inheritdoc />
         </member>
         <member name="T:ConsoleFx.CmdLine.Args`1">
             <inheritdoc />
@@ -480,6 +466,29 @@
                 <see cref="T:ConsoleFx.CmdLine.Commands"/> collection needs to have a name.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.IMetadataObject.Item(System.String)">
+            <summary>
+                Gets or sets a metadata value.
+            </summary>
+            <param name="name">The name of the metadata value.</param>
+            <returns>The value of the metadata.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.IMetadataObject.Get``1(System.String)">
+            <summary>
+                Gets a metadata value by name.
+            </summary>
+            <typeparam name="T">The type of the metadata value.</typeparam>
+            <param name="name">The name of the metadata value.</param>
+            <returns>The metadata value or the default of T if the value does not exist.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.IMetadataObject.Set``1(System.String,``0)">
+            <summary>
+                Sets a metadata value by name.
+            </summary>
+            <typeparam name="T">The type of the metadata value.</typeparam>
+            <param name="name">The name of the metadata value.</param>
+            <param name="value">The value of the metadata to set.</param>
+        </member>
         <member name="T:ConsoleFx.CmdLine.NamedObject">
             <summary>
                 Base class for any type that can have one or more names, each of which can be case
@@ -505,7 +514,6 @@
             </summary>
             <param name="name">The name.</param>
             <param name="caseSensitive">Indicates whether the name is case-sensitive.</param>
-            <returns>An instance to the same <see cref="T:ConsoleFx.CmdLine.Arg" />, to allow for a fluent syntax.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLine.NamedObject.HasName(System.String)">
             <summary>

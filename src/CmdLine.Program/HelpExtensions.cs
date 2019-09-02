@@ -27,9 +27,11 @@ namespace ConsoleFx.CmdLine.Program
         {
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
-            argument[Keys.Description] = description;
+
+            var metadata = (IMetadataObject)argument;
+            metadata[Keys.Description] = description;
             if (!string.IsNullOrWhiteSpace(name))
-                argument[Keys.Name] = name;
+                metadata[Keys.Name] = name;
             return argument;
         }
 
@@ -37,9 +39,11 @@ namespace ConsoleFx.CmdLine.Program
         {
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
-            command[Keys.Description] = description;
+
+            var metadata = (IMetadataObject)command;
+            metadata[Keys.Description] = description;
             if (!string.IsNullOrWhiteSpace(name))
-                command[Keys.Name] = name;
+                metadata[Keys.Name] = name;
             return command;
         }
 
@@ -47,12 +51,14 @@ namespace ConsoleFx.CmdLine.Program
         {
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
-            option[Keys.Description] = description;
+
+            var metadata = (IMetadataObject)option;
+            metadata[Keys.Description] = description;
             return option;
         }
 
         public static TArg Category<TArg>(this TArg arg, string name, string description)
-            where TArg : Arg
+            where TArg : Arg, IMetadataObject
         {
             arg[Keys.CategoryName] = name;
             arg[Keys.CategoryDescription] = description;
@@ -60,14 +66,14 @@ namespace ConsoleFx.CmdLine.Program
         }
 
         public static TArg Order<TArg>(this TArg arg, int order)
-            where TArg : Arg
+            where TArg : Arg, IMetadataObject
         {
             arg[Keys.Order] = order.ToString();
             return arg;
         }
 
         public static TArg HideHelp<TArg>(this TArg arg)
-            where TArg : Arg
+            where TArg : Arg, IMetadataObject
         {
             arg[Keys.Hide] = true;
             return arg;

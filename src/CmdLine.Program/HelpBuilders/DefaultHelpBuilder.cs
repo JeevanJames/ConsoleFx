@@ -173,12 +173,13 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             if (args.Count == 0)
                 return;
 
-            IEnumerable<IGrouping<string, TArg>> categories = args.GroupBy(arg => arg.Get<string>(HelpExtensions.Keys.CategoryName), StringComparer.OrdinalIgnoreCase);
+            IEnumerable<IGrouping<string, TArg>> categories = args.GroupBy(
+                arg => ((IMetadataObject)arg).Get<string>(HelpExtensions.Keys.CategoryName), StringComparer.OrdinalIgnoreCase);
             foreach (var category in categories)
             {
                 List<TArg> categoryArgs = category
-                    .Where(arg => !arg.Get<bool>(HelpExtensions.Keys.Hide))
-                    .OrderBy(arg => arg.Get<int>(HelpExtensions.Keys.Order))
+                    .Where(arg => !((IMetadataObject)arg).Get<bool>(HelpExtensions.Keys.Hide))
+                    .OrderBy(arg => ((IMetadataObject)arg).Get<int>(HelpExtensions.Keys.Order))
                     .ThenBy(arg => arg.Name)
                     .ToList();
                 if (categoryArgs.Count == 0)
@@ -196,7 +197,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 foreach (TArg arg in categoryArgs)
                 {
                     string resolvedName = nameResolver(arg);
-                    string description = arg.Get<string>(HelpExtensions.Keys.Description) ?? "<No description provided>";
+                    string description = ((IMetadataObject)arg).Get<string>(HelpExtensions.Keys.Description) ?? "<No description provided>";
                     PrintArg(resolvedName, description, maxNameLength, placement);
                 }
             }
@@ -227,10 +228,10 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 .ToString();
         }
 
-        private string ResolveArgumentName(Arg arg)
+        private string ResolveArgumentName(IMetadataObject arg)
         {
             string customName = arg.Get<string>(HelpExtensions.Keys.Name);
-            return customName ?? arg.Name;
+            return customName ?? "argument";
         }
 
         public override void VerifyHelp(Command command)
@@ -244,10 +245,11 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 Arguments arguments = currentCommand.Arguments;
                 foreach (Argument argument in arguments)
                 {
-                    bool hide = argument.Get<bool>(HelpExtensions.Keys.Hide);
+                    var metadata = (IMetadataObject)argument;
+                    bool hide = metadata.Get<bool>(HelpExtensions.Keys.Hide);
                     if (hide)
                         continue;
-                    string description = argument.Get<string>(HelpExtensions.Keys.Description);
+                    string description = metadata.Get<string>(HelpExtensions.Keys.Description);
                     if (string.IsNullOrWhiteSpace(description))
                         throw new InvalidOperationException($"Argument '{argument.Name}' under command '{currentCommand.Name}' does not have a description.");
                 }
@@ -255,10 +257,11 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 Options options = currentCommand.Options;
                 foreach (Option option in options)
                 {
-                    bool hide = option.Get<bool>(HelpExtensions.Keys.Hide);
+                    var metadata = (IMetadataObject)option;
+                    bool hide = metadata.Get<bool>(HelpExtensions.Keys.Hide);
                     if (hide)
                         continue;
-                    string description = option.Get<string>(HelpExtensions.Keys.Description);
+                    string description = metadata.Get<string>(HelpExtensions.Keys.Description);
                     if (string.IsNullOrWhiteSpace(description))
                         throw new InvalidOperationException($"Option '{option.Name}' under command '{currentCommand.Name}' does not have a description.");
                 }
