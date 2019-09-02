@@ -126,22 +126,9 @@ namespace ConsoleFx.CmdLine.Program
                 // Parse the args and assign to the properties in the resultant command.
                 parseResult = parser.Parse(args);
 
-                // Update any args in the command object that have an assigned property name, but the
-                // property type has not yet been calculated.
-                //UpdatePropertiesFromNames(parseResult);
-
                 // Assign the properties on the command object from the parse result.
-                //AssignProperties(parseResult);
-                AssignProperties(parseResult, parseResult.Command.Arguments, (pr, name) =>
-                {
-                    bool exists = pr.TryGetArgument(name, out object value);
-                    return (exists, value);
-                });
-                AssignProperties(parseResult, parseResult.Command.Options, (pr, name) =>
-                {
-                    bool exists = pr.TryGetOption(name, out object value);
-                    return (exists, value);
-                });
+                AssignArgumentProperties(parseResult, parseResult.Command.Arguments);
+                AssignOptionProperties(parseResult, parseResult.Command.Options);
 
                 // Check if the help option is specified. If it is, display the help and get out.
                 HelpBuilder helpBuilder = HelpBuilder;
@@ -252,13 +239,11 @@ namespace ConsoleFx.CmdLine.Program
             throw new NotSupportedException($"Unsupported argument style: '{argStyle}'.");
         }
 
-        private static void AssignProperties<TArg>(ParseResultBase parseResult, IReadOnlyList<TArg> args,
-            Func<ParseResultBase, string, (bool exists, object value)> valueGetter)
-            where TArg : ArgumentOrOption<TArg>
+        private static void AssignOptionProperties(ParseResultBase parseResult, Options args)
         {
             Type type = parseResult.Command.GetType();
 
-            foreach (TArg arg in args)
+            foreach (Option arg in args)
             {
                 if (arg.AssignedPropertyName is null && arg.AssignedProperty is null)
                     continue;
@@ -271,9 +256,32 @@ namespace ConsoleFx.CmdLine.Program
                     arg.AssignedProperty = property;
                 }
 
-                (bool exists, object value) valueDetails = valueGetter(parseResult, arg.Name);
-                if (valueDetails.exists)
-                    arg.AssignedProperty.SetValue(parseResult.Command, valueDetails.value);
+                if (parseResult.TryGetOption(arg.Name, out object value))
+                    arg.AssignedProperty.SetValue(parseResult.Command, value);
+            }
+        }
+
+        private static void AssignArgumentProperties(ParseResultBase parseResult, Arguments arguments)
+        {
+            Type type = parseResult.Command.GetType();
+
+            for (int i = 0; i < arguments.Count; i++)
+            {
+                Argument argument = arguments[i];
+
+                if (argument.AssignedPropertyName is null && argument.AssignedProperty is null)
+                    continue;
+
+                if (argument.AssignedProperty is null)
+                {
+                    PropertyInfo property = type.GetProperty(argument.AssignedPropertyName);
+                    if (property is null)
+                        throw new ParserException(-1, $"Cannot find a property named {argument.AssignedPropertyName} to be assigned to the {argument.Order} argument.");
+                    argument.AssignedProperty = property;
+                }
+
+                if (parseResult.TryGetArgument(i, out object value))
+                    argument.AssignedProperty.SetValue(parseResult.Command, value);
             }
         }
     }

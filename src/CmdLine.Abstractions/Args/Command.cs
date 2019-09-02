@@ -373,8 +373,34 @@ namespace ConsoleFx.CmdLine
             Options.Add(option);
             return option;
         }
+    }
 
-        protected sealed override Regex NamePattern => base.NamePattern;
+    // INamedObject implementation
+    public partial class Command : INamedObject
+    {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly INamedObject _namedObject = new NamedObjectImpl();
+
+        /// <inheritdoc />
+        public string Name => _namedObject.Name;
+
+        /// <inheritdoc />
+        public IEnumerable<string> AlternateNames => _namedObject.AlternateNames;
+
+        /// <inheritdoc />
+        public IEnumerable<string> AllNames => _namedObject.AllNames;
+
+        /// <inheritdoc />
+        public void AddName(string name, bool caseSensitive = false)
+        {
+            _namedObject.AddName(name, caseSensitive);
+        }
+
+        /// <inheritdoc />
+        public bool HasName(string name)
+        {
+            return _namedObject.HasName(name);
+        }
     }
 
     // Dynamically discover commands in assemblies.

@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 using ConsoleFx.CmdLine.Validators.Bases;
@@ -29,7 +30,7 @@ namespace ConsoleFx.CmdLine
     ///     Represents an options arg.
     /// </summary>
     [DebuggerDisplay("Option: {" + nameof(Name) + "}")]
-    public sealed class Option : ArgumentOrOption<Option>
+    public sealed partial class Option : ArgumentOrOption<Option>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying names.
@@ -231,6 +232,29 @@ namespace ConsoleFx.CmdLine
 
             //TODO: Change this to an internal parser exception.
             throw new InvalidOperationException("Should never reach here.");
+        }
+    }
+
+    // INamedObject implementation
+    public sealed partial class Option : INamedObject
+    {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly INamedObject _namedObject = new NamedObjectImpl();
+
+        public string Name => _namedObject.Name;
+
+        public IEnumerable<string> AlternateNames => _namedObject.AlternateNames;
+
+        public IEnumerable<string> AllNames => _namedObject.AllNames;
+
+        public void AddName(string name, bool caseSensitive = false)
+        {
+            _namedObject.AddName(name, caseSensitive);
+        }
+
+        public bool HasName(string name)
+        {
+            return _namedObject.HasName(name);
         }
     }
 

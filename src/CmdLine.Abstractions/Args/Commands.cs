@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ConsoleFx.CmdLine
 {
@@ -38,6 +39,8 @@ namespace ConsoleFx.CmdLine
         {
             _parentCommand = parentCommand;
         }
+
+        public Command this[string name] => this.FirstOrDefault(item => item.HasName(name));
 
         /// <inheritdoc />
         /// <summary>
@@ -67,7 +70,20 @@ namespace ConsoleFx.CmdLine
             base.SetItem(index, item);
         }
 
-        protected override string GetDuplicateErrorMessage(string name) =>
-            $"Command named '{name}' already exists in the command collection.";
+        protected override void CheckDuplicates(Command obj, int index)
+        {
+            for (var i = 0; i < Count; i++)
+            {
+                if (i == index)
+                    continue;
+                if (ObjectsMatch(obj, this[i]))
+                    throw new ArgumentException($"Command named '{obj.Name}' already exists in the command collection.", nameof(obj));
+            }
+        }
+
+        private bool ObjectsMatch(Command command1, Command command2)
+        {
+            return command1.AllNames.Any(name => command2.HasName(name));
+        }
     }
 }

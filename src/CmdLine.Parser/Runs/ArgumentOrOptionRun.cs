@@ -70,8 +70,19 @@ namespace ConsoleFx.CmdLine.Parser.Runs
 
             //TODO: Should we also look for factory methods on the type? Static methods that accept a single parameter and return an instance of the type.
 
-            throw new ParserException(-1,
-                $"Unable to determine an adequate way to convert parameters of {arg.Name} to type {Type.FullName}. Please specify a converter delegate for this arg.");
+            if (arg is Option option)
+            {
+                throw new ParserException(-1,
+                    $"Unable to determine an adequate way to convert parameters of {option.Name} option to type {Type.FullName}. Please specify a converter delegate for this option.");
+            }
+            else if (arg is Argument argument)
+            {
+                //TODO: Replace argument.Order with argument.Index in the error message below
+                throw new ParserException(-1,
+                    $"Unable to determine an adequate way to convert the argument at index {argument.Order} to type {Type.FullName}. Please specify a converter delegate for this argument.");
+            }
+            else
+                throw new InvalidOperationException($"Unexpected arg type - {arg.GetType().FullName}");
         }
 
         protected TArg Arg { get; }

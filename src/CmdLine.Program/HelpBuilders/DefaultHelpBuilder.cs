@@ -180,7 +180,8 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 List<TArg> categoryArgs = category
                     .Where(arg => !((IMetadataObject)arg).Get<bool>(HelpExtensions.Keys.Hide))
                     .OrderBy(arg => ((IMetadataObject)arg).Get<int>(HelpExtensions.Keys.Order))
-                    .ThenBy(arg => arg.Name)
+
+                    //.ThenBy(arg => arg.Name) //TODO
                     .ToList();
                 if (categoryArgs.Count == 0)
                     continue;
@@ -205,7 +206,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
         private string ResolveCommandNames(Arg arg)
         {
-            return arg.AllNames
+            return ((INamedObject)arg).AllNames
                 .Aggregate(new StringBuilder(), (sb, name) =>
                 {
                     if (sb.Length > 0)
@@ -217,7 +218,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
         private string ResolveOptionNames(Arg arg)
         {
-            return arg.AllNames
+            return ((INamedObject)arg).AllNames
                 .Select(name => name.Length > 1 ? $"--{name}" : $"-{name}")
                 .Aggregate(new StringBuilder(), (sb, name) =>
                 {
@@ -250,8 +251,10 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                     if (hide)
                         continue;
                     string description = metadata.Get<string>(HelpExtensions.Keys.Description);
+
+                    //TODO: Replace argument.Order with argument.Index in the error message below.
                     if (string.IsNullOrWhiteSpace(description))
-                        throw new InvalidOperationException($"Argument '{argument.Name}' under command '{currentCommand.Name}' does not have a description.");
+                        throw new InvalidOperationException($"Argument at index '{argument.Order}' under command '{currentCommand.Name}' does not have a description.");
                 }
 
                 Options options = currentCommand.Options;

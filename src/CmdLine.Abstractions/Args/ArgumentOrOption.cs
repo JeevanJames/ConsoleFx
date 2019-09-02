@@ -36,15 +36,6 @@ namespace ConsoleFx.CmdLine
     {
         private readonly List<int> _groups = new List<int> { 0 };
 
-        protected ArgumentOrOption()
-        {
-        }
-
-        protected ArgumentOrOption(IDictionary<string, bool> names)
-            : base(names)
-        {
-        }
-
         /// <summary>
         ///     Gets or sets the reference to the property in the containing <see cref="Command"/>
         ///     instance, which should be set with the parsed value for this arg.

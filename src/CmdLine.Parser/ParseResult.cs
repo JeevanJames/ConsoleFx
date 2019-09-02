@@ -58,18 +58,6 @@ namespace ConsoleFx.CmdLine.Parser
             return TryGetArgument(matchingArgument, out value, defaultValue);
         }
 
-        public override bool TryGetArgument<T>(string name, out T value, T defaultValue = default)
-        {
-            ArgumentRun matchingArgument = _run.Arguments.FirstOrDefault(r => r.Argument.HasName(name));
-            if (matchingArgument is null)
-            {
-                value = default;
-                return false;
-            }
-
-            return TryGetArgument(matchingArgument, out value, defaultValue);
-        }
-
         private static bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value, T @default = default)
         {
             if (!matchingArgument.Assigned)

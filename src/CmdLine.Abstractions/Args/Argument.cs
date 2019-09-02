@@ -45,7 +45,6 @@ namespace ConsoleFx.CmdLine
         ///     argument.
         /// </param>
         public Argument(int order = 0, bool isOptional = false, byte maxOccurences = 1)
-            : base(new Dictionary<string, bool> { [Guid.NewGuid().ToString()] = false })
         {
             if (maxOccurences < 1)
                 throw new ArgumentException($"Maximum occurences for the argument should not be less than one.", nameof(maxOccurences));

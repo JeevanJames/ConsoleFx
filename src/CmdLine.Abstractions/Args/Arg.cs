@@ -29,17 +29,12 @@ namespace ConsoleFx.CmdLine
     ///     <para />
     ///     This class adds support for metadata in addition to multiple names from the base class.
     /// </summary>
-    public abstract class Arg : NamedObject, IMetadataObject
+    public abstract class Arg : IMetadataObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Dictionary<string, object> _metadata;
 
         protected Arg()
-        {
-        }
-
-        protected Arg(IDictionary<string, bool> names)
-            : base(names)
         {
         }
 

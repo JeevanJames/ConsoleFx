@@ -17,7 +17,9 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Globalization;
+using System.Linq;
 
 namespace ConsoleFx.CmdLine
 {
@@ -27,7 +29,22 @@ namespace ConsoleFx.CmdLine
     /// </summary>
     public sealed class Options : Args<Option>
     {
-        protected override string GetDuplicateErrorMessage(string name) =>
-            string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, name);
+        public Option this[string name] => this.FirstOrDefault(item => item.HasName(name));
+
+        protected override void CheckDuplicates(Option obj, int index)
+        {
+            for (var i = 0; i < Count; i++)
+            {
+                if (i == index)
+                    continue;
+                if (ObjectsMatch(obj, this[i]))
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Messages.OptionAlreadyExists, obj.Name), nameof(obj));
+            }
+        }
+
+        private bool ObjectsMatch(Option option1, Option option2)
+        {
+            return option1.AllNames.Any(name => option2.HasName(name));
+        }
     }
 }

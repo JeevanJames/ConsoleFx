@@ -53,35 +53,11 @@
             </summary>
             <typeparam name="T">The specific type of <see cref="T:ConsoleFx.CmdLine.Arg" /> that the collection will hold.</typeparam>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Args`1.Item(System.String)">
-            <summary>
-                Gets an object from the collection given either the name.
-            </summary>
-            <param name="name">The name of the object to find.</param>
-            <returns>The object, if found. Otherwise <c>null</c>.</returns>
-        </member>
         <member name="M:ConsoleFx.CmdLine.Args`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
             <summary>
                 Helper method to add multiple args to the collection.
             </summary>
             <param name="args">The args to add.</param>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Args`1.ObjectsMatch(`0,`0)">
-            <summary>
-                Compares two <see cref="T:ConsoleFx.CmdLine.Arg" /> objects for equality. The default behavior is to check if any of their
-                names match, but deriving classes can override this behavior.
-            </summary>
-            <param name="obj1">The first <see cref="T:ConsoleFx.CmdLine.Arg" /> object to compare.</param>
-            <param name="obj2">The second <see cref="T:ConsoleFx.CmdLine.Arg" /> object to compare.</param>
-            <returns><c>true</c>, if the objects are equal, otherwise <c>false</c>.</returns>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Args`1.NamesMatch(System.String,`0)">
-            <summary>
-                Checks whether the specified object can be identified by the given name.
-            </summary>
-            <param name="name">The name to check against.</param>
-            <param name="obj">The object, whose identity to check against the name.</param>
-            <returns><c>true</c>, if the object can be identified by the given name, otherwise <c>false</c>.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLine.Args`1.InsertItem(System.Int32,`0)">
             <inheritdoc />
@@ -106,17 +82,6 @@
             <param name="obj">The object to check.</param>
             <param name="index">The index in the collection at which the object is being inserted.</param>
             <exception cref="T:System.ArgumentException">Thrown if the object is already specified in the collection.</exception>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Args`1.GetDuplicateErrorMessage(System.String)">
-            <summary>
-                Gets the error message of the exception that is thrown if a duplicate item is
-                inserted or set in the collection.
-            </summary>
-            <param name="name">
-                The name of the duplicate item that is being inserted or set in the collection,
-                usually the <c>Name</c> property.
-            </param>
-            <returns>The error message string for the exception.</returns>
         </member>
         <member name="T:ConsoleFx.CmdLine.Argument">
             <inheritdoc />
@@ -395,6 +360,21 @@
                 If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Command.HandleCommand(ConsoleFx.CmdLine.ParseResultBase)"/> method is
                 called.
             </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.AlternateNames">
+            <inheritdoc />
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Command.AllNames">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.AddName(System.String,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.HasName(System.String)">
+            <inheritdoc />
         </member>
         <member name="P:ConsoleFx.CmdLine.Command.DiscoveredCommands">
             <summary>
