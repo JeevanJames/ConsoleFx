@@ -18,17 +18,21 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
-    public enum CommonUsage
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public sealed class ArgumentAttribute : Attribute
     {
-        Flag,
-        SingleParameter,
-        SingleOccurrenceUnlimitedParameters,
-        UnlimitedOccurrencesSingleParameter,
-        UnlimitedOccurrencesAndParameters,
+        public ArgumentAttribute(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; }
+
+        public bool IsOptional { get; set; }
+
+        public byte MaxOccurences { get; set; } = 1;
     }
 }

@@ -43,7 +43,7 @@ namespace TestHarness.ConsoleProgramTest
         [Argument("name")]
         public string FirstName { get; set; }
 
-        [Option("cool"), Flag]
+        [Option("cool")]
         public bool IsCool { get; set; }
 
         public bool Verbose { get; set; }
