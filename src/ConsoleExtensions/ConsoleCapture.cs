@@ -38,7 +38,7 @@ namespace ConsoleFx.ConsoleExtensions
         public ConsoleCapture(string program, params string[] args)
             : this(program)
         {
-            if (args != null && args.Length > 0)
+            if (args?.Length > 0)
                 Args = string.Join(" ", args);
         }
 
