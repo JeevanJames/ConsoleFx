@@ -24,7 +24,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public class IntegerValidator : TypedValidator
+    public class IntegerValidator : Validator
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly long _minimumValue;

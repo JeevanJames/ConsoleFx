@@ -25,7 +25,7 @@ namespace ConsoleFx.CmdLine.Validators.Bases
     ///     Base class for validators that only have one possible type of validation failure. In this
     ///     case, the class provides a Message property with a default value that can be changed.
     /// </summary>
-    public abstract class SingleMessageValidator : TypedValidator
+    public abstract class SingleMessageValidator : Validator
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SingleMessageValidator"/> class.

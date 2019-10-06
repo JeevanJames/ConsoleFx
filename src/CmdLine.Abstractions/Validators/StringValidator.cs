@@ -23,7 +23,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public sealed class StringValidator : TypedValidator
+    public sealed class StringValidator : Validator
     {
         public StringValidator(int maxLength)
             : this(minLength: 1, maxLength)

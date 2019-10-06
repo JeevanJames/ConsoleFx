@@ -27,7 +27,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public class FileValidator : TypedValidator
+    public class FileValidator : Validator
     {
         public FileValidator(params string[] allowedExtensions)
             : this(false, allowedExtensions)

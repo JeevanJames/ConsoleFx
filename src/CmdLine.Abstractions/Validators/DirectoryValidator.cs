@@ -24,7 +24,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public class DirectoryValidator : TypedValidator
+    public class DirectoryValidator : Validator
     {
         public DirectoryValidator()
             : base(typeof(DirectoryInfo))
