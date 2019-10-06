@@ -23,17 +23,17 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public class UriValidator : SingleMessageValidator<Uri>
+    public class UriValidator : SingleMessageValidator
     {
         public UriValidator(UriKind uriKind = UriKind.RelativeOrAbsolute)
-            : base(Messages.Uri)
+            : base(typeof(Uri), Messages.Uri)
         {
             UriKind = uriKind;
         }
 
         public UriKind UriKind { get; }
 
-        protected override Uri ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             if (!Uri.TryCreate(parameterValue, UriKind, out Uri uri))
                 ValidationFailed(Message, parameterValue);

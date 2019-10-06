@@ -18,17 +18,26 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
-    public enum CommonUsage
+    public sealed class FlagAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
     {
-        Flag,
-        SingleParameter,
-        SingleOccurrenceUnlimitedParameters,
-        UnlimitedOccurrencesSingleParameter,
-        UnlimitedOccurrencesAndParameters,
+        public FlagAttribute(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("message", nameof(name));
+            Name = name;
+        }
+
+        public string Name { get; }
+
+        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
+        {
+            if (property.PropertyType != typeof(bool))
+                throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType.FullName} should be an boolean.");
+            arg.UsedAsFlag();
+        }
     }
 }

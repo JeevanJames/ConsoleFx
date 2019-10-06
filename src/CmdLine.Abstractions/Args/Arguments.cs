@@ -37,11 +37,6 @@ namespace ConsoleFx.CmdLine
             VerifyOptionalArgumentsAtEnd();
         }
 
-        //protected override string GetDuplicateErrorMessage(string name)
-        //{
-        //    return string.Format(Errors.Arguments_Duplicate_argument, name);
-        //}
-
         /// <summary>
         ///     Called whenever an argument is added or set in the collection to verify that optional arguments are
         ///     specified only after the required ones.

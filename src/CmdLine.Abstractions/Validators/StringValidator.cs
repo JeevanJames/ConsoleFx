@@ -23,7 +23,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public sealed class StringValidator : Validator<string>
+    public sealed class StringValidator : TypedValidator
     {
         public StringValidator(int maxLength)
             : this(minLength: 1, maxLength)
@@ -41,7 +41,7 @@ namespace ConsoleFx.CmdLine.Validators
             MaxLength = maxLength;
         }
 
-        protected override string ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             if (parameterValue.Length < MinLength)
                 ValidationFailed(MinLengthMessage, parameterValue, MinLength);

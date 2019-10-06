@@ -24,32 +24,32 @@ namespace ConsoleFx.CmdLine
 {
     public sealed class OptionAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
     {
-        public OptionAttribute(string name)
+        public OptionAttribute(string name, CommonOptionUsage usage = CommonOptionUsage.SingleParameter)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("message", nameof(name));
             Name = name;
+            Usage = usage;
         }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
-        public CommonUsage Usage { get; set; }
+        public CommonOptionUsage Usage { get; }
 
         void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
         {
             switch (Usage)
             {
-                case CommonUsage.Flag:
-                    arg.UsedAsFlag();
-                    break;
-                case CommonUsage.SingleParameter:
+                case CommonOptionUsage.SingleParameter:
                     arg.UsedAsSingleParameter();
                     break;
-                case CommonUsage.SingleOccurrenceUnlimitedParameters:
+                case CommonOptionUsage.SingleOccurrenceUnlimitedParameters:
                     arg.UsedAsSingleOccurrenceAndUnlimitedParameters();
                     break;
-                case CommonUsage.UnlimitedOccurrencesSingleParameter:
+                case CommonOptionUsage.UnlimitedOccurrencesSingleParameter:
                     arg.UsedAsUnlimitedOccurrencesAndSingleParameter();
                     break;
-                case CommonUsage.UnlimitedOccurrencesAndParameters:
+                case CommonOptionUsage.UnlimitedOccurrencesAndParameters:
                     arg.UsedAsUnlimitedOccurrencesAndParameters();
                     break;
             }

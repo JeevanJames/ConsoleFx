@@ -17,24 +17,13 @@ limitations under the License.
 */
 #endregion
 
-using System;
-
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class ProgramAttribute : Attribute
+    public enum CommonOptionUsage
     {
-        public ProgramAttribute(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Specify a valid program name.", nameof(name));
-            Name = name;
-        }
-
-        public string Name { get; }
-
-        public ArgStyle Style { get; set; } = ArgStyle.Unix;
-
-        public ArgGrouping Grouping { get; set; } = ArgGrouping.DoesNotMatter;
+        SingleParameter,
+        SingleOccurrenceUnlimitedParameters,
+        UnlimitedOccurrencesSingleParameter,
+        UnlimitedOccurrencesAndParameters,
     }
 }

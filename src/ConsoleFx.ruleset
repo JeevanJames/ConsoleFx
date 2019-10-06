@@ -698,7 +698,7 @@
     <Rule Id="SA1402" Action="None" _Description="File may only contain a single class" _Justification="Primary classes should be in separate files, but supporting classes should be allowed to be next to their primary classes." />
     <!-- StyleCop.CSharp.LayoutRules -->
     <Rule Id="SA1503" Action="None" _Description="Braces must not be omitted" _Justification="No braces needed for single line blocks." />
-    <Rule Id="SA1512" Action="None" _Description="A single-line comment within C# code is followed by a blank line." _Justification="This is preventing special comments like TODO, which need to be on their own line."/>
+    <Rule Id="SA1512" Action="None" _Description="A single-line comment within C# code is followed by a blank line." _Justification="This is preventing special comments like TODO, which need to be on their own line." />
     <Rule Id="SA1520" Action="None" _Description="Use braces consistently" _Justification="Brace usage justified according to block size." />
     <!-- StyleCop.CSharp.DocumentationRules -->
     <Rule Id="SA1633" Action="None" _Description="File must have header" _Justification="Nice to have, but this rule does not allow file headers in a region." />
@@ -708,6 +708,7 @@
     <!-- Major Code Smell -->
     <Rule Id="S125" Action="None" _Description="Sections of code should not be commented out" _Justification="Temporary exception to allow quick pace of development. Should be removed later." />
     <Rule Id="S1135" Action="None" _Description="Track uses of TODO tags" _Justification="TODO tags should be allowed to be committed to version control, as they indicate pending work." />
+    <Rule Id="S3376" Action="None" />
   </Rules>
   <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
     <!-- Design -->

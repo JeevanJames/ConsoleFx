@@ -25,16 +25,25 @@ namespace ConsoleFx.CmdLine.Validators.Bases
     ///     Base class for validators that only have one possible type of validation failure. In this
     ///     case, the class provides a Message property with a default value that can be changed.
     /// </summary>
-    /// <typeparam name="T">The actual type of the value being validated.</typeparam>
-    public abstract class SingleMessageValidator<T> : Validator<T>
+    public abstract class SingleMessageValidator : TypedValidator
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SingleMessageValidator{T}"/> class.
+        ///     Initializes a new instance of the <see cref="SingleMessageValidator"/> class.
         /// </summary>
         /// <param name="message">The validation failure message.</param>
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="message"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown if the <paramref name="message"/> is empty or only white spaces.</exception>
         protected SingleMessageValidator(string message)
+        {
+            if (message is null)
+                throw new ArgumentNullException(nameof(message));
+            if (message.Trim().Length == 0)
+                throw new ArgumentException("Specify a valid error message.", nameof(message));
+            Message = message;
+        }
+
+        protected SingleMessageValidator(Type expectedType, string message)
+            : base(expectedType)
         {
             if (message is null)
                 throw new ArgumentNullException(nameof(message));

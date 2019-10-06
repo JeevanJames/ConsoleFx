@@ -49,7 +49,7 @@ namespace ConsoleFx.CmdLine.Parser
         {
             if (index >= _run.Arguments.Count)
             {
-                value = default;
+                value = defaultValue;
                 return false;
             }
 
@@ -58,11 +58,11 @@ namespace ConsoleFx.CmdLine.Parser
             return TryGetArgument(matchingArgument, out value, defaultValue);
         }
 
-        private static bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value, T @default = default)
+        private static bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value, T defaultValue)
         {
             if (!matchingArgument.Assigned)
             {
-                value = @default;
+                value = defaultValue;
                 return true;
             }
 

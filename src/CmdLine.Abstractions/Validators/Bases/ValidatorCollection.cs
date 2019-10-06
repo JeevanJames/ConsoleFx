@@ -17,24 +17,14 @@ limitations under the License.
 */
 #endregion
 
-using System;
+using System.Collections.ObjectModel;
 
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine.Validators.Bases
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class ProgramAttribute : Attribute
+    /// <summary>
+    ///     Collection of validator classes.
+    /// </summary>
+    public sealed class ValidatorCollection : Collection<Validator>
     {
-        public ProgramAttribute(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Specify a valid program name.", nameof(name));
-            Name = name;
-        }
-
-        public string Name { get; }
-
-        public ArgStyle Style { get; set; } = ArgStyle.Unix;
-
-        public ArgGrouping Grouping { get; set; } = ArgGrouping.DoesNotMatter;
     }
 }

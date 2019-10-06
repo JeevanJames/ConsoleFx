@@ -28,11 +28,16 @@ namespace ConsoleFx.CmdLine.Validators
     /// <summary>
     ///     Checks whether the parameter value is 'True' or 'False'. The check is not case sensitive.
     /// </summary>
-    public class BooleanValidator : SingleMessageValidator<bool>
+    public class BooleanValidator : SingleMessageValidator
     {
         private readonly List<string> _trueStrings;
         private readonly List<string> _falseStrings;
         private readonly StringComparison _comparison;
+
+        public BooleanValidator(string message)
+            : base(typeof(bool), message)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BooleanValidator"/> class.
@@ -55,7 +60,7 @@ namespace ConsoleFx.CmdLine.Validators
         ///     is invalid, or both are the same based on the case sensitivity rules.
         /// </exception>
         public BooleanValidator(string trueString = "true", string falseString = "false", bool caseSensitive = false)
-            : base(Messages.Boolean)
+            : base(typeof(bool), Messages.Boolean)
         {
             if (trueString is null)
                 throw new ArgumentNullException(nameof(trueString));
@@ -83,7 +88,7 @@ namespace ConsoleFx.CmdLine.Validators
         }
 
         public BooleanValidator(IEnumerable<string> trueStrings, IEnumerable<string> falseStrings, bool caseSensitive = false)
-            : base(Messages.Boolean)
+            : base(typeof(bool), Messages.Boolean)
         {
             if (trueStrings is null)
                 throw new ArgumentNullException(nameof(trueStrings));
@@ -108,7 +113,7 @@ namespace ConsoleFx.CmdLine.Validators
             _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        protected override bool ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             bool isTrue = _trueStrings.Any(str => str.Equals(parameterValue, _comparison));
             if (isTrue)

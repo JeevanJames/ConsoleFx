@@ -24,13 +24,15 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public class DirectoryValidator : Validator<DirectoryInfo>
+    public class DirectoryValidator : TypedValidator
     {
         public DirectoryValidator()
+            : base(typeof(DirectoryInfo))
         {
         }
 
         public DirectoryValidator(bool shouldExist)
+            : base(typeof(DirectoryInfo))
         {
             ShouldExist = shouldExist;
         }
@@ -43,7 +45,7 @@ namespace ConsoleFx.CmdLine.Validators
 
         public string DirectoryMissingMessage => Messages.Directory_Missing;
 
-        protected override DirectoryInfo ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             try
             {
@@ -65,9 +67,10 @@ namespace ConsoleFx.CmdLine.Validators
             throw new NotSupportedException("Should not have reached here.");
         }
 
-        protected override void ValidateAsActualType(DirectoryInfo value, string parameterValue)
+        protected override void ValidateAsActualType(object value, string parameterValue)
         {
-            if (ShouldExist && !value.Exists)
+            var directory = (DirectoryInfo)value;
+            if (ShouldExist && !directory.Exists)
                 ValidationFailed(DirectoryMissingMessage, parameterValue);
         }
     }

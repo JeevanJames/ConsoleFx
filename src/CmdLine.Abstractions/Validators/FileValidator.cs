@@ -27,7 +27,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public class FileValidator : Validator<FileInfo>
+    public class FileValidator : TypedValidator
     {
         public FileValidator(params string[] allowedExtensions)
             : this(false, allowedExtensions)
@@ -35,6 +35,7 @@ namespace ConsoleFx.CmdLine.Validators
         }
 
         public FileValidator(bool shouldExist = false, IEnumerable<string> allowedExtensions = null)
+            : base(typeof(FileInfo))
         {
             ShouldExist = shouldExist;
             AllowedExtensions = allowedExtensions != null ? new List<string>(allowedExtensions) : new List<string>();
@@ -55,7 +56,7 @@ namespace ConsoleFx.CmdLine.Validators
 
         public string InvalidExtensionMessage => Messages.File_InvalidExtension;
 
-        protected override FileInfo ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             try
             {
@@ -77,14 +78,16 @@ namespace ConsoleFx.CmdLine.Validators
             throw new NotSupportedException("Should not have reached here.");
         }
 
-        protected override void ValidateAsActualType(FileInfo value, string parameterValue)
+        protected override void ValidateAsActualType(object value, string parameterValue)
         {
-            if (ShouldExist && !value.Exists)
+            var file = (FileInfo)value;
+
+            if (ShouldExist && !file.Exists)
                 ValidationFailed(FileMissingMessage, parameterValue);
 
             if (AllowedExtensions != null && AllowedExtensions.Count > 0)
             {
-                string extension = value.Extension;
+                string extension = file.Extension;
                 if (!AllowedExtensions.Any(ext => $".{ext}".Equals(extension, StringComparison.OrdinalIgnoreCase)))
                 {
                     StringBuilder allowedExtensions = AllowedExtensions.Aggregate(new StringBuilder(), (sb, ext) =>

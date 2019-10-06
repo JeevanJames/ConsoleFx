@@ -45,17 +45,6 @@ namespace CmdLine.Parser.Tests
         }
 
         [Fact]
-        public void Add_Throws_on_duplicate_arguments()
-        {
-            var arguments = new Arguments
-            {
-                new Argument(),
-            };
-
-            Should.Throw<ArgumentException>(() => arguments.Add(new Argument()));
-        }
-
-        [Fact]
         public void Add_Throws_on_optional_arguments_before_mandatory()
         {
             var arguments = new Arguments

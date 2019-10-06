@@ -1179,25 +1179,54 @@
             <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
             <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
         </member>
-        <member name="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1">
+        <member name="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator">
             <summary>
                 Base class for validators that only have one possible type of validation failure. In this
                 case, the class provides a Message property with a default value that can be changed.
             </summary>
-            <typeparam name="T">The actual type of the value being validated.</typeparam>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1.#ctor(System.String)">
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator.#ctor(System.String)">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1"/> class.
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator"/> class.
             </summary>
             <param name="message">The validation failure message.</param>
             <exception cref="T:System.ArgumentNullException">Thrown if the <paramref name="message"/> is <c>null</c>.</exception>
             <exception cref="T:System.ArgumentException">Thrown if the <paramref name="message"/> is empty or only white spaces.</exception>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator`1.Message">
+        <member name="P:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator.Message">
             <summary>
                 Gets or sets the error message to be displayed if the validation fails.
             </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Validators.Bases.TypedValidator">
+            <summary>
+                Base class for typed validators; i.e. validators that perform additional validations once the parameter value has
+                been converted to its native type.
+                This class breaks the validation into 2 parts - validation of the string parameter value and validation of the
+                converted typed value.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.TypedValidator.Validate(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.TypedValidator.ValidateAsString(System.String)">
+            <summary>
+                Validates the parameter value as a string. Converts to the actual type if the validation
+                succeeds and returns that value. This method must be overridden in derived classes.
+            </summary>
+            <param name="parameterValue">The parameter value as a string.</param>
+            <returns>The parameter value converted to its actual type.</returns>
+            <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Validators.Bases.TypedValidator.ValidateAsActualType(System.Object,System.String)">
+            <summary>
+                Once the parameter has been validated as a string, it is converted to its actual type and passed here for
+                additional validations.
+                This is useful for additional validations that can only be performed on the actual typed value.
+            </summary>
+            <param name="value">The typed parameter value.</param>
+            <param name="parameterValue">The parameter value as a string.</param>
+            <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
         </member>
         <member name="T:ConsoleFx.CmdLine.Validators.Bases.Validator">
             <summary>
@@ -1219,37 +1248,6 @@
             <param name="message">The validation error message.</param>
             <param name="parameterValue">The parameter value that caused the validation to fail.</param>
             <param name="args">Optional arguments to the message.</param>
-        </member>
-        <member name="T:ConsoleFx.CmdLine.Validators.Bases.Validator`1">
-            <summary>
-                Base class for typed validators; i.e. validators that perform additional validations once the parameter value has
-                been converted to its native type.
-                This class breaks the validation into 2 parts - validation of the string parameter value and validation of the
-                converted typed value.
-            </summary>
-            <typeparam name="T">The type of the data being validated.</typeparam>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator`1.Validate(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator`1.ValidateAsString(System.String)">
-            <summary>
-                Validates the parameter value as a string. Converts to the actual type if the validation succeeds and returns that
-                value. This method must be overridden in derived classes.
-            </summary>
-            <param name="parameterValue">The parameter value as a string.</param>
-            <returns>The parameter value converted to its actual type.</returns>
-            <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator`1.ValidateAsActualType(`0,System.String)">
-            <summary>
-                Once the parameter has been validated as a string, it is converted to its actual type and passed here for
-                additional validations.
-                This is useful for additional validations that can only be performed on the actual typed value.
-            </summary>
-            <param name="value">The typed parameter value.</param>
-            <param name="parameterValue">The parameter value as a string.</param>
-            <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
         </member>
         <member name="T:ConsoleFx.CmdLine.Validators.Bases.ValidatorCollection">
             <summary>

@@ -33,11 +33,9 @@ namespace CmdLine.Abstractions.Tests.Validators
         [InlineData("saturday")]
         public void Valid_values(string value)
         {
-            var untypedValidator = new EnumValidator(typeof(DayOfWeek));
-            var typedValidator = new EnumValidator<DayOfWeek>();
+            var validator = new EnumValidator(typeof(DayOfWeek), true);
 
-            Should.NotThrow(() => untypedValidator.Validate(value));
-            Should.NotThrow(() => typedValidator.Validate(value));
+            Should.NotThrow(() => validator.Validate(value));
         }
 
         [Theory]
@@ -45,11 +43,9 @@ namespace CmdLine.Abstractions.Tests.Validators
         [InlineData("Tuesday")]
         public void Valid_values_case_sensitive(string value)
         {
-            var untypedValidator = new EnumValidator(typeof(DayOfWeek), ignoreCase: false);
-            var typedValidator = new EnumValidator<DayOfWeek>(ignoreCase: false);
+            var validator = new EnumValidator(typeof(DayOfWeek), ignoreCase: false);
 
-            Should.NotThrow(() => untypedValidator.Validate(value));
-            Should.NotThrow(() => typedValidator.Validate(value));
+            Should.NotThrow(() => validator.Validate(value));
         }
 
         [Theory]
@@ -57,11 +53,9 @@ namespace CmdLine.Abstractions.Tests.Validators
         [InlineData("ConsoleFx")]
         public void Invalid_values(string value)
         {
-            var untypedValidator = new EnumValidator(typeof(DayOfWeek));
-            var typedValidator = new EnumValidator<DayOfWeek>();
+            var validator = new EnumValidator(typeof(DayOfWeek));
 
-            Should.Throw<ValidationException>(() => untypedValidator.Validate(value));
-            Should.Throw<ValidationException>(() => typedValidator.Validate(value));
+            Should.Throw<ValidationException>(() => validator.Validate(value));
         }
     }
 }

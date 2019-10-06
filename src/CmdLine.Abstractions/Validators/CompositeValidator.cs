@@ -28,7 +28,7 @@ namespace ConsoleFx.CmdLine.Validators
     /// <summary>
     ///     Checks if any one of the specified validators passes.
     /// </summary>
-    public class CompositeValidator : SingleMessageValidator<string>
+    public class CompositeValidator : SingleMessageValidator
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Validator[] _validators;
@@ -58,7 +58,7 @@ namespace ConsoleFx.CmdLine.Validators
         /// <param name="parameterValue">The parameter value as a string.</param>
         /// <returns>The parameter value converted to its actual type.</returns>
         /// <exception cref="ValidationException">Thrown if the validation fails.</exception>
-        protected override string ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             bool anyValidatorPassed = _validators.Any(validator =>
             {

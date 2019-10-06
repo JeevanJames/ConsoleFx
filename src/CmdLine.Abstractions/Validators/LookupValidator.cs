@@ -25,7 +25,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public sealed class LookupValidator : SingleMessageValidator<string>
+    public sealed class LookupValidator : SingleMessageValidator
     {
         private readonly List<string> _items;
 
@@ -52,7 +52,7 @@ namespace ConsoleFx.CmdLine.Validators
 
         public bool CaseSensitive { get; set; }
 
-        protected override string ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             StringComparison comparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
             if (!_items.Any(item => parameterValue.Equals(item, comparison)))

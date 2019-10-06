@@ -27,10 +27,10 @@ namespace ConsoleFx.CmdLine.Validators
     /// <summary>
     ///     Checks if a value is a valid enum.
     /// </summary>
-    public class EnumValidator : SingleMessageValidator<string>
+    public class EnumValidator : SingleMessageValidator
     {
         public EnumValidator(Type enumType, bool ignoreCase = true)
-            : base(Messages.Enum)
+            : base(enumType, Messages.Enum)
         {
             if (enumType is null)
                 throw new ArgumentNullException(nameof(enumType));
@@ -44,22 +44,13 @@ namespace ConsoleFx.CmdLine.Validators
 
         private bool IgnoreCase { get; }
 
-        protected override string ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             string[] enumNames = Enum.GetNames(EnumType);
             StringComparison comparison = IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
             if (!enumNames.Any(enumName => parameterValue.Equals(enumName, comparison)))
                 ValidationFailed(Message, parameterValue);
-            return parameterValue;
-        }
-    }
-
-    public class EnumValidator<TEnum> : EnumValidator
-        where TEnum : Enum
-    {
-        public EnumValidator(bool ignoreCase = true)
-            : base(typeof(TEnum), ignoreCase)
-        {
+            return Enum.Parse(EnumType, parameterValue, IgnoreCase);
         }
     }
 
@@ -75,7 +66,7 @@ namespace ConsoleFx.CmdLine.Validators
         public static Argument ValidateAsEnum<TEnum>(this Argument argument, bool ignoreCase = true, string message = null)
             where TEnum : Enum
         {
-            var validator = new EnumValidator<TEnum>(ignoreCase);
+            var validator = new EnumValidator(typeof(TEnum), ignoreCase);
             if (message != null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
@@ -92,7 +83,7 @@ namespace ConsoleFx.CmdLine.Validators
             string message = null)
             where TEnum : Enum
         {
-            var validator = new EnumValidator<TEnum>(ignoreCase);
+            var validator = new EnumValidator(typeof(TEnum), ignoreCase);
             if (message != null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator).TypeAs<TEnum>();

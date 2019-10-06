@@ -24,14 +24,14 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public sealed class KeyValueValidator : SingleMessageValidator<KeyValuePair<string, string>>
+    public sealed class KeyValueValidator : SingleMessageValidator
     {
         public KeyValueValidator()
-            : base(Messages.KeyValue)
+            : base(typeof(KeyValuePair<string, string>), Messages.KeyValue)
         {
         }
 
-        protected override KeyValuePair<string, string> ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             Match match = KeyValuePattern.Match(parameterValue);
             if (match.Success)

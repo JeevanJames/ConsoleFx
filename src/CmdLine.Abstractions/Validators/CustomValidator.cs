@@ -23,7 +23,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public sealed class CustomValidator : SingleMessageValidator<string>
+    public sealed class CustomValidator : SingleMessageValidator
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Func<string, bool> _validator;
@@ -41,7 +41,7 @@ namespace ConsoleFx.CmdLine.Validators
             _validator = validator;
         }
 
-        protected sealed override string ValidateAsString(string parameterValue)
+        protected sealed override object ValidateAsString(string parameterValue)
         {
             if (!_validator(parameterValue))
                 ValidationFailed(parameterValue, Message);

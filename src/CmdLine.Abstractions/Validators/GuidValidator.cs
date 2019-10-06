@@ -26,14 +26,14 @@ namespace ConsoleFx.CmdLine.Validators
     /// <summary>
     ///     Validates whether an arg value is a valid <see cref="Guid"/>.
     /// </summary>
-    public class GuidValidator : SingleMessageValidator<Guid>
+    public class GuidValidator : SingleMessageValidator
     {
         public GuidValidator()
-            : base(Messages.Guid)
+            : base(typeof(Guid), Messages.Guid)
         {
         }
 
-        protected override Guid ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             if (!Guid.TryParse(parameterValue, out Guid guid))
                 ValidationFailed(parameterValue, Message);

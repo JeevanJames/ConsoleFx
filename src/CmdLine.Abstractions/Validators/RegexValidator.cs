@@ -24,7 +24,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public class RegexValidator : SingleMessageValidator<string>
+    public class RegexValidator : SingleMessageValidator
     {
         public RegexValidator(Regex regex)
             : base(Messages.Regex)
@@ -44,7 +44,7 @@ namespace ConsoleFx.CmdLine.Validators
 
         public Regex Regex { get; }
 
-        protected override string ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             if (!Regex.IsMatch(parameterValue))
                 ValidationFailed(Message, parameterValue);

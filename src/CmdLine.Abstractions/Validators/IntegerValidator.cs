@@ -24,7 +24,7 @@ using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine.Validators
 {
-    public class IntegerValidator : Validator<long>
+    public class IntegerValidator : TypedValidator
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly long _minimumValue;
@@ -33,6 +33,7 @@ namespace ConsoleFx.CmdLine.Validators
         private readonly long _maximumValue;
 
         public IntegerValidator(long minimumValue = long.MinValue, long maximumValue = long.MaxValue)
+            : base(typeof(long))
         {
             if (minimumValue > maximumValue)
                 throw new ArgumentException("Minimum value cannot be greater than the maximum value.", nameof(minimumValue));
@@ -44,7 +45,7 @@ namespace ConsoleFx.CmdLine.Validators
 
         public string OutOfRangeMessage { get; set; } = Messages.Integer_OutOfRange;
 
-        protected override long ValidateAsString(string parameterValue)
+        protected override object ValidateAsString(string parameterValue)
         {
             if (!long.TryParse(parameterValue, out long value))
                 ValidationFailed(NotAnIntegerMessage, parameterValue);
