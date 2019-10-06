@@ -22,6 +22,11 @@ using System.Diagnostics;
 
 namespace ConsoleFx.CmdLine.Parser.Runs
 {
+    /// <summary>
+    ///     Represents the state of an option while it is being processed. This includes the number
+    ///     of occurrences, the specified parameters and the expected type for the property that holds
+    ///     the option's value.
+    /// </summary>
     [DebuggerDisplay("Option: {Option.Name} - {Value} (Assigned: {Assigned})")]
     public sealed class OptionRun : ArgumentOrOptionRun<Option>
     {

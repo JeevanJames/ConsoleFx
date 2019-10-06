@@ -52,7 +52,8 @@ namespace ConsoleFx.CmdLine.Parser.Runs
             if (typeConverter.CanConvertFrom(typeof(string)))
                 return value => typeConverter.ConvertFromString(value);
 
-            // Look for constructors on the type that can be used to instantiate an instance.
+            // Look for constructors on the type that can be used to instantiate an instance,
+            // specifically those that accept a single parameter.
             IEnumerable<ConstructorInfo> ctors = Type.GetConstructors()
                 .Where(ctor => ctor.GetParameters().Length == 1);
 

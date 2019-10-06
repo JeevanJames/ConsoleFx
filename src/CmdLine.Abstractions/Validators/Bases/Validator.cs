@@ -55,6 +55,10 @@ namespace ConsoleFx.CmdLine.Validators.Bases
         /// </summary>
         /// <param name="parameterValue">The parameter value to validate.</param>
         /// <exception cref="ValidationException">Thrown if the validation fails.</exception>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if the validation returns an object whose type does not match the
+        ///     <seealso cref="ExpectedType"/>.
+        /// </exception>
         public virtual void Validate(string parameterValue)
         {
             Value = ValidateAsString(parameterValue);
