@@ -206,6 +206,13 @@
             <param name="capacity">The initial capacity of the list.</param>
             <returns>The created <see cref="T:System.Collections.Generic.IList`1"/> instance.</returns>
         </member>
+        <member name="T:ConsoleFx.CmdLine.Parser.Runs.OptionRun">
+            <summary>
+                Represents the state of an option while it is being processed. This includes the number
+                of occurrences, the specified parameters and the expected type for the property that holds
+                the option's value.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.Parser.Runs.OptionRun.Occurrences">
             <summary>
                 Gets or sets the number of occurences of the option.

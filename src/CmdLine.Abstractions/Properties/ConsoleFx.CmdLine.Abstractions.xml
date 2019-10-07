@@ -1209,6 +1209,10 @@
             </summary>
             <param name="parameterValue">The parameter value to validate.</param>
             <exception cref="T:ConsoleFx.CmdLine.Validators.ValidationException">Thrown if the validation fails.</exception>
+            <exception cref="T:System.InvalidOperationException">
+                Thrown if the validation returns an object whose type does not match the
+                <seealso cref="P:ConsoleFx.CmdLine.Validators.Bases.Validator.ExpectedType"/>.
+            </exception>
         </member>
         <member name="M:ConsoleFx.CmdLine.Validators.Bases.Validator.ValidateAsString(System.String)">
             <summary>

@@ -24,7 +24,7 @@ using System.Linq;
 using System.Reflection;
 
 using ConsoleFx.CmdLine;
-using TestHarness.Prompter;
+
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
@@ -93,7 +93,7 @@ namespace TestHarness
             [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",
             [typeof(DeepMultiCommand.Test)]   = "Deep multi-command Console Program",
             [typeof(ProgressBarTest.Test)]    = "Progress bar",
-            [typeof(Test)]            = "Prompter",
+            [typeof(Prompter.Test)]           = "Prompter",
             [typeof(ConsoleCaptureTest.Test)] = "Console Capture",
             [typeof(Program)]                 = "Exit",
         };
