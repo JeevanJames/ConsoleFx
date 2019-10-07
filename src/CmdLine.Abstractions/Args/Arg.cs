@@ -27,13 +27,16 @@ namespace ConsoleFx.CmdLine
     ///     Base class for command-line args, such as <see cref="Option" />, <see cref="Argument" />
     ///     and <see cref="Command" />.
     ///     <para />
-    ///     This class adds support for metadata in addition to multiple names from the base class.
+    ///     This class adds support for metadata.
     /// </summary>
     public abstract class Arg : IMetadataObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Dictionary<string, object> _metadata;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Arg"/> class.
+        /// </summary>
         protected Arg()
         {
         }

@@ -29,8 +29,14 @@ namespace ConsoleFx.CmdLine
     /// </summary>
     public sealed class Options : Args<Option>
     {
+        /// <summary>
+        ///     Gets the <see cref="Option"/> with the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">The name of the option.</param>
+        /// <returns>An of the option, if found, otherwise <c>null</c>.</returns>
         public Option this[string name] => this.FirstOrDefault(item => item.HasName(name));
 
+        /// <inheritdoc />
         protected override void CheckDuplicates(Option obj, int index)
         {
             for (var i = 0; i < Count; i++)
@@ -42,6 +48,12 @@ namespace ConsoleFx.CmdLine
             }
         }
 
+        /// <summary>
+        ///     Checks whether two <see cref="Option"/> instances are the same.
+        /// </summary>
+        /// <param name="option1">The first <see cref="Option"/> instance.</param>
+        /// <param name="option2">The second <see cref="Option"/> instance.</param>
+        /// <returns><c>true</c> if the options match, otherwise <c>false</c>.</returns>
         private bool ObjectsMatch(Option option1, Option option2)
         {
             return option1.AllNames.Any(name => option2.HasName(name));

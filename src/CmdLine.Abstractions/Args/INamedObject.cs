@@ -21,6 +21,9 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Represents an object that can have one or more names.
+    /// </summary>
     public interface INamedObject
     {
         /// <summary>

@@ -17,19 +17,26 @@ limitations under the License.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ConsoleFx.CmdLine.Program
 {
-    public abstract class HelpBuilder : NamedObject
+    public abstract partial class HelpBuilder
     {
         protected HelpBuilder()
         {
         }
 
         protected HelpBuilder(IDictionary<string, bool> names)
-            : base(names)
         {
+            if (names is null)
+                throw new ArgumentNullException(nameof(names));
+            if (names.Count == 0)
+                throw new ArgumentException(Errors.Arg_No_names_specified, nameof(names));
+            foreach (KeyValuePair<string, bool> kvp in names)
+                AddName(kvp.Key, kvp.Value);
         }
 
         /// <summary>
@@ -40,6 +47,28 @@ namespace ConsoleFx.CmdLine.Program
 
         public virtual void VerifyHelp(Command command)
         {
+        }
+    }
+
+    public abstract partial class HelpBuilder : INamedObject
+    {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly NamedObjectImpl _namedObject = new NamedObjectImpl();
+
+        public string Name => ((INamedObject)_namedObject).Name;
+
+        public IEnumerable<string> AlternateNames => ((INamedObject)_namedObject).AlternateNames;
+
+        public IEnumerable<string> AllNames => ((INamedObject)_namedObject).AllNames;
+
+        public void AddName(string name, bool caseSensitive = false)
+        {
+            ((INamedObject)_namedObject).AddName(name, caseSensitive);
+        }
+
+        public bool HasName(string name)
+        {
+            return ((INamedObject)_namedObject).HasName(name);
         }
     }
 }

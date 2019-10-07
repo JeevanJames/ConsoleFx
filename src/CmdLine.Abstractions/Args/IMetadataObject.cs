@@ -19,6 +19,9 @@ limitations under the License.
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Provides the ability for an object to contain arbitrary key/value data.
+    /// </summary>
     public interface IMetadataObject
     {
         /// <summary>
