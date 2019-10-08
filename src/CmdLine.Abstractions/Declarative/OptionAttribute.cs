@@ -18,23 +18,23 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
     public sealed class OptionAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
     {
-        public OptionAttribute(string name, CommonOptionUsage usage = CommonOptionUsage.SingleParameter)
+        public OptionAttribute(params string[] names)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("message", nameof(name));
-            Name = name;
-            Usage = usage;
+            if (names is null)
+                throw new ArgumentNullException(nameof(names));
+            Names = names;
         }
 
-        public string Name { get; }
+        public string[] Names { get; }
 
-        public CommonOptionUsage Usage { get; }
+        public CommonOptionUsage Usage { get; set; }
 
         void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
         {

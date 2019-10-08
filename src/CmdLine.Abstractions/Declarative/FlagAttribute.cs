@@ -24,14 +24,14 @@ namespace ConsoleFx.CmdLine
 {
     public sealed class FlagAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
     {
-        public FlagAttribute(string name)
+        public FlagAttribute(params string[] names)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("message", nameof(name));
-            Name = name;
+            if (names is null)
+                throw new ArgumentNullException(nameof(names));
+            Names = names;
         }
 
-        public string Name { get; }
+        public string[] Names { get; }
 
         void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
         {

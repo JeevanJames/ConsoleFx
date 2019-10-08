@@ -86,16 +86,17 @@ namespace TestHarness
 
         private static readonly Dictionary<Type, string> MenuItems = new Dictionary<Type, string>
         {
-            [typeof(Parser.Test)]             = "Parser",
-            [typeof(Parser2.Test)]             = "Parser 2",
-            [typeof(ConsoleProgramTest.Test)] = "Console Program",
-            [typeof(ConsoleExtensions.Test)]  = "ConsoleEx",
-            [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",
-            [typeof(DeepMultiCommand.Test)]   = "Deep multi-command Console Program",
-            [typeof(ProgressBarTest.Test)]    = "Progress bar",
-            [typeof(Prompter.Test)]           = "Prompter",
-            [typeof(ConsoleCaptureTest.Test)] = "Console Capture",
-            [typeof(Program)]                 = "Exit",
+            [typeof(Parser.Test)]                        = "Parser",
+            [typeof(Parser2.Test)]                       = "Parser 2",
+            [typeof(ConsoleProgramTest.Test)]            = "Console Program",
+            [typeof(DeclarativeConsoleProgramTest.Test)] = "Declarative Console Program",
+            [typeof(ConsoleExtensions.Test)]             = "ConsoleEx",
+            [typeof(MultiCommandProgramTest)]            = "Multi-command Console Program",
+            [typeof(DeepMultiCommand.Test)]              = "Deep multi-command Console Program",
+            [typeof(ProgressBarTest.Test)]               = "Progress bar",
+            [typeof(Prompter.Test)]                      = "Prompter",
+            [typeof(ConsoleCaptureTest.Test)]            = "Console Capture",
+            [typeof(Program)]                            = "Exit",
         };
     }
 }

@@ -813,6 +813,7 @@
             <summary>
                 Rules for specifying an option on the command line. This includes number of occurences of
                 the option (defaults: 0 min and 1 max) and number of parameters (default: 0).
+                <para/>
                 Additional shortcut properties (<see cref="P:ConsoleFx.CmdLine.OptionUsage.ExpectedOccurrences" />,
                 <see cref="P:ConsoleFx.CmdLine.OptionUsage.ExpectedParameters" /> and <see cref="P:ConsoleFx.CmdLine.OptionUsage.Requirement" /> allow both min and max
                 values to be set for common scenarios.

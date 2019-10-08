@@ -25,12 +25,14 @@ namespace ConsoleFx.CmdLine
     /// <summary>
     ///     Rules for specifying an option on the command line. This includes number of occurences of
     ///     the option (defaults: 0 min and 1 max) and number of parameters (default: 0).
+    ///     <para/>
     ///     Additional shortcut properties (<see cref="ExpectedOccurrences" />,
     ///     <see cref="ExpectedParameters" /> and <see cref="Requirement" /> allow both min and max
     ///     values to be set for common scenarios.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     [DebuggerDisplay("{Requirement} | Parameters: {MinParameters} - {MaxParameters}")]
-    public sealed partial class OptionUsage
+    public sealed partial class OptionUsage : Attribute
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _minOccurrences = Defaults.MinOccurrences;

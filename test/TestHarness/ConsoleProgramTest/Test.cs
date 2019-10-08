@@ -48,7 +48,7 @@ namespace TestHarness.ConsoleProgramTest
 
         public bool Verbose { get; set; }
 
-        [Option("trait", CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
+        [Option("trait", Usage = CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
         public IList<string> Traits { get; set; }
 
         protected override int HandleCommand()

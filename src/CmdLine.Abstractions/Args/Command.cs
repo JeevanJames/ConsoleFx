@@ -152,8 +152,12 @@ namespace ConsoleFx.CmdLine
 
                     // Add options from the properties in this class.
                     IReadOnlyList<Option> propertyOptions = GetPropertyArgs<Option, OptionAttribute>(
-                        attr => new Option(attr.Name));
+                        attr => new Option(attr.Names));
                     _options.AddRange(propertyOptions);
+
+                    IReadOnlyList<Option> propertyFlags = GetPropertyArgs<Option, FlagAttribute>(
+                        attr => new Option(attr.Names));
+                    _options.AddRange(propertyFlags);
 
                     // Add any universal options.
                     // Universal options that apply to all commands are only specified at the root
