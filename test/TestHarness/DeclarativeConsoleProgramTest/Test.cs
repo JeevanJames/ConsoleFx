@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.IO;
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
 using ConsoleFx.CmdLine.Validators;
@@ -22,21 +23,11 @@ namespace TestHarness.DeclarativeConsoleProgramTest
     [Program("decl")]
     public sealed class Program : ConsoleProgram
     {
-        [Argument]
-        public string Project { get; set; }
-
-        [Flag("verbose", "v")]
-        public bool Verbose { get; set; }
-
-        [Option("configuration", "c", "cfg")]
-        [EnumValidator(typeof(BuildConfig))]
-        public BuildConfig Configuration { get; set; }
+        [Option("output")]
+        public DirectoryInfo OutputDir { get; set; }
 
         protected override int HandleCommand()
         {
-            PrintLine($"Project      : {Magenta}{Project}");
-            PrintLine($"Verbose      : {Magenta}{Verbose}");
-            PrintLine($"Configuration: {Magenta}{Configuration}");
             return 0;
         }
     }

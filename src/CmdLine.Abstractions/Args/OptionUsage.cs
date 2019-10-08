@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
@@ -32,7 +33,7 @@ namespace ConsoleFx.CmdLine
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     [DebuggerDisplay("{Requirement} | Parameters: {MinParameters} - {MaxParameters}")]
-    public sealed partial class OptionUsage : Attribute
+    public sealed partial class OptionUsage : Attribute, IArgApplicator<Option>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _minOccurrences = Defaults.MinOccurrences;
@@ -237,6 +238,14 @@ namespace ConsoleFx.CmdLine
 
             _minParameters = min;
             _maxParameters = max;
+        }
+
+        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
+        {
+            arg.Usage.MinOccurrences = MinOccurrences;
+            arg.Usage.MaxOccurrences = MaxOccurrences;
+            arg.Usage.MinParameters = MinParameters;
+            arg.Usage.MaxParameters = MaxParameters;
         }
 
         /// <summary>
