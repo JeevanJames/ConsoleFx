@@ -49,7 +49,7 @@ namespace TestHarness
         }
     }
 
-    [Program(nameof(MyMultiCommandProgram), Style = ArgStyle.Unix)]
+    [Program(Style = ArgStyle.Unix)]
     public sealed class MyMultiCommandProgram : ConsoleProgram
     {
         protected override IEnumerable<Arg> GetArgs()

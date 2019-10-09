@@ -37,7 +37,6 @@ namespace TestHarness.ConsoleProgramTest
         }
     }
 
-    [Program("my-program")]
     public sealed class MyProgram : ConsoleProgram
     {
         [Argument]

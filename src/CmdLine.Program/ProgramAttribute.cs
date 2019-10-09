@@ -24,14 +24,7 @@ namespace ConsoleFx.CmdLine.Program
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class ProgramAttribute : Attribute
     {
-        public ProgramAttribute(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Specify a valid program name.", nameof(name));
-            Name = name;
-        }
-
-        public string Name { get; }
+        public string Name { get; set; }
 
         public ArgStyle Style { get; set; } = ArgStyle.Unix;
 

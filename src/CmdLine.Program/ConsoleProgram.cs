@@ -49,11 +49,20 @@ namespace ConsoleFx.CmdLine.Program
         {
             ProgramAttribute programAttribute = GetType().GetCustomAttribute<ProgramAttribute>(true);
             if (programAttribute is null)
-                throw new InvalidOperationException("Default ConsoleProgram constructor can only be used if you decorate the ConsoleProgram-derived class with the Program attribute.");
-
-            AddName(programAttribute.Name);
-            _argStyle = CreateArgStyle(programAttribute.Style);
-            Grouping = programAttribute.Grouping;
+            {
+                AddName(Assembly.GetEntryAssembly().GetName().Name);
+                _argStyle = new ParserStyle.UnixArgStyle();
+                Grouping = ArgGrouping.DoesNotMatter;
+            }
+            else
+            {
+                string name = string.IsNullOrWhiteSpace(programAttribute.Name)
+                    ? Assembly.GetEntryAssembly().GetName().Name
+                    : programAttribute.Name;
+                AddName(name);
+                _argStyle = CreateArgStyle(programAttribute.Style);
+                Grouping = programAttribute.Grouping;
+            }
         }
 
         /// <summary>

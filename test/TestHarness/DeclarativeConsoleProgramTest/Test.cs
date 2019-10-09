@@ -19,7 +19,6 @@ namespace TestHarness.DeclarativeConsoleProgramTest
         }
     }
 
-    [Program("decl")]
     public sealed class Program : ConsoleProgram
     {
         [Option("output", "o", Optional = true)]
