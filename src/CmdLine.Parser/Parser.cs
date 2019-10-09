@@ -409,10 +409,10 @@ namespace ConsoleFx.CmdLine.Parser
                     {
                         string parameter = or.Parameters[i];
 
-                        IEnumerable<Validator> validatorsByIndex = or.Option.Validators.GetValidators(i);
+                        IEnumerable<IValidator> validatorsByIndex = or.Option.Validators.GetValidators(i);
                         if (validatorsByIndex != null)
                         {
-                            foreach (Validator validator in validatorsByIndex)
+                            foreach (IValidator validator in validatorsByIndex)
                                 validator.Validate(parameter);
                         }
                     }
@@ -537,7 +537,7 @@ namespace ConsoleFx.CmdLine.Parser
                 if (i < specifiedArguments.Count)
                 {
                     string argumentValue = specifiedArguments[i];
-                    foreach (Validator validator in argument.Validators)
+                    foreach (IValidator validator in argument.Validators)
                         validator.Validate(argumentValue);
 
                     argumentRun.Assigned = true;

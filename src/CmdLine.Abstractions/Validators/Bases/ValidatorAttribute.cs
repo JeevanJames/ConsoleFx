@@ -18,59 +18,37 @@ limitations under the License.
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace ConsoleFx.CmdLine.Validators.Bases
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
-    public abstract class ValidatorAttribute : Attribute, IArgApplicator<Argument>, IArgApplicator<Option>
+    public abstract class ValidatorAttribute : Attribute, IArgApplicator<Argument>, IArgApplicator<Option>, IValidator
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConstructorInfo _constructor;
+        private readonly IValidator _validatorImpl;
 
-        protected ValidatorAttribute(Type validatorType, object[] args, Type[] argTypes)
+        protected ValidatorAttribute(IValidator impl)
         {
-            if (validatorType is null)
-                throw new ArgumentNullException(nameof(validatorType));
-            if (!typeof(Validator).IsAssignableFrom(validatorType))
-                throw new ArgumentException("Specified type is not a validator.", nameof(validatorType));
-
-#if NET45
-            if (argTypes is null)
-                argTypes = new Type[0];
-            Args = args ?? new object[0];
-#else
-            if (argTypes is null)
-                argTypes = Array.Empty<Type>();
-            Args = args ?? Array.Empty<object>();
-#endif
-
-            if (argTypes.Length != Args.Length)
-                throw new ArgumentException("Number of arguments does not match number of argument types.", nameof(args));
-
-            _constructor = validatorType.GetConstructor(argTypes);
-            if (_constructor is null)
-                throw new ArgumentException($"Cannot find constructor in '{validatorType.FullName}' that matches the specified arguments.", nameof(args));
+            _validatorImpl = impl;
         }
 
-        public Type ValidatorType { get; }
+        public Type ExpectedType => _validatorImpl.ExpectedType;
 
-        public object[] Args { get; }
+        public object Value => _validatorImpl.Value;
 
-        public void Apply(Argument arg, PropertyInfo property)
+        public void Validate(string parameterValue)
         {
-            arg.Validators.Add(CreateValidator());
+            _validatorImpl.Validate(parameterValue);
         }
 
-        public void Apply(Option arg, PropertyInfo property)
+        void IArgApplicator<Argument>.Apply(Argument arg, PropertyInfo property)
         {
-            arg.Validators.Add(CreateValidator());
+            arg.Validators.Add(this);
         }
 
-        private Validator CreateValidator()
+        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
         {
-            return (Validator)_constructor.Invoke(Args);
+            arg.Validators.Add(this);
         }
     }
 }

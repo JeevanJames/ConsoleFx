@@ -17,14 +17,16 @@ limitations under the License.
 */
 #endregion
 
-using System.Collections.ObjectModel;
+using System;
 
 namespace ConsoleFx.CmdLine.Validators.Bases
 {
-    /// <summary>
-    ///     Collection of validator classes.
-    /// </summary>
-    public sealed class ValidatorCollection : Collection<IValidator>
+    public interface IValidator
     {
+        void Validate(string parameterValue);
+
+        Type ExpectedType { get; }
+
+        object Value { get; }
     }
 }

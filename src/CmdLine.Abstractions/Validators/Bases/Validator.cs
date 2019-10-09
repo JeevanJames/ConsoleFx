@@ -32,7 +32,7 @@ namespace ConsoleFx.CmdLine.Validators.Bases
     //validation. Also, consider that the conversion logic for validators and that for the option
     //could be different, leading to inconsistencies.
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
-    public abstract class Validator : Attribute
+    public abstract class Validator : Attribute, IValidator
     {
         protected Validator()
         {

@@ -721,13 +721,13 @@
                 A parameter index of -1 indicates validators for all parameters.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.OptionParameterValidators.Add(ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+        <member name="M:ConsoleFx.CmdLine.OptionParameterValidators.Add(ConsoleFx.CmdLine.Validators.Bases.IValidator[])">
             <summary>
                 Adds one or more validators that apply to all parameters.
             </summary>
             <param name="validators">Collection of parameters to add.</param>
         </member>
-        <member name="M:ConsoleFx.CmdLine.OptionParameterValidators.Add(System.Int32,ConsoleFx.CmdLine.Validators.Bases.Validator[])">
+        <member name="M:ConsoleFx.CmdLine.OptionParameterValidators.Add(System.Int32,ConsoleFx.CmdLine.Validators.Bases.IValidator[])">
             <summary>
                 Adds one or more validators that apply to the parameter at the specified parameter index.
             </summary>
