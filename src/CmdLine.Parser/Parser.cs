@@ -451,7 +451,7 @@ namespace ConsoleFx.CmdLine.Parser
                 }
             }
 
-            object GetDefaultValue(OptionRun run)
+            static object GetDefaultValue(OptionRun run)
             {
                 object defaultValue = run.Option.DefaultSetter();
 
