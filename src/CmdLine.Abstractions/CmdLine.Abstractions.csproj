@@ -48,5 +48,12 @@
   <ItemGroup>
     <Folder Include="Validators\Impls\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="7.17.0.9346">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
   
 </Project>

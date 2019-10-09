@@ -17,8 +17,6 @@ limitations under the License.
 */
 #endregion
 
-using System;
-
 using ConsoleFx.CmdLine;
 
 using Shouldly;

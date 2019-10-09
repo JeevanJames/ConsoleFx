@@ -17,8 +17,6 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.ConsoleExtensions;
-
 namespace ConsoleFx.Prompter
 {
     /// <summary>

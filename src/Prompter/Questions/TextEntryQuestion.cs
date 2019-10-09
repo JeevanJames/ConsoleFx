@@ -17,8 +17,6 @@ limitations under the License.
 */
 #endregion
 
-using ConsoleFx.ConsoleExtensions;
-
 namespace ConsoleFx.Prompter.Questions
 {
     public abstract class TextEntryQuestion<TValue> : Question<string, TValue>

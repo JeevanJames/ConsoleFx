@@ -9,11 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ConsoleExtensions\ConsoleExtensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="7.17.0.9346">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
