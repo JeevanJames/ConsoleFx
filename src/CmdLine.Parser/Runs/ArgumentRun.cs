@@ -21,7 +21,7 @@ using System.Diagnostics;
 
 namespace ConsoleFx.CmdLine.Parser.Runs
 {
-    [DebuggerDisplay("Argument: {Argument.Name} (Assigned = {Assigned})")]
+    [DebuggerDisplay("Argument: Assigned = {Assigned}")]
     internal sealed class ArgumentRun : ArgumentOrOptionRun<Argument>
     {
         internal ArgumentRun(Argument argument)

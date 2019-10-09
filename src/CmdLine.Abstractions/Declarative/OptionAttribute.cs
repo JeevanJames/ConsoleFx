@@ -35,21 +35,23 @@ namespace ConsoleFx.CmdLine
 
         public CommonOptionUsage Usage { get; set; }
 
+        public bool Optional { get; set; }
+
         void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
         {
             switch (Usage)
             {
                 case CommonOptionUsage.SingleParameter:
-                    arg.UsedAsSingleParameter();
+                    arg.UsedAsSingleParameter(Optional);
                     break;
                 case CommonOptionUsage.SingleOccurrenceUnlimitedParameters:
-                    arg.UsedAsSingleOccurrenceAndUnlimitedParameters();
+                    arg.UsedAsSingleOccurrenceAndUnlimitedParameters(Optional);
                     break;
                 case CommonOptionUsage.UnlimitedOccurrencesSingleParameter:
-                    arg.UsedAsUnlimitedOccurrencesAndSingleParameter();
+                    arg.UsedAsUnlimitedOccurrencesAndSingleParameter(Optional);
                     break;
                 case CommonOptionUsage.UnlimitedOccurrencesAndParameters:
-                    arg.UsedAsUnlimitedOccurrencesAndParameters();
+                    arg.UsedAsUnlimitedOccurrencesAndParameters(Optional);
                     break;
             }
 

@@ -444,6 +444,9 @@ namespace ConsoleFx.CmdLine.Parser
                         case OptionValueType.Flag:
                             or.Value = false;
                             break;
+                        default:
+                            or.Assigned = false;
+                            break;
                     }
                 }
             }

@@ -26,7 +26,7 @@ namespace ConsoleFx.CmdLine
     {
         public int Order { get; set; }
 
-        public bool IsOptional { get; set; }
+        public bool Optional { get; set; }
 
         public byte MaxOccurences { get; set; } = 1;
 

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
-using ConsoleFx.CmdLine.Validators;
+
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
@@ -23,11 +22,16 @@ namespace TestHarness.DeclarativeConsoleProgramTest
     [Program("decl")]
     public sealed class Program : ConsoleProgram
     {
-        [Option("output")]
-        public DirectoryInfo OutputDir { get; set; }
+        [Option("output", "o", Optional = true)]
+        public DirectoryInfo OutputDir { get; set; } = new DirectoryInfo(@"D:\Temp");
+
+        [Argument(Optional = true)]
+        public string FirstName { get; set; } = "Jeevan";
 
         protected override int HandleCommand()
         {
+            PrintLine(FirstName);
+            PrintLine(OutputDir?.FullName ?? "<No directory specified>");
             return 0;
         }
     }

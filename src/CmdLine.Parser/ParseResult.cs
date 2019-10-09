@@ -45,25 +45,25 @@ namespace ConsoleFx.CmdLine.Parser
                 .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.Value);
         }
 
-        public override bool TryGetArgument<T>(int index, out T value, T defaultValue = default)
+        public override bool TryGetArgument<T>(int index, out T value)
         {
             if (index >= _run.Arguments.Count)
             {
-                value = defaultValue;
+                value = default;
                 return false;
             }
 
             ArgumentRun matchingArgument = _run.Arguments[index];
 
-            return TryGetArgument(matchingArgument, out value, defaultValue);
+            return TryGetArgument(matchingArgument, out value);
         }
 
-        private static bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value, T defaultValue)
+        private static bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value)
         {
             if (!matchingArgument.Assigned)
             {
-                value = defaultValue;
-                return true;
+                value = default;
+                return false;
             }
 
             object resolvedValue = matchingArgument.Value;
@@ -78,7 +78,7 @@ namespace ConsoleFx.CmdLine.Parser
             return true;
         }
 
-        public override bool TryGetOption<T>(string name, out T value, T defaultValue = default)
+        public override bool TryGetOption<T>(string name, out T value)
         {
             OptionRun matchingOption = _run.Options.FirstOrDefault(r => r.Option.HasName(name));
             if (matchingOption is null)
@@ -89,8 +89,14 @@ namespace ConsoleFx.CmdLine.Parser
 
             if (matchingOption.Occurrences == 0)
             {
-                value = matchingOption.Assigned ? (T)matchingOption.Value : defaultValue;
-                return true;
+                if (matchingOption.Option.DefaultSetter != null)
+                {
+                    value = (T)matchingOption.Option.DefaultSetter();
+                    return true;
+                }
+
+                value = default;
+                return false;
             }
 
             object resolvedValue = matchingOption.Value;
@@ -103,13 +109,6 @@ namespace ConsoleFx.CmdLine.Parser
 
             value = (T)resolvedValue;
             return true;
-        }
-
-        public override bool TryGetOptions<T>(string name, out IReadOnlyList<T> values)
-        {
-            bool found = TryGetOption(name, out List<T> list, new List<T>(0));
-            values = found ? list : default;
-            return found;
         }
     }
 }
