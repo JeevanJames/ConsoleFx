@@ -32,7 +32,8 @@ namespace ConsoleFx.CmdLine
     public abstract class Arg : IMetadataObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Dictionary<string, object> _metadata;
+        private readonly Lazy<Dictionary<string, object>> _metadata = new Lazy<Dictionary<string, object>>(
+            () => new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase));
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Arg"/> class.
@@ -51,20 +52,16 @@ namespace ConsoleFx.CmdLine
         /// <inheritdoc />
         T IMetadataObject.Get<T>(string name)
         {
-            if (_metadata is null)
-                return default;
-            return _metadata.TryGetValue(name, out var result) ? (T)result : default;
+            return _metadata.Value.TryGetValue(name, out var result) ? (T)result : default;
         }
 
         /// <inheritdoc />
         void IMetadataObject.Set<T>(string name, T value)
         {
-            if (_metadata is null)
-                _metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            if (_metadata.ContainsKey(name))
-                _metadata[name] = value;
+            if (_metadata.Value.ContainsKey(name))
+                _metadata.Value[name] = value;
             else
-                _metadata.Add(name, value);
+                _metadata.Value.Add(name, value);
         }
     }
 }
