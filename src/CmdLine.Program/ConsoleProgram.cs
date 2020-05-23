@@ -220,6 +220,43 @@ namespace ConsoleFx.CmdLine.Program
             return RunAsync(Environment.GetCommandLineArgs().Skip(1));
         }
 
+        public async Task<int> RunDebugAsync(string prompt = "Enter args:",
+            Func<bool> condition = null,
+            Func<ConsoleProgram, Task<int>> defaultBehavior = null)
+        {
+            if (condition is null)
+            {
+                condition = () =>
+                {
+                    string promptArgs = Environment.GetEnvironmentVariable("PromptArgs");
+                    return string.Equals(promptArgs, true.ToString(), StringComparison.OrdinalIgnoreCase);
+                };
+            }
+
+            if (defaultBehavior is null)
+                defaultBehavior = async (program) => await program.RunWithCommandLineArgsAsync();
+
+            if (!condition())
+                return await defaultBehavior(this).ConfigureAwait(false);
+
+            if (prompt is null)
+                prompt = "Enter args:";
+
+            Console.Write($"{prompt} {Name} ");
+            string args = Console.ReadLine();
+            while (!string.IsNullOrEmpty(args))
+            {
+                IEnumerable<string> tokens = Parser.Parser.Tokenize(args);
+                await RunAsync(tokens);
+
+                Console.WriteLine();
+                Console.Write($"{prompt} {Name} ");
+                args = Console.ReadLine();
+            }
+
+            return 0;
+        }
+
         /// <summary>
         ///     Add help options to the command as universal options. These options will be added to
         ///     all commands.
