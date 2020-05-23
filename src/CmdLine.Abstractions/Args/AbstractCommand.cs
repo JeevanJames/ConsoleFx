@@ -68,7 +68,8 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <inheritdoc />
-        protected sealed override string PerformCustomValidation(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
+        protected sealed override string PerformCustomValidation(IReadOnlyList<object> arguments,
+            IReadOnlyDictionary<string, object> options)
         {
             return base.PerformCustomValidation(arguments, options);
         }

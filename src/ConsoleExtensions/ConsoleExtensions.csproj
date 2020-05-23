@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>ConsoleFx.ConsoleExtensions</AssemblyName>
-    <RootNamespace>ConsoleFx.ConsoleExtensions</RootNamespace>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
     <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
     <Description>$(ProductDescription)The ConsoleFx.ConsoleExtensions package provides enhancements to the Console class.</Description>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789.`))' == 'net'">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 

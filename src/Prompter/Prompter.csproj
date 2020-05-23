@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>ConsoleFx.Prompter</AssemblyName>
-    <RootNamespace>ConsoleFx.Prompter</RootNamespace>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
     <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
     <Description>$(ProductDescription)The ConsoleFx.Prompter package provides support for creating interactive experiences on the command-line.</Description>
   </PropertyGroup>

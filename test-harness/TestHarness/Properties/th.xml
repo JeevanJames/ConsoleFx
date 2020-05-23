@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>th</name>
+    </assembly>
+    <members>
+        <member name="M:TestHarness.MultiRepoCommand.GetArgs">
+            <inheritdoc />
+        </member>
+        <member name="M:TestHarness.MultiRepoCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

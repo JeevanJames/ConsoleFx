@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>ConsoleFx.Art</AssemblyName>
-    <RootNamespace>ConsoleFx.Art</RootNamespace>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
     <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
     <Description>$(ProductDescription)The ConsoleFx.Art package provides support for rendering ASCII art on the console.</Description>
   </PropertyGroup>

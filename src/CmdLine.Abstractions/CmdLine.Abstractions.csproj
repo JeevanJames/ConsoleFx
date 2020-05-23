@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>ConsoleFx.CmdLine.Abstractions</AssemblyName>
     <RootNamespace>ConsoleFx.CmdLine</RootNamespace>
     <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile> 
@@ -41,7 +40,7 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789.`))' == 'net'">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
