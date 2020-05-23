@@ -17,10 +17,22 @@ limitations under the License.
 */
 #endregion
 
+using System;
+using System.Threading.Tasks;
+
 namespace TestHarness
 {
     internal abstract class TestBase
     {
-        internal abstract void Run();
+        internal virtual Task RunAsync()
+        {
+            Run();
+            return Task.CompletedTask;
+        }
+
+        internal virtual void Run()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

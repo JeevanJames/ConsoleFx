@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
@@ -10,12 +11,12 @@ namespace TestHarness.DeclarativeConsoleProgramTest
 {
     internal sealed class Test : TestBase
     {
-        internal override void Run()
+        internal override async Task RunAsync()
         {
             string args = Prompt($"{Magenta}Enter args: ");
             var tokens = ConsoleFx.CmdLine.Parser.Parser.Tokenize(args);
             var program = new Program();
-            program.Run(tokens);
+            await program.RunAsync(tokens);
         }
     }
 

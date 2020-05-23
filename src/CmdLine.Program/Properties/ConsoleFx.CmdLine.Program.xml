@@ -45,7 +45,7 @@
                 parsing and executing the application.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.Run(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.RunAsync(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
                 Runs the console program after parsing the specified <paramref name="args"/>.
             </summary>
@@ -54,7 +54,7 @@
                 The numeric code that represents the result of the console program execution.
             </returns>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.Run(System.String[])">
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.RunAsync(System.String[])">
             <summary>
                 Runs the console program after parsing the specified <paramref name="args"/>.
             </summary>
@@ -63,7 +63,7 @@
                 The numeric code that represents the result of the console program execution.
             </returns>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.RunWithCommandLineArgs">
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.RunWithCommandLineArgsAsync">
             <summary>
                 Runs the console program after parsing the command line args.
             </summary>

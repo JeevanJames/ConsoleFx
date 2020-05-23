@@ -61,7 +61,7 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <inheritdoc />
-        protected sealed override int HandleCommand(IParseResult parseResult)
+        protected sealed override int HandleCommand()
         {
             DisplayHelp(this);
             return 0;

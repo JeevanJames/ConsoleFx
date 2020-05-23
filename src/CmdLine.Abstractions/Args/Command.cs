@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ConsoleFx.CmdLine
 {
@@ -41,7 +42,7 @@ namespace ConsoleFx.CmdLine
         private CommandCustomValidator _customValidator;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Func<IParseResult, int> _handler;
+        private Func<IParseResult, Task<int>> _handler;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Command" /> class.
@@ -318,18 +319,23 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets or sets the delegate to call if the parsed args match this command.
         ///     <para/>
-        ///     If not assigned, the virtual <see cref="HandleCommand(IParseResult)"/> method is
+        ///     If not assigned, the virtual <see cref="HandleCommandAsync(IParseResult)"/> method is
         ///     called.
         /// </summary>
-        public Func<IParseResult, int> Handler
+        public Func<IParseResult, Task<int>> Handler
         {
-            get => _handler ?? HandleCommand;
+            get => _handler ?? HandleCommandAsync;
             set => _handler = value;
         }
 
-        protected virtual int HandleCommand(IParseResult parseResult)
+        protected virtual Task<int> HandleCommandAsync(IParseResult parseResult)
         {
-            return HandleCommand();
+            return HandleCommandAsync();
+        }
+
+        protected virtual Task<int> HandleCommandAsync()
+        {
+            return Task.FromResult(HandleCommand());
         }
 
         protected virtual int HandleCommand()

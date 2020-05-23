@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine.Parser;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
@@ -121,7 +122,7 @@ namespace ConsoleFx.CmdLine.Program
         /// <returns>
         ///     The numeric code that represents the result of the console program execution.
         /// </returns>
-        public int Run(IEnumerable<string> args = null)
+        public async Task<int> RunAsync(IEnumerable<string> args = null)
         {
             if (args is null)
                 args = new string[0];
@@ -161,7 +162,7 @@ namespace ConsoleFx.CmdLine.Program
                     attribute.BeforeHandler(parseResult.Command);
 
                 // Execute the command handler.
-                return parseResult.Command.Handler(parseResult);
+                return await parseResult.Command.Handler(parseResult);
             }
             catch (Exception ex)
             {
@@ -183,7 +184,7 @@ namespace ConsoleFx.CmdLine.Program
 
                 // If the attributes have returned an error code, use that, otherwise use the error
                 // code returned from the error handler.
-                return attributeErrorCode.GetValueOrDefault(errorCode);
+                return attributeErrorCode ?? errorCode;
             }
             finally
             {
@@ -203,9 +204,9 @@ namespace ConsoleFx.CmdLine.Program
         /// <returns>
         ///     The numeric code that represents the result of the console program execution.
         /// </returns>
-        public int Run(params string[] args)
+        public Task<int> RunAsync(params string[] args)
         {
-            return Run((IEnumerable<string>)args);
+            return RunAsync((IEnumerable<string>)args);
         }
 
         /// <summary>
@@ -214,9 +215,9 @@ namespace ConsoleFx.CmdLine.Program
         /// <returns>
         ///     The numeric code that represents the result of the console program execution.
         /// </returns>
-        public int RunWithCommandLineArgs()
+        public Task<int> RunWithCommandLineArgsAsync()
         {
-            return Run(Environment.GetCommandLineArgs().Skip(1));
+            return RunAsync(Environment.GetCommandLineArgs().Skip(1));
         }
 
         /// <summary>

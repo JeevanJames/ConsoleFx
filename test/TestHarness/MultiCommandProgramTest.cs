@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
@@ -32,7 +33,7 @@ namespace TestHarness
 {
     internal sealed class MultiCommandProgramTest : TestBase
     {
-        internal override void Run()
+        internal override async Task RunAsync()
         {
             var program = new MyMultiCommandProgram();
             program.HelpBuilder = new DefaultColorHelpBuilder("help", "h");
@@ -41,7 +42,7 @@ namespace TestHarness
             while (!string.IsNullOrWhiteSpace(argsStr))
             {
                 string[] args = argsStr.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                program.Run(args);
+                await program.RunAsync(args);
 
                 PrintBlank();
                 argsStr = Prompt($"{DkBlue.BgWhite}Enter args: ");

@@ -19,10 +19,11 @@ limitations under the License.
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Validators;
 using ConsoleFx.CmdLine.Program;
+using ConsoleFx.CmdLine.Validators;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
@@ -31,10 +32,10 @@ namespace TestHarness.Parser2
 {
     internal sealed class Test : TestBase
     {
-        internal override void Run()
+        internal override async Task RunAsync()
         {
             var program = new SyncDirProgram();
-            program.Run(new[] { @"D:\Temp", @"D:\Steam", @"D:\Tools", "--exclude-dir", "Steam" });
+            await program.RunAsync(new[] { @"D:\Temp", @"D:\Steam", @"D:\Tools", "--exclude-dir", "Steam" });
         }
     }
 

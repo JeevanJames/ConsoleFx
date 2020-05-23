@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
@@ -28,11 +29,11 @@ namespace TestHarness.DeepMultiCommand
 {
     internal sealed class Test : TestBase
     {
-        internal override void Run()
+        internal override async Task RunAsync()
         {
             var program = new MyProgram();
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            program.Run("vcs", "git", "remote", "add", "https:/github.com/JeevanJames/Basics.git");
+            await program.RunAsync("vcs", "git", "remote", "add", "https:/github.com/JeevanJames/Basics.git");
         }
     }
 

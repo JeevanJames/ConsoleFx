@@ -19,6 +19,8 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
@@ -27,12 +29,12 @@ namespace TestHarness.ConsoleProgramTest
 {
     internal sealed class Test : TestBase
     {
-        internal override void Run()
+        internal override async Task RunAsync()
         {
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
-            int exitCode = program.Run("Jeevan", "-v", "--trait", "Handsome", "--trait", "Awesome");
+            int exitCode = await program.RunAsync("Jeevan", "-v", "--trait", "Handsome", "--trait", "Awesome");
             Console.WriteLine($"Exit code: {exitCode}");
         }
     }
