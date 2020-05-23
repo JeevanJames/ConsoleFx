@@ -41,7 +41,7 @@ namespace ConsoleFx.CmdLine
         private CommandCustomValidator _customValidator;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Func<ParseResultBase, int> _handler;
+        private Func<IParseResult, int> _handler;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Command" /> class.
@@ -318,16 +318,16 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets or sets the delegate to call if the parsed args match this command.
         ///     <para/>
-        ///     If not assigned, the virtual <see cref="HandleCommand(ParseResultBase)"/> method is
+        ///     If not assigned, the virtual <see cref="HandleCommand(IParseResult)"/> method is
         ///     called.
         /// </summary>
-        public Func<ParseResultBase, int> Handler
+        public Func<IParseResult, int> Handler
         {
             get => _handler ?? HandleCommand;
             set => _handler = value;
         }
 
-        protected virtual int HandleCommand(ParseResultBase parseResult)
+        protected virtual int HandleCommand(IParseResult parseResult)
         {
             return HandleCommand();
         }

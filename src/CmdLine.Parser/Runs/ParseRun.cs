@@ -30,9 +30,9 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         /// <summary>
         ///     Gets all specified commands.
         ///     <para />
-        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="Commands"/> collection
-        ///     here, because we want to avoid the duplicate checks, as commands at different levels
-        ///     can have the same name.
+        ///     Note: We use a <see cref="List{T}" /> instead of the <see cref="CmdLine.Commands"/>
+        ///     collection here, because we want to avoid the duplicate checks, as commands at different
+        ///     levels can have the same name.
         /// </summary>
         internal List<Command> Commands { get; } = new List<Command>();
 

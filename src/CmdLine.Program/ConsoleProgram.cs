@@ -248,7 +248,7 @@ namespace ConsoleFx.CmdLine.Program
             throw new NotSupportedException($"Unsupported argument style: '{argStyle}'.");
         }
 
-        private static void AssignOptionProperties(ParseResultBase parseResult, Options args)
+        private static void AssignOptionProperties(IParseResult parseResult, Options args)
         {
             Type type = parseResult.Command.GetType();
 
@@ -270,7 +270,7 @@ namespace ConsoleFx.CmdLine.Program
             }
         }
 
-        private static void AssignArgumentProperties(ParseResultBase parseResult, Arguments arguments)
+        private static void AssignArgumentProperties(IParseResult parseResult, Arguments arguments)
         {
             Type type = parseResult.Command.GetType();
 

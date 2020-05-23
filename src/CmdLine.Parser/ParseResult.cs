@@ -29,7 +29,7 @@ namespace ConsoleFx.CmdLine.Parser
     /// <summary>
     ///     Represents the results of parsing a set of arguments.
     /// </summary>
-    public sealed class ParseResult : ParseResultBase
+    public sealed class ParseResult : IParseResult
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ParseRun _run;
@@ -45,7 +45,19 @@ namespace ConsoleFx.CmdLine.Parser
                 .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.Value);
         }
 
-        public override bool TryGetArgument<T>(int index, out T value)
+        public Command Command { get; }
+
+        /// <summary>
+        ///     Gets the list of specified command line arguments.
+        /// </summary>
+        public IReadOnlyList<object> Arguments { get; }
+
+        /// <summary>
+        ///     Gets the list of specified command line options.
+        /// </summary>
+        public IReadOnlyDictionary<string, object> Options { get; }
+
+        public bool TryGetArgument<T>(int index, out T value)
         {
             if (index >= _run.Arguments.Count)
             {
@@ -78,7 +90,7 @@ namespace ConsoleFx.CmdLine.Parser
             return true;
         }
 
-        public override bool TryGetOption<T>(string name, out T value)
+        public bool TryGetOption<T>(string name, out T value)
         {
             OptionRun matchingOption = _run.Options.FirstOrDefault(r => r.Option.HasName(name));
             if (matchingOption is null)

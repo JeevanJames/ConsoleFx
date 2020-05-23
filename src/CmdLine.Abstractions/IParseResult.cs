@@ -18,27 +18,25 @@ limitations under the License.
 #endregion
 
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace ConsoleFx.CmdLine
 {
-    [DebuggerDisplay("Command: {Command.Name}")]
-    public abstract class ParseResultBase
+    public interface IParseResult
     {
-        public Command Command { get; protected set; }
+        Command Command { get; }
 
         /// <summary>
-        ///     Gets or sets the list of specified command line arguments.
+        ///     Gets the list of specified command line arguments.
         /// </summary>
-        public IReadOnlyList<object> Arguments { get; protected set; }
+        IReadOnlyList<object> Arguments { get; }
 
         /// <summary>
-        ///     Gets or sets the list of specified command line options.
+        ///     Gets the list of specified command line options.
         /// </summary>
-        public IReadOnlyDictionary<string, object> Options { get; protected set; }
+        IReadOnlyDictionary<string, object> Options { get; }
 
-        public abstract bool TryGetArgument<T>(int index, out T value);
+        bool TryGetArgument<T>(int index, out T value);
 
-        public abstract bool TryGetOption<T>(string name, out T value);
+        bool TryGetOption<T>(string name, out T value);
     }
 }

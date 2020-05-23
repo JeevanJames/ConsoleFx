@@ -175,6 +175,16 @@
                 Represents the results of parsing a set of arguments.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.Parser.ParseResult.Arguments">
+            <summary>
+                Gets the list of specified command line arguments.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.Parser.ParseResult.Options">
+            <summary>
+                Gets the list of specified command line options.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.Parser.Runs.ArgumentOrOptionRun`1.Type">
             <summary>
                 Gets the resolved type of the arg.
@@ -228,9 +238,9 @@
             <summary>
                 Gets all specified commands.
                 <para />
-                Note: We use a <see cref="T:System.Collections.Generic.List`1" /> instead of the <see cref="P:ConsoleFx.CmdLine.Parser.Runs.ParseRun.Commands"/> collection
-                here, because we want to avoid the duplicate checks, as commands at different levels
-                can have the same name.
+                Note: We use a <see cref="T:System.Collections.Generic.List`1" /> instead of the <see cref="T:ConsoleFx.CmdLine.Commands"/>
+                collection here, because we want to avoid the duplicate checks, as commands at different
+                levels can have the same name.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Parser.Runs.ParseRun.Arguments">

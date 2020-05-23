@@ -54,7 +54,7 @@
         <member name="M:ConsoleFx.CmdLine.AbstractCommand.GetArgs">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.AbstractCommand.HandleCommand(ConsoleFx.CmdLine.ParseResultBase)">
+        <member name="M:ConsoleFx.CmdLine.AbstractCommand.HandleCommand(ConsoleFx.CmdLine.IParseResult)">
             <inheritdoc />
         </member>
         <member name="M:ConsoleFx.CmdLine.AbstractCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
@@ -396,7 +396,7 @@
             <summary>
                 Gets or sets the delegate to call if the parsed args match this command.
                 <para/>
-                If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Command.HandleCommand(ConsoleFx.CmdLine.ParseResultBase)"/> method is
+                If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Command.HandleCommand(ConsoleFx.CmdLine.IParseResult)"/> method is
                 called.
             </summary>
         </member>
@@ -1043,6 +1043,16 @@
               Looks up a localized string similar to Specify at least one validator..
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.IParseResult.Arguments">
+            <summary>
+                Gets the list of specified command line arguments.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.IParseResult.Options">
+            <summary>
+                Gets the list of specified command line options.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Messages">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -1146,16 +1156,6 @@
             <param name="option">The <see cref="T:ConsoleFx.CmdLine.Option"/> instance.</param>
             <param name="optional">If <c>true</c>, then the option does not need to be specified.</param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.ParseResultBase.Arguments">
-            <summary>
-                Gets or sets the list of specified command line arguments.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.CmdLine.ParseResultBase.Options">
-            <summary>
-                Gets or sets the list of specified command line options.
-            </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.ParserException.ErrorCode">
             <summary>
