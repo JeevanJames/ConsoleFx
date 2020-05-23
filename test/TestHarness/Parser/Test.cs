@@ -83,8 +83,7 @@ namespace TestHarness.Parser
                     "-m=def",
                     "--kvp", "key=value",
                     "--",
-                    "node", "--version"
-                );
+                    "node", "--version");
 
                 foreach (object arg in result.Arguments)
                     Console.WriteLine(arg?.ToString() ?? "<value not specified>");

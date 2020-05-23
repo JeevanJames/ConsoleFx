@@ -28,11 +28,11 @@ namespace TestHarness.Prompter
 {
     internal sealed class Test : TestBase
     {
-        private const string NameInstructions1 = @"We need your name to address you for the rest of the questions.";
-        private readonly string NameInstructions2 = $@"You have {Red.BgWhite}our guarantee{Reset.BgReset} that we will keep your details private.";
-        private const string NameInstructions3 = @"Please trust us.";
+        private static readonly string NameInstructions1 = "We need your name to address you for the rest of the questions.";
+        private static readonly string NameInstructions2 = $"You have {Red.BgWhite}our guarantee{Reset.BgReset} that we will keep your details private.";
+        private static readonly string NameInstructions3 = "Please trust us.";
 
-        private const string PasswordInstructions = @"We need your password to log into your bank account and steal all your money. Make sure to type it in correctly.";
+        private static readonly string PasswordInstructions = "We need your password to log into your bank account and steal all your money. Make sure to type it in correctly.";
 
         internal override void Run()
         {

@@ -30,28 +30,28 @@ namespace TestHarness.ProgressBarTest
         {
             ProgressBar simple = ConsoleEx.ProgressBar(new ProgressBarSpec
             {
-                Format = "Default progress bar [<<bar>>] <<value>>/<<max>>"
+                Format = "Default progress bar [<<bar>>] <<value>>/<<max>>",
             }, style: ProgressBarStyle.Default);
 
             ConsoleEx.PrintBlank();
 
             ProgressBar dots = ConsoleEx.ProgressBar(new ProgressBarSpec
             {
-                Format = "Dots progress bar [<<bar>>] <<percentage>> | <<status>>"
+                Format = "Dots progress bar [<<bar>>] <<percentage>> | <<status>>",
             }, style: ProgressBarStyle.Dots.CompleteForeColor(CColor.Green));
 
             ConsoleEx.PrintBlank();
 
             ProgressBar blocks = ConsoleEx.ProgressBar(new ProgressBarSpec
             {
-                Format = "<<percentage>>% :: <<status>> :: Blocks progress bar [<<bar>>]"
+                Format = "<<percentage>>% :: <<status>> :: Blocks progress bar [<<bar>>]",
             }, style: ProgressBarStyle.Block.CompleteForeColor(CColor.Green).IncompleteBackColor(CColor.Red));
 
             ConsoleEx.PrintBlank();
 
             ProgressBar lines = ConsoleEx.ProgressBar(new ProgressBarSpec
             {
-                Format = "Lines progress bar [<<bar>>] -- <<status>>"
+                Format = "Lines progress bar [<<bar>>] -- <<status>>",
             }, style: ProgressBarStyle.Lines
                 .CompleteForeColor(CColor.Green)
                 .CompleteBackColor(CColor.White)

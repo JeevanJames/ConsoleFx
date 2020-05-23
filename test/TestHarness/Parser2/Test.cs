@@ -58,6 +58,7 @@ namespace TestHarness.Parser2
                 foreach (var dir in ExcludeDirs)
                     PrintLine($"    {Black.BgYellow}{dir}");
             }
+
             return 0;
         }
 
@@ -84,13 +85,6 @@ namespace TestHarness.Parser2
                 .UsedAsUnlimitedOccurrencesAndSingleParameter(optional: true);
             yield return new Option("top-level-only", "t")
                 .UsedAsFlag(optional: true);
-        }
-
-        protected override string PerformCustomValidation(IReadOnlyList<object> arguments, IReadOnlyDictionary<string, object> options)
-        {
-            //if (options.TryGetValue("exclude-dir", out var _) && options.TryGetValue("top-level-only", out var _))
-            //    return $"exclude-dir and top-level-only options cannot be specified together.";
-            return base.PerformCustomValidation(arguments, options);
         }
     }
 }

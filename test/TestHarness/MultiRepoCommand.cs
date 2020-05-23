@@ -26,7 +26,6 @@ namespace TestHarness
 {
     public class MultiRepoCommand : Command
     {
-        /// <inheritdoc />
         public MultiRepoCommand(params string[] names)
             : base(names)
         {

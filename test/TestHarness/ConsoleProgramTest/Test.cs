@@ -62,6 +62,7 @@ namespace TestHarness.ConsoleProgramTest
             {
                 Console.WriteLine($"    {trait}");
             }
+
             return 0;
         }
 
