@@ -68,7 +68,7 @@ namespace ConsoleFx.CmdLine.Parser
         /// </summary>
         /// <param name="tokens">Token strings to parse.</param>
         /// <returns>A <see cref="ParseResult" /> instance.</returns>
-        public ParseResult Parse(params string[] tokens)
+        public IParseResult Parse(params string[] tokens)
         {
             return Parse((IEnumerable<string>)tokens);
         }
@@ -78,7 +78,7 @@ namespace ConsoleFx.CmdLine.Parser
         /// </summary>
         /// <param name="tokens">Token strings to parse.</param>
         /// <returns>A <see cref="ParseResult" /> instance.</returns>
-        public ParseResult Parse(IEnumerable<string> tokens)
+        public IParseResult Parse(IEnumerable<string> tokens)
         {
             DebugOutput.Write("Tokens passed", tokens);
 

@@ -45,6 +45,11 @@ namespace ConsoleFx.CmdLine.Program
         /// <param name="command">The <see cref="Command"/> for which to display help.</param>
         public abstract void DisplayHelp(Command command);
 
+        /// <summary>
+        ///     Derived help builders can override this method to verify that they have all the
+        ///     necessary information from the <see cref="Command"/> to display help.
+        /// </summary>
+        /// <param name="command">The <see cref="Command"/> to verify.</param>
         public virtual void VerifyHelp(Command command)
         {
         }

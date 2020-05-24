@@ -45,7 +45,7 @@ namespace CmdLine.Parser.Tests
         [Theory, MemberData(nameof(Parse_Parses_windows_style_args_Data))]
         public void Parse_Parses_windows_style_args(string[] tokens)
         {
-            ParseResult result = _parser.Parse(tokens);
+            IParseResult result = _parser.Parse(tokens);
             Assert.NotNull(result);
         }
 

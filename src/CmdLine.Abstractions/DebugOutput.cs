@@ -24,22 +24,42 @@ using System.Runtime.CompilerServices;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Enables or disables debugging output from the ConsoleFx framework. Any code in the framework
+    ///     can use the <see cref="Write(object, IEnumerable{object}, string, string, int)"/> method to
+    ///     write debugging information that can be useful to troubleshoot issues.
+    /// </summary>
     public static class DebugOutput
     {
         private const string Prefix = "[CONSOLEFX] ";
 
         private static bool _enabled;
 
+        /// <summary>
+        ///     Enables debugging output from the framework.
+        /// </summary>
         public static void Enable()
         {
             _enabled = true;
         }
 
+        /// <summary>
+        ///     Disables debugging output from the framework.
+        /// </summary>
         public static void Disable()
         {
             _enabled = false;
         }
 
+        /// <summary>
+        ///     Writes debugging output to the console. This method should only be called from ConsoleFx
+        ///     code.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        /// <param name="list">Optional list of sub-messages.</param>
+        /// <param name="memberName">The calling member name.</param>
+        /// <param name="sourceFilePath">The calling member source file path.</param>
+        /// <param name="sourceLineNumber">The calling member source line number.</param>
         public static void Write(object message, IEnumerable<object> list = null,
             [CallerMemberName] string memberName = "",
             [CallerFilePath] string sourceFilePath = "",
@@ -52,7 +72,6 @@ namespace ConsoleFx.CmdLine
             try
             {
                 Console.BackgroundColor = ConsoleColor.Black;
-
                 Console.ForegroundColor = ConsoleColor.Magenta;
 
                 Trace.WriteLine($"{Prefix}{memberName} at {sourceFilePath} (line {sourceLineNumber})");

@@ -24,7 +24,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using ConsoleFx.CmdLine.Parser;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
 using ConsoleFx.CmdLine.Program.HelpBuilders;
 
@@ -46,13 +45,23 @@ namespace ConsoleFx.CmdLine.Program
         /// <summary>
         ///     Initializes a new instance of the <see cref="ConsoleProgram"/> class.
         /// </summary>
+        /// <remarks>
+        ///     This constructor tries to assign the <see cref="Command.Name"/>, <see cref="ArgStyle"/>
+        ///     and <see cref="Grouping"/> properties from the <see cref="ProgramAttribute"/> decorated
+        ///     on the class. If the class is not decorated, defaults are used.
+        /// </remarks>
         public ConsoleProgram()
         {
             ProgramAttribute programAttribute = GetType().GetCustomAttribute<ProgramAttribute>(true);
             if (programAttribute is null)
             {
+                // Name defaults to the executable file name
                 AddName(Assembly.GetEntryAssembly().GetName().Name);
+
+                // Argument style defaults to Unix
                 _argStyle = new ParserStyle.UnixArgStyle();
+
+                // Grouping defaults to DoesNotMatter
                 Grouping = ArgGrouping.DoesNotMatter;
             }
             else
@@ -90,7 +99,12 @@ namespace ConsoleFx.CmdLine.Program
         /// </summary>
         public HelpBuilder HelpBuilder
         {
-            get => _helpBuilder ?? (_helpBuilder = new DefaultHelpBuilder(_argStyle.GetDefaultHelpOptionNames().ToArray()));
+            get
+            {
+                string[] optionNames = _argStyle.GetDefaultHelpOptionNames().ToArray();
+                return _helpBuilder ??= new DefaultHelpBuilder(optionNames);
+            }
+
             set => _helpBuilder = value;
         }
 
@@ -106,13 +120,33 @@ namespace ConsoleFx.CmdLine.Program
         /// </summary>
         public bool DisplayHelpOnError { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether the help builder should verify that all args
+        ///     have the necessary information to display the help. Help information is stored in the
+        ///     metadata, and each help builder can use different metadata to display the help.
+        ///     <para/>
+        ///     When this property is set to <c>true</c>, the
+        ///     <see cref="HelpBuilder.VerifyHelp(Command)"/> method is called and if any necessary
+        ///     information is missing, an exception is thrown.
+        /// </summary>
+        /// <remarks>
+        ///     It is recommended to set this value to true in debug mode to ensure that no needed help
+        ///     information is unspecified. It is not recommended to use in release mode.
+        /// </remarks>
         public bool VerifyHelp { get; set; }
 
+        /// <summary>
+        ///     Displays the help. By default, this method calls the assigned
+        ///     <see cref="ConsoleProgram.HelpBuilder"/> to display the help, but it can be derived to
+        ///     display help in a customized manner.
+        ///     <para/>
+        ///     One common scenario for overriding this method is to display custom banners or footers
+        ///     along with the help.
+        /// </summary>
+        /// <param name="command">The <see cref="Command"/> to display help for.</param>
         public override void DisplayHelp(Command command = null)
         {
-            HelpBuilder helpBuilder = HelpBuilder;
-            if (helpBuilder != null)
-                helpBuilder.DisplayHelp(command ?? this);
+            HelpBuilder?.DisplayHelp(command ?? this);
         }
 
         /// <summary>
@@ -127,8 +161,8 @@ namespace ConsoleFx.CmdLine.Program
             if (args is null)
                 args = new string[0];
 
-            ParseResult parseResult = null;
-            IReadOnlyList<PrePostHandlerAttribute> attributes = null;
+            IParseResult parseResult = null;
+            IReadOnlyList<PrePostHandlerAttribute> prepostHandlers = null;
 
             var parser = new Parser.Parser(this, _argStyle, Grouping);
             try
@@ -153,24 +187,24 @@ namespace ConsoleFx.CmdLine.Program
                 // Get any pre post attributes applied on the command.
                 // These attributes will run custom code before and after the command handler and also
                 // when an exception is thrown.
-                attributes = parseResult.Command.GetType()
+                prepostHandlers = parseResult.Command.GetType()
                     .GetCustomAttributes<PrePostHandlerAttribute>(true)
                     .ToList();
 
                 // Run all pre-handler attributes.
-                foreach (PrePostHandlerAttribute attribute in attributes)
+                foreach (PrePostHandlerAttribute attribute in prepostHandlers)
                     attribute.BeforeHandler(parseResult.Command);
 
                 // Execute the command handler.
-                return await parseResult.Command.Handler(parseResult);
+                return await parseResult.Command.Handler(parseResult).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 // Run the exception through all attribute error handlers.
                 int? attributeErrorCode = null;
-                if (attributes != null)
+                if (prepostHandlers != null)
                 {
-                    foreach (PrePostHandlerAttribute attribute in attributes)
+                    foreach (PrePostHandlerAttribute attribute in prepostHandlers)
                         attributeErrorCode = attribute.OnException(ex, parseResult?.Command);
                 }
 
@@ -189,9 +223,9 @@ namespace ConsoleFx.CmdLine.Program
             finally
             {
                 // Run all post-handler attributes.
-                if (attributes != null)
+                if (prepostHandlers != null)
                 {
-                    foreach (PrePostHandlerAttribute attribute in attributes)
+                    foreach (PrePostHandlerAttribute attribute in prepostHandlers)
                         attribute.AfterHandler(parseResult?.Command);
                 }
             }
@@ -220,10 +254,34 @@ namespace ConsoleFx.CmdLine.Program
             return RunAsync(Environment.GetCommandLineArgs().Skip(1));
         }
 
+        /// <summary>
+        ///     Repeatedly prompts the user for the program args and runs the console program until the
+        ///     user enters nothing.
+        ///     <para/>
+        ///     This method is useful when debugging the application.
+        /// </summary>
+        /// <param name="prompt">The prompt to display to the user to enter the args.</param>
+        /// <param name="condition">
+        ///     A delegate that returns whether to run the debug behavior or the default behaviour.
+        ///     <para/>
+        ///     If not specified, an environment variable named <c>PromptArgs</c> is checked for a value
+        ///     of <c>true</c>, and if it the case, the debug behavior is run.
+        /// </param>
+        /// <param name="defaultBehavior">
+        ///     Specifies the default behavior to run if the <paramref name="condition"/> delegate
+        ///     return <c>false</c>.
+        ///     <para/>
+        ///     If not specified, the <see cref="RunWithCommandLineArgsAsync"/> method is called to run
+        ///     the program with the command line args.
+        /// </param>
+        /// <returns>
+        ///     The numeric code that represents the result of the console program execution.
+        /// </returns>
         public async Task<int> RunDebugAsync(string prompt = "Enter args:",
             Func<bool> condition = null,
             Func<ConsoleProgram, Task<int>> defaultBehavior = null)
         {
+            // Assign the default condition, if one is not specified.
             if (condition is null)
             {
                 condition = () =>
@@ -233,12 +291,14 @@ namespace ConsoleFx.CmdLine.Program
                 };
             }
 
+            // Assign the default behavior, if one is not specified.
             if (defaultBehavior is null)
-                defaultBehavior = async (program) => await program.RunWithCommandLineArgsAsync();
+                defaultBehavior = async (program) => await program.RunWithCommandLineArgsAsync().ConfigureAwait(false);
 
             if (!condition())
                 return await defaultBehavior(this).ConfigureAwait(false);
 
+            // Assign a default prompt string, if one if not specified.
             if (prompt is null)
                 prompt = "Enter args:";
 
@@ -247,7 +307,7 @@ namespace ConsoleFx.CmdLine.Program
             while (!string.IsNullOrEmpty(args))
             {
                 IEnumerable<string> tokens = Parser.Parser.Tokenize(args);
-                await RunAsync(tokens);
+                await RunAsync(tokens).ConfigureAwait(false);
 
                 Console.WriteLine();
                 Console.Write($"{prompt} {Name} ");
@@ -266,24 +326,20 @@ namespace ConsoleFx.CmdLine.Program
         {
             HelpBuilder helpBuilder = HelpBuilder;
 
-            var option = new Option(helpBuilder.AllNames.ToArray())
+            yield return new Option(helpBuilder.AllNames.ToArray())
                 .UsedAsFlag()
                 .UnderGroups(int.MinValue)
                 .HideHelp();
-            yield return option;
         }
 
         private static ParserStyle.ArgStyle CreateArgStyle(ArgStyle argStyle)
         {
-            switch (argStyle)
+            return argStyle switch
             {
-                case ArgStyle.Unix:
-                    return new ParserStyle.UnixArgStyle();
-                case ArgStyle.Windows:
-                    return new ParserStyle.WindowsArgStyle();
-            }
-
-            throw new NotSupportedException($"Unsupported argument style: '{argStyle}'.");
+                ArgStyle.Unix => new ParserStyle.UnixArgStyle(),
+                ArgStyle.Windows => new ParserStyle.WindowsArgStyle(),
+                _ => throw new NotSupportedException($"Unsupported argument style: '{argStyle}'."),
+            };
         }
 
         private static void AssignOptionProperties(IParseResult parseResult, Options args)

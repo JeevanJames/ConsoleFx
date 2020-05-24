@@ -13,6 +13,11 @@
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ConsoleProgram"/> class.
             </summary>
+            <remarks>
+                This constructor tries to assign the <see cref="P:ConsoleFx.CmdLine.Command.Name"/>, <see cref="T:ConsoleFx.CmdLine.Program.ArgStyle"/>
+                and <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.Grouping"/> properties from the <see cref="T:ConsoleFx.CmdLine.Program.ProgramAttribute"/> decorated
+                on the class. If the class is not decorated, defaults are used.
+            </remarks>
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.#ctor(System.String,ConsoleFx.CmdLine.Program.ArgStyle,ConsoleFx.CmdLine.ArgGrouping)">
             <summary>
@@ -45,6 +50,32 @@
                 parsing and executing the application.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.VerifyHelp">
+            <summary>
+                Gets or sets a value indicating whether the help builder should verify that all args
+                have the necessary information to display the help. Help information is stored in the
+                metadata, and each help builder can use different metadata to display the help.
+                <para/>
+                When this property is set to <c>true</c>, the
+                <see cref="M:ConsoleFx.CmdLine.Program.HelpBuilder.VerifyHelp(ConsoleFx.CmdLine.Command)"/> method is called and if any necessary
+                information is missing, an exception is thrown.
+            </summary>
+            <remarks>
+                It is recommended to set this value to true in debug mode to ensure that no needed help
+                information is unspecified. It is not recommended to use in release mode.
+            </remarks>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.DisplayHelp(ConsoleFx.CmdLine.Command)">
+            <summary>
+                Displays the help. By default, this method calls the assigned
+                <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.HelpBuilder"/> to display the help, but it can be derived to
+                display help in a customized manner.
+                <para/>
+                One common scenario for overriding this method is to display custom banners or footers
+                along with the help.
+            </summary>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> to display help for.</param>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.RunAsync(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
                 Runs the console program after parsing the specified <paramref name="args"/>.
@@ -71,6 +102,31 @@
                 The numeric code that represents the result of the console program execution.
             </returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.RunDebugAsync(System.String,System.Func{System.Boolean},System.Func{ConsoleFx.CmdLine.Program.ConsoleProgram,System.Threading.Tasks.Task{System.Int32}})">
+            <summary>
+                Repeatedly prompts the user for the program args and runs the console program until the
+                user enters nothing.
+                <para/>
+                This method is useful when debugging the application.
+            </summary>
+            <param name="prompt">The prompt to display to the user to enter the args.</param>
+            <param name="condition">
+                A delegate that returns whether to run the debug behavior or the default behaviour.
+                <para/>
+                If not specified, an environment variable named <c>PromptArgs</c> is checked for a value
+                of <c>true</c>, and if it the case, the debug behavior is run.
+            </param>
+            <param name="defaultBehavior">
+                Specifies the default behavior to run if the <paramref name="condition"/> delegate
+                return <c>false</c>.
+                <para/>
+                If not specified, the <see cref="M:ConsoleFx.CmdLine.Program.ConsoleProgram.RunWithCommandLineArgsAsync"/> method is called to run
+                the program with the command line args.
+            </param>
+            <returns>
+                The numeric code that represents the result of the console program execution.
+            </returns>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.GetUniversalOptions">
             <summary>
                 Add help options to the command as universal options. These options will be added to
@@ -90,6 +146,13 @@
                 Override this method to display the help for the specified <paramref name="command"/>.
             </summary>
             <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> for which to display help.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpBuilder.VerifyHelp(ConsoleFx.CmdLine.Command)">
+            <summary>
+                Derived help builders can override this method to verify that they have all the
+                necessary information from the <see cref="T:ConsoleFx.CmdLine.Command"/> to display help.
+            </summary>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> to verify.</param>
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.HelpBuilders.DefaultHelpBuilder.PrintArg(System.String,System.String,System.Int32,ConsoleFx.CmdLine.Program.HelpBuilders.ArgDescriptionPlacement)">
             <summary>

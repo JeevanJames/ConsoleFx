@@ -30,7 +30,7 @@ namespace ConsoleFx.CmdLine.Parser
     ///     Represents the results of parsing a set of arguments.
     /// </summary>
     [DebuggerDisplay("Command: {Command.Name}")]
-    public sealed class ParseResult : IParseResult
+    internal sealed class ParseResult : IParseResult
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ParseRun _run;

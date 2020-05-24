@@ -74,7 +74,7 @@ namespace TestHarness.Parser
             var parser = new ConsoleFx.CmdLine.Parser.Parser(command, ArgStyle.Unix);
             try
             {
-                ParseResult result = parser.Parse("sourceFile", "destfile", "7", "8",
+                IParseResult result = parser.Parse("sourceFile", "destfile", "7", "8",
                     "-vy",
                     "--log", "blah-bleh",
                     "--web", "https://example.com",
