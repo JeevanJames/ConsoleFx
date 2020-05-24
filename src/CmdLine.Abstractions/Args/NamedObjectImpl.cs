@@ -24,6 +24,13 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     A common implementation of <see cref="INamedObject"/> that can be shared between multiple
+    ///     classes that implement the interface.
+    ///     <para/>
+    ///     Currently, <see cref="Command"/>, <see cref="Option"/> and the HelpBuilder all implement the
+    ///     <see cref="INamedObject"/> interface.
+    /// </summary>
     internal sealed class NamedObjectImpl : INamedObject
     {
         private readonly Dictionary<string, bool> _names = new Dictionary<string, bool>();
