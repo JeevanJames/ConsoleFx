@@ -174,12 +174,12 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 return;
 
             IEnumerable<IGrouping<string, TArg>> categories = args.GroupBy(
-                arg => ((IMetadataObject)arg).Get<string>(HelpExtensions.Keys.CategoryName), StringComparer.OrdinalIgnoreCase);
+                arg => ((IMetadataObject)arg).Get<string>(HelpMetadataKey.CategoryName), StringComparer.OrdinalIgnoreCase);
             foreach (var category in categories)
             {
                 List<TArg> categoryArgs = category
-                    .Where(arg => !((IMetadataObject)arg).Get<bool>(HelpExtensions.Keys.Hide))
-                    .OrderBy(arg => ((IMetadataObject)arg).Get<int>(HelpExtensions.Keys.Order))
+                    .Where(arg => !((IMetadataObject)arg).Get<bool>(HelpMetadataKey.Hide))
+                    .OrderBy(arg => ((IMetadataObject)arg).Get<int>(HelpMetadataKey.Order))
 
                     //.ThenBy(arg => arg.Name) //TODO
                     .ToList();
@@ -198,7 +198,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 foreach (TArg arg in categoryArgs)
                 {
                     string resolvedName = nameResolver(arg);
-                    string description = ((IMetadataObject)arg).Get<string>(HelpExtensions.Keys.Description) ?? "<No description provided>";
+                    string description = ((IMetadataObject)arg).Get<string>(HelpMetadataKey.Description) ?? "<No description provided>";
                     PrintArg(resolvedName, description, maxNameLength, placement);
                 }
             }
@@ -231,7 +231,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
         private string ResolveArgumentName(IMetadataObject arg)
         {
-            string customName = arg.Get<string>(HelpExtensions.Keys.Name);
+            string customName = arg.Get<string>(HelpMetadataKey.Name);
             return customName ?? "argument";
         }
 
@@ -247,10 +247,10 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 foreach (Argument argument in arguments)
                 {
                     var metadata = (IMetadataObject)argument;
-                    bool hide = metadata.Get<bool>(HelpExtensions.Keys.Hide);
+                    bool hide = metadata.Get<bool>(HelpMetadataKey.Hide);
                     if (hide)
                         continue;
-                    string description = metadata.Get<string>(HelpExtensions.Keys.Description);
+                    string description = metadata.Get<string>(HelpMetadataKey.Description);
 
                     //TODO: Replace argument.Order with argument.Index in the error message below.
                     if (string.IsNullOrWhiteSpace(description))
@@ -261,10 +261,10 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
                 foreach (Option option in options)
                 {
                     var metadata = (IMetadataObject)option;
-                    bool hide = metadata.Get<bool>(HelpExtensions.Keys.Hide);
+                    bool hide = metadata.Get<bool>(HelpMetadataKey.Hide);
                     if (hide)
                         continue;
-                    string description = metadata.Get<string>(HelpExtensions.Keys.Description);
+                    string description = metadata.Get<string>(HelpMetadataKey.Description);
                     if (string.IsNullOrWhiteSpace(description))
                         throw new InvalidOperationException($"Option '{option.Name}' under command '{currentCommand.Name}' does not have a description.");
                 }

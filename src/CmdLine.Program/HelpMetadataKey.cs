@@ -17,7 +17,6 @@ limitations under the License.
 */
 #endregion
 
-
 namespace ConsoleFx.CmdLine.Program
 {
     public static class HelpMetadataKey

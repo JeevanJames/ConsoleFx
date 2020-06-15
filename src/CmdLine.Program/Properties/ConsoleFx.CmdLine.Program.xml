@@ -182,6 +182,98 @@
                 combinations mentioned.
             </summary>
         </member>
+        <member name="T:ConsoleFx.CmdLine.Program.HelpExtensions">
+            <summary>
+                Provides extension methods to add standard help metadata to various <see cref="T:ConsoleFx.CmdLine.Arg"/>
+                objects.
+                <para/>
+                These are just the standard help metadata. Custom help builders are free to add other
+                metadata or use different metadata.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Help(ConsoleFx.CmdLine.Argument,System.String,System.String)">
+            <summary>
+                Sets a <paramref name="description"/> and optional <paramref name="name"/> for the
+                specified <paramref name="argument"/>.
+            </summary>
+            <param name="argument">The <see cref="T:ConsoleFx.CmdLine.Argument"/> to which to add the help metadata.</param>
+            <param name="description">The description of the argument.</param>
+            <param name="name">The name of the argument.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Argument"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the description is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Help(ConsoleFx.CmdLine.Command,System.String,System.String)">
+            <summary>
+                Sets a <paramref name="description"/> and optional <paramref name="name"/> for the
+                specified <paramref name="command"/>.
+            </summary>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> to which to add the help metadata.</param>
+            <param name="description">The description of the command.</param>
+            <param name="name">The name of the command.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Command"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the <paramref name="description"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Help(ConsoleFx.CmdLine.Option,System.String)">
+            <summary>
+                Sets a <paramref name="description"/> for the specified <paramref name="option"/>.
+            </summary>
+            <param name="option">The <see cref="T:ConsoleFx.CmdLine.Option"/> to which to add the help metadata.</param>
+            <param name="description">The description of the option.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the <paramref name="description"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Category``1(``0,System.String,System.String)">
+            <summary>
+                Sets a category <paramref name="name"/> and <paramref name="description"/> for the
+                specified <paramref name="arg"/>.
+                <para/>
+                Help builders can use category metadata to group args when displaying help.
+            </summary>
+            <typeparam name="TArg">The type of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</typeparam>
+            <param name="arg">
+                The <see cref="T:ConsoleFx.CmdLine.Command"/>, <see cref="T:ConsoleFx.CmdLine.Option"/> or <see cref="T:ConsoleFx.CmdLine.Argument"/> to which to
+                add the help category metadata.
+            </param>
+            <param name="name">The category name to assign.</param>
+            <param name="description">The optional category description to assign.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the <paramref name="name"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Order``1(``0,System.Int32)">
+            <summary>
+                Sets a help metadata on the specified <paramref name="arg"/> to control the order in
+                which the arg will be displayed in the help. If the arg belongs to a category, this
+                metadata will control the order in which it is displayed in relation to other args of
+                the same category.
+            </summary>
+            <typeparam name="TArg">The type of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</typeparam>
+            <param name="arg">
+                The <see cref="T:ConsoleFx.CmdLine.Command"/>, <see cref="T:ConsoleFx.CmdLine.Option"/> or <see cref="T:ConsoleFx.CmdLine.Argument"/> to which to
+                add the help metadata.
+            </param>
+            <param name="order">The order of the arg.</param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.HideHelp``1(``0)">
+            <summary>
+                Sets a help metadata on the specified <paramref name="arg"/> to indicate that help for
+                the arg should not be displayed.
+            </summary>
+            <typeparam name="TArg">The type of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</typeparam>
+            <param name="arg">
+                The <see cref="T:ConsoleFx.CmdLine.Command"/>, <see cref="T:ConsoleFx.CmdLine.Option"/> or <see cref="T:ConsoleFx.CmdLine.Argument"/> to which to
+                add the help metadata.
+            </param>
+            <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</returns>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Program.Messages">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.

@@ -52,11 +52,11 @@ namespace ConsoleFx.CmdLine.Program
         public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
         {
             if (Name != null)
-                yield return new KeyValuePair<string, object>(HelpExtensions.Keys.Name, Name);
+                yield return new KeyValuePair<string, object>(HelpMetadataKey.Name, Name);
 
-            yield return new KeyValuePair<string, object>(HelpExtensions.Keys.Description, Description);
+            yield return new KeyValuePair<string, object>(HelpMetadataKey.Description, Description);
 
-            yield return new KeyValuePair<string, object>(HelpExtensions.Keys.Order, Order);
+            yield return new KeyValuePair<string, object>(HelpMetadataKey.Order, Order);
         }
     }
 }

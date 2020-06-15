@@ -41,8 +41,8 @@ namespace ConsoleFx.CmdLine.Program
 
         public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
         {
-            yield return new KeyValuePair<string, object>(HelpExtensions.Keys.CategoryName, Name);
-            yield return new KeyValuePair<string, object>(HelpExtensions.Keys.CategoryDescription, Description);
+            yield return new KeyValuePair<string, object>(HelpMetadataKey.CategoryName, Name);
+            yield return new KeyValuePair<string, object>(HelpMetadataKey.CategoryDescription, Description);
         }
     }
 }
