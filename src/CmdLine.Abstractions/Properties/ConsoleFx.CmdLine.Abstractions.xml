@@ -551,6 +551,15 @@
                 Gets all the names of the arg.
             </summary>
         </member>
+        <member name="T:ConsoleFx.CmdLine.NamedObjectImpl">
+            <summary>
+                A common implementation of <see cref="T:ConsoleFx.CmdLine.INamedObject"/> that can be shared between multiple
+                classes that implement the interface.
+                <para/>
+                Currently, <see cref="T:ConsoleFx.CmdLine.Command"/>, <see cref="T:ConsoleFx.CmdLine.Option"/> and the HelpBuilder all implement the
+                <see cref="T:ConsoleFx.CmdLine.INamedObject"/> interface.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.CmdLine.Option">
             <inheritdoc />
             <summary>
@@ -892,6 +901,34 @@
                 (each is different and can have separate validators).
             </summary>
         </member>
+        <member name="T:ConsoleFx.CmdLine.DebugOutput">
+            <summary>
+                Enables or disables debugging output from the ConsoleFx framework. Any code in the framework
+                can use the <see cref="M:ConsoleFx.CmdLine.DebugOutput.Write(System.Object,System.Collections.Generic.IEnumerable{System.Object},System.String,System.String,System.Int32)"/> method to
+                write debugging information that can be useful to troubleshoot issues.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.DebugOutput.Enable">
+            <summary>
+                Enables debugging output from the framework.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.DebugOutput.Disable">
+            <summary>
+                Disables debugging output from the framework.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.DebugOutput.Write(System.Object,System.Collections.Generic.IEnumerable{System.Object},System.String,System.String,System.Int32)">
+            <summary>
+                Writes debugging output to the console. This method should only be called from ConsoleFx
+                code.
+            </summary>
+            <param name="message">The message to log.</param>
+            <param name="list">Optional list of sub-messages.</param>
+            <param name="memberName">The calling member name.</param>
+            <param name="sourceFilePath">The calling member source file path.</param>
+            <param name="sourceLineNumber">The calling member source line number.</param>
+        </member>
         <member name="T:ConsoleFx.CmdLine.CommandAttribute">
             <summary>
                 Indicates that a class is a <see cref="T:ConsoleFx.CmdLine.Command"/> with one or more names.
@@ -1163,30 +1200,46 @@
                 <para/>
                 A positive error code denotes a functional error.
                 <para/>
-                A negative error code denotes an internal error code, which typically means a bug in the application or framework.
+                A negative error code denotes an internal error code, which typically means a bug in the
+                application or framework.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLine.ParserException.#ctor(System.Int32,System.String)">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with an error code and message.
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with an error code
+                and message.
             </summary>
-            <param name="errorCode">A machine readable code for the specific error that occurred.</param>
+            <param name="errorCode">
+                A machine readable code for the specific error that occurred.
+            </param>
             <param name="message">The error message.</param>
         </member>
         <member name="M:ConsoleFx.CmdLine.ParserException.#ctor(System.Int32,System.String,System.Exception)">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with an error code and message.
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with an error code
+                and message.
             </summary>
-            <param name="errorCode">A machine readable code for the specific error that occurred.</param>
+            <param name="errorCode">
+                A machine readable code for the specific error that occurred.
+            </param>
             <param name="message">The error message.</param>
-            <param name="innerException">The exception that is the cause of the current exception.</param>
+            <param name="innerException">
+                The exception that is the cause of the current exception.
+            </param>
         </member>
         <member name="M:ConsoleFx.CmdLine.ParserException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with serialized data.
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with serialized
+                data.
             </summary>
-            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
-            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
+            <param name="info">
+                The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the
+                exception being thrown.
+            </param>
+            <param name="context">
+                The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the
+                source or destination.
+            </param>
         </member>
         <member name="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator">
             <summary>
