@@ -22,19 +22,35 @@ using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Marks a property in a <see cref="Command"/> class as an <see cref="Option"/>.
+    /// </summary>
     public sealed class OptionAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="OptionAttribute"/> class with one or more
+        ///     option names.
+        /// </summary>
+        /// <param name="names">One or more <see cref="Option"/> names.</param>
         public OptionAttribute(params string[] names)
         {
             if (names is null)
                 throw new ArgumentNullException(nameof(names));
+            if (names.Length < 1)
+                throw new ArgumentException("Option must have at least one name.", nameof(names));
             Names = names;
         }
 
+        /// <summary>
+        ///     Gets the names of the option.
+        /// </summary>
         public string[] Names { get; }
 
         public CommonOptionUsage Usage { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether the option is optional.
+        /// </summary>
         public bool Optional { get; set; }
 
         void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
@@ -78,7 +94,7 @@ namespace ConsoleFx.CmdLine
                         arg.TypeAs(itemType);
                     break;
                 default:
-                    throw new InvalidOperationException($"Unexpected OptionValueType value of {expectedValueType}.");
+                    throw new NotSupportedException($"Unexpected OptionValueType value of {expectedValueType}.");
             }
         }
     }

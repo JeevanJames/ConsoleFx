@@ -52,12 +52,25 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public Command()
         {
-            ProcessCommandAttributes();
+            // Read the command attribute on this class.
+            CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
+            if (commandAttribute is null)
+                throw new InvalidOperationException($"The command type '{GetType().FullName}' is not decorated with the '{typeof(CommandAttribute).FullName}' attribute.");
+
+            // Add names from attribute
+            foreach (string name in commandAttribute.Names)
+                AddName(name);
+
+            // The parent type is same as current type.
+            if (commandAttribute.ParentType == GetType())
+                throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
+
+            ProcessMetadataAttributes();
         }
 
         public Command(bool caseSensitive, params string[] names)
-            : this()
         {
+            ProcessMetadataAttributes();
             foreach (string name in names)
                 AddName(name, caseSensitive);
         }
@@ -68,24 +81,10 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <summary>
-        ///     Handle any attributes specified on the command.
+        ///     Read any metadata attributes on this class and assign them to this command.
         /// </summary>
-        private void ProcessCommandAttributes()
+        private void ProcessMetadataAttributes()
         {
-            // Read the command attribute on this class.
-            CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
-            if (commandAttribute != null)
-            {
-                // Add names from attribute
-                foreach (string name in commandAttribute.Names)
-                    AddName(name);
-
-                // The parent type is same as current type.
-                if (commandAttribute.ParentType == GetType())
-                    throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
-            }
-
-            // Read any metadata attributes and assign them to this command.
             IEnumerable<MetadataAttribute> metadataAttributes = GetType().GetCustomAttributes<MetadataAttribute>(inherit: true);
             foreach (MetadataAttribute metadataAttribute in metadataAttributes)
                 metadataAttribute.AssignMetadata(this);
@@ -383,140 +382,4 @@ namespace ConsoleFx.CmdLine
             return option;
         }
     }
-
-    // INamedObject implementation
-    public partial class Command : INamedObject
-    {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly INamedObject _namedObject = new NamedObjectImpl();
-
-        /// <inheritdoc />
-        public string Name => _namedObject.Name;
-
-        /// <inheritdoc />
-        public IEnumerable<string> AlternateNames => _namedObject.AlternateNames;
-
-        /// <inheritdoc />
-        public IEnumerable<string> AllNames => _namedObject.AllNames;
-
-        /// <inheritdoc />
-        public void AddName(string name, bool caseSensitive = false)
-        {
-            _namedObject.AddName(name, caseSensitive);
-        }
-
-        /// <inheritdoc />
-        public bool HasName(string name)
-        {
-            return _namedObject.HasName(name);
-        }
-    }
-
-    // Dynamically discover commands in assemblies.
-    public partial class Command : Arg
-    {
-        /// <summary>
-        ///     Gets the commands that are discovered by calling one of the <c>ScanAssemblies</c>
-        ///     methods.
-        /// </summary>
-        internal IDictionary<Type, Type> DiscoveredCommands { get; } = new Dictionary<Type, Type>();
-
-        /// <summary>
-        ///     Scans the entry assembly and locates any commands objects. Add applicable commands
-        ///     as sub-commands to this command.
-        /// </summary>
-        /// <param name="typePredicate">
-        ///     Optional predicate that can be used to filter the discovered commands.
-        /// </param>
-        public void ScanEntryAssemblyForCommands(Func<Type, bool> typePredicate = null)
-        {
-            ScanAssembliesForCommands(new[] { Assembly.GetEntryAssembly() }, typePredicate);
-        }
-
-        /// <summary>
-        ///     Scans the specified <paramref name="assemblies"/> and locates any commands objects.
-        ///     Add applicable commands as sub-commands to this command.
-        /// </summary>
-        /// <param name="assemblies">The assemblies to scan.</param>
-        public void ScanAssembliesForCommands(params Assembly[] assemblies)
-        {
-            ScanAssembliesForCommands((IEnumerable<Assembly>)assemblies);
-        }
-
-        /// <summary>
-        ///     Scans the specified <paramref name="assemblies"/> and locates any commands objects.
-        ///     Add applicable commands as sub-commands to this command.
-        /// </summary>
-        /// <param name="assemblies">The assemblies to scan.</param>
-        /// <param name="typePredicate">
-        ///     Optional predicate that can be used to filter the discovered commands.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        ///     Thrown if <paramref name="assemblies"/> is <c>null</c>.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     Thrown if any assembly in the <paramref name="assemblies"/> is <c>null</c>.
-        /// </exception>
-        public void ScanAssembliesForCommands(IEnumerable<Assembly> assemblies, Func<Type, bool> typePredicate = null)
-        {
-            if (assemblies is null)
-                throw new ArgumentNullException(nameof(assemblies));
-
-            var discoveredCommands = new List<(Type commandType, Type parentType)>();
-            foreach (Assembly assembly in assemblies)
-            {
-                if (assembly is null)
-                    throw new ArgumentException("Assembly should not be null.", nameof(assemblies));
-
-                // Look for any types that derive from Command and have a parameterless constructor.
-                // Get the command type and any parent command type specified by the Command attribute.
-                var assemblyCommands = assembly.GetExportedTypes()
-                    .Where(type => typePredicate is null || typePredicate(type))
-                    .Where(type => typeof(Command).IsAssignableFrom(type))
-                    .Where(type => type.GetConstructor(Type.EmptyTypes) != null)
-                    .Select(type => (type, type.GetCustomAttribute<CommandAttribute>(true)?.ParentType));
-                discoveredCommands.AddRange(assemblyCommands);
-            }
-
-            // Add all discovered commands with a non-null parent type to the DiscoveredCommands
-            // dictionary. These will be used when their corresponding parent commands are instantiated.
-            var nonRootCommands = discoveredCommands.Where(c => c.parentType != null);
-            foreach (var (commandType, parentType) in nonRootCommands)
-            {
-                DebugOutput.Write($"Discovered child: {commandType.FullName} of {parentType.FullName}");
-                DiscoveredCommands.Add(commandType, parentType);
-            }
-
-            // Since we are scanning from this instance, then this command is a root command.
-            // Any discovered commands that do not have a parent type will be children of this
-            // command.
-            try
-            {
-                var rootCommands = discoveredCommands.Where(c => c.parentType is null);
-                foreach (var (commandType, _) in rootCommands)
-                {
-                    DebugOutput.Write($"Discovered root child: {commandType.FullName}");
-                    var command = (Command)Activator.CreateInstance(commandType);
-                    if (command.Name != null)
-                        Commands.Add(command);
-                }
-            }
-            catch (TargetInvocationException ex) when (ex.InnerException != null)
-            {
-                // TargetInvocationException can happen when using Activator.CreateInstance.
-                // Catch them and throw the inner exception instead, as that's the true exception.
-                throw ex.InnerException;
-            }
-        }
-    }
-
-    /// <summary>
-    ///     Encapsulates a method that performs custom validation once a <see cref="Command"/> instance
-    ///     has been initialized.
-    /// </summary>
-    /// <param name="arguments">The arguments passed to the command.</param>
-    /// <param name="options">The options passed to the command.</param>
-    /// <returns>A validation error message, if the validation fails; otherwise <c>null</c>.</returns>
-    public delegate string CommandCustomValidator(IReadOnlyList<object> arguments,
-        IReadOnlyDictionary<string, object> options);
 }

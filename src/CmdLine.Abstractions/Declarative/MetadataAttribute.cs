@@ -34,6 +34,11 @@ namespace ConsoleFx.CmdLine
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public abstract class MetadataAttribute : Attribute
     {
+        /// <summary>
+        ///     Override this method to return one or more metadata for the arg decorated by this
+        ///     attribute.
+        /// </summary>
+        /// <returns>One or more metadata key-value pairs.</returns>
         public abstract IEnumerable<KeyValuePair<string, object>> GetMetadata();
 
         /// <summary>
@@ -47,19 +52,19 @@ namespace ConsoleFx.CmdLine
         {
             // Validate applicable args for this attribute.
             //TODO: Simplify code
-            ArgType applicableArgs = GetApplicableArgTypes();
+            ApplicableArgTypesForMetadata applicableArgs = GetApplicableArgTypes();
             switch (arg)
             {
                 case Argument _:
-                    if ((applicableArgs & ArgType.Argument) != ArgType.Argument)
+                    if ((applicableArgs & ApplicableArgTypesForMetadata.Argument) != ApplicableArgTypesForMetadata.Argument)
                         throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
                     break;
                 case Option _:
-                    if ((applicableArgs & ArgType.Option) != ArgType.Option)
+                    if ((applicableArgs & ApplicableArgTypesForMetadata.Option) != ApplicableArgTypesForMetadata.Option)
                         throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
                     break;
                 case Command _:
-                    if ((applicableArgs & ArgType.Command) != ArgType.Command)
+                    if ((applicableArgs & ApplicableArgTypesForMetadata.Command) != ApplicableArgTypesForMetadata.Command)
                         throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
                     break;
             }
@@ -73,19 +78,9 @@ namespace ConsoleFx.CmdLine
         ///     Specifies the types of args that this attribute can apply to.
         /// </summary>
         /// <returns>The applicable arg types.</returns>
-        protected virtual ArgType GetApplicableArgTypes()
+        protected virtual ApplicableArgTypesForMetadata GetApplicableArgTypes()
         {
-            return ArgType.All;
+            return ApplicableArgTypesForMetadata.All;
         }
-    }
-
-    [Flags]
-    public enum ArgType
-    {
-        Option = 1,
-        Argument = 2,
-        Command = 4,
-        ArgumentsAndOptions = Argument | Option,
-        All = Argument | Option | Command,
     }
 }

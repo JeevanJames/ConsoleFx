@@ -22,12 +22,25 @@ using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Marks a property in a <see cref="Command"/> class as an <see cref="Argument"/>.
+    /// </summary>
     public sealed class ArgumentAttribute : ArgumentOrOptionAttribute, IArgApplicator<Argument>
     {
+        /// <summary>
+        ///     Gets or sets the order of the argument in the list of arguments.
+        /// </summary>
         public int Order { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether the argument is optional.
+        /// </summary>
         public bool Optional { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the maximum number of occurences allowed for the argument. This only
+        ///     applies to the last argument. For other arguments, this value can only be one.
+        /// </summary>
         public byte MaxOccurences { get; set; } = 1;
 
         void IArgApplicator<Argument>.Apply(Argument arg, PropertyInfo property)
@@ -47,7 +60,7 @@ namespace ConsoleFx.CmdLine
                         arg.TypeAs(itemType);
                     break;
                 default:
-                    throw new InvalidOperationException($"Unexpected OptionValueType value of {expectedValueType}.");
+                    throw new NotSupportedException($"Unexpected ArgumentValueType value of {expectedValueType}.");
             }
         }
     }

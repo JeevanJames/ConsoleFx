@@ -87,7 +87,9 @@
             <summary>
                 Base class for collections of objects derived from <see cref="T:ConsoleFx.CmdLine.Arg" />.
                 <para />
-                Collections deriving from this class provide an additional indexer that can retrieve an object my its name.
+                Collections deriving from this class provide an additional indexer that can retrieve an
+                object by its name.
+                <para/>
                 They also prevent duplicate objects from being inserted or set on the collection.
             </summary>
             <typeparam name="T">The specific type of <see cref="T:ConsoleFx.CmdLine.Arg" /> that the collection will hold.</typeparam>
@@ -313,6 +315,44 @@
                 specified only after the required ones.
             </summary>
         </member>
+        <member name="P:ConsoleFx.CmdLine.Command.DiscoveredCommands">
+            <summary>
+                Gets the commands that are discovered by calling one of the <c>ScanAssemblies</c>
+                methods.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ScanEntryAssemblyForCommands(System.Func{System.Type,System.Boolean})">
+            <summary>
+                Scans the entry assembly and locates any commands objects. Add applicable commands
+                as sub-commands to this command.
+            </summary>
+            <param name="typePredicate">
+                Optional predicate that can be used to filter the discovered commands.
+            </param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ScanAssembliesForCommands(System.Reflection.Assembly[])">
+            <summary>
+                Scans the specified <paramref name="assemblies"/> and locates any commands objects.
+                Add applicable commands as sub-commands to this command.
+            </summary>
+            <param name="assemblies">The assemblies to scan.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ScanAssembliesForCommands(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Func{System.Type,System.Boolean})">
+            <summary>
+                Scans the specified <paramref name="assemblies"/> and locates any commands objects.
+                Add applicable commands as sub-commands to this command.
+            </summary>
+            <param name="assemblies">The assemblies to scan.</param>
+            <param name="typePredicate">
+                Optional predicate that can be used to filter the discovered commands.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if <paramref name="assemblies"/> is <c>null</c>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown if any assembly in the <paramref name="assemblies"/> is <c>null</c>.
+            </exception>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Command.#ctor">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Command" /> class.
@@ -321,9 +361,9 @@
                 <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Command.ProcessCommandAttributes">
+        <member name="M:ConsoleFx.CmdLine.Command.ProcessMetadataAttributes">
             <summary>
-                Handle any attributes specified on the command.
+                Read any metadata attributes on this class and assign them to this command.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Command.ParentCommand">
@@ -415,44 +455,6 @@
         <member name="M:ConsoleFx.CmdLine.Command.HasName(System.String)">
             <inheritdoc />
         </member>
-        <member name="P:ConsoleFx.CmdLine.Command.DiscoveredCommands">
-            <summary>
-                Gets the commands that are discovered by calling one of the <c>ScanAssemblies</c>
-                methods.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Command.ScanEntryAssemblyForCommands(System.Func{System.Type,System.Boolean})">
-            <summary>
-                Scans the entry assembly and locates any commands objects. Add applicable commands
-                as sub-commands to this command.
-            </summary>
-            <param name="typePredicate">
-                Optional predicate that can be used to filter the discovered commands.
-            </param>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Command.ScanAssembliesForCommands(System.Reflection.Assembly[])">
-            <summary>
-                Scans the specified <paramref name="assemblies"/> and locates any commands objects.
-                Add applicable commands as sub-commands to this command.
-            </summary>
-            <param name="assemblies">The assemblies to scan.</param>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Command.ScanAssembliesForCommands(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Func{System.Type,System.Boolean})">
-            <summary>
-                Scans the specified <paramref name="assemblies"/> and locates any commands objects.
-                Add applicable commands as sub-commands to this command.
-            </summary>
-            <param name="assemblies">The assemblies to scan.</param>
-            <param name="typePredicate">
-                Optional predicate that can be used to filter the discovered commands.
-            </param>
-            <exception cref="T:System.ArgumentNullException">
-                Thrown if <paramref name="assemblies"/> is <c>null</c>.
-            </exception>
-            <exception cref="T:System.ArgumentException">
-                Thrown if any assembly in the <paramref name="assemblies"/> is <c>null</c>.
-            </exception>
-        </member>
         <member name="T:ConsoleFx.CmdLine.CommandCustomValidator">
             <summary>
                 Encapsulates a method that performs custom validation once a <see cref="T:ConsoleFx.CmdLine.Command"/> instance
@@ -487,7 +489,7 @@
         </member>
         <member name="T:ConsoleFx.CmdLine.IMetadataObject">
             <summary>
-                Provides the ability for an object to contain arbitrary key/value data.
+                Represents an object that can contain arbitrary key/value data (metadata).
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.IMetadataObject.Item(System.String)">
@@ -929,6 +931,49 @@
             <param name="sourceFilePath">The calling member source file path.</param>
             <param name="sourceLineNumber">The calling member source line number.</param>
         </member>
+        <member name="T:ConsoleFx.CmdLine.ApplicableArgTypesForMetadata">
+            <summary>
+                Applicable arg types for a specific <see cref="T:ConsoleFx.CmdLine.MetadataAttribute"/> attribute.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.ArgumentAttribute">
+            <summary>
+                Marks a property in a <see cref="T:ConsoleFx.CmdLine.Command"/> class as an <see cref="T:ConsoleFx.CmdLine.Argument"/>.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ArgumentAttribute.Order">
+            <summary>
+                Gets or sets the order of the argument in the list of arguments.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ArgumentAttribute.Optional">
+            <summary>
+                Gets or sets a value indicating whether the argument is optional.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ArgumentAttribute.MaxOccurences">
+            <summary>
+                Gets or sets the maximum number of occurences allowed for the argument. This only
+                applies to the last argument. For other arguments, this value can only be one.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.ArgumentOrOptionAttribute">
+            <summary>
+                Base class for attributes that mark properties in a <see cref="T:ConsoleFx.CmdLine.Command"/> class as an
+                <see cref="T:ConsoleFx.CmdLine.Argument"/> or an <see cref="T:ConsoleFx.CmdLine.Option"/>.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.ArgumentOrOptionAttribute.GetCollectionItemType(System.Reflection.PropertyInfo)">
+            <summary>
+                Helper method to return the item type from the specified collection
+                <paramref name="property"/> info.
+            </summary>
+            <param name="property">The collection property info.</param>
+            <returns>
+                The item type of the collection property. If the property is not a collection (doesn't
+                implement <see cref="T:System.Collections.Generic.IEnumerable`1"/>), returns <c>null</c>.
+            </returns>
+        </member>
         <member name="T:ConsoleFx.CmdLine.CommandAttribute">
             <summary>
                 Indicates that a class is a <see cref="T:ConsoleFx.CmdLine.Command"/> with one or more names.
@@ -959,6 +1004,60 @@
                 Gets or sets the optional type of the parent command.
             </summary>
         </member>
+        <member name="T:ConsoleFx.CmdLine.OptionAttribute">
+            <summary>
+                Marks a property in a <see cref="T:ConsoleFx.CmdLine.Command"/> class as an <see cref="T:ConsoleFx.CmdLine.Option"/>.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionAttribute.#ctor(System.String[])">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.OptionAttribute"/> class with one or more
+                option names.
+            </summary>
+            <param name="names">One or more <see cref="T:ConsoleFx.CmdLine.Option"/> names.</param>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionAttribute.Names">
+            <summary>
+                Gets the names of the option.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionAttribute.Optional">
+            <summary>
+                Gets or sets a value indicating whether the option is optional.
+            </summary>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.MetadataAttribute">
+            <summary>
+                Base class for any attribute that can assign metadata to an <see cref="T:ConsoleFx.CmdLine.Arg"/>.
+                <para/>
+                The framework locates such attributes decorated on args and automatically assigns them to
+                the metadata of the arg.
+            </summary>
+            <remarks>
+                An example of metadata attributes are the Help attributes.
+            </remarks>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.MetadataAttribute.GetMetadata">
+            <summary>
+                Override this method to return one or more metadata for the arg decorated by this
+                attribute.
+            </summary>
+            <returns>One or more metadata key-value pairs.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.MetadataAttribute.AssignMetadata``1(``0)">
+            <summary>
+                Helper method to assign the metadata values from this attribute to the specified
+                <paramref name="arg"/>.
+            </summary>
+            <typeparam name="TArg">The type of arg.</typeparam>
+            <param name="arg">The arg to assign the metadata to.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.MetadataAttribute.GetApplicableArgTypes">
+            <summary>
+                Specifies the types of args that this attribute can apply to.
+            </summary>
+            <returns>The applicable arg types.</returns>
+        </member>
         <member name="T:ConsoleFx.CmdLine.ErrorCodeAttribute">
             <summary>
                 Returns the specified error code from the command if any of the specified exceptions or
@@ -975,31 +1074,6 @@
                 Gets the list of exception types that will return the specified error code if any of
                 the exceptions are thrown.
             </summary>
-        </member>
-        <member name="T:ConsoleFx.CmdLine.MetadataAttribute">
-            <summary>
-                Base class for any attribute that can assign metadata to an <see cref="T:ConsoleFx.CmdLine.Arg"/>.
-                <para/>
-                The framework locates such attributes decorated on args and automatically assigns them to
-                the metadata of the arg.
-            </summary>
-            <remarks>
-                An example of metadata attributes are the Help attributes.
-            </remarks>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.MetadataAttribute.AssignMetadata``1(``0)">
-            <summary>
-                Helper method to assign the metadata values from this attribute to the specified
-                <paramref name="arg"/>.
-            </summary>
-            <typeparam name="TArg">The type of arg.</typeparam>
-            <param name="arg">The arg to assign the metadata to.</param>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.MetadataAttribute.GetApplicableArgTypes">
-            <summary>
-                Specifies the types of args that this attribute can apply to.
-            </summary>
-            <returns>The applicable arg types.</returns>
         </member>
         <member name="T:ConsoleFx.CmdLine.PrePostHandlerAttribute">
             <summary>

@@ -68,37 +68,35 @@ namespace ConsoleFx.ConsoleExtensions
 
         public int Start()
         {
-            using (var process = new Process())
+            using var process = new Process();
+            process.StartInfo.FileName = Program;
+            process.StartInfo.Arguments = Args;
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.ErrorDialog = false;
+            process.StartInfo.UseShellExecute = false;
+
+            if (_outputHandler != null)
             {
-                process.StartInfo.FileName = Program;
-                process.StartInfo.Arguments = Args;
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.ErrorDialog = false;
-                process.StartInfo.UseShellExecute = false;
-
-                if (_outputHandler != null)
-                {
-                    process.StartInfo.RedirectStandardOutput = true;
-                    process.OutputDataReceived += (sender, e) => _outputHandler(e.Data);
-                }
-
-                if (_errorHandler != null)
-                {
-                    process.StartInfo.RedirectStandardError = true;
-                    process.ErrorDataReceived += (sender, e) => _errorHandler(e.Data);
-                }
-
-                process.Start();
-
-                if (_outputHandler != null)
-                    process.BeginOutputReadLine();
-                if (_errorHandler != null)
-                    process.BeginErrorReadLine();
-
-                process.WaitForExit();
-
-                return process.ExitCode;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.OutputDataReceived += (_, e) => _outputHandler(e.Data);
             }
+
+            if (_errorHandler != null)
+            {
+                process.StartInfo.RedirectStandardError = true;
+                process.ErrorDataReceived += (_, e) => _errorHandler(e.Data);
+            }
+
+            process.Start();
+
+            if (_outputHandler != null)
+                process.BeginOutputReadLine();
+            if (_errorHandler != null)
+                process.BeginErrorReadLine();
+
+            process.WaitForExit();
+
+            return process.ExitCode;
         }
     }
 }

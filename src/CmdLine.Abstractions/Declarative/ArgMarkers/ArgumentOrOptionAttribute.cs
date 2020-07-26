@@ -23,9 +23,22 @@ using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Base class for attributes that mark properties in a <see cref="Command"/> class as an
+    ///     <see cref="Argument"/> or an <see cref="Option"/>.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public abstract class ArgumentOrOptionAttribute : Attribute
     {
+        /// <summary>
+        ///     Helper method to return the item type from the specified collection
+        ///     <paramref name="property"/> info.
+        /// </summary>
+        /// <param name="property">The collection property info.</param>
+        /// <returns>
+        ///     The item type of the collection property. If the property is not a collection (doesn't
+        ///     implement <see cref="IEnumerable{T}"/>), returns <c>null</c>.
+        /// </returns>
         protected static Type GetCollectionItemType(PropertyInfo property)
         {
             Type type = property.PropertyType;

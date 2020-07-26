@@ -27,7 +27,9 @@ namespace ConsoleFx.CmdLine
     /// <summary>
     ///     Base class for collections of objects derived from <see cref="Arg" />.
     ///     <para />
-    ///     Collections deriving from this class provide an additional indexer that can retrieve an object my its name.
+    ///     Collections deriving from this class provide an additional indexer that can retrieve an
+    ///     object by its name.
+    ///     <para/>
     ///     They also prevent duplicate objects from being inserted or set on the collection.
     /// </summary>
     /// <typeparam name="T">The specific type of <see cref="Arg" /> that the collection will hold.</typeparam>
