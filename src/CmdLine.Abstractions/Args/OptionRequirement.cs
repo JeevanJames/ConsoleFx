@@ -27,7 +27,8 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     The option is optional (this is the default). Sets the option's MinOccurences property
         ///     to 0 (zero) and MaxOccurences property to 1 (one). However, the MaxOccurence value can
-        ///     be increased, and as long as the MinOccurence value is zero, it will be considered optional.
+        ///     be increased, and as long as the MinOccurence value is zero, it will be considered
+        ///     optional.
         /// </summary>
         Optional,
 
@@ -38,7 +39,8 @@ namespace ConsoleFx.CmdLine
         OptionalUnlimited,
 
         /// <summary>
-        ///     The option is required. Sets the option's MinOccurences and MaxOccurences properties to 1 (one).
+        ///     The option is required. Sets the option's MinOccurences and MaxOccurences properties to
+        ///     1 (one).
         /// </summary>
         Required,
 

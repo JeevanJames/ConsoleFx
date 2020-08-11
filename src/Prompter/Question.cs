@@ -46,7 +46,7 @@ namespace ConsoleFx.Prompter
 
         public IList<FunctionOrColorString> Instructions
         {
-            get => _instructions ?? (_instructions = new List<FunctionOrColorString>());
+            get => _instructions ??= new List<FunctionOrColorString>();
             set => _instructions = value;
         }
 

@@ -215,7 +215,8 @@
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.SetupColorsForBlockPrinting(ConsoleFx.ConsoleExtensions.ColorStringBlock)">
             <summary>
-                Helpers method to setup the console's colors from a <see cref="T:ConsoleFx.ConsoleExtensions.ColorStringBlock"/> instance.
+                Helper method to setup the console's colors from a <see cref="T:ConsoleFx.ConsoleExtensions.ColorStringBlock"/>
+                instance.
             </summary>
             <param name="block">The <see cref="T:ConsoleFx.ConsoleExtensions.ColorStringBlock"/> instance.</param>
         </member>
@@ -223,7 +224,9 @@
             <summary>
                 Displays a message and waits for user input.
             </summary>
-            <param name="message">A string or color string representing the message to be displayed.</param>
+            <param name="message">
+                A string or color string representing the message to be displayed.
+            </param>
             <returns>The input entered by the user.</returns>
         </member>
         <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Prompt(System.Func{System.String,System.Boolean})">
@@ -233,6 +236,20 @@
                 If the input is not valid, the entered text is cleared and user prompted to enter
                 the input again.
             </summary>
+            <param name="validator">Function to validate the input text.</param>
+            <returns>The input entered by the user.</returns>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleEx.Prompt(ConsoleFx.ConsoleExtensions.ColorString,System.Func{System.String,System.Boolean})">
+            <summary>
+                Displays a <paramref name="message"/> and waits for user input. The input is validated
+                using the specified <paramref name="validator"/>.
+                <para/>
+                If the input is not valid, the entered text is cleared and user prompted to enter
+                the input again.
+            </summary>
+            <param name="message">
+                A string or color string representing the message to be displayed.
+            </param>
             <param name="validator">Function to validate the input text.</param>
             <returns>The input entered by the user.</returns>
         </member>
@@ -350,41 +367,13 @@
             <param name="escapeKeys">
                 The keys that will break the loop. If not specified, defaults to the escape key.
             </param>
-        </member>
-        <member name="T:ConsoleFx.ConsoleExtensions.KeyHandler">
-            <summary>
-                Represents a handler for a key press in the <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})" /> method.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.ConsoleExtensions.KeyHandler.#ctor(System.ConsoleKey,System.Action{System.ConsoleKey})">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler"/> class with a specified
-                <paramref name="key"/> and <paramref name="action"/> to take when the key is pressed.
-            </summary>
-            <param name="key">The key to handle.</param>
-            <param name="action">The action to perform if the key is pressed.</param>
             <exception cref="T:System.ArgumentNullException">
-                Thrown if the <paramref name="action"/> is <c>null</c>.
+                Thrown if <paramref name="handlers"/> is <c>null</c>.
             </exception>
-        </member>
-        <member name="P:ConsoleFx.ConsoleExtensions.KeyHandler.Key">
-            <summary>
-                Gets the key to handle.
-            </summary>
-        </member>
-        <member name="P:ConsoleFx.ConsoleExtensions.KeyHandler.Action">
-            <summary>
-                Gets the handler to call when the key is pressed.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleKeyExtensions.HandledBy(System.ConsoleKey,System.Action{System.ConsoleKey})">
-            <summary>
-                Provides a fluid way to create a <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler" /> instance when using the
-                <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})" /> method.
-            </summary>
-            <param name="key">The key to handle.</param>
-            <param name="action">The handler to call when the key is pressed.</param>
-            <returns>An instance of the <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler" /> class.</returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the <paramref name="handlers"/> collection is empty or if it contains any of
+                the <paramref name="escapeKeys"/> characters.
+            </exception>
         </member>
         <member name="P:ConsoleFx.ConsoleExtensions.ConsoleExSettings.SecretMask">
             <summary>
@@ -414,6 +403,41 @@
         <member name="F:ConsoleFx.ConsoleExtensions.ColorResetOption.ResetAfterColor">
             <summary>
                 Reset the color after every block of color used in a print command.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.ConsoleKeyExtensions.HandledBy(System.ConsoleKey,System.Action{System.ConsoleKey})">
+            <summary>
+                Provides a fluid way to create a <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler" /> instance when using the
+                <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})" /> method.
+            </summary>
+            <param name="key">The key to handle.</param>
+            <param name="action">The handler to call when the key is pressed.</param>
+            <returns>An instance of the <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler" /> class.</returns>
+        </member>
+        <member name="T:ConsoleFx.ConsoleExtensions.KeyHandler">
+            <summary>
+                Represents a handler for a key press in the <see cref="M:ConsoleFx.ConsoleExtensions.ConsoleEx.WaitForKeysLoop(System.Collections.Generic.IEnumerable{ConsoleFx.ConsoleExtensions.KeyHandler},System.Action{System.ConsoleKey},System.Collections.Generic.IEnumerable{System.ConsoleKey})" /> method.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.ConsoleExtensions.KeyHandler.#ctor(System.ConsoleKey,System.Action{System.ConsoleKey})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.ConsoleExtensions.KeyHandler"/> class with a specified
+                <paramref name="key"/> and <paramref name="action"/> to take when the key is pressed.
+            </summary>
+            <param name="key">The key to handle.</param>
+            <param name="action">The action to perform if the key is pressed.</param>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the <paramref name="action"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="P:ConsoleFx.ConsoleExtensions.KeyHandler.Key">
+            <summary>
+                Gets the key to handle.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.ConsoleExtensions.KeyHandler.Action">
+            <summary>
+                Gets the handler to call when the key is pressed.
             </summary>
         </member>
         <member name="T:ConsoleFx.ConsoleExtensions.ProgressBar">

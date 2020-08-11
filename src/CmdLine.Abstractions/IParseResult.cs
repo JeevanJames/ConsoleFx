@@ -21,8 +21,18 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Represents the result of parsing a collection of tokens.
+    /// </summary>
     public interface IParseResult
     {
+        /// <summary>
+        ///     Gets the top-level <see cref="Command"/>.
+        ///     <para/>
+        ///     The <see cref="Command"/> instance has properties such as
+        ///     <see cref="Command.ParentCommand"/> and <see cref="Command.RootCommand"/> to traverse up
+        ///     the command chain.
+        /// </summary>
         Command Command { get; }
 
         /// <summary>

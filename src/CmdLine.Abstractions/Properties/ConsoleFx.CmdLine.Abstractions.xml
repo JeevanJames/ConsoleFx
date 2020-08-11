@@ -798,8 +798,9 @@
         </member>
         <member name="T:ConsoleFx.CmdLine.Options">
             <summary>
-                Represents a collection of options. Note: This is not a keyed collection because the key
-                can be one of many names.
+                Represents a collection of options.
+                <para/>
+                Note: This is not a keyed collection because the key can be one of many names.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Options.Item(System.String)">
@@ -843,8 +844,11 @@
         <member name="P:ConsoleFx.CmdLine.OptionUsage.ExpectedOccurrences">
             <summary>
                 Gets or sets the expected number of occurrences of the property.
+                <para/>
                 Shortcut to get/set both min and max occurence values.
+                <para/>
                 If min and max values are different, returns null.
+                <para/>
                 If set to null, then the defaults of 0 (min) and 1 (max) are set.
             </summary>
         </member>
@@ -908,6 +912,8 @@
                 Enables or disables debugging output from the ConsoleFx framework. Any code in the framework
                 can use the <see cref="M:ConsoleFx.CmdLine.DebugOutput.Write(System.Object,System.Collections.Generic.IEnumerable{System.Object},System.String,System.String,System.Int32)"/> method to
                 write debugging information that can be useful to troubleshoot issues.
+                <para/>
+                Debugging output is disabled by default. To enable it, call the <see cref="M:ConsoleFx.CmdLine.DebugOutput.Enable"/> method.
             </summary>
         </member>
         <member name="M:ConsoleFx.CmdLine.DebugOutput.Enable">
@@ -1154,6 +1160,20 @@
               Looks up a localized string similar to Specify at least one validator..
             </summary>
         </member>
+        <member name="T:ConsoleFx.CmdLine.IParseResult">
+            <summary>
+                Represents the result of parsing a collection of tokens.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.IParseResult.Command">
+            <summary>
+                Gets the top-level <see cref="P:ConsoleFx.CmdLine.IParseResult.Command"/>.
+                <para/>
+                The <see cref="P:ConsoleFx.CmdLine.IParseResult.Command"/> instance has properties such as
+                <see cref="P:ConsoleFx.CmdLine.Command.ParentCommand"/> and <see cref="P:ConsoleFx.CmdLine.Command.RootCommand"/> to traverse up
+                the command chain.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.IParseResult.Arguments">
             <summary>
                 Gets the list of specified command line arguments.
@@ -1268,16 +1288,6 @@
             <param name="optional">If <c>true</c>, then the option does not need to be specified.</param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
         </member>
-        <member name="P:ConsoleFx.CmdLine.ParserException.ErrorCode">
-            <summary>
-                Gets the type of error that occurred so further logic can be applied to handling it.
-                <para/>
-                A positive error code denotes a functional error.
-                <para/>
-                A negative error code denotes an internal error code, which typically means a bug in the
-                application or framework.
-            </summary>
-        </member>
         <member name="M:ConsoleFx.CmdLine.ParserException.#ctor(System.Int32,System.String)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with an error code
@@ -1314,6 +1324,16 @@
                 The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the
                 source or destination.
             </param>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ParserException.ErrorCode">
+            <summary>
+                Gets the type of error that occurred so further logic can be applied to handling it.
+                <para/>
+                A positive error code denotes a functional error.
+                <para/>
+                A negative error code denotes an internal error code, which typically means a bug in the
+                application or framework.
+            </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator">
             <summary>

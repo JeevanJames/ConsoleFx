@@ -26,7 +26,9 @@ namespace ConsoleFx.ConsoleExtensions
         /// <summary>
         ///     Displays a message and waits for user input.
         /// </summary>
-        /// <param name="message">A string or color string representing the message to be displayed.</param>
+        /// <param name="message">
+        ///     A string or color string representing the message to be displayed.
+        /// </param>
         /// <returns>The input entered by the user.</returns>
         public static string Prompt(ColorString message)
         {
@@ -44,9 +46,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// <returns>The input entered by the user.</returns>
         public static string Prompt(Func<string, bool> validator)
         {
-#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
             (int left, int top) = (Console.CursorLeft, Console.CursorTop);
-#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
 
             string input = Console.ReadLine();
             bool isValid = validator(input);
@@ -62,6 +62,18 @@ namespace ConsoleFx.ConsoleExtensions
             return input;
         }
 
+        /// <summary>
+        ///     Displays a <paramref name="message"/> and waits for user input. The input is validated
+        ///     using the specified <paramref name="validator"/>.
+        ///     <para/>
+        ///     If the input is not valid, the entered text is cleared and user prompted to enter
+        ///     the input again.
+        /// </summary>
+        /// <param name="message">
+        ///     A string or color string representing the message to be displayed.
+        /// </param>
+        /// <param name="validator">Function to validate the input text.</param>
+        /// <returns>The input entered by the user.</returns>
         public static string Prompt(ColorString message, Func<string, bool> validator)
         {
             Print(message);

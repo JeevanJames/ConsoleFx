@@ -24,8 +24,9 @@ using System.Linq;
 namespace ConsoleFx.CmdLine
 {
     /// <summary>
-    ///     Represents a collection of options. Note: This is not a keyed collection because the key
-    ///     can be one of many names.
+    ///     Represents a collection of options.
+    ///     <para/>
+    ///     Note: This is not a keyed collection because the key can be one of many names.
     /// </summary>
     public sealed class Options : Args<Option>
     {

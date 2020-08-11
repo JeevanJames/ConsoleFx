@@ -27,7 +27,7 @@ using ConsoleFx.CmdLine.Parser.Runs;
 namespace ConsoleFx.CmdLine.Parser
 {
     /// <summary>
-    ///     Represents the results of parsing a set of arguments.
+    ///     Represents the results of parsing a set of args.
     /// </summary>
     [DebuggerDisplay("Command: {Command.Name}")]
     internal sealed class ParseResult : IParseResult

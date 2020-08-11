@@ -60,6 +60,10 @@ namespace ConsoleFx.CmdLine
         /// <param name="validators">Collection of parameters to add.</param>
         public void Add(int parameterIndex, params IValidator[] validators)
         {
+            //TODO: These checks on the option usage can fail incorrectly if the validators are set
+            //before the usage is set. Better to do these checks when the parser is called rather than
+            //now.
+
             if (_option.Usage.ParameterRequirement == OptionParameterRequirement.NotAllowed)
             {
                 throw new ParserException(1000,

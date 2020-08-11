@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+﻿#region --- License & Copyright Notice ---
+/*
 ConsoleFx CLI Library Suite
 Copyright 2015-2019 Jeevan James
 
@@ -14,12 +14,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--->
+*/
+#endregion
 
-<doc>
-    <assembly>
-        <name>Art</name>
-    </assembly>
-    <members>
-    </members>
-</doc>
+using System;
+
+namespace ConsoleFx.Prompter
+{
+    public sealed class BetweenPromptEventArgs : EventArgs
+    {
+        public PromptItem PreviousPrompt { get; set; }
+
+        public PromptItem NextPrompt { get; set; }
+    }
+}

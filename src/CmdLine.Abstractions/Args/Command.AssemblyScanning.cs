@@ -82,7 +82,7 @@ namespace ConsoleFx.CmdLine
 
                 // Look for any types that derive from Command and have a parameterless constructor.
                 // Get the command type and any parent command type specified by the Command attribute.
-                var assemblyCommands = assembly.GetExportedTypes()
+                IEnumerable<(Type type, Type ParentType)> assemblyCommands = assembly.GetExportedTypes()
                     .Where(type => typePredicate is null || typePredicate(type))
                     .Where(type => typeof(Command).IsAssignableFrom(type))
                     .Where(type => type.GetConstructor(Type.EmptyTypes) != null)
@@ -92,7 +92,8 @@ namespace ConsoleFx.CmdLine
 
             // Add all discovered commands with a non-null parent type to the DiscoveredCommands
             // dictionary. These will be used when their corresponding parent commands are instantiated.
-            var nonRootCommands = discoveredCommands.Where(c => c.parentType != null);
+            IEnumerable<(Type commandType, Type parentType)> nonRootCommands = discoveredCommands
+                .Where(c => c.parentType != null);
             foreach (var (commandType, parentType) in nonRootCommands)
             {
                 DebugOutput.Write($"Discovered child: {commandType.FullName} of {parentType.FullName}");
@@ -104,7 +105,8 @@ namespace ConsoleFx.CmdLine
             // command.
             try
             {
-                var rootCommands = discoveredCommands.Where(c => c.parentType is null);
+                IEnumerable<(Type commandType, Type parentType)> rootCommands = discoveredCommands
+                    .Where(c => c.parentType is null);
                 foreach (var (commandType, _) in rootCommands)
                 {
                     DebugOutput.Write($"Discovered root child: {commandType.FullName}");

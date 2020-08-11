@@ -26,16 +26,6 @@ namespace ConsoleFx.CmdLine
     public class ParserException : Exception
     {
         /// <summary>
-        ///     Gets the type of error that occurred so further logic can be applied to handling it.
-        ///     <para/>
-        ///     A positive error code denotes a functional error.
-        ///     <para/>
-        ///     A negative error code denotes an internal error code, which typically means a bug in the
-        ///     application or framework.
-        /// </summary>
-        public int ErrorCode { get; }
-
-        /// <summary>
         ///     Initializes a new instance of the <see cref="ParserException"/> class with an error code
         ///     and message.
         /// </summary>
@@ -82,6 +72,16 @@ namespace ConsoleFx.CmdLine
             : base(info, context)
         {
         }
+
+        /// <summary>
+        ///     Gets the type of error that occurred so further logic can be applied to handling it.
+        ///     <para/>
+        ///     A positive error code denotes a functional error.
+        ///     <para/>
+        ///     A negative error code denotes an internal error code, which typically means a bug in the
+        ///     application or framework.
+        /// </summary>
+        public int ErrorCode { get; }
 
         public static class Codes
         {

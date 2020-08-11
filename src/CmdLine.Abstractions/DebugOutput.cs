@@ -28,6 +28,8 @@ namespace ConsoleFx.CmdLine
     ///     Enables or disables debugging output from the ConsoleFx framework. Any code in the framework
     ///     can use the <see cref="Write(object, IEnumerable{object}, string, string, int)"/> method to
     ///     write debugging information that can be useful to troubleshoot issues.
+    ///     <para/>
+    ///     Debugging output is disabled by default. To enable it, call the <see cref="Enable"/> method.
     /// </summary>
     public static class DebugOutput
     {

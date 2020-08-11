@@ -60,9 +60,6 @@ namespace ConsoleFx.CmdLine.Parser
         /// </summary>
         public ArgGrouping Grouping { get; set; }
 
-        //TODO: To be implemented later
-        /* public ConfigReader ConfigReader { get; set; } */
-
         /// <summary>
         ///     Parses the given set of tokens based on the rules specified by the <see cref="Command"/>.
         /// </summary>

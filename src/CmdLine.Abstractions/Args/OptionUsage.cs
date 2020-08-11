@@ -53,15 +53,12 @@ namespace ConsoleFx.CmdLine
         public int MaxOccurrences
         {
             get => _maxOccurrences;
-            set
-            {
-                // An option should allow at least one occurence.
-                // Allowing a max of 0 occurrences is the same as saying that the option should never be used.
-                //TODO: Change the exception message to something more appropriate.
-                if (value < 1)
-                    throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
-                _maxOccurrences = value;
-            }
+
+            // An option should allow at least one occurence.
+            // Allowing a max of 0 occurrences is the same as saying that the option should never be used.
+            //TODO: Change the exception message to something more appropriate.
+            set => _maxOccurrences = value >= 1 ? value
+                : throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
         }
 
         /// <summary>
@@ -70,18 +67,17 @@ namespace ConsoleFx.CmdLine
         public int MinOccurrences
         {
             get => _minOccurrences;
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
-                _minOccurrences = value;
-            }
+            set => _minOccurrences = value >= 0 ? value
+                : throw new ArgumentOutOfRangeException(nameof(value), Messages.OccurenceParameterValueNegative);
         }
 
         /// <summary>
         ///     Gets or sets the expected number of occurrences of the property.
+        ///     <para/>
         ///     Shortcut to get/set both min and max occurence values.
+        ///     <para/>
         ///     If min and max values are different, returns null.
+        ///     <para/>
         ///     If set to null, then the defaults of 0 (min) and 1 (max) are set.
         /// </summary>
         public int? ExpectedOccurrences
@@ -165,7 +161,9 @@ namespace ConsoleFx.CmdLine
         public OptionParameterRequirement ParameterRequirement
         {
             get => MinParameters == 0 && MaxParameters == 0
-                ? OptionParameterRequirement.NotAllowed : OptionParameterRequirement.Required;
+                ? OptionParameterRequirement.NotAllowed
+                : OptionParameterRequirement.Required;
+
             set
             {
                 switch (value)

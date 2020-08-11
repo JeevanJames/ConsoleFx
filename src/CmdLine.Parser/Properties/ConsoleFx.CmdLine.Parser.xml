@@ -172,7 +172,7 @@
         </member>
         <member name="T:ConsoleFx.CmdLine.Parser.ParseResult">
             <summary>
-                Represents the results of parsing a set of arguments.
+                Represents the results of parsing a set of args.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Parser.ParseResult.Arguments">

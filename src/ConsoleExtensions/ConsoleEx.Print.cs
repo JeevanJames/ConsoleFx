@@ -140,7 +140,8 @@ namespace ConsoleFx.ConsoleExtensions
         }
 
         /// <summary>
-        ///     Helpers method to setup the console's colors from a <see cref="ColorStringBlock"/> instance.
+        ///     Helper method to setup the console's colors from a <see cref="ColorStringBlock"/>
+        ///     instance.
         /// </summary>
         /// <param name="block">The <see cref="ColorStringBlock"/> instance.</param>
         private static void SetupColorsForBlockPrinting(ColorStringBlock block)
