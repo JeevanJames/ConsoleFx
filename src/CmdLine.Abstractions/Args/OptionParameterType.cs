@@ -25,12 +25,12 @@ namespace ConsoleFx.CmdLine
     public enum OptionParameterType
     {
         /// <summary>
-        ///     The parameters are repeating and have the same meaning
+        ///     The parameters are repeating and have the same meaning.
         /// </summary>
         Repeating,
 
         /// <summary>
-        ///     Each parameter is independent, has its own meaning and is at a specific position
+        ///     Each parameter is independent, has its own meaning and is at a specific position.
         /// </summary>
         Individual,
     }

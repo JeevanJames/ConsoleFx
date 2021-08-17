@@ -50,7 +50,7 @@ namespace ConsoleFx.Prompter.Questions
                 }
 
                 return ConsoleEx.Prompt(new ColorString(q.Message.Resolve(ans),
-                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor).ToString(),
+                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor).ToString(),
                     Validator);
             };
         }

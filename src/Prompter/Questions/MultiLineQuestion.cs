@@ -31,7 +31,7 @@ namespace ConsoleFx.Prompter.Questions
             _askerFn = (q, ans) =>
             {
                 ConsoleEx.PrintLine(new ColorString(q.Message.Resolve(ans),
-                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor));
+                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
                 return string.Empty;
             };
         }

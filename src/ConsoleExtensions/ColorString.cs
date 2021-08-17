@@ -365,6 +365,8 @@ namespace ConsoleFx.ConsoleExtensions
         {
             return TryParse(cstr, out ColorString colorStr) ? colorStr : null;
         }
+
+        public static readonly ColorString Empty = new();
     }
 
     // IReadOnlyList implementation

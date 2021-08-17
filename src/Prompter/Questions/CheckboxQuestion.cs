@@ -44,7 +44,7 @@ namespace ConsoleFx.Prompter.Questions
             {
                 var cq = (CheckboxQuestion)q;
                 ConsoleEx.PrintLine(new ColorString(q.Message.Resolve(ans),
-                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor));
+                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
                 return ConsoleEx.SelectMultiple(cq._choices);
             };
         }

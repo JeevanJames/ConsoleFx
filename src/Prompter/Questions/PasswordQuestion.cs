@@ -34,7 +34,7 @@ namespace ConsoleFx.Prompter.Questions
             {
                 var pq = (PasswordQuestion<TValue>)q;
                 return ConsoleEx.ReadSecret(new ColorString(q.Message.Resolve(ans),
-                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor),
+                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor),
                     hideCursor: pq._hideCursor, hideMask: pq._hideMask);
             };
         }

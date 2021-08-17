@@ -18,6 +18,10 @@ limitations under the License.
 #endregion
 
 using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
@@ -78,7 +82,20 @@ namespace ConsoleFx.Prompter
         /// <returns>The resolved value of the <see cref="FunctionOrValue{TValue}"/>.</returns>
         internal TValue Resolve(dynamic answers = null)
         {
-            return Function != null ? (TValue)Function(answers) : Value;
+            if (!IsAssigned)
+                throw new InvalidOperationException("The FunctionOrValue instance is not assigned.");
+
+            if (Function is not null)
+                return (TValue)Function(answers);
+
+            bool isFunctionOrValue = ValueIsFunctionOrValue(out Type type);
+            if (isFunctionOrValue)
+            {
+                dynamic dynamicValue = Value;
+                return dynamicValue.Resolve(answers);
+            }
+
+            return Value;
         }
 
         /// <summary>
@@ -98,6 +115,30 @@ namespace ConsoleFx.Prompter
         public static implicit operator FunctionOrValue<TValue>(Func<dynamic, TValue> function)
         {
             return new FunctionOrValue<TValue>(function);
+        }
+
+        private bool ValueIsFunctionOrValue(out Type type)
+        {
+            Type currentType = Value.GetType();
+            while (currentType != typeof(object))
+            {
+                if (currentType is null)
+                {
+                    type = null;
+                    return false;
+                }
+
+                if (currentType.IsGenericType && currentType.GetGenericTypeDefinition() == typeof(FunctionOrValue<>))
+                {
+                    type = currentType.GetGenericArguments()[0];
+                    return true;
+                }
+
+                currentType = currentType.BaseType;
+            }
+
+            type = null;
+            return false;
         }
     }
 

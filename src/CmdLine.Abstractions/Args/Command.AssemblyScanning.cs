@@ -74,7 +74,7 @@ namespace ConsoleFx.CmdLine
             if (assemblies is null)
                 throw new ArgumentNullException(nameof(assemblies));
 
-            var discoveredCommands = new List<(Type commandType, Type parentType)>();
+            var discoveredCommands = new List<(Type CommandType, Type ParentType)>();
             foreach (Assembly assembly in assemblies)
             {
                 if (assembly is null)
@@ -82,19 +82,20 @@ namespace ConsoleFx.CmdLine
 
                 // Look for any types that derive from Command and have a parameterless constructor.
                 // Get the command type and any parent command type specified by the Command attribute.
-                IEnumerable<(Type type, Type ParentType)> assemblyCommands = assembly.GetExportedTypes()
-                    .Where(type => typePredicate is null || typePredicate(type))
-                    .Where(type => typeof(Command).IsAssignableFrom(type))
-                    .Where(type => type.GetConstructor(Type.EmptyTypes) != null)
+                IEnumerable<(Type Type, Type ParentType)> assemblyCommands = assembly.GetExportedTypes()
+                    .Where(type => (typePredicate is null || typePredicate(type))
+                        && typeof(Command).IsAssignableFrom(type)
+                        && type.GetConstructor(Type.EmptyTypes) != null
+                        && type != GetType())
                     .Select(type => (type, type.GetCustomAttribute<CommandAttribute>(true)?.ParentType));
                 discoveredCommands.AddRange(assemblyCommands);
             }
 
             // Add all discovered commands with a non-null parent type to the DiscoveredCommands
             // dictionary. These will be used when their corresponding parent commands are instantiated.
-            IEnumerable<(Type commandType, Type parentType)> nonRootCommands = discoveredCommands
-                .Where(c => c.parentType != null);
-            foreach (var (commandType, parentType) in nonRootCommands)
+            IEnumerable<(Type CommandType, Type ParentType)> nonRootCommands = discoveredCommands
+                .Where(c => c.ParentType != null);
+            foreach ((Type commandType, Type parentType) in nonRootCommands)
             {
                 DebugOutput.Write($"Discovered child: {commandType.FullName} of {parentType.FullName}");
                 DiscoveredCommands.Add(commandType, parentType);
@@ -105,9 +106,9 @@ namespace ConsoleFx.CmdLine
             // command.
             try
             {
-                IEnumerable<(Type commandType, Type parentType)> rootCommands = discoveredCommands
-                    .Where(c => c.parentType is null);
-                foreach (var (commandType, _) in rootCommands)
+                IEnumerable<(Type CommandType, Type ParentType)> rootCommands = discoveredCommands
+                    .Where(c => c.ParentType is null);
+                foreach ((Type commandType, _) in rootCommands)
                 {
                     DebugOutput.Write($"Discovered root child: {commandType.FullName}");
                     var command = (Command)Activator.CreateInstance(commandType);

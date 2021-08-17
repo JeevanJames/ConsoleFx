@@ -45,7 +45,7 @@ namespace ConsoleFx.Prompter.Questions
             {
                 var lq = (ListQuestion<TValue>)q;
                 ConsoleEx.PrintLine(new ColorString(q.Message.Resolve(ans),
-                    Prompter.Style.Question.ForeColor, Prompter.Style.Question.BackColor));
+                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
                 return ConsoleEx.SelectSingle(lq._choices);
             };
         }

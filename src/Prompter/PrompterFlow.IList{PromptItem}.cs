@@ -23,10 +23,10 @@ using System.Diagnostics;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed partial class Prompter : IList<PromptItem>
+    public sealed partial class PrompterFlow : IList<PromptItem>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly List<PromptItem> _promptItems = new List<PromptItem>();
+        private readonly List<PromptItem> _promptItems = new();
 
         public PromptItem this[int index]
         {

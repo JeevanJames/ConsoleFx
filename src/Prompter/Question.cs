@@ -95,11 +95,27 @@ namespace ConsoleFx.Prompter
             return this;
         }
 
+        public Question<TRaw, TConverted> ValidateWith(BasicValidator<TConverted> validator)
+        {
+            if (validator is null)
+                throw new ArgumentNullException(nameof(validator));
+            ConvertedValueValidator = (value, _) => validator((TConverted)value);
+            return this;
+        }
+
         public Question<TRaw, TConverted> ValidateWith(Validator<TConverted> validator)
         {
             if (validator is null)
                 throw new ArgumentNullException(nameof(validator));
             ConvertedValueValidator = (value, ans) => validator((TConverted)value, ans);
+            return this;
+        }
+
+        public Question<TRaw, TConverted> ValidateInputWith(BasicValidator<TRaw> validator)
+        {
+            if (validator is null)
+                throw new ArgumentNullException(nameof(validator));
+            RawValueValidator = (value, _) => validator((TRaw)value);
             return this;
         }
 

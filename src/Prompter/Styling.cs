@@ -29,13 +29,13 @@ namespace ConsoleFx.Prompter
 
         public QuestionStyle Question
         {
-            get => _question ?? (_question = new QuestionStyle());
+            get => _question ??= new QuestionStyle();
             set => _question = value;
         }
 
         public InstructionStyle Instructions
         {
-            get => _instructions ?? (_instructions = new InstructionStyle());
+            get => _instructions ??= new InstructionStyle();
             set => _instructions = value;
         }
     }
@@ -43,20 +43,20 @@ namespace ConsoleFx.Prompter
     // Themes
     public sealed partial class Styling
     {
-        public static readonly Styling NoTheme = new Styling();
+        public static readonly Styling NoTheme = new();
 
-        public static readonly Styling Terminal = new Styling
+        public static readonly Styling Terminal = new()
         {
             Question = { ForeColor = CColor.Green, },
             Instructions = { ForeColor = CColor.DkGreen, },
         };
 
-        public static readonly Styling Ruby = new Styling
+        public static readonly Styling Ruby = new()
         {
             Question = { ForeColor = CColor.Magenta, },
         };
 
-        public static readonly Styling Colorful = new Styling
+        public static readonly Styling Colorful = new()
         {
             Question =
             {

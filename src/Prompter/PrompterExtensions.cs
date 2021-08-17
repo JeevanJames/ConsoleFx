@@ -26,7 +26,7 @@ namespace ConsoleFx.Prompter
 {
     public static class PrompterExtensions
     {
-        public static Prompter Input(this Prompter prompter, string name, FunctionOrColorString message,
+        public static PrompterFlow Input(this PrompterFlow prompter, string name, FunctionOrColorString message,
             Action<InputQuestion> setupQuestion = null)
         {
             var question = new InputQuestion(name, message);
@@ -35,7 +35,7 @@ namespace ConsoleFx.Prompter
             return prompter;
         }
 
-        public static Prompter Password(this Prompter prompter, string name, FunctionOrColorString message,
+        public static PrompterFlow Password(this PrompterFlow prompter, string name, FunctionOrColorString message,
             Action<PasswordQuestion> setupQuestion = null)
         {
             var question = new PasswordQuestion(name, message);
@@ -44,7 +44,7 @@ namespace ConsoleFx.Prompter
             return prompter;
         }
 
-        public static Prompter Confirm(this Prompter prompter, string name, FunctionOrColorString message,
+        public static PrompterFlow Confirm(this PrompterFlow prompter, string name, FunctionOrColorString message,
             bool @default = false, Action<ConfirmQuestion> setupQuestion = null)
         {
             var question = new ConfirmQuestion(name, message, @default);
@@ -53,7 +53,7 @@ namespace ConsoleFx.Prompter
             return prompter;
         }
 
-        public static Prompter List(this Prompter prompter, string name, FunctionOrColorString message,
+        public static PrompterFlow List(this PrompterFlow prompter, string name, FunctionOrColorString message,
             IEnumerable<string> choices, Action<ListQuestion> setupQuestion = null)
         {
             var question = new ListQuestion(name, message, choices);
@@ -63,7 +63,7 @@ namespace ConsoleFx.Prompter
         }
 
         //TODO: Enforce a converter parameter here
-        public static Prompter List<TValue>(this Prompter prompter, string name, FunctionOrColorString message,
+        public static PrompterFlow List<TValue>(this PrompterFlow prompter, string name, FunctionOrColorString message,
             IEnumerable<string> choices, Func<int, TValue> converter, Action<ListQuestion<TValue>> setupQuestion = null)
         {
             if (converter is null)
@@ -75,7 +75,7 @@ namespace ConsoleFx.Prompter
             return prompter;
         }
 
-        public static Prompter Checkbox(this Prompter prompter, string name, FunctionOrColorString message,
+        public static PrompterFlow Checkbox(this PrompterFlow prompter, string name, FunctionOrColorString message,
             IEnumerable<string> choices, Action<CheckboxQuestion> setupQuestion = null)
         {
             var question = new CheckboxQuestion(name, message, choices);
@@ -84,7 +84,7 @@ namespace ConsoleFx.Prompter
             return prompter;
         }
 
-        public static Prompter Text(this Prompter prompter, FunctionOrColorString text,
+        public static PrompterFlow Text(this PrompterFlow prompter, FunctionOrColorString text,
             Action<StaticText> setupStaticText = null)
         {
             var staticText = new StaticText(text);
@@ -93,15 +93,15 @@ namespace ConsoleFx.Prompter
             return prompter;
         }
 
-        public static Prompter BlankLine(this Prompter prompter, Action<StaticText> setupStaticText = null)
+        public static PrompterFlow BlankLine(this PrompterFlow prompter, Action<StaticText> setupStaticText = null)
         {
-            var staticText = new StaticText(new ColorString());
+            var staticText = new StaticText(ColorString.Empty);
             setupStaticText?.Invoke(staticText);
             prompter.Add(staticText);
             return prompter;
         }
 
-        public static Prompter Separator(this Prompter prompter, char separator = '=',
+        public static PrompterFlow Separator(this PrompterFlow prompter, char separator = '=',
             Action<StaticText> setupStaticText = null)
         {
             var staticText = new StaticText(new ColorString(new string(separator, Console.WindowWidth)));

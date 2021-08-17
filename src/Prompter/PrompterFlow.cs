@@ -23,7 +23,7 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed partial class Prompter
+    public sealed partial class PrompterFlow
     {
         public Answers Ask()
         {
@@ -69,7 +69,7 @@ namespace ConsoleFx.Prompter
                 {
                     foreach (FunctionOrColorString instruction in question.Instructions)
                     {
-                        var cstr = new ColorString().Text(instruction.Resolve(answers),
+                        ColorString cstr = new ColorString().Text(instruction.Resolve(answers),
                             Style.Instructions.ForeColor, Style.Instructions.BackColor);
                         ConsoleEx.PrintLine(cstr.ToString());
                     }
@@ -112,9 +112,7 @@ namespace ConsoleFx.Prompter
 
                     validAnswer = true;
                 }
-#pragma warning disable S2583 // Conditionally executed blocks should be reachable
                 while (!validAnswer);
-#pragma warning restore S2583 // Conditionally executed blocks should be reachable
 
                 answers.Add(question.Name, answer);
 

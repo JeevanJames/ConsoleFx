@@ -717,12 +717,12 @@
         </member>
         <member name="F:ConsoleFx.CmdLine.OptionParameterType.Repeating">
             <summary>
-                The parameters are repeating and have the same meaning
+                The parameters are repeating and have the same meaning.
             </summary>
         </member>
         <member name="F:ConsoleFx.CmdLine.OptionParameterType.Individual">
             <summary>
-                Each parameter is independent, has its own meaning and is at a specific position
+                Each parameter is independent, has its own meaning and is at a specific position.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.OptionParameterValidators">

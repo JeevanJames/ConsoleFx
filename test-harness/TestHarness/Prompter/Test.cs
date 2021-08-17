@@ -22,8 +22,6 @@ using ConsoleFx.Prompter;
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
 
-using CFxPrompter = ConsoleFx.Prompter.Prompter;
-
 namespace TestHarness.Prompter
 {
     internal sealed class Test : TestBase
@@ -36,19 +34,23 @@ namespace TestHarness.Prompter
 
         internal override void Run()
         {
-            CFxPrompter.Style = Styling.Colorful;
-            var prompter = new CFxPrompter()
+            PrompterFlow.Style = Styling.Ruby;
+            var prompter = new PrompterFlow()
                 .Input("Name", $"Hi, what's your {Green.BgDkYellow}name? ", q => q
                     .WithInstructions(NameInstructions1, NameInstructions2, NameInstructions3)
-                    .ValidateWith((name, _) => name.Length >= 6)
+                    .ValidateWith(name => name.Length >= 6)
                     .Transform(name => name.ToUpperInvariant())
                     .DefaultsTo("Jeevan"))
                 .Password("Password", "Enter password: ", q => q
                     .WithInstructions(PasswordInstructions)
-                    .ValidateInputWith((password, _) => password.Length > 0))
-                .Confirm("Proceed", "Should we proceed? ", true)
-                .List("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No" },
-                    selected => selected == 0)
+                    .ValidateInputWith(password => password.Length > 0))
+                .Confirm("Proceed", "Should we proceed? ", @default: false)
+                .List("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No", "Maybe" },
+                    selected => selected == 1)
+                .Separator()
+                .Checkbox("Checkbox", "This is a checkbox", new []{ "Choice 1", "Choice 2", "Choice 3" }, q => q
+                    .WithInstructions("Select at least one option")
+                    .ValidateWith(list => list.Count > 0))
                 .Text("You have decided to proceed", t => t
                     .When(ans => ans.Proceed))
                 .Text("You have decided not to proceed", t => t
@@ -60,6 +62,7 @@ namespace TestHarness.Prompter
             PrintLine($"Your password is {Red}{answers.Password}");
             PrintLine($"Should proceed: {Blue}{answers.Proceed}");
             PrintLine($"Should proceed 2: {DkBlue.BgWhite}{answers.Proceed2}");
+            PrintLine($"Checkbox: {string.Join(',', answers.Checkbox)}");
         }
     }
 }
