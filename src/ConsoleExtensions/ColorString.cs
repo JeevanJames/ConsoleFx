@@ -326,7 +326,7 @@ namespace ConsoleFx.ConsoleExtensions
             }
 
             colorStr = new ColorString(cstr.Substring(0, matches[0].Index));
-            for (var i = 0; i < matches.Count; i++)
+            for (int i = 0; i < matches.Count; i++)
             {
                 Match match = matches[i];
 

@@ -46,7 +46,7 @@ namespace TestHarness
                 {
                     Console.Clear();
 
-                    PrintLine($"What do you want to test?");
+                    PrintLine("What do you want to test?");
 
                     string[] menuItems = MenuItems.Values.ToArray();
                     selectedItem = SelectSingle(menuItems, startingIndex: selectedItem);
@@ -61,7 +61,7 @@ namespace TestHarness
                     var testHarness = (TestBase)Activator.CreateInstance(selectedType);
                     testHarness.Run();
                 }
-                catch (TargetInvocationException ex) when (ex.InnerException != null)
+                catch (TargetInvocationException ex) when (ex.InnerException is not null)
                 {
                     PrintLine($"{Red.BgWhite}[{ex.InnerException.GetType().Name}]{ex.InnerException.Message}");
                     PrintLine($"{Magenta.BgWhite}{ex.InnerException.StackTrace}");
@@ -84,7 +84,7 @@ namespace TestHarness
             Process.GetCurrentProcess().Kill();
         }
 
-        private static readonly Dictionary<Type, string> MenuItems = new Dictionary<Type, string>
+        private static readonly Dictionary<Type, string> MenuItems = new()
         {
             [typeof(Parser.Test)] = "Parser",
             [typeof(Parser2.Test)] = "Parser 2",

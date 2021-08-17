@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>th</AssemblyName>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\CmdLine.Parser\CmdLine.Parser.csproj" />
-    <ProjectReference Include="..\..\src\CmdLine.Program\CmdLine.Program.csproj" />
-    <ProjectReference Include="..\..\src\ConsoleExtensions\ConsoleExtensions.csproj" />
-    <ProjectReference Include="..\..\src\Prompter\Prompter.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
+        <ProjectReference Include="..\..\src\CmdLine.Parser\CmdLine.Parser.csproj" />
+        <ProjectReference Include="..\..\src\CmdLine.Program\CmdLine.Program.csproj" />
+        <ProjectReference Include="..\..\src\ConsoleExtensions\ConsoleExtensions.csproj" />
+        <ProjectReference Include="..\..\src\Prompter\Prompter.csproj" />
+    </ItemGroup>
 
 </Project>

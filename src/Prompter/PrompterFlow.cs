@@ -84,7 +84,7 @@ namespace ConsoleFx.Prompter
                     if (question.RawValueValidator != null)
                     {
                         ValidationResult validationResult = question.RawValueValidator(input, answers);
-                        if (!validationResult.Valid)
+                        if (!validationResult.IsValid)
                         {
                             if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
                                 ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
@@ -102,7 +102,7 @@ namespace ConsoleFx.Prompter
                     if (question.ConvertedValueValidator != null)
                     {
                         ValidationResult validationResult = question.ConvertedValueValidator(answer, answers);
-                        if (!validationResult.Valid)
+                        if (!validationResult.IsValid)
                         {
                             if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
                                 ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");

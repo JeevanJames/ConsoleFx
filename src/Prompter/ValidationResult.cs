@@ -17,6 +17,8 @@ limitations under the License.
 */
 #endregion
 
+using System;
+
 namespace ConsoleFx.Prompter
 {
     /// <summary>
@@ -27,29 +29,33 @@ namespace ConsoleFx.Prompter
         /// <summary>
         ///     Gets a value indicating whether the answer is valid.
         /// </summary>
-        internal bool Valid { get; }
+        internal bool IsValid { get; }
 
         /// <summary>
         ///     Gets the error message describing the reason why the validation failed.
         /// </summary>
         internal string ErrorMessage { get; }
 
-        internal ValidationResult(bool valid)
+        internal ValidationResult(bool isValid)
         {
-            Valid = valid;
+            IsValid = isValid;
             ErrorMessage = null;
         }
 
         internal ValidationResult(string errorMessage)
         {
-            Valid = errorMessage is null;
+            if (errorMessage is null)
+                throw new ArgumentNullException(nameof(errorMessage));
+            IsValid = false;
             ErrorMessage = errorMessage;
         }
 
-        public static implicit operator ValidationResult(bool valid) =>
-            new ValidationResult(valid);
+        public static implicit operator ValidationResult(bool isValid) => new(isValid);
 
-        public static implicit operator ValidationResult(string errorMessage) =>
-            new ValidationResult(errorMessage);
+        public static implicit operator ValidationResult(string errorMessage) => new(errorMessage);
+
+        public static readonly ValidationResult Valid = new(true);
+
+        public static readonly ValidationResult Invalid = new(false);
     }
 }

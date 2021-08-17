@@ -38,7 +38,7 @@ namespace TestHarness.Prompter
             var prompter = new PrompterFlow()
                 .Input("Name", $"Hi, what's your {Green.BgDkYellow}name? ", q => q
                     .WithInstructions(NameInstructions1, NameInstructions2, NameInstructions3)
-                    .ValidateWith(name => name.Length >= 6)
+                    .ValidateWith(name => name.Length >= 6 ? ValidationResult.Valid : "Enter a name of length 6 or greater")
                     .Transform(name => name.ToUpperInvariant())
                     .DefaultsTo("Jeevan"))
                 .Password("Password", "Enter password: ", q => q

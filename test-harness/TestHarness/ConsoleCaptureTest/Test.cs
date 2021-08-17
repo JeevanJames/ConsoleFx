@@ -27,16 +27,19 @@ namespace TestHarness.ConsoleCaptureTest
     {
         internal override void Run()
         {
-            var cc = new ConsoleCapture("dotnet.exe", "build2")
-                .OnOutput(line => Console.WriteLine($"==> {line}"))
+            ConsoleCapture cc = new ConsoleCapture("dotnet.exe", "build")
+                .OnOutput(line => Console.WriteLine($"> {line}"))
                 .OnError(line =>
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"==> {line}");
+                    Console.WriteLine($"> {line}");
                     Console.ResetColor();
                 });
+
             int exitCode = cc.Start();
-            Console.WriteLine(exitCode);
+
+            Console.WriteLine();
+            Console.WriteLine($"Exit code: {exitCode}");
             ConsoleEx.WaitForAnyKey();
         }
     }
