@@ -18,6 +18,8 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using ConsoleFx.ConsoleExtensions;
 
@@ -25,7 +27,7 @@ namespace ConsoleFx.Prompter
 {
     public sealed partial class PrompterFlow
     {
-        public Answers Ask()
+        public async Task<Answers> Ask()
         {
             var answers = new Answers(_promptItems.Count);
 
@@ -39,82 +41,41 @@ namespace ConsoleFx.Prompter
 
                 beforePrompt?.Invoke(this, new BeforeAfterPromptEventArgs { Prompt = promptItem });
 
-                object answer;
-
-                // If the prompt cannot be displayed, continue the loop.
-                // If it is a question, try assigning the default value, if available, before
-                // continuing.
+                // If the prompt cannot be processed, continue the loop.
                 if (!promptItem.CanAsk(answers))
                 {
-                    if (promptItem is Question q)
-                    {
-                        answer = q.DefaultValue.Resolve(answers);
-                        if (answer != null)
-                            answers.Add(q.Name, answer);
-                    }
-
+                    HandleSkipItem(promptItem, answers);
                     continue;
                 }
 
-                // If the prompt is static text, just display it and continue the loop.
-                if (promptItem is StaticText)
+                switch (promptItem)
                 {
-                    promptItem.AskerFn(promptItem, answers);
-                    continue;
-                }
-
-                var question = promptItem as Question;
-
-                if (question.Instructions.Count > 0)
-                {
-                    foreach (FunctionOrColorString instruction in question.Instructions)
-                    {
-                        ColorString cstr = new ColorString().Text(instruction.Resolve(answers),
-                            Style.Instructions.ForeColor, Style.Instructions.BackColor);
-                        ConsoleEx.PrintLine(cstr.ToString());
-                    }
-                }
-
-                answer = null;
-                bool validAnswer = false;
-                do
-                {
-                    object input = question.AskerFn(question, answers);
-
-                    if (question.RawValueValidator != null)
-                    {
-                        ValidationResult validationResult = question.RawValueValidator(input, answers);
-                        if (!validationResult.IsValid)
+                    case DisplayItem displayItem:
+                        switch (displayItem)
                         {
-                            if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                                ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
-                            continue;
+                            case StaticText staticText:
+                                staticText.AskerFn(displayItem, answers);
+                                break;
+                            case Question question:
+                                HandleAsQuestion(question, answers);
+                                break;
+                            default:
+                                throw new InvalidOperationException($"Unrecognized display item type - '{displayItem.GetType()}");
                         }
-                    }
 
-                    if (input is null || (input is string s && s.Length == 0))
-                        answer = question.DefaultValue.Resolve(answers);
-                    else
-                        answer = input;
+                        break;
 
-                    answer = question.Convert(answer);
+                    case AsyncUpdateFlowItem updateItem:
+                        await HandleAsAsyncUpdateItem(updateItem, answers);
+                        break;
 
-                    if (question.ConvertedValueValidator != null)
-                    {
-                        ValidationResult validationResult = question.ConvertedValueValidator(answer, answers);
-                        if (!validationResult.IsValid)
-                        {
-                            if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                                ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
-                            continue;
-                        }
-                    }
+                    case UpdateFlowItem updateItem:
+                        HandleAsUpdateItem(updateItem, answers);
+                        break;
 
-                    validAnswer = true;
+                    default:
+                        throw new InvalidOperationException($"Unrecognized prompt item type - '{promptItem.GetType()}");
                 }
-                while (!validAnswer);
-
-                answers.Add(question.Name, answer);
 
                 if (i < _promptItems.Count - 1)
                 {
@@ -129,6 +90,88 @@ namespace ConsoleFx.Prompter
             }
 
             return answers;
+        }
+
+        private static void HandleSkipItem(PromptItem promptItem, Answers answers)
+        {
+            // If the prompt item is a question, try assigning the default value, if available, before
+            // continuing.
+            if (promptItem is Question q)
+            {
+                object answer = q.DefaultValue.Resolve(answers);
+                if (answer is not null)
+                    answers.Add(q.Name, answer);
+            }
+        }
+
+        private static void HandleAsQuestion(Question question, Answers answers)
+        {
+            if (question.Instructions.Count > 0)
+            {
+                foreach (FunctionOrColorString instruction in question.Instructions)
+                {
+                    ColorString cstr = new ColorString().Text(instruction.Resolve(answers),
+                        Style.Instructions.ForeColor, Style.Instructions.BackColor);
+                    ConsoleEx.PrintLine(cstr.ToString());
+                }
+            }
+
+            object answer = null;
+            bool validAnswer = false;
+            do
+            {
+                object input = question.AskerFn(question, answers);
+
+                // Validate the value returned by the Asker function, before any processing or
+                // conversion.
+                if (question.RawValueValidator is not null)
+                {
+                    ValidationResult validationResult = question.RawValueValidator(input, answers);
+                    if (!validationResult.IsValid)
+                    {
+                        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                            ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
+                        continue;
+                    }
+                }
+
+                // Assign default value, if the input is null or an empty string.
+                answer = input is null or string { Length: 0 } ? question.DefaultValue.Resolve(answers) : input;
+
+                // Convert the answer, if needed.
+                answer = question.Convert(answer);
+
+                // Validate the processed and converted value.
+                if (question.ConvertedValueValidator is not null)
+                {
+                    ValidationResult validationResult = question.ConvertedValueValidator(answer, answers);
+                    if (!validationResult.IsValid)
+                    {
+                        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
+                            ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
+                        continue;
+                    }
+                }
+
+                validAnswer = true;
+            }
+            while (!validAnswer);
+
+            answers.Add(question.Name, answer);
+        }
+
+        private async Task HandleAsAsyncUpdateItem(AsyncUpdateFlowItem updateItem, Answers answers)
+        {
+            IEnumerable<FlowUpdateAction> updateActions = await updateItem.UpdateFlowAction(answers);
+            foreach (FlowUpdateAction updateAction in updateActions)
+                updateAction.Handle(this);
+        }
+
+        private void HandleAsUpdateItem(UpdateFlowItem updateItem, Answers answers)
+        {
+            IEnumerable<FlowUpdateAction> updateActions = updateItem.UpdateFlowAction(answers);
+            foreach (FlowUpdateAction updateAction in updateActions)
+                updateAction.Handle(this);
         }
 
         public event EventHandler<BeforeAfterPromptEventArgs> BeforePrompt;

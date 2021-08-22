@@ -1,18 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>ConsoleFx.Prompter</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
-    <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
-    <Description>$(ProductDescription)The ConsoleFx.Prompter package provides support for creating interactive experiences on the command-line.</Description>
-  </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>ConsoleFx.Prompter</AssemblyName>
+        <RootNamespace>$(AssemblyName)</RootNamespace>
+        <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
+        <Description>$(ProductDescription)The ConsoleFx.Prompter package provides support for creating interactive experiences on the command-line.</Description>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Collections.NET" Version="1.7.0" />
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ConsoleExtensions\ConsoleExtensions.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ConsoleExtensions\ConsoleExtensions.csproj" />
+    </ItemGroup>
 
 </Project>

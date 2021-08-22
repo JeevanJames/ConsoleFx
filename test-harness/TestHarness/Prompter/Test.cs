@@ -17,7 +17,12 @@ limitations under the License.
 */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using ConsoleFx.Prompter;
+using ConsoleFx.Prompter.Questions;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
 using static ConsoleFx.ConsoleExtensions.ConsoleEx;
@@ -41,6 +46,20 @@ namespace TestHarness.Prompter
                     .ValidateWith(name => name.Length >= 6 ? ValidationResult.Valid : "Enter a name of length 6 or greater")
                     .Transform(name => name.ToUpperInvariant())
                     .DefaultsTo("Jeevan"))
+                .UpdateFlow(ans =>
+                {
+                    if (ans.Name == "JEEVAN")
+                    {
+                        var surnameQuestion = new InputQuestion("Surname", "What's your surname? ")
+                            .ValidateWith(sn => sn.Length >= 5);
+                        return new FlowUpdateAction[]
+                        {
+                            new AddQuestionAction(surnameQuestion, AddLocation.BeforeItem, "Password"),
+                        };
+                    }
+
+                    return Enumerable.Empty<FlowUpdateAction>();
+                })
                 .Password("Password", "Enter password: ", q => q
                     .WithInstructions(PasswordInstructions)
                     .ValidateInputWith(password => password.Length > 0))
@@ -55,14 +74,15 @@ namespace TestHarness.Prompter
                     .When(ans => ans.Proceed))
                 .Text("You have decided not to proceed", t => t
                     .When(ans => !ans.Proceed));
-            prompter.BetweenPrompts += (sender, args) => PrintBlank();
-            dynamic answers = prompter.Ask();
+            prompter.BetweenPrompts += (_, _) => PrintBlank();
+            dynamic answers = prompter.Ask().GetAwaiter().GetResult();
 
-            PrintLine($"Your name is {Yellow}{answers.Name}");
+            PrintLine($"Your name is {Yellow}{answers.Name} {answers.Surname ?? string.Empty}");
             PrintLine($"Your password is {Red}{answers.Password}");
             PrintLine($"Should proceed: {Blue}{answers.Proceed}");
             PrintLine($"Should proceed 2: {DkBlue.BgWhite}{answers.Proceed2}");
-            PrintLine($"Checkbox: {string.Join(',', answers.Checkbox)}");
+            if (answers.Checkbox is not null)
+                PrintLine($"Checkbox: {string.Join(',', answers.Checkbox)}");
         }
     }
 }

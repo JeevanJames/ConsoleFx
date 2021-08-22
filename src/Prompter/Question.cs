@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.Prompter
 {
-    public abstract class Question : PromptItem
+    public abstract class Question : DisplayItem
     {
         private IList<FunctionOrColorString> _instructions;
 

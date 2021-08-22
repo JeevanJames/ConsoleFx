@@ -19,11 +19,17 @@ limitations under the License.
 
 namespace ConsoleFx.Prompter
 {
+    /// <summary>
+    ///     Delegate that returns a value based on the <paramref name="answers"/> already provided
+    ///     to earlier questions.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the returned value.</typeparam>
+    /// <param name="answers">The answers already provided to earlier questions.</param>
     public delegate TResult AnswersFunc<out TResult>(dynamic answers);
 
     public delegate ValidationResult Validator<in TValue>(TValue value, dynamic answers);
 
     public delegate ValidationResult BasicValidator<in TValue>(TValue value);
 
-    public delegate object AskerFn(PromptItem promptItem, dynamic answers);
+    public delegate object AskerFn(DisplayItem displayItem, dynamic answers);
 }

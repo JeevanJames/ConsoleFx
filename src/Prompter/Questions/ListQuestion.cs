@@ -30,9 +30,6 @@ namespace ConsoleFx.Prompter.Questions
     {
         private readonly IReadOnlyList<string> _choices;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly AskerFn _askerFn;
-
         public ListQuestion(string name, FunctionOrColorString message, IEnumerable<string> choices)
             : base(name, message)
         {
@@ -41,7 +38,7 @@ namespace ConsoleFx.Prompter.Questions
 
             _choices = choices.ToList();
 
-            _askerFn = (q, ans) =>
+            AskerFn = (q, ans) =>
             {
                 var lq = (ListQuestion<TValue>)q;
                 ConsoleEx.PrintLine(new ColorString(q.Message.Resolve(ans),
@@ -50,7 +47,7 @@ namespace ConsoleFx.Prompter.Questions
             };
         }
 
-        internal override AskerFn AskerFn => _askerFn;
+        internal override AskerFn AskerFn { get; }
     }
 
     public sealed class ListQuestion : ListQuestion<int>

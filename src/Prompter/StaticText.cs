@@ -21,22 +21,20 @@ using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class StaticText : PromptItem
+    public sealed class StaticText : DisplayItem
     {
-        private readonly AskerFn _askerFn;
-
-        internal StaticText(FunctionOrColorString message)
+        public StaticText(FunctionOrColorString message)
             : base(message)
         {
-            _askerFn = (q, ans) =>
+            AskerFn = (q, ans) =>
             {
                 ColorString staticText = q.Message.Resolve(ans);
-                if (staticText != null)
+                if (staticText is not null)
                     ConsoleEx.PrintLine(staticText);
                 return null;
             };
         }
 
-        internal override AskerFn AskerFn => _askerFn;
+        internal override AskerFn AskerFn { get; }
     }
 }

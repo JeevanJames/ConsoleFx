@@ -19,6 +19,7 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
+
 using ConsoleFx.ConsoleExtensions;
 using ConsoleFx.Prompter.Questions;
 
@@ -107,6 +108,18 @@ namespace ConsoleFx.Prompter
             var staticText = new StaticText(new ColorString(new string(separator, Console.WindowWidth)));
             setupStaticText?.Invoke(staticText);
             prompter.Add(staticText);
+            return prompter;
+        }
+
+        public static PrompterFlow AsyncUpdateFlow(this PrompterFlow prompter, AsyncUpdateFlowAction updateFlowAction)
+        {
+            prompter.Add(new AsyncUpdateFlowItem(updateFlowAction));
+            return prompter;
+        }
+
+        public static PrompterFlow UpdateFlow(this PrompterFlow prompter, UpdateFlowAction updateFlowAction)
+        {
+            prompter.Add(new UpdateFlowItem(updateFlowAction));
             return prompter;
         }
     }

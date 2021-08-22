@@ -20,36 +20,37 @@ limitations under the License.
 namespace ConsoleFx.Prompter
 {
     /// <summary>
-    ///     Base class for any item that can be displayed by the prompter.
-    ///     <para/>
-    ///     This includes questions (<see cref="Question"/>) and static text (<see cref="StaticText"/>).
+    ///     Base class for any item that can be added to the <see cref="PrompterFlow"/> collection.
     /// </summary>
     public abstract class PromptItem
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PromptItem"/> class.
+        ///     Sets a delegate that controls whether this item can be processed or asked (if it is
+        ///     a <see cref="Question"/>).
         /// </summary>
-        /// <param name="message">The <paramref name="message"/> to display to the user.</param>
-        protected PromptItem(FunctionOrColorString message)
-        {
-            Message = message;
-        }
-
+        /// <param name="canAskFn">The delegate to set.</param>
+        /// <returns>The same <see cref="PromptItem"/> instance.</returns>
         public PromptItem When(AnswersFunc<bool> canAskFn)
         {
             CanAskFn = canAskFn;
             return this;
         }
 
-        internal FunctionOrColorString Message { get; }
-
+        /// <summary>
+        ///     Gets or sets a delegate indicating whether the <see cref="PromptItem"/> can be asked
+        ///     or processed.
+        /// </summary>
         internal AnswersFunc<bool> CanAskFn { get; set; }
 
-        internal abstract AskerFn AskerFn { get; }
-
+        /// <summary>
+        ///     Helper method to check whether this item can be processed or asked based on the <see cref="CanAskFn"/>
+        ///     delegate.
+        /// </summary>
+        /// <param name="answers">The answers already provided to earlier questions.</param>
+        /// <returns><c>True</c> if this item can be processed or asked.</returns>
         internal bool CanAsk(dynamic answers)
         {
-            return (CanAskFn is null) || (bool)CanAskFn(answers);
+            return CanAskFn is null || (bool)CanAskFn(answers);
         }
     }
 }

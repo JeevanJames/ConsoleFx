@@ -9,6 +9,35 @@
                 Represents a dictionary of the answered values.
             </summary>
         </member>
+        <member name="T:ConsoleFx.Prompter.AnswersFunc`1">
+            <summary>
+                Delegate that returns a value based on the <paramref name="answers"/> already provided
+                to earlier questions.
+            </summary>
+            <typeparam name="TResult">The type of the returned value.</typeparam>
+            <param name="answers">The answers already provided to earlier questions.</param>
+        </member>
+        <member name="T:ConsoleFx.Prompter.DisplayItem">
+            <summary>
+                Base class for any item that can be displayed by the prompter.
+                <para/>
+                This includes questions (<see cref="T:ConsoleFx.Prompter.Question"/>) and static text (<see cref="T:ConsoleFx.Prompter.StaticText"/>).
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.Prompter.DisplayItem.#ctor(ConsoleFx.Prompter.FunctionOrColorString)">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleFx.Prompter.DisplayItem"/> class.
+            </summary>
+            <param name="message">The <paramref name="message"/> to display to the user.</param>
+        </member>
+        <member name="P:ConsoleFx.Prompter.DisplayItem.AskerFn">
+            <summary>
+                Gets the delegate to call to display the prompt.
+                <para/>
+                Derived implementations must override this property to provide the behavior of displaying
+                the prompt item, and if needed, the behaviors to get an answer.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.Prompter.FunctionOrValue`1">
             <summary>
                 Represents a fixed value or a factory function that can generate the value.
@@ -68,16 +97,30 @@
         </member>
         <member name="T:ConsoleFx.Prompter.PromptItem">
             <summary>
-                Base class for any item that can be displayed by the prompter.
-                <para/>
-                This includes questions (<see cref="T:ConsoleFx.Prompter.Question"/>) and static text (<see cref="T:ConsoleFx.Prompter.StaticText"/>).
+                Base class for any item that can be added to the <see cref="T:ConsoleFx.Prompter.PrompterFlow"/> collection.
             </summary>
         </member>
-        <member name="M:ConsoleFx.Prompter.PromptItem.#ctor(ConsoleFx.Prompter.FunctionOrColorString)">
+        <member name="M:ConsoleFx.Prompter.PromptItem.When(ConsoleFx.Prompter.AnswersFunc{System.Boolean})">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.Prompter.PromptItem"/> class.
+                Sets a delegate that controls whether this item can be processed or asked (if it is
+                a <see cref="T:ConsoleFx.Prompter.Question"/>).
             </summary>
-            <param name="message">The <paramref name="message"/> to display to the user.</param>
+            <param name="canAskFn">The delegate to set.</param>
+            <returns>The same <see cref="T:ConsoleFx.Prompter.PromptItem"/> instance.</returns>
+        </member>
+        <member name="P:ConsoleFx.Prompter.PromptItem.CanAskFn">
+            <summary>
+                Gets or sets a delegate indicating whether the <see cref="T:ConsoleFx.Prompter.PromptItem"/> can be asked
+                or processed.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.Prompter.PromptItem.CanAsk(System.Object)">
+            <summary>
+                Helper method to check whether this item can be processed or asked based on the <see cref="P:ConsoleFx.Prompter.PromptItem.CanAskFn"/>
+                delegate.
+            </summary>
+            <param name="answers">The answers already provided to earlier questions.</param>
+            <returns><c>True</c> if this item can be processed or asked.</returns>
         </member>
         <member name="M:ConsoleFx.Prompter.Question.#ctor(System.String,ConsoleFx.Prompter.FunctionOrColorString)">
             <summary>
@@ -90,6 +133,21 @@
             <summary>
                 Gets the name of the variable to store the answer.
             </summary>
+        </member>
+        <member name="T:ConsoleFx.Prompter.AsyncUpdateFlowItem">
+            <summary>
+                Allows questions and answers to be dynamically added, removed or modified at any point
+                during the prompter flow.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.Prompter.AddQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Prompter.UpdateQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Prompter.DeleteQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow)">
+            <inheritdoc />
         </member>
         <member name="T:ConsoleFx.Prompter.ValidationResult">
             <summary>

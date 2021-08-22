@@ -37,7 +37,9 @@ namespace ConsoleFx.Prompter
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            return _answers.TryGetValue(binder.Name, out result);
+            if (!_answers.TryGetValue(binder.Name, out result))
+                result = null;
+            return true;
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)

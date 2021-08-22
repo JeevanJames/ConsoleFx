@@ -24,13 +24,12 @@ namespace ConsoleFx.Prompter.Questions
 {
     public sealed class ConfirmQuestion : Question<bool, bool>
     {
-        private readonly AskerFn _askerFn;
         private readonly bool _default;
 
-        internal ConfirmQuestion(string name, FunctionOrColorString message, bool @default)
+        public ConfirmQuestion(string name, FunctionOrColorString message, bool @default)
             : base(name, message)
         {
-            _askerFn = (q, ans) =>
+            AskerFn = (q, ans) =>
             {
                 ConsoleEx.Print(new ColorString(q.Message.Resolve(ans),
                     PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
@@ -49,6 +48,6 @@ namespace ConsoleFx.Prompter.Questions
             _default = @default;
         }
 
-        internal override AskerFn AskerFn => _askerFn;
+        internal override AskerFn AskerFn { get; }
     }
 }

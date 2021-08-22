@@ -25,12 +25,10 @@ namespace ConsoleFx.Prompter.Questions
 {
     public class InputQuestion<TValue> : TextEntryQuestion<TValue>
     {
-        private readonly AskerFn _askerFn;
-
         internal InputQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
-            _askerFn = (q, ans) =>
+            AskerFn = (q, ans) =>
             {
                 bool Validator(string str)
                 {
@@ -55,12 +53,12 @@ namespace ConsoleFx.Prompter.Questions
             };
         }
 
-        internal override AskerFn AskerFn => _askerFn;
+        internal override AskerFn AskerFn { get; }
     }
 
     public sealed class InputQuestion : InputQuestion<string>
     {
-        internal InputQuestion(string name, FunctionOrColorString message)
+        public InputQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
         }

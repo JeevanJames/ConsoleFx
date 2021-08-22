@@ -23,14 +23,13 @@ namespace ConsoleFx.Prompter.Questions
 {
     public class PasswordQuestion<TValue> : TextEntryQuestion<TValue>
     {
-        private readonly AskerFn _askerFn;
         private bool _hideCursor;
         private bool _hideMask;
 
         internal PasswordQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
-            _askerFn = (q, ans) =>
+            AskerFn = (q, ans) =>
             {
                 var pq = (PasswordQuestion<TValue>)q;
                 return ConsoleEx.ReadSecret(new ColorString(q.Message.Resolve(ans),
@@ -51,12 +50,12 @@ namespace ConsoleFx.Prompter.Questions
             return this;
         }
 
-        internal override AskerFn AskerFn => _askerFn;
+        internal override AskerFn AskerFn { get; }
     }
 
     public sealed class PasswordQuestion : PasswordQuestion<string>
     {
-        internal PasswordQuestion(string name, FunctionOrColorString message)
+        public PasswordQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
         }

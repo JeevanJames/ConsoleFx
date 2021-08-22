@@ -19,7 +19,6 @@ limitations under the License.
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using ConsoleFx.ConsoleExtensions;
@@ -30,9 +29,6 @@ namespace ConsoleFx.Prompter.Questions
     {
         private readonly IReadOnlyList<string> _choices;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly AskerFn _askerFn;
-
         public CheckboxQuestion(string name, FunctionOrColorString message, IEnumerable<string> choices)
             : base(name, message)
         {
@@ -40,7 +36,7 @@ namespace ConsoleFx.Prompter.Questions
                 throw new ArgumentNullException(nameof(choices));
             _choices = choices.ToList();
 
-            _askerFn = (q, ans) =>
+            AskerFn = (q, ans) =>
             {
                 var cq = (CheckboxQuestion)q;
                 ConsoleEx.PrintLine(new ColorString(q.Message.Resolve(ans),
@@ -49,6 +45,6 @@ namespace ConsoleFx.Prompter.Questions
             };
         }
 
-        internal override AskerFn AskerFn => _askerFn;
+        internal override AskerFn AskerFn { get; }
     }
 }
