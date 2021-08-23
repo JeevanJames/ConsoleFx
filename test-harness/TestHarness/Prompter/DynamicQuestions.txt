@@ -1,0 +1,2 @@
+﻿City=Which city do you live in?
+Country=Your country?

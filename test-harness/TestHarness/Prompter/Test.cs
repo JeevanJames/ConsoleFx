@@ -18,6 +18,7 @@ limitations under the License.
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace TestHarness.Prompter
 
         private static readonly string PasswordInstructions = "We need your password to log into your bank account and steal all your money. Make sure to type it in correctly.";
 
-        internal override void Run()
+        internal override async Task RunAsync()
         {
             PrompterFlow.Style = Styling.Ruby;
             var prompter = new PrompterFlow()
@@ -60,12 +61,26 @@ namespace TestHarness.Prompter
 
                     return Enumerable.Empty<FlowUpdateAction>();
                 })
+                .AsyncUpdateFlow(async ans =>
+                {
+                    string[] lines = await File.ReadAllLinesAsync("./Prompter/DynamicQuestions.txt");
+                    List<FlowUpdateAction> actions = new(lines.Length);
+                    foreach (string line in lines)
+                    {
+                        string[] parts = line.Split('=', 2);
+                        actions.Add(new AddQuestionAction(new InputQuestion(parts[0], parts[1]), AddLocation.BeforeItem, "Password"));
+                    }
+
+                    return actions;
+                })
                 .Password("Password", "Enter password: ", q => q
                     .WithInstructions(PasswordInstructions)
                     .ValidateInputWith(password => password.Length > 0))
-                .Confirm("Proceed", "Should we proceed? ", @default: false)
+                .Confirm("Proceed", "Should we proceed? ", @default: false, q => q
+                    .WithInstructions("This is a confirmation for YES or NO"))
                 .List("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No", "Maybe" },
-                    selected => selected == 1)
+                    selected => selected == 1, q => q
+                        .WithInstructions("This is a confirmation using checkboxes"))
                 .Separator()
                 .Checkbox("Checkbox", "This is a checkbox", new []{ "Choice 1", "Choice 2", "Choice 3" }, q => q
                     .WithInstructions("Select at least one option")
@@ -75,7 +90,7 @@ namespace TestHarness.Prompter
                 .Text("You have decided not to proceed", t => t
                     .When(ans => !ans.Proceed));
             prompter.BetweenPrompts += (_, _) => PrintBlank();
-            dynamic answers = prompter.Ask().GetAwaiter().GetResult();
+            dynamic answers = await prompter.Ask();
 
             PrintLine($"Your name is {Yellow}{answers.Name} {answers.Surname ?? string.Empty}");
             PrintLine($"Your password is {Red}{answers.Password}");

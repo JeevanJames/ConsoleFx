@@ -13,4 +13,10 @@
         <ProjectReference Include="..\..\src\Prompter\Prompter.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Prompter\DynamicQuestions.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

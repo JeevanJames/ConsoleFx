@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
 
@@ -32,7 +33,7 @@ namespace TestHarness
 {
     internal static class Program
     {
-        private static void Main()
+        private static async Task Main()
         {
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             DebugOutput.Enable();
@@ -59,7 +60,7 @@ namespace TestHarness
                     PrintBlank();
 
                     var testHarness = (TestBase)Activator.CreateInstance(selectedType);
-                    testHarness.Run();
+                    await testHarness.RunAsync();
                 }
                 catch (TargetInvocationException ex) when (ex.InnerException is not null)
                 {

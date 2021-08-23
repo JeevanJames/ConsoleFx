@@ -42,7 +42,7 @@ namespace TestHarness.DeclarativeConsoleProgramTest
     public sealed class Program : ConsoleProgram
     {
         [Option("output", "o", Optional = true)]
-        public DirectoryInfo OutputDir { get; set; } = new DirectoryInfo(@"D:\Temp");
+        public DirectoryInfo OutputDir { get; set; } = new(@"D:\Temp");
 
         [Argument(Optional = true)]
         public string FirstName { get; set; } = "Jeevan";
