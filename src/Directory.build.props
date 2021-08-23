@@ -39,7 +39,7 @@
 
     <ItemGroup>
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
-        <None Include="../Logo.png" Pack="true" PackagePath="" />
+        <None Include="$(MSBuildThisFileDirectory)../Logo.png" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>
