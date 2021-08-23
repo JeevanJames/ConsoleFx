@@ -20,7 +20,7 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <Copyright>Copyright (c) 2006-2020 Jeevan James</Copyright>
         <PackageProjectUrl>https://github.com/JeevanJames/ConsoleFx/</PackageProjectUrl>
-        <PackageIconUrl>https://github.com/JeevanJames/ConsoleFx/raw/master/Logo.png</PackageIconUrl>
+        <PackageIcon>Logo.png</PackageIcon>
         <RepositoryUrl>https://github.com/JeevanJames/ConsoleFx.git</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageTags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</PackageTags>
@@ -39,6 +39,7 @@
 
     <ItemGroup>
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+        <None Include="../Logo.png" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>
