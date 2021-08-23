@@ -7,7 +7,7 @@
 </ProductDescription>
 
         <!-- Build properties -->
-        <TargetFrameworks>netstandard2.0;net45;net461</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
