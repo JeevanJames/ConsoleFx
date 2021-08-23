@@ -41,13 +41,15 @@ namespace TestHarness.Prompter
         internal override async Task RunAsync()
         {
             PrompterFlow.Style = Styling.Ruby;
-            var prompter = new PrompterFlow()
-                .Input("Name", $"Hi, what's your {Green.BgDkYellow}name? ", q => q
+            var prompter = new PrompterFlow
+            {
+                new InputQuestion("Name", $"Hi, what's your {Green.BgDkYellow}name? ")
                     .WithInstructions(NameInstructions1, NameInstructions2, NameInstructions3)
-                    .ValidateWith(name => name.Length >= 6 ? ValidationResult.Valid : "Enter a name of length 6 or greater")
+                    .ValidateWith(name =>
+                        name.Length >= 6 ? ValidationResult.Valid : "Enter a name of length 6 or greater")
                     .Transform(name => name.ToUpperInvariant())
-                    .DefaultsTo("Jeevan"))
-                .UpdateFlow(ans =>
+                    .DefaultsTo("Jeevan"),
+                new UpdateFlowItem(ans =>
                 {
                     if (ans.Name == "JEEVAN")
                     {
@@ -55,41 +57,43 @@ namespace TestHarness.Prompter
                             .ValidateWith(sn => sn.Length >= 5);
                         return new FlowUpdateAction[]
                         {
-                            new AddQuestionAction(surnameQuestion, AddLocation.BeforeItem, "Password"),
+                            new AddQuestionAction(surnameQuestion),
                         };
                     }
 
                     return Enumerable.Empty<FlowUpdateAction>();
-                })
-                .AsyncUpdateFlow(async ans =>
+                }),
+                new ConfirmQuestion("AdditionalQuestions", "Do you want to load additional questions? ",
+                    @default: true),
+                new AsyncUpdateFlowItem(async ans =>
                 {
                     string[] lines = await File.ReadAllLinesAsync("./Prompter/DynamicQuestions.txt");
                     List<FlowUpdateAction> actions = new(lines.Length);
                     foreach (string line in lines)
                     {
                         string[] parts = line.Split('=', 2);
-                        actions.Add(new AddQuestionAction(new InputQuestion(parts[0], parts[1]), AddLocation.BeforeItem, "Password"));
+                        var inputQuestion = new InputQuestion(parts[0], parts[1])
+                            .ValidateWith(s => s.Length > 0);
+                        actions.Add(new AddQuestionAction(inputQuestion));
                     }
 
                     return actions;
-                })
-                .Password("Password", "Enter password: ", q => q
+                }).When(ans => ans.AdditionalQuestions),
+                new PasswordQuestion("Password", "Enter password: ")
                     .WithInstructions(PasswordInstructions)
-                    .ValidateInputWith(password => password.Length > 0))
-                .Confirm("Proceed", "Should we proceed? ", @default: false, q => q
-                    .WithInstructions("This is a confirmation for YES or NO"))
-                .List("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No", "Maybe" },
-                    selected => selected == 1, q => q
-                        .WithInstructions("This is a confirmation using checkboxes"))
-                .Separator()
-                .Checkbox("Checkbox", "This is a checkbox", new []{ "Choice 1", "Choice 2", "Choice 3" }, q => q
+                    .ValidateInputWith(password => password.Length > 0),
+                new ConfirmQuestion("Proceed", "Should we proceed? ", @default: false)
+                    .WithInstructions("This is a confirmation for YES or NO"),
+                new ListQuestion<bool>("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No", "Maybe" })
+                    .WithInstructions("This is a confirmation using checkboxes")
+                    .Transform(selected => selected == 1),
+                StaticText.Separator(),
+                new CheckboxQuestion("Checkbox", "This is a checkbox", new[] { "Choice 1", "Choice 2", "Choice 3" })
                     .WithInstructions("Select at least one option")
-                    .ValidateWith(list => list.Count > 0))
-                .Text("You have decided to proceed", t => t
-                    .When(ans => ans.Proceed))
-                .Text("You have decided not to proceed", t => t
-                    .When(ans => !ans.Proceed));
-            prompter.BetweenPrompts += (_, _) => PrintBlank();
+                    .ValidateWith(list => list.Count > 0),
+                new StaticText("You have decided to proceed").When(ans => ans.Proceed),
+                new StaticText("You have decided not to proceed").When(ans => !ans.Proceed),
+            };
             dynamic answers = await prompter.Ask();
 
             PrintLine($"Your name is {Yellow}{answers.Name} {answers.Surname ?? string.Empty}");

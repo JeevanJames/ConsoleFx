@@ -140,13 +140,13 @@
                 during the prompter flow.
             </summary>
         </member>
-        <member name="M:ConsoleFx.Prompter.AddQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow)">
+        <member name="M:ConsoleFx.Prompter.AddQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow,System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.Prompter.UpdateQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow)">
+        <member name="M:ConsoleFx.Prompter.UpdateQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow,System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.Prompter.DeleteQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow)">
+        <member name="M:ConsoleFx.Prompter.DeleteQuestionAction.Handle(ConsoleFx.Prompter.PrompterFlow,System.Int32)">
             <inheritdoc />
         </member>
         <member name="T:ConsoleFx.Prompter.ValidationResult">

@@ -1,21 +1,6 @@
-﻿#region --- License & Copyright Notice ---
-/*
-ConsoleFx CLI Library Suite
-Copyright 2015-2020 Jeevan James
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-#endregion
+﻿// Copyright (c) 2015-2021 Jeevan James
+// This file is licensed to you under the Apache License, Version 2.0.
+// See the LICENSE file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -66,11 +51,11 @@ namespace ConsoleFx.Prompter
                         break;
 
                     case AsyncUpdateFlowItem updateItem:
-                        await HandleAsAsyncUpdateItem(updateItem, answers);
+                        await HandleAsAsyncUpdateItem(updateItem, answers, i);
                         break;
 
                     case UpdateFlowItem updateItem:
-                        HandleAsUpdateItem(updateItem, answers);
+                        HandleAsUpdateItem(updateItem, answers, i);
                         break;
 
                     default:
@@ -136,7 +121,8 @@ namespace ConsoleFx.Prompter
                 }
 
                 // Assign default value, if the input is null or an empty string.
-                answer = input is null or string { Length: 0 } ? question.DefaultValue.Resolve(answers) : input;
+                answer = input is null or string { Length: 0 } && question.DefaultValue.IsAssigned
+                    ? question.DefaultValue.Resolve(answers) : input;
 
                 // Convert the answer, if needed.
                 answer = question.Convert(answer);
@@ -160,18 +146,20 @@ namespace ConsoleFx.Prompter
             answers.Add(question.Name, answer);
         }
 
-        private async Task HandleAsAsyncUpdateItem(AsyncUpdateFlowItem updateItem, Answers answers)
+        private async Task HandleAsAsyncUpdateItem(AsyncUpdateFlowItem updateItem, Answers answers, int index)
         {
+            int i = index;
             IEnumerable<FlowUpdateAction> updateActions = await updateItem.UpdateFlowAction(answers);
             foreach (FlowUpdateAction updateAction in updateActions)
-                updateAction.Handle(this);
+                updateAction.Handle(this, i++);
         }
 
-        private void HandleAsUpdateItem(UpdateFlowItem updateItem, Answers answers)
+        private void HandleAsUpdateItem(UpdateFlowItem updateItem, Answers answers, int index)
         {
+            int i = index;
             IEnumerable<FlowUpdateAction> updateActions = updateItem.UpdateFlowAction(answers);
             foreach (FlowUpdateAction updateAction in updateActions)
-                updateAction.Handle(this);
+                updateAction.Handle(this, i++);
         }
 
         public event EventHandler<BeforeAfterPromptEventArgs> BeforePrompt;

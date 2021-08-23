@@ -1,21 +1,6 @@
-﻿#region --- License & Copyright Notice ---
-/*
-ConsoleFx CLI Library Suite
-Copyright 2015-2020 Jeevan James
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-#endregion
+﻿// Copyright (c) 2015-2021 Jeevan James
+// This file is licensed to you under the Apache License, Version 2.0.
+// See the LICENSE file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -53,47 +38,22 @@ namespace ConsoleFx.Prompter
 
     public abstract class FlowUpdateAction
     {
-        public abstract void Handle(PrompterFlow flow);
+        public abstract void Handle(PrompterFlow flow, int index);
     }
 
     public sealed class AddQuestionAction : FlowUpdateAction
     {
-        public AddQuestionAction(Question question, AddLocation location, string name)
-        {
-            Question = question ?? throw new ArgumentNullException(nameof(question));
-            Location = location;
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-        }
-
         public AddQuestionAction(Question question)
         {
             Question = question;
-            Location = null;
-            Name = null;
         }
 
         public Question Question { get; }
 
-        public AddLocation? Location { get; }
-
-        public string Name { get; }
-
         /// <inheritdoc />
-        public override void Handle(PrompterFlow flow)
+        public override void Handle(PrompterFlow flow, int index)
         {
-            if (Location is null)
-                flow.Add(Question);
-            else
-            {
-                int index = flow.IndexOf(item => item is Question q
-                    && string.Equals(q.Name, Name, StringComparison.OrdinalIgnoreCase));
-                if (index < 0)
-                    flow.Add(Question);
-                else if (Location == AddLocation.BeforeItem)
-                    flow.Insert(index, Question);
-                else
-                    flow.Insert(index + 1, Question);
-            }
+            flow.Insert(index + 1, Question);
         }
     }
 
@@ -113,12 +73,12 @@ namespace ConsoleFx.Prompter
         public Question Question { get; }
 
         /// <inheritdoc />
-        public override void Handle(PrompterFlow flow)
+        public override void Handle(PrompterFlow flow, int index)
         {
-            int index = flow.IndexOf(item => item is Question q
+            int questionIndex = flow.IndexOf(item => item is Question q
                 && string.Equals(q.Name, Question.Name, StringComparison.OrdinalIgnoreCase));
-            if (index >= 0)
-                flow[index] = Question;
+            if (questionIndex >= 0)
+                flow[questionIndex] = Question;
         }
     }
 
@@ -132,7 +92,7 @@ namespace ConsoleFx.Prompter
         public string Name { get; }
 
         /// <inheritdoc />
-        public override void Handle(PrompterFlow flow)
+        public override void Handle(PrompterFlow flow, int index)
         {
             flow.RemoveFirst(item => item is Question q && string.Equals(q.Name, Name));
         }
