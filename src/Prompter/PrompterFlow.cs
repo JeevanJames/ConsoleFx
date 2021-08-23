@@ -33,9 +33,12 @@ namespace ConsoleFx.Prompter
                     continue;
                 }
 
+                bool raiseRemainingEvents = false;
+
                 switch (promptItem)
                 {
                     case DisplayItem displayItem:
+                        raiseRemainingEvents = true;
                         switch (displayItem)
                         {
                             case StaticText staticText:
@@ -51,7 +54,7 @@ namespace ConsoleFx.Prompter
                         break;
 
                     case AsyncUpdateFlowItem updateItem:
-                        await HandleAsAsyncUpdateItem(updateItem, answers, i);
+                        await HandleAsAsyncUpdateItem(updateItem, answers, i).ConfigureAwait(false);
                         break;
 
                     case UpdateFlowItem updateItem:
@@ -62,16 +65,19 @@ namespace ConsoleFx.Prompter
                         throw new InvalidOperationException($"Unrecognized prompt item type - '{promptItem.GetType()}");
                 }
 
-                if (i < _promptItems.Count - 1)
+                if (raiseRemainingEvents)
                 {
-                    betweenPrompts?.Invoke(this, new BetweenPromptEventArgs
+                    if (i < _promptItems.Count - 1)
                     {
-                        PreviousPrompt = promptItem,
-                        NextPrompt = _promptItems[i + 1],
-                    });
-                }
+                        betweenPrompts?.Invoke(this, new BetweenPromptEventArgs
+                        {
+                            PreviousPrompt = promptItem,
+                            NextPrompt = _promptItems[i + 1],
+                        });
+                    }
 
-                afterPrompt?.Invoke(this, new BeforeAfterPromptEventArgs { Prompt = promptItem });
+                    afterPrompt?.Invoke(this, new BeforeAfterPromptEventArgs { Prompt = promptItem });
+                }
             }
 
             return answers;
