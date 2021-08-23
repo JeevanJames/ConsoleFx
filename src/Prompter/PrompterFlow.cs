@@ -53,12 +53,11 @@ namespace ConsoleFx.Prompter
 
                         break;
 
-                    case AsyncUpdateFlowItem updateItem:
-                        await HandleAsAsyncUpdateItem(updateItem, answers, i).ConfigureAwait(false);
-                        break;
-
                     case UpdateFlowItem updateItem:
-                        HandleAsUpdateItem(updateItem, answers, i);
+                        if (updateItem.UpdateFlowAction is not null)
+                            HandleAsUpdateItem(updateItem, answers, i);
+                        else
+                            await HandleAsAsyncUpdateItem(updateItem, answers, i).ConfigureAwait(false);
                         break;
 
                     default:
@@ -152,10 +151,10 @@ namespace ConsoleFx.Prompter
             answers.Add(question.Name, answer);
         }
 
-        private async Task HandleAsAsyncUpdateItem(AsyncUpdateFlowItem updateItem, Answers answers, int index)
+        private async Task HandleAsAsyncUpdateItem(UpdateFlowItem updateItem, Answers answers, int index)
         {
             int i = index;
-            IEnumerable<FlowUpdateAction> updateActions = await updateItem.UpdateFlowAction(answers);
+            IEnumerable<FlowUpdateAction> updateActions = await updateItem.AsyncUpdateFlowAction(answers);
             foreach (FlowUpdateAction updateAction in updateActions)
                 updateAction.Handle(this, i++);
         }

@@ -2,6 +2,8 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
+using System;
+
 namespace ConsoleFx.Prompter
 {
     /// <summary>
@@ -17,6 +19,8 @@ namespace ConsoleFx.Prompter
         /// <param name="message">The <paramref name="message"/> to display to the user.</param>
         protected DisplayItem(FunctionOrColorString message)
         {
+            if (!message.IsAssigned)
+                throw new ArgumentNullException(nameof(message));
             Message = message;
         }
 
@@ -28,6 +32,9 @@ namespace ConsoleFx.Prompter
         /// </summary>
         internal abstract AskerFn AskerFn { get; }
 
+        /// <summary>
+        ///     Gets the message to display to the user for this display item.
+        /// </summary>
         internal FunctionOrColorString Message { get; }
     }
 }

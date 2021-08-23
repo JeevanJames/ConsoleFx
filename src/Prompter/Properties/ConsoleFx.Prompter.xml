@@ -38,6 +38,11 @@
                 the prompt item, and if needed, the behaviors to get an answer.
             </summary>
         </member>
+        <member name="P:ConsoleFx.Prompter.DisplayItem.Message">
+            <summary>
+                Gets the message to display to the user for this display item.
+            </summary>
+        </member>
         <member name="T:ConsoleFx.Prompter.FunctionOrValue`1">
             <summary>
                 Represents a fixed value or a factory function that can generate the value.
@@ -134,7 +139,7 @@
                 Gets the name of the variable to store the answer.
             </summary>
         </member>
-        <member name="T:ConsoleFx.Prompter.AsyncUpdateFlowItem">
+        <member name="T:ConsoleFx.Prompter.UpdateFlowItem">
             <summary>
                 Allows questions and answers to be dynamically added, removed or modified at any point
                 during the prompter flow.

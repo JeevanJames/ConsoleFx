@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for class libraries" Description="Rules for class libraries" ToolsVersion="16.0">
+   <Include Path="../shared/ConsoleFx.ruleset" Action="Default" />
+   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+   </Rules>
+</RuleSet>

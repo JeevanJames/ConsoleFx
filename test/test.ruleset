@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for tests" Description="Rules for tests" ToolsVersion="16.0">
+   <Include Path="../shared/ConsoleFx.ruleset" Action="Default" />
+   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+     <Rule Id="CA1062" Action="None"
+        _Description="Validate arguments of public methods"
+        _Justification="We don't want to validate arguments for test methods."/>
+     <Rule Id="CA1707" Action="None"
+        _Description="Identifiers should not contain underscores"
+        _Justification="Test method names should allow underscores." />
+   </Rules>
+</RuleSet>

@@ -87,8 +87,7 @@ namespace ConsoleFx.CmdLine.Parser
 
             // Identify all tokens as options or arguments. Identified option details are stored in
             // the Option instance itself. Identified arguments are returned from the method.
-            List<string> specifiedArguments =
-                ArgStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
+            var specifiedArguments = ArgStyle.IdentifyTokens(run.Tokens, run.Options, Grouping).ToList();
 
             // Get the groups that match the specified options and arguments.
             IReadOnlyList<int> matchingGroups = GetMatchingGroups(run, specifiedArguments);
@@ -554,7 +553,7 @@ namespace ConsoleFx.CmdLine.Parser
                 return argumentRun.ResolveValue(specifiedArguments[startIndex]);
 
             IList list = argumentRun.CreateCollection(endIndex - startIndex + 1);
-            for (var i = startIndex; i <= endIndex; i++)
+            for (int i = startIndex; i <= endIndex; i++)
                 list.Add(argumentRun.ResolveValue(specifiedArguments[i]));
             return list;
         }

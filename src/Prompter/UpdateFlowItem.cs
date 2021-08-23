@@ -8,33 +8,27 @@ using System.Threading.Tasks;
 
 namespace ConsoleFx.Prompter
 {
-    public sealed class UpdateFlowItem : PromptItem
-    {
-        public UpdateFlowItem(UpdateFlowAction updateFlowAction)
-        {
-            UpdateFlowAction = updateFlowAction;
-        }
-
-        public UpdateFlowAction UpdateFlowAction { get; }
-    }
-
     /// <summary>
     ///     Allows questions and answers to be dynamically added, removed or modified at any point
     ///     during the prompter flow.
     /// </summary>
-    public sealed class AsyncUpdateFlowItem : PromptItem
+    public sealed class UpdateFlowItem : PromptItem
     {
-        public AsyncUpdateFlowItem(AsyncUpdateFlowAction updateFlowAction)
+        public UpdateFlowItem(Func<dynamic, IEnumerable<FlowUpdateAction>> updateFlowAction)
         {
-            UpdateFlowAction = updateFlowAction;
+            UpdateFlowAction = updateFlowAction ?? throw new ArgumentNullException(nameof(updateFlowAction));
         }
 
-        public AsyncUpdateFlowAction UpdateFlowAction { get; }
+        public UpdateFlowItem(Func<dynamic, Task<IEnumerable<FlowUpdateAction>>> asyncUpdateFlowAction)
+        {
+            AsyncUpdateFlowAction = asyncUpdateFlowAction
+                ?? throw new ArgumentNullException(nameof(asyncUpdateFlowAction));
+        }
+
+        public Func<dynamic, IEnumerable<FlowUpdateAction>> UpdateFlowAction { get; }
+
+        public Func<dynamic, Task<IEnumerable<FlowUpdateAction>>> AsyncUpdateFlowAction { get; }
     }
-
-    public delegate Task<IEnumerable<FlowUpdateAction>> AsyncUpdateFlowAction(dynamic answers);
-
-    public delegate IEnumerable<FlowUpdateAction> UpdateFlowAction(dynamic answers);
 
     public abstract class FlowUpdateAction
     {

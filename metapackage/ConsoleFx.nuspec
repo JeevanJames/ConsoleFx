@@ -11,11 +11,18 @@
     <icon>images\Logo.png</icon>
     <description>ConsoleFx is a suite of .NET libraries for building command-line (CLI) applications, including support for a sophisticated command line argument parser, interactive prompts, ASCII art, console capture and extensions to the Console class.</description>
     <releaseNotes>See https://github.com/JeevanJames/ConsoleFx/releases</releaseNotes>
-    <copyright>Copyright (c) 2006-2019 Jeevan James</copyright>
+    <copyright>Copyright (c) 2006-2021 Jeevan James</copyright>
     <tags>ConsoleFx Console Command Commandline Command-line Cmdline Parser CMD CLI</tags>
     <repository type="Git" url="https://github.com/JeevanJames/ConsoleFx.git" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
+        <dependency id="ConsoleFx.CmdLine.Abstractions" version="0.1.0" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.CmdLine.Parser" version="0.1.0" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.CmdLine.Program" version="0.1.0" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.ConsoleExtensions" version="0.1.0" exclude="Build,Analyzers" />
+        <dependency id="ConsoleFx.Prompter" version="0.1.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NET461">
         <dependency id="ConsoleFx.CmdLine.Abstractions" version="0.1.0" exclude="Build,Analyzers" />
         <dependency id="ConsoleFx.CmdLine.Parser" version="0.1.0" exclude="Build,Analyzers" />
         <dependency id="ConsoleFx.CmdLine.Program" version="0.1.0" exclude="Build,Analyzers" />

@@ -21,13 +21,13 @@ namespace ConsoleFx.ConsoleExtensions.Tests
 
         public static IEnumerable<object[]> ToString_BuildsColorString_Data()
         {
-            var cs1 = new ColorString("ConsoleFx ")
+            ColorString cs1 = new ColorString("ConsoleFx ")
                 .BgGreen("CLI ")
                 .BgBlue("Library ")
                 .Yellow().BgBlack("Suite");
             yield return new object[] { cs1, "ConsoleFx [BgGreen]CLI [BgBlue]Library [Yellow.BgBlack]Suite" };
 
-            var cs2 = new ColorString("ConsoleFx ")
+            ColorString cs2 = new ColorString("ConsoleFx ")
                 .Green("CLI ")
                 .Reset().BgBlue("Library ")
                 .Yellow().BgBlack("Suite");
@@ -37,7 +37,7 @@ namespace ConsoleFx.ConsoleExtensions.Tests
         [Fact]
         public void TryParse_ParsesValidColorString()
         {
-            const string colorString = @"ConsoleFx [Red.BgWhite]Suite";
+            const string colorString = "ConsoleFx [Red.BgWhite]Suite";
 
             bool parseSuccessful = ColorString.TryParse(colorString, out ColorString cstr);
 

@@ -7,7 +7,7 @@
         <TargetFramework>net5.0</TargetFramework>      
         <IsPackable>false</IsPackable>
 
-        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)test.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)test-harness.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
