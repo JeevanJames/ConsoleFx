@@ -7,12 +7,22 @@ using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine.Program;
 
-namespace SimpleProgram
+namespace ConsoleFx.TestHarness.SimpleProgram
 {
     [Program(Name = "simple-program")]
-    public sealed class Program : ConsoleProgram
+    public sealed class MyProgram : ConsoleProgram
     {
-        public Program()
+        public static async Task<int> Main()
+        {
+            var program = new ConsoleFx.TestHarness.SimpleProgram.MyProgram();
+#if DEBUG
+            return await program.RunDebugAsync().ConfigureAwait(false);
+#else
+            return await program.RunWithCommandLineArgsAsync().ConfigureAwait(false);
+#endif
+        }
+
+        public MyProgram()
             : base("simple-program", ArgStyle.Unix)
         {
         }
@@ -21,16 +31,6 @@ namespace SimpleProgram
         {
             Console.WriteLine("In program");
             return base.HandleCommand();
-        }
-
-        public static async Task<int> Main()
-        {
-            var program = new Program();
-#if DEBUG
-            return await program.RunDebugAsync().ConfigureAwait(false);
-#else
-            return await program.RunWithCommandLineArgsAsync().ConfigureAwait(false);
-#endif
         }
     }
 }

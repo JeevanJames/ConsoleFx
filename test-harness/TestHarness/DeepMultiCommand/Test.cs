@@ -17,7 +17,7 @@ namespace TestHarness.DeepMultiCommand
         internal override async Task RunAsync()
         {
             var program = new MyProgram();
-            program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
+            program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace, StringComparison.Ordinal));
             await program.RunAsync("vcs", "git", "remote", "add", "https:/github.com/JeevanJames/Basics.git");
         }
     }

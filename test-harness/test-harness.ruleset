@@ -2,5 +2,14 @@
 <RuleSet Name="Rules for test harnesses" Description="Rules for test harnesses" ToolsVersion="16.0">
    <Include Path="../shared/ConsoleFx.ruleset" Action="Default" />
    <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+     <Rule Id="CA1031" Action="None"
+        _Description="Do not catch general exception types"
+        _Justification="Ok to catch any exception in test harnesses"/>
+     <Rule Id="CA1062" Action="None"
+        _Description="Validate arguments of public methods"
+        _Justification="We don't want to validate arguments for test harness methods."/>
+     <Rule Id="CA1303" Action="None"
+        _Description="Do not pass literals as localized parameters"
+        _Justification="Should not worry about localization in test harnesses."/>
    </Rules>
 </RuleSet>

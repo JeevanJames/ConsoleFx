@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using ConsoleFx.ConsoleExtensions;
 
@@ -50,7 +51,7 @@ namespace TestHarness.ProgressBarTest
             {
                 ConsoleKey.RightArrow.HandledBy(k => bars.ForEach(pb => pb.Value++)),
                 ConsoleKey.LeftArrow.HandledBy(k => bars.ForEach(pb => pb.Value--)),
-                ConsoleKey.UpArrow.HandledBy(k => statusLine.Status = DateTime.Now.ToString()),
+                ConsoleKey.UpArrow.HandledBy(k => statusLine.Status = DateTime.Now.ToString(CultureInfo.InvariantCulture)),
             }, postKeyPress: _ =>
             {
                 string status;

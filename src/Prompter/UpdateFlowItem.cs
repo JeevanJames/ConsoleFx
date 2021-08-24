@@ -35,26 +35,20 @@ namespace ConsoleFx.Prompter
         public abstract void Handle(PrompterFlow flow, int index);
     }
 
-    public sealed class AddQuestionAction : FlowUpdateAction
+    public sealed class AddItemAction : FlowUpdateAction
     {
-        public AddQuestionAction(Question question)
+        public AddItemAction(DisplayItem displayItem)
         {
-            Question = question;
+            DisplayItem = displayItem;
         }
 
-        public Question Question { get; }
+        public DisplayItem DisplayItem { get; }
 
         /// <inheritdoc />
         public override void Handle(PrompterFlow flow, int index)
         {
-            flow.Insert(index + 1, Question);
+            flow.Insert(index + 1, DisplayItem);
         }
-    }
-
-    public enum AddLocation
-    {
-        BeforeItem,
-        AfterItem,
     }
 
     public sealed class UpdateQuestionAction : FlowUpdateAction
@@ -80,7 +74,7 @@ namespace ConsoleFx.Prompter
     {
         public DeleteQuestionAction(string name)
         {
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public string Name { get; }

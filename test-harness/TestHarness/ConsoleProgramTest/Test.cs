@@ -18,7 +18,7 @@ namespace TestHarness.ConsoleProgramTest
         {
             var program = new MyProgram();
             program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
-            program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace));
+            program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace, StringComparison.Ordinal));
             int exitCode = await program.RunAsync("Jeevan", "-v", "--trait", "Handsome", "--trait", "Awesome");
             Console.WriteLine($"Exit code: {exitCode}");
         }
@@ -35,7 +35,7 @@ namespace TestHarness.ConsoleProgramTest
         public bool Verbose { get; set; }
 
         [Option("trait", Usage = CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
-        public IList<string> Traits { get; set; }
+        public IList<string> Traits { get; }
 
         protected override int HandleCommand()
         {

@@ -17,11 +17,11 @@ namespace TestHarness.Prompter
 {
     internal sealed class Test : TestBase
     {
-        private static readonly string NameInstructions1 = "We need your name to address you for the rest of the questions.";
-        private static readonly string NameInstructions2 = $"You have {Red.BgWhite}our guarantee{Reset.BgReset} that we will keep your details private.";
-        private static readonly string NameInstructions3 = "Please trust us.";
+        private const string NameInstructions1 = "We need your name to address you for the rest of the questions.";
+        private const string NameInstructions3 = "Please trust us.";
+        private const string PasswordInstructions = "We need your password to log into your bank account and steal all your money. Make sure to type it in correctly.";
 
-        private static readonly string PasswordInstructions = "We need your password to log into your bank account and steal all your money. Make sure to type it in correctly.";
+        private static readonly string NameInstructions2 = $"You have {Red.BgWhite}our guarantee{Reset.BgReset} that we will keep your details private.";
 
         internal override async Task RunAsync()
         {
@@ -38,12 +38,12 @@ namespace TestHarness.Prompter
                 {
                     if (ans.Name == "JEEVAN")
                     {
-                        var surnameQuestion = new InputQuestion("Surname", "What's your surname? ")
+                        Question<string, string> surnameQuestion = new InputQuestion("Surname", "What's your surname? ")
                             .ValidateWith(sn => sn.Length >= 5)
                             .DefaultsTo("James");
                         return new FlowUpdateAction[]
                         {
-                            new AddQuestionAction(surnameQuestion),
+                            new AddItemAction(surnameQuestion),
                         };
                     }
 
@@ -51,16 +51,16 @@ namespace TestHarness.Prompter
                 }),
                 new ConfirmQuestion("AdditionalQuestions", "Do you want to load additional questions? ",
                     @default: true),
-                new AsyncUpdateFlowItem(async ans =>
+                new UpdateFlowItem(async ans =>
                 {
                     string[] lines = await File.ReadAllLinesAsync("./Prompter/DynamicQuestions.txt");
                     List<FlowUpdateAction> actions = new(lines.Length);
                     foreach (string line in lines)
                     {
                         string[] parts = line.Split('=', 2);
-                        var inputQuestion = new InputQuestion(parts[0], parts[1])
+                        Question<string, string> inputQuestion = new InputQuestion(parts[0], parts[1])
                             .ValidateWith(s => s.Length > 0);
-                        actions.Add(new AddQuestionAction(inputQuestion));
+                        actions.Add(new AddItemAction(inputQuestion));
                     }
 
                     return actions;

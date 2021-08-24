@@ -5,7 +5,7 @@
     <PropertyGroup>
         <!-- Build properties -->
         <TargetFramework>net5.0</TargetFramework>      
-        <IsPackable>false</IsPackable>
+        <GenerateProgramFile>false</GenerateProgramFile>
 
         <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)test-harness.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>

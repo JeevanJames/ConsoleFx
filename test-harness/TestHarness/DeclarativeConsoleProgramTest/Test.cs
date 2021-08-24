@@ -19,12 +19,12 @@ namespace TestHarness.DeclarativeConsoleProgramTest
         {
             string args = Prompt($"{Magenta}Enter args: ");
             var tokens = ConsoleFx.CmdLine.Parser.Parser.Tokenize(args);
-            var program = new Program();
+            var program = new MyProgram();
             await program.RunAsync(tokens);
         }
     }
 
-    public sealed class Program : ConsoleProgram
+    public sealed class MyProgram : ConsoleProgram
     {
         [Option("output", "o", Optional = true)]
         public DirectoryInfo OutputDir { get; set; } = new(@"D:\Temp");

@@ -16,7 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="$(MSBuildThisFileDirectory)shared/stylecop.json" />
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)shared/stylecop.json" Link="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
