@@ -1,6 +1,6 @@
-((Get-Content -path ./metapackage/ConsoleFx.nuspec -Raw) -replace '0.1.0',$env:APPVEYOR_BUILD_VERSION) | Set-Content -Path ./metapackage/ConsoleFx.nuspec
-nuget pack ./metapackage/ConsoleFx.nuspec -OutputDirectory ./metapackage -OutputFileNamesWithoutVersion
-dotnet nuget push ./metapackage/ConsoleFx.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
+# ((Get-Content -path ./metapackage/ConsoleFx.nuspec -Raw) -replace '0.1.0',$env:APPVEYOR_BUILD_VERSION) | Set-Content -Path ./metapackage/ConsoleFx.nuspec
+# nuget pack ./metapackage/ConsoleFx.nuspec -OutputDirectory ./metapackage -OutputFileNamesWithoutVersion
+# dotnet nuget push ./metapackage/ConsoleFx.nupkg -s $env:MYGET_FEED -k $env:MYGET_API_KEY
 
 Write-Host "****** CmdLine.Abstractions ******"
 dotnet pack ./src/CmdLine.Abstractions/CmdLine.Abstractions.csproj --include-symbols --include-source -c Release /p:Version=$env:APPVEYOR_BUILD_VERSION
