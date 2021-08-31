@@ -33,6 +33,7 @@ namespace ConsoleFx.Prompter
                     continue;
                 }
 
+                // Remaining events are raised only if a question is asked or static text is displayed.
                 bool raiseRemainingEvents = false;
 
                 switch (promptItem)
@@ -42,7 +43,7 @@ namespace ConsoleFx.Prompter
                         switch (displayItem)
                         {
                             case StaticText staticText:
-                                staticText.AskerFn(displayItem, answers);
+                                staticText.Display(answers);
                                 break;
                             case Question question:
                                 HandleAsQuestion(question, answers);
@@ -110,7 +111,7 @@ namespace ConsoleFx.Prompter
             bool validAnswer = false;
             do
             {
-                object input = question.AskerFn(question, answers);
+                object input = question.Ask(answers);
 
                 // Validate the value returned by the Asker function, before any processing or
                 // conversion.

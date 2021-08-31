@@ -25,14 +25,6 @@ namespace ConsoleFx.Prompter
         }
 
         /// <summary>
-        ///     Gets the delegate to call to display the prompt.
-        ///     <para/>
-        ///     Derived implementations must override this property to provide the behavior of displaying
-        ///     the prompt item, and if needed, the behaviors to get an answer.
-        /// </summary>
-        internal abstract AskerFn AskerFn { get; }
-
-        /// <summary>
         ///     Gets the message to display to the user for this display item.
         /// </summary>
         internal FunctionOrColorString Message { get; }

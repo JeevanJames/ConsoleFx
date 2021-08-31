@@ -22,17 +22,15 @@ namespace ConsoleFx.Prompter.Questions
                 throw new ArgumentNullException(nameof(choices));
 
             _choices = choices.ToList();
-
-            AskerFn = (q, ans) =>
-            {
-                var lq = (ListQuestion<TValue>)q;
-                ConsoleEx.PrintLine(new ColorString(q.Message.Resolve(ans),
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-                return ConsoleEx.SelectSingle(lq._choices);
-            };
         }
 
-        internal override AskerFn AskerFn { get; }
+        /// <inheritdoc />
+        internal override object Ask(dynamic answers)
+        {
+            ConsoleEx.PrintLine(new ColorString(Message.Resolve(answers),
+                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
+            return ConsoleEx.SelectSingle(_choices);
+        }
     }
 
     public sealed class ListQuestion : ListQuestion<int>

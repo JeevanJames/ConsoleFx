@@ -15,6 +15,4 @@ namespace ConsoleFx.Prompter
     public delegate ValidationResult Validator<in TValue>(TValue value, dynamic answers);
 
     public delegate ValidationResult BasicValidator<in TValue>(TValue value);
-
-    public delegate object AskerFn(DisplayItem displayItem, dynamic answers);
 }

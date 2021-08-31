@@ -20,16 +20,14 @@ namespace ConsoleFx.Prompter.Questions
             if (choices is null)
                 throw new ArgumentNullException(nameof(choices));
             _choices = choices.ToList();
-
-            AskerFn = (q, ans) =>
-            {
-                var cq = (CheckboxQuestion)q;
-                ConsoleEx.PrintLine(new ColorString(q.Message.Resolve(ans),
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-                return ConsoleEx.SelectMultiple(cq._choices);
-            };
         }
 
-        internal override AskerFn AskerFn { get; }
+        /// <inheritdoc />
+        internal override object Ask(dynamic answers)
+        {
+            ConsoleEx.PrintLine(new ColorString(Message.Resolve(answers),
+                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
+            return ConsoleEx.SelectMultiple(_choices);
+        }
     }
 }

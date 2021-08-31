@@ -11,32 +11,26 @@ namespace ConsoleFx.Prompter.Questions
         internal InputQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
-            AskerFn = (q, ans) =>
-            {
-                bool Validator(string str)
-                {
-                    var question = (InputQuestion<TValue>)q;
-                    if (string.IsNullOrEmpty(str) && question.DefaultValue.IsAssigned)
-                        str = question.DefaultValue.Resolve(ans);
-                    bool valid = (question.RawValueValidator is null) || question.RawValueValidator(str, ans).Valid;
-                    var teq = (TextEntryQuestion<TValue>)q;
-                    if (valid && teq.IsRequired)
-                    {
-                        return teq.AllowWhitespaceOnly
-                            ? !string.IsNullOrEmpty(str)
-                            : !string.IsNullOrWhiteSpace(str);
-                    }
-
-                    return valid;
-                }
-
-                return ConsoleEx.Prompt(new ColorString(q.Message.Resolve(ans),
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor).ToString(),
-                    Validator);
-            };
         }
 
-        internal override AskerFn AskerFn { get; }
+        /// <inheritdoc />
+        internal override object Ask(dynamic answers)
+        {
+            bool Validator(string str)
+            {
+                if (string.IsNullOrEmpty(str) && DefaultValue.IsAssigned)
+                    str = DefaultValue.Resolve(answers);
+                bool valid = (RawValueValidator is null) || RawValueValidator(str, answers).Valid;
+                if (valid && IsRequired)
+                    return AllowWhitespaceOnly ? !string.IsNullOrEmpty(str) : !string.IsNullOrWhiteSpace(str);
+
+                return valid;
+            }
+
+            return ConsoleEx.Prompt(new ColorString(Message.Resolve(answers),
+                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor).ToString(),
+                Validator);
+        }
     }
 
     public sealed class InputQuestion : InputQuestion<string>

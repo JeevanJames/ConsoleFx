@@ -27,6 +27,14 @@ namespace ConsoleFx.Prompter
         }
 
         /// <summary>
+        ///     Gets the delegate to call to display the prompt.
+        ///     <para/>
+        ///     Derived implementations must override this property to provide the behavior of displaying
+        ///     the prompt item, and if needed, the behaviors to get an answer.
+        /// </summary>
+        internal abstract object Ask(dynamic answers);
+
+        /// <summary>
         ///     Gets the name of the variable to store the answer.
         /// </summary>
         public string Name { get; }
