@@ -8,20 +8,18 @@ namespace ConsoleFx.Prompter.Questions
 {
     public class MultiLineQuestion<TValue> : TextEntryQuestion<TValue>
     {
-        private readonly AskerFn _askerFn;
-
         public MultiLineQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
-            _askerFn = (q, ans) =>
-            {
-                ConsoleEx.PrintLine(new ColorString(q.Message.Resolve(ans),
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-                return string.Empty;
-            };
         }
 
-        internal override AskerFn AskerFn => _askerFn;
+        /// <inheritdoc />
+        internal override object Ask(dynamic answers)
+        {
+            ConsoleEx.PrintLine(new ColorString(Message.Resolve(answers),
+                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
+            return string.Empty;
+        }
     }
 
     public sealed class MultiLineQuestion : MultiLineQuestion<string>

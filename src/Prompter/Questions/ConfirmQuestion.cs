@@ -14,25 +14,24 @@ namespace ConsoleFx.Prompter.Questions
         public ConfirmQuestion(string name, FunctionOrColorString message, bool @default)
             : base(name, message)
         {
-            AskerFn = (q, ans) =>
-            {
-                ConsoleEx.Print(new ColorString(q.Message.Resolve(ans),
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-
-                var cq = (ConfirmQuestion)q;
-                ConsoleEx.Print(new ColorString($" ({(cq._default ? 'Y' : 'y')}/{(cq._default ? 'n' : 'N')}) ",
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-
-                ConsoleKey keyPressed = ConsoleEx.WaitForKeys(ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
-                bool result = keyPressed == ConsoleKey.Enter ? cq._default : (keyPressed == ConsoleKey.Y);
-
-                ConsoleEx.PrintLine(result ? "Y" : "N");
-
-                return result;
-            };
             _default = @default;
         }
 
-        internal override AskerFn AskerFn { get; }
+        /// <inheritdoc />
+        internal override object Ask(dynamic answers)
+        {
+            ConsoleEx.Print(new ColorString(Message.Resolve(answers),
+                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
+
+            ConsoleEx.Print(new ColorString($" ({(_default ? 'Y' : 'y')}/{(_default ? 'n' : 'N')}) ",
+                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
+
+            ConsoleKey keyPressed = ConsoleEx.WaitForKeys(ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
+            bool result = keyPressed == ConsoleKey.Enter ? _default : (keyPressed == ConsoleKey.Y);
+
+            ConsoleEx.PrintLine(result ? "Y" : "N");
+
+            return result;
+        }
     }
 }

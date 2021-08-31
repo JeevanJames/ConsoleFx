@@ -4,28 +4,25 @@
 
 using System;
 using System.Diagnostics;
-using System.Security.Claims;
 
 using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.Prompter
 {
     [DebuggerDisplay("Static Text: {Message,nq}")]
-    public sealed class StaticText : DisplayItem
+    public class StaticText : DisplayItem
     {
         public StaticText(FunctionOrColorString message)
             : base(message)
         {
-            AskerFn = (q, ans) =>
-            {
-                ColorString staticText = q.Message.Resolve(ans);
-                if (staticText is not null)
-                    ConsoleEx.PrintLine(staticText);
-                return null;
-            };
         }
 
-        internal override AskerFn AskerFn { get; }
+        public virtual void Display(dynamic answers)
+        {
+            ColorString staticText = Message.Resolve(answers);
+            if (staticText is not null)
+                ConsoleEx.PrintLine(staticText);
+        }
 
         public static StaticText BlankLine() => new(ColorString.Empty);
 

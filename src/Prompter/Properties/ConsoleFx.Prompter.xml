@@ -30,14 +30,6 @@
             </summary>
             <param name="message">The <paramref name="message"/> to display to the user.</param>
         </member>
-        <member name="P:ConsoleFx.Prompter.DisplayItem.AskerFn">
-            <summary>
-                Gets the delegate to call to display the prompt.
-                <para/>
-                Derived implementations must override this property to provide the behavior of displaying
-                the prompt item, and if needed, the behaviors to get an answer.
-            </summary>
-        </member>
         <member name="P:ConsoleFx.Prompter.DisplayItem.Message">
             <summary>
                 Gets the message to display to the user for this display item.
@@ -134,10 +126,36 @@
             <param name="name">The name of the variable to store the answer.</param>
             <param name="message">The message to display to the user.</param>
         </member>
+        <member name="M:ConsoleFx.Prompter.Question.Ask(System.Object)">
+            <summary>
+                Gets the delegate to call to display the prompt.
+                <para/>
+                Derived implementations must override this property to provide the behavior of displaying
+                the prompt item, and if needed, the behaviors to get an answer.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.Prompter.Question.Name">
             <summary>
                 Gets the name of the variable to store the answer.
             </summary>
+        </member>
+        <member name="M:ConsoleFx.Prompter.Questions.CheckboxQuestion.Ask(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Prompter.Questions.ConfirmQuestion.Ask(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Prompter.Questions.InputQuestion`1.Ask(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Prompter.Questions.ListQuestion`1.Ask(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Prompter.Questions.MultiLineQuestion`1.Ask(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.Prompter.Questions.PasswordQuestion`1.Ask(System.Object)">
+            <inheritdoc />
         </member>
         <member name="T:ConsoleFx.Prompter.UpdateFlowItem">
             <summary>

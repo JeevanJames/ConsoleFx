@@ -14,13 +14,6 @@ namespace ConsoleFx.Prompter.Questions
         internal PasswordQuestion(string name, FunctionOrColorString message)
             : base(name, message)
         {
-            AskerFn = (q, ans) =>
-            {
-                var pq = (PasswordQuestion<TValue>)q;
-                return ConsoleEx.ReadSecret(new ColorString(q.Message.Resolve(ans),
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor),
-                    hideCursor: pq._hideCursor, hideMask: pq._hideMask);
-            };
         }
 
         public PasswordQuestion<TValue> HideCursor()
@@ -35,7 +28,13 @@ namespace ConsoleFx.Prompter.Questions
             return this;
         }
 
-        internal override AskerFn AskerFn { get; }
+        /// <inheritdoc />
+        internal override object Ask(dynamic answers)
+        {
+            return ConsoleEx.ReadSecret(new ColorString(Message.Resolve(answers),
+                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor),
+                _hideCursor, _hideMask);
+        }
     }
 
     public sealed class PasswordQuestion : PasswordQuestion<string>
