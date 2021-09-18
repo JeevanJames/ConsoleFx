@@ -221,6 +221,10 @@
                 Base class for <see cref="T:ConsoleFx.CmdLine.Argument"/> and <see cref="T:ConsoleFx.CmdLine.Option"/>, as they share a lot of
                 common properties that are not present in <see cref="T:ConsoleFx.CmdLine.Command"/>.
             </summary>
+            <remarks>
+                All properties are internal, as they can only be set indirectly using the built-in methods
+                or extension methods.
+            </remarks>
             <typeparam name="TArg">
                 The type of <see cref="T:ConsoleFx.CmdLine.Arg"/>; can be either <see cref="T:ConsoleFx.CmdLine.Argument"/> and <see cref="T:ConsoleFx.CmdLine.Option"/>.
             </typeparam>
@@ -229,6 +233,12 @@
             <summary>
                 Gets or sets the reference to the property in the containing <see cref="T:ConsoleFx.CmdLine.Command"/>
                 instance, which should be set with the parsed value for this arg.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.AssignedPropertyName">
+            <summary>
+                Gets or sets the name of the property in the containing <see cref="T:ConsoleFx.CmdLine.Command"/> instance,
+                which should be set with the parsed value for this arg.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.DefaultSetter">
@@ -245,11 +255,10 @@
         </member>
         <member name="P:ConsoleFx.CmdLine.ArgumentOrOption`1.Type">
             <summary>
-                Gets or sets the type that the arg's values should be converted to. If a
-                <see cref="P:ConsoleFx.CmdLine.ArgumentOrOption`1.TypeConverter" /> is specified, then it is used to perform the type
-                conversion, otherwise the framework looks for a default string-to-type type converter
-                for the expected type. If a type converter is not found, an exception is thrown during
-                the parsing.
+                Gets or sets the type that the arg's values should be converted to. If the <see cref="P:ConsoleFx.CmdLine.ArgumentOrOption`1.TypeConverter" />
+                property is specified, then it is used to perform the type conversion, otherwise the
+                framework looks for a default string-to-type type converter for the expected type.
+                If a type converter is not found, an exception is thrown during the parsing.
             </summary>
             <remarks>
                 In the case of <see cref="T:ConsoleFx.CmdLine.Option"/>, this type applies to all parameters. In case
@@ -558,8 +567,8 @@
                 A common implementation of <see cref="T:ConsoleFx.CmdLine.INamedObject"/> that can be shared between multiple
                 classes that implement the interface.
                 <para/>
-                Currently, <see cref="T:ConsoleFx.CmdLine.Command"/>, <see cref="T:ConsoleFx.CmdLine.Option"/> and the HelpBuilder all implement the
-                <see cref="T:ConsoleFx.CmdLine.INamedObject"/> interface.
+                Currently, <see cref="T:ConsoleFx.CmdLine.Command"/>, <see cref="T:ConsoleFx.CmdLine.Option"/> and the HelpBuilder all implement
+                the <see cref="T:ConsoleFx.CmdLine.INamedObject"/> interface, with the implementation delegated to this class.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.Option">
@@ -570,26 +579,29 @@
         </member>
         <member name="M:ConsoleFx.CmdLine.Option.#ctor(System.String[])">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Option" /> class with the specified identifying names.
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Option" /> class with the specified identifying
+                names.
             </summary>
             <param name="names">
-                One or more unique names to identify the option. All names added will be not be case-sensitive. In case
-                you require case-sensitive option names, use the overloaded constructor.
+                One or more unique names to identify the option. All names added will be not be case-sensitive.
+                In case you require case-sensitive option names, use the overloaded constructor.
             </param>
         </member>
         <member name="M:ConsoleFx.CmdLine.Option.#ctor(System.Boolean,System.String[])">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Option" /> class with the specified identifying names and
-                specifies whether the names are case sensitive.
+                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Option" /> class with the specified identifying
+                names and specifies whether the names are case sensitive.
             </summary>
-            <param name="caseSensitive">Indicates whether the specified <paramref name="names" /> are case sensitive.</param>
+            <param name="caseSensitive">
+                Indicates whether the specified <paramref name="names" /> are case sensitive.
+            </param>
             <param name="names">One or more unique names to identify the option.</param>
         </member>
         <member name="P:ConsoleFx.CmdLine.Option.Usage">
             <summary>
-                Gets the various usage options for the option and its parameters, including the minimum and maximum
-                allowed occurrences of the option itself, and also the minimum and maximum allowed number of parameters
-                that can be specified for each occurence.
+                Gets the various usage options for the option and its parameters, including the minimum
+                and maximum allowed occurrences of the option itself, and also the minimum and maximum
+                allowed number of parameters that can be specified for each occurence.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Option.Validators">
@@ -939,11 +951,6 @@
             <param name="sourceFilePath">The calling member source file path.</param>
             <param name="sourceLineNumber">The calling member source line number.</param>
         </member>
-        <member name="T:ConsoleFx.CmdLine.ApplicableArgTypesForMetadata">
-            <summary>
-                Applicable arg types for a specific <see cref="T:ConsoleFx.CmdLine.MetadataAttribute"/> attribute.
-            </summary>
-        </member>
         <member name="T:ConsoleFx.CmdLine.ArgumentAttribute">
             <summary>
                 Marks a property in a <see cref="T:ConsoleFx.CmdLine.Command"/> class as an <see cref="T:ConsoleFx.CmdLine.Argument"/>.
@@ -1290,6 +1297,11 @@
             <param name="optional">If <c>true</c>, then the option does not need to be specified.</param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Option"/>.</returns>
         </member>
+        <member name="T:ConsoleFx.CmdLine.ParserException">
+            <summary>
+                Represents errors that occur while parsing command line arguments.
+            </summary>
+        </member>
         <member name="M:ConsoleFx.CmdLine.ParserException.#ctor(System.Int32,System.String)">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.ParserException"/> class with an error code
@@ -1333,8 +1345,8 @@
                 <para/>
                 A positive error code denotes a functional error.
                 <para/>
-                A negative error code denotes an internal error code, which typically means a bug in the
-                application or framework.
+                A negative error code denotes an unexpected internal error code, which typically means
+                a bug in the application or framework.
             </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.Validators.Bases.SingleMessageValidator">

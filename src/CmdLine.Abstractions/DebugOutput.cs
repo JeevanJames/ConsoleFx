@@ -55,7 +55,7 @@ namespace ConsoleFx.CmdLine
             if (!_enabled)
                 return;
 
-            var (foregroundColor, backgroundColor) = (Console.ForegroundColor, Console.BackgroundColor);
+            (ConsoleColor foregroundColor, ConsoleColor backgroundColor) = (Console.ForegroundColor, Console.BackgroundColor);
             try
             {
                 Console.BackgroundColor = ConsoleColor.Black;
@@ -70,7 +70,7 @@ namespace ConsoleFx.CmdLine
                 else
                     Trace.WriteLine(message);
 
-                if (list != null)
+                if (list is not null)
                 {
                     foreach (object item in list)
                         Trace.WriteLine($"* {item?.ToString() ?? "[null]"}");

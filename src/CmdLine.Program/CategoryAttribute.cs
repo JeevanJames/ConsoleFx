@@ -29,5 +29,13 @@ namespace ConsoleFx.CmdLine.Program
             yield return new KeyValuePair<string, object>(HelpMetadataKey.CategoryName, Name);
             yield return new KeyValuePair<string, object>(HelpMetadataKey.CategoryDescription, Description);
         }
+
+        /// <inheritdoc />
+        protected override IEnumerable<Type> GetApplicableArgTypes()
+        {
+            yield return typeof(Command);
+            yield return typeof(Option);
+            yield return typeof(Argument);
+        }
     }
 }

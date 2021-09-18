@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleFx.CmdLine
 {
@@ -37,21 +38,11 @@ namespace ConsoleFx.CmdLine
         {
             // Validate applicable args for this attribute.
             //TODO: Simplify code
-            ApplicableArgTypesForMetadata applicableArgs = GetApplicableArgTypes();
-            switch (arg)
+            IEnumerable<Type> applicableArgs = GetApplicableArgTypes();
+            if (!applicableArgs.Any(type => type.IsAssignableFrom(typeof(TArg))))
             {
-                case Argument _:
-                    if ((applicableArgs & ApplicableArgTypesForMetadata.Argument) != ApplicableArgTypesForMetadata.Argument)
-                        throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
-                    break;
-                case Option _:
-                    if ((applicableArgs & ApplicableArgTypesForMetadata.Option) != ApplicableArgTypesForMetadata.Option)
-                        throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
-                    break;
-                case Command _:
-                    if ((applicableArgs & ApplicableArgTypesForMetadata.Command) != ApplicableArgTypesForMetadata.Command)
-                        throw new InvalidOperationException($"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
-                    break;
+                throw new InvalidOperationException(
+                    $"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
             }
 
             IEnumerable<KeyValuePair<string, object>> metadata = GetMetadata();
@@ -63,9 +54,6 @@ namespace ConsoleFx.CmdLine
         ///     Specifies the types of args that this attribute can apply to.
         /// </summary>
         /// <returns>The applicable arg types.</returns>
-        protected virtual ApplicableArgTypesForMetadata GetApplicableArgTypes()
-        {
-            return ApplicableArgTypesForMetadata.All;
-        }
+        protected abstract IEnumerable<Type> GetApplicableArgTypes();
     }
 }

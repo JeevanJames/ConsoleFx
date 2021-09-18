@@ -57,7 +57,7 @@ namespace ConsoleFx.CmdLine
 
         protected override void CheckDuplicates(Command obj, int index)
         {
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (i == index)
                     continue;
