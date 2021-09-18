@@ -17,7 +17,7 @@ namespace ConsoleFx.CmdLine
     public abstract class Arg : IMetadataObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<Dictionary<string, object>> _metadata = new Lazy<Dictionary<string, object>>(
+        private readonly Lazy<Dictionary<string, object>> _metadata = new(
             () => new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase));
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace ConsoleFx.CmdLine
         /// <inheritdoc />
         T IMetadataObject.Get<T>(string name)
         {
-            return _metadata.Value.TryGetValue(name, out var result) ? (T)result : default;
+            return _metadata.Value.TryGetValue(name, out object result) ? (T)result : default;
         }
 
         /// <inheritdoc />

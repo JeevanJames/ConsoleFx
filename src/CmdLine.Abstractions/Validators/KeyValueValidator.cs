@@ -2,6 +2,7 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -25,7 +26,9 @@ namespace ConsoleFx.CmdLine.Validators
             return default;
         }
 
-        private static readonly Regex KeyValuePattern = new Regex(@"^(\w[\w-_]*)=(.+)$");
+        //TODO: Enable explicit capture
+        private static readonly Regex KeyValuePattern = new(@"^(\w[\w-_]*)=(.+)$", RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
     }
 
     public static class KeyValueValidatorExtensions

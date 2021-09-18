@@ -14,7 +14,7 @@ namespace ConsoleFx.TestHarness.SimpleProgram
     {
         public static async Task<int> Main()
         {
-            var program = new ConsoleFx.TestHarness.SimpleProgram.MyProgram();
+            var program = new MyProgram();
 #if DEBUG
             return await program.RunDebugAsync().ConfigureAwait(false);
 #else
