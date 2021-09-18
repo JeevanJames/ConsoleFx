@@ -14,9 +14,7 @@ namespace ConsoleFx.CmdLine.Validators
         public RegexValidator(Regex regex)
             : base(Messages.Regex)
         {
-            if (regex is null)
-                throw new ArgumentNullException(nameof(regex));
-            Regex = regex;
+            Regex = regex ?? throw new ArgumentNullException(nameof(regex));
         }
 
         public RegexValidator(string pattern)

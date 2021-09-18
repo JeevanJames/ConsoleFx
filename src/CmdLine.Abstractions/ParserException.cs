@@ -7,6 +7,9 @@ using System.Runtime.Serialization;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Represents errors that occur while parsing command line arguments.
+    /// </summary>
     [Serializable]
     public class ParserException : Exception
     {
@@ -63,8 +66,8 @@ namespace ConsoleFx.CmdLine
         ///     <para/>
         ///     A positive error code denotes a functional error.
         ///     <para/>
-        ///     A negative error code denotes an internal error code, which typically means a bug in the
-        ///     application or framework.
+        ///     A negative error code denotes an unexpected internal error code, which typically means
+        ///     a bug in the application or framework.
         /// </summary>
         public int ErrorCode { get; }
 

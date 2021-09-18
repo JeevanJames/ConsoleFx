@@ -13,13 +13,17 @@ namespace ConsoleFx.CmdLine
     ///     Base class for <see cref="Argument"/> and <see cref="Option"/>, as they share a lot of
     ///     common properties that are not present in <see cref="Command"/>.
     /// </summary>
+    /// <remarks>
+    ///     All properties are internal, as they can only be set indirectly using the built-in methods
+    ///     or extension methods.
+    /// </remarks>
     /// <typeparam name="TArg">
     ///     The type of <see cref="Arg"/>; can be either <see cref="Argument"/> and <see cref="Option"/>.
     /// </typeparam>
     public abstract class ArgumentOrOption<TArg> : Arg
         where TArg : Arg
     {
-        private readonly List<int> _groups = new List<int> { 0 };
+        private readonly List<int> _groups = new() { 0 };
 
         /// <summary>
         ///     Gets or sets the reference to the property in the containing <see cref="Command"/>
@@ -27,6 +31,10 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         internal PropertyInfo AssignedProperty { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the name of the property in the containing <see cref="Command"/> instance,
+        ///     which should be set with the parsed value for this arg.
+        /// </summary>
         internal string AssignedPropertyName { get; set; }
 
         internal IReadOnlyList<int> Groups => _groups;
@@ -44,11 +52,10 @@ namespace ConsoleFx.CmdLine
         internal Func<string, string> Formatter { get; set; }
 
         /// <summary>
-        ///     Gets or sets the type that the arg's values should be converted to. If a
-        ///     <see cref="TypeConverter" /> is specified, then it is used to perform the type
-        ///     conversion, otherwise the framework looks for a default string-to-type type converter
-        ///     for the expected type. If a type converter is not found, an exception is thrown during
-        ///     the parsing.
+        ///     Gets or sets the type that the arg's values should be converted to. If the <see cref="TypeConverter" />
+        ///     property is specified, then it is used to perform the type conversion, otherwise the
+        ///     framework looks for a default string-to-type type converter for the expected type.
+        ///     If a type converter is not found, an exception is thrown during the parsing.
         /// </summary>
         /// <remarks>
         ///     In the case of <see cref="Option"/>, this type applies to all parameters. In case
@@ -146,8 +153,7 @@ namespace ConsoleFx.CmdLine
             if (!formatStr.Contains("{0}"))
                 throw new ArgumentException(Errors.Option_MissingPlaceholderInFormatString, nameof(formatStr));
 
-            Formatter = value =>
-                string.Format(formatStr, value ?? string.Empty) ?? string.Empty;
+            Formatter = value => string.Format(formatStr, value ?? string.Empty) ?? string.Empty;
         }
 
         protected void InternalTypeAs<T>(Type type, Converter<string, T> converter = null)
@@ -156,7 +162,7 @@ namespace ConsoleFx.CmdLine
                 throw new ArgumentNullException(nameof(type));
 
             Type = type;
-            if (converter != null)
+            if (converter is not null)
                 TypeConverter = value => converter(value);
         }
 

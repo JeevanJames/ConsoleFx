@@ -31,7 +31,7 @@ namespace ConsoleFx.CmdLine
         public Argument(int order = 0, bool isOptional = false, byte maxOccurences = 1)
         {
             if (maxOccurences < 1)
-                throw new ArgumentException($"Maximum occurences for the argument should not be less than one.", nameof(maxOccurences));
+                throw new ArgumentException("Maximum occurences for the argument should not be less than one.", nameof(maxOccurences));
 
             Order = order;
             IsOptional = isOptional;
@@ -58,7 +58,7 @@ namespace ConsoleFx.CmdLine
         ///     Gets the validators for this argument.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        internal ValidatorCollection Validators => _validators ?? (_validators = new ValidatorCollection());
+        internal ValidatorCollection Validators => _validators ??= new ValidatorCollection();
 
         /// <inheritdoc/>
         public override Argument AssignTo(string propertyName)

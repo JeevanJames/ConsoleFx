@@ -13,12 +13,12 @@ namespace ConsoleFx.CmdLine
     ///     A common implementation of <see cref="INamedObject"/> that can be shared between multiple
     ///     classes that implement the interface.
     ///     <para/>
-    ///     Currently, <see cref="Command"/>, <see cref="Option"/> and the HelpBuilder all implement the
-    ///     <see cref="INamedObject"/> interface.
+    ///     Currently, <see cref="Command"/>, <see cref="Option"/> and the HelpBuilder all implement
+    ///     the <see cref="INamedObject"/> interface, with the implementation delegated to this class.
     /// </summary>
     internal sealed class NamedObjectImpl : INamedObject
     {
-        private readonly Dictionary<string, bool> _names = new Dictionary<string, bool>();
+        private readonly Dictionary<string, bool> _names = new();
 
         internal NamedObjectImpl()
         {
@@ -45,7 +45,7 @@ namespace ConsoleFx.CmdLine
                 return false;
             return _names.Any(kvp =>
             {
-                var comparison = kvp.Value
+                StringComparison comparison = kvp.Value
                     ? StringComparison.Ordinal
                     : StringComparison.OrdinalIgnoreCase;
                 return name.Equals(kvp.Key, comparison);
@@ -60,6 +60,7 @@ namespace ConsoleFx.CmdLine
 
         private Regex NamePattern { get; }
 
-        private static readonly Regex DefaultNamePattern = new Regex(@"^\w[\w_-]*$");
+        private static readonly Regex DefaultNamePattern = new(@"^\w[\w_-]*$",
+            RegexOptions.Compiled | RegexOptions.ExplicitCapture, TimeSpan.FromSeconds(1));
     }
 }

@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 using ConsoleFx.CmdLine.Validators.Bases;
@@ -18,11 +17,12 @@ namespace ConsoleFx.CmdLine
     public sealed partial class Option : ArgumentOrOption<Option>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying names.
+        ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying
+        ///     names.
         /// </summary>
         /// <param name="names">
-        ///     One or more unique names to identify the option. All names added will be not be case-sensitive. In case
-        ///     you require case-sensitive option names, use the overloaded constructor.
+        ///     One or more unique names to identify the option. All names added will be not be case-sensitive.
+        ///     In case you require case-sensitive option names, use the overloaded constructor.
         /// </param>
         public Option(params string[] names)
         {
@@ -32,10 +32,12 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying names and
-        ///     specifies whether the names are case sensitive.
+        ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying
+        ///     names and specifies whether the names are case sensitive.
         /// </summary>
-        /// <param name="caseSensitive">Indicates whether the specified <paramref name="names" /> are case sensitive.</param>
+        /// <param name="caseSensitive">
+        ///     Indicates whether the specified <paramref name="names" /> are case sensitive.
+        /// </param>
         /// <param name="names">One or more unique names to identify the option.</param>
         public Option(bool caseSensitive, params string[] names)
         {
@@ -45,11 +47,11 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <summary>
-        ///     Gets the various usage options for the option and its parameters, including the minimum and maximum
-        ///     allowed occurrences of the option itself, and also the minimum and maximum allowed number of parameters
-        ///     that can be specified for each occurence.
+        ///     Gets the various usage options for the option and its parameters, including the minimum
+        ///     and maximum allowed occurrences of the option itself, and also the minimum and maximum
+        ///     allowed number of parameters that can be specified for each occurence.
         /// </summary>
-        internal OptionUsage Usage { get; } = new OptionUsage();
+        internal OptionUsage Usage { get; } = new();
 
         /// <summary>
         ///     Gets the collection of validators that can validate some or all of the option's parameters.
@@ -115,7 +117,7 @@ namespace ConsoleFx.CmdLine
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         public override Option TypeAs<T>(Converter<string, T> converter = null)
         {
-            InternalTypeAs<T>(typeof(T), converter);
+            InternalTypeAs(typeof(T), converter);
             return this;
         }
 
@@ -175,7 +177,7 @@ namespace ConsoleFx.CmdLine
                 throw new ArgumentNullException(nameof(validators));
             if (validators.Length == 0)
                 throw new ArgumentException(Errors.Option_ValidatorsNotSpecified, nameof(validators));
-            for (var i = 0; i < validators.Length; i++)
+            for (int i = 0; i < validators.Length; i++)
             {
                 Validator validator = validators[i];
                 if (validator is null)
@@ -217,29 +219,6 @@ namespace ConsoleFx.CmdLine
 
             //TODO: Change this to an internal parser exception.
             throw new InvalidOperationException("Should never reach here.");
-        }
-    }
-
-    // INamedObject implementation
-    public sealed partial class Option : INamedObject
-    {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly INamedObject _namedObject = new NamedObjectImpl();
-
-        public string Name => _namedObject.Name;
-
-        public IEnumerable<string> AlternateNames => _namedObject.AlternateNames;
-
-        public IEnumerable<string> AllNames => _namedObject.AllNames;
-
-        public void AddName(string name, bool caseSensitive = false)
-        {
-            _namedObject.AddName(name, caseSensitive);
-        }
-
-        public bool HasName(string name)
-        {
-            return _namedObject.HasName(name);
         }
     }
 

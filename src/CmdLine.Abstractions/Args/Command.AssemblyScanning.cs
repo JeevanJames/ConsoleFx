@@ -10,7 +10,7 @@ using System.Reflection;
 namespace ConsoleFx.CmdLine
 {
     // Dynamically discover commands in assemblies.
-    public partial class Command : Arg
+    public partial class Command
     {
         /// <summary>
         ///     Gets the commands that are discovered by calling one of the <c>ScanAssemblies</c>
