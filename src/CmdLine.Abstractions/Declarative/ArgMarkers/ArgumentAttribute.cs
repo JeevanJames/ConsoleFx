@@ -40,7 +40,7 @@ namespace ConsoleFx.CmdLine
                 case ArgumentValueType.List:
                     Type itemType = GetCollectionItemType(property);
                     if (itemType is null)
-                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType.FullName} should be a generic collection type like IEnumerable<T> or List<T>.");
+                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType} should be a generic collection type like IEnumerable<T> or List<T>.");
                     if (itemType != typeof(string))
                         arg.TypeAs(itemType);
                     break;

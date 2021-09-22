@@ -38,7 +38,7 @@ namespace ConsoleFx.CmdLine
             // Read the command attribute on this class.
             CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
             if (commandAttribute is null)
-                throw new InvalidOperationException($"The command type '{GetType().FullName}' is not decorated with the '{typeof(CommandAttribute).FullName}' attribute.");
+                throw new InvalidOperationException($"The command type '{GetType()}' is not decorated with the '{typeof(CommandAttribute)}' attribute.");
 
             // Add names from attribute
             foreach (string name in commandAttribute.Names)
@@ -46,7 +46,7 @@ namespace ConsoleFx.CmdLine
 
             // The parent type is same as current type.
             if (commandAttribute.ParentType == GetType())
-                throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
+                throw new InvalidOperationException($"Parent command type of {GetType()} command cannot be the same type");
         }
 
         //TODO: Remove non-default ctors and only rely on attributes. This way, we can add support
