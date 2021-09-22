@@ -144,7 +144,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
         private void BuildCommandNamesChain(Command command, StringBuilder sb)
         {
             Command currentCommand = command;
-            while (currentCommand != null)
+            while (currentCommand is not null)
             {
                 sb.Insert(0, currentCommand.Name + " ");
                 currentCommand = currentCommand.ParentCommand;
@@ -160,7 +160,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
             IEnumerable<IGrouping<string, TArg>> categories = args.GroupBy(
                 arg => ((IMetadataObject)arg).Get<string>(HelpMetadataKey.CategoryName), StringComparer.OrdinalIgnoreCase);
-            foreach (var category in categories)
+            foreach (IGrouping<string, TArg> category in categories)
             {
                 List<TArg> categoryArgs = category
                     .Where(arg => !((IMetadataObject)arg).Get<bool>(HelpMetadataKey.Hide))

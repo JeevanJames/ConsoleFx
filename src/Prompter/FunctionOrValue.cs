@@ -150,7 +150,7 @@ namespace ConsoleFx.Prompter
 
         internal ColorString Resolve(dynamic answers = null)
         {
-            return Function != null ? Function(answers) : Value;
+            return Function is not null ? Function(answers) : Value;
         }
 
         public static implicit operator FunctionOrColorString(ColorString cstr)

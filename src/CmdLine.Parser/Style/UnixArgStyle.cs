@@ -2,6 +2,7 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -34,18 +35,25 @@ namespace ConsoleFx.CmdLine.Parser.Style
             return specifiedGrouping;
         }
 
-        private static readonly Regex OptionPattern = new Regex(@"^(--?)(\w[\w-_]*)(?:=(.+))?$");
+        //TODO: Use explicit capture
+        private static readonly Regex OptionPattern = new(@"^(--?)(\w[\w-_]*)(?:=(.+))?$", RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         /// <inheritdoc/>
         public override IEnumerable<string> IdentifyTokens(IEnumerable<string> tokens, IReadOnlyList<OptionRun> options,
             ArgGrouping grouping)
         {
+            // Tracks whether we're currently processing an option. Depending on the option's usage
+            // rules, one or more subsequent token may be considered as option parameters.
             OptionRun currentOption = null;
+            int currentOptionParameterCount = 0;
 
             bool forceArguments = false;
 
             foreach (string token in tokens)
             {
+                // A standalone -- token indicates that all subsequent tokens are to be considered
+                // arguments even if they look like options.
                 if (token == "--")
                 {
                     forceArguments = true;
@@ -64,12 +72,16 @@ namespace ConsoleFx.CmdLine.Parser.Style
                 // option, then the token is an argument.
                 if (!optionMatch.Success)
                 {
-                    // If we're processing an option (currentOption != null), then it's an argument.
-                    // Otherwise, it's a parameter on the current option.
+                    // If we're processing an option (currentOption != null), then the token is a
+                    // parameter on the option.
+                    // Otherwise, the token is considered to be an argument.
                     if (currentOption is null)
                         yield return token;
                     else
+                    {
                         currentOption.Parameters.Add(token);
+                        currentOptionParameterCount++;
+                    }
                 }
                 else
                 {
@@ -90,6 +102,9 @@ namespace ConsoleFx.CmdLine.Parser.Style
                         ? optionName.Select(c => c.ToString()).ToArray()
                         : new[] { optionName };
 
+                    // Store the first option's run, as we may need to process its parameters later.
+                    OptionRun firstOptionRun = null;
+
                     // Add each option to its corresponding option run.
                     foreach (string name in optionNames)
                     {
@@ -100,45 +115,65 @@ namespace ConsoleFx.CmdLine.Parser.Style
                                 string.Format(Messages.InvalidOptionSpecified, optionName));
                         }
 
+                        // Have we reached the maximum number of occurrences of this option? If so,
+                        // we can't allow this occurrence.
+                        if (matchingOption.Occurrences >= matchingOption.Option.Usage.MaxOccurrences)
+                        {
+                            throw new ParserException(-1,
+                                $"Maximum number of occurrences of option {optionName} have been specified.");
+                        }
+
                         // Increase the number of occurrences of the option
-                        matchingOption.Occurrences += 1;
+                        matchingOption.Occurrences++;
+
+                        firstOptionRun ??= matchingOption;
                     }
 
                     // If only one option was specified (and not a combined short option set), we deal
                     // with the parameters now.
-                    if (optionNames.Length == 1)
+                    if (optionNames.Length == 1 && firstOptionRun is not null)
                     {
-                        // We know its option run exists, so use Single here.
-                        OptionRun matchingOption = options.Single(or => or.Option.HasName(optionNames[0]));
-
-                        // If the parameter was specified in the same token with a "=" symbol, then
-                        // that is the only parameter we can allow.
-                        // Add it and proceed with the next token.
                         if (isParameterSpecified)
                         {
-                            matchingOption.Parameters.Add(parameterValue);
+                            // If the parameter was specified in the same token with a "=" symbol, then
+                            // that is the only parameter we can allow.
+                            // Add it and proceed with the next token.
+                            firstOptionRun.Parameters.Add(parameterValue);
                             currentOption = null;
+                            currentOptionParameterCount = 0;
                         }
-
-                        // Otherwise, mark the current option as this one and process all subsequent
-                        // tokens as parameters until we encounter another option or we've reached the
-                        // max limit of parameters for this option.
                         else
-                            currentOption = matchingOption;
+                        {
+                            // Otherwise, mark the current option as this one and process all subsequent
+                            // tokens as parameters until we encounter another option or we've reached the
+                            // max limit of parameters for this option.
+                            currentOption = firstOptionRun;
+                            currentOptionParameterCount = 0;
+                        }
                     }
                     else
+                    {
                         currentOption = null;
+                        currentOptionParameterCount = 0;
+                    }
                 }
 
                 // If we're on an option (currentOption != null) and the number of parameters has
                 // reached the maximum allowed, then we can stop handling that option by setting
                 // currentOption to null so that the next arg will be treated as a new option or
                 // argument.
-                if (currentOption != null)
+                if (currentOption is not null)
                 {
+                    // Have we reached or exceeded the maximum number of parameters for this occurrence
+                    // of the option or the maximum number of parameters across all occurrences of
+                    // the option?
                     int maxParameters = currentOption.Option.Usage.MaxOccurrences * currentOption.Option.Usage.MaxParameters;
-                    if (currentOption.Parameters.Count >= maxParameters)
+                    if (currentOptionParameterCount >= currentOption.Option.Usage.MaxParameters
+                        || currentOption.Parameters.Count >= maxParameters)
+                    {
                         currentOption = null;
+                        currentOptionParameterCount = 0;
+                    }
                 }
             }
         }

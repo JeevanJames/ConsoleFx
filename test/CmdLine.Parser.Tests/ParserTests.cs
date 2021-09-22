@@ -18,9 +18,10 @@ limitations under the License.
 #endregion
 
 using System.Collections.Generic;
+
 using CmdLine.Parser.Tests.Commands;
+
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Parser;
 using ConsoleFx.CmdLine.Parser.Style;
 
 using Xunit;
@@ -35,11 +36,7 @@ namespace CmdLine.Parser.Tests
 
         public ParserTests()
         {
-            var command = new Command("root");
-            command.Options.Add(new Option("verbose", "v").UsedAsFlag(true));
-            command.Commands.Add(new InstallCommand());
-
-            _parser = new ParserTool(command, new WindowsArgStyle());
+            _parser = new ParserTool(new ParserTestCommand(), new WindowsArgStyle());
         }
 
         [Theory, MemberData(nameof(Parse_Parses_windows_style_args_Data))]
@@ -53,6 +50,17 @@ namespace CmdLine.Parser.Tests
         {
             string[] tokens1 = { "install", "package-name", "/save-dev" };
             yield return new object[] { tokens1 };
+        }
+    }
+
+    [Command("root")]
+    public sealed class ParserTestCommand : Command
+    {
+        /// <inheritdoc />
+        protected override IEnumerable<Arg> GetArgs()
+        {
+            yield return new Option("verbose", "v").UsedAsFlag();
+            yield return new InstallCommand();
         }
     }
 }

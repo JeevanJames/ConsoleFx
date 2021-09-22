@@ -40,7 +40,7 @@ namespace ConsoleFx.CmdLine.Validators
             string message = null)
         {
             var val = new CustomValidator(validator);
-            if (message != null)
+            if (message is not null)
                 val.Message = message;
             return argument.ValidateWith(val);
         }
@@ -49,7 +49,7 @@ namespace ConsoleFx.CmdLine.Validators
             int parameterIndex = -1, string message = null)
         {
             var val = new CustomValidator(validator);
-            if (message != null)
+            if (message is not null)
                 val.Message = message;
             return option.ValidateWith(parameterIndex, val);
         }

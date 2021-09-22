@@ -36,28 +36,13 @@
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.AbstractCommand"/> class.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.AbstractCommand.#ctor(System.String[])">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.AbstractCommand"/> class with the
-                specified names.
-            </summary>
-            <param name="names">The names to assign to the command.</param>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.AbstractCommand.#ctor(System.Boolean,System.String[])">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.AbstractCommand"/> class with the
-                specified names.
-            </summary>
-            <param name="caseSensitive">Specifies whether the names are case sensitive or not.</param>
-            <param name="names">The names to assign to the command.</param>
-        </member>
         <member name="M:ConsoleFx.CmdLine.AbstractCommand.GetArgs">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.AbstractCommand.HandleCommand">
+        <member name="M:ConsoleFx.CmdLine.AbstractCommand.ValidateParseResult(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.AbstractCommand.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+        <member name="M:ConsoleFx.CmdLine.AbstractCommand.HandleCommandAsync(ConsoleFx.CmdLine.IParseResult)">
             <inheritdoc />
         </member>
         <member name="T:ConsoleFx.CmdLine.Arg">
@@ -81,6 +66,11 @@
         </member>
         <member name="M:ConsoleFx.CmdLine.Arg.ConsoleFx#CmdLine#IMetadataObject#Set``1(System.String,``0)">
             <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Arg.ProcessMetadataAttributes">
+            <summary>
+                Read any metadata attributes on this class and assign them to this arg.
+            </summary>
         </member>
         <member name="T:ConsoleFx.CmdLine.Args`1">
             <inheritdoc />
@@ -370,11 +360,6 @@
                 <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> attribute.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Command.ProcessMetadataAttributes">
-            <summary>
-                Read any metadata attributes on this class and assign them to this command.
-            </summary>
-        </member>
         <member name="P:ConsoleFx.CmdLine.Command.ParentCommand">
             <summary>
                 Gets a reference to the parent <see cref="T:ConsoleFx.CmdLine.Command"/> of this instance.
@@ -431,23 +416,26 @@
                 objects that belong to this <see cref="T:ConsoleFx.CmdLine.Command"/> instance.
             </returns>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Command.CustomValidator">
+        <member name="M:ConsoleFx.CmdLine.Command.SetupArguments(ConsoleFx.CmdLine.Arguments)">
             <summary>
-                Gets or sets the delegate to call to perform additional validations after the tokens
-                have been parsed.
-                <para />
-                If not assigned, the virtual
-                <see cref="M:ConsoleFx.CmdLine.Command.PerformCustomValidation(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})"/>
-                method is called.
+                Override this method to perform any final setup on the arguments for this command.
             </summary>
+            <param name="arguments">The list of arguments for this command.</param>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Command.Handler">
+        <member name="M:ConsoleFx.CmdLine.Command.SetupOptions(ConsoleFx.CmdLine.Options)">
             <summary>
-                Gets or sets the delegate to call if the parsed args match this command.
-                <para/>
-                If not assigned, the virtual <see cref="M:ConsoleFx.CmdLine.Command.HandleCommandAsync(ConsoleFx.CmdLine.IParseResult)"/> method is
-                called.
+                Override this method to perform any final setup on the options for this command,.
             </summary>
+            <param name="options">The list of options for this command.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ValidateParseResult(System.Collections.Generic.IReadOnlyList{System.Object},System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object})">
+            <summary>
+                Override this method to perform any additional custom validations after the args have
+                been parsed.
+            </summary>
+            <param name="arguments">The arguments parsed from the args.</param>
+            <param name="options">The options parsed from the args.</param>
+            <returns>An error message if there are validation errors, otherwise <c>null</c>.</returns>
         </member>
         <member name="P:ConsoleFx.CmdLine.Command.Name">
             <inheritdoc />

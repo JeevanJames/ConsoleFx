@@ -127,7 +127,7 @@ namespace ConsoleFx.ConsoleExtensions
             while (!escapeKeysList.Any(k => k == key))
             {
                 KeyHandler handler = handlersList.FirstOrDefault(h => h.Key == key);
-                if (handler != null)
+                if (handler is not null)
                 {
                     handler.Action?.Invoke(key);
                     postKeyPress?.Invoke(key);

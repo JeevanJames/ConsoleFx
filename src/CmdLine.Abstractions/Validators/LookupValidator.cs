@@ -22,7 +22,7 @@ namespace ConsoleFx.CmdLine.Validators
         public LookupValidator(IEnumerable<string> items)
             : base(Messages.Lookup)
         {
-            _items = items != null ? new List<string>(items) : new List<string>();
+            _items = items is not null ? new List<string>(items) : new List<string>();
         }
 
         public void Add(string item)
@@ -55,7 +55,7 @@ namespace ConsoleFx.CmdLine.Validators
             bool caseSensitive = false, string message = null)
         {
             var validator = new LookupValidator(items);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
         }
@@ -67,7 +67,7 @@ namespace ConsoleFx.CmdLine.Validators
             int parameterIndex = -1, string message = null)
         {
             var validator = new LookupValidator(items);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return option.ValidateWith(validator);
         }

@@ -1,51 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>ConsoleFx.CmdLine.Abstractions</AssemblyName>
-    <RootNamespace>ConsoleFx.CmdLine</RootNamespace>
-    <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile> 
-    <Description>$(ProductDescription)The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-line argument concepts.</Description>
-  </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>ConsoleFx.CmdLine.Abstractions</AssemblyName>
+        <RootNamespace>ConsoleFx.CmdLine</RootNamespace>
+        <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
+        <Description>$(ProductDescription)The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-line argument concepts.</Description>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Update="Errors.Designer.cs">
-      <DependentUpon>Errors.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Messages.Designer.cs">
-      <DependentUpon>Messages.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Validators\Messages.Designer.cs">
-      <DependentUpon>Messages.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Errors.Designer.cs">
+            <DependentUpon>Errors.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+        <Compile Update="Messages.Designer.cs">
+            <DependentUpon>Messages.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+        <Compile Update="Validators\Messages.Designer.cs">
+            <DependentUpon>Messages.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Errors.resx">
-      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Messages.resx">
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Validators\Messages.resx">
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Errors.resx">
+            <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Messages.resx">
+            <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Validators\Messages.resx">
+            <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789.`))' == 'net'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789.`))' == 'net'">
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validators\Impls\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Validators\Impls\" />
+    </ItemGroup>
 
 </Project>

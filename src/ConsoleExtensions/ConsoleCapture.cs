@@ -60,13 +60,13 @@ namespace ConsoleFx.ConsoleExtensions
             process.StartInfo.ErrorDialog = false;
             process.StartInfo.UseShellExecute = false;
 
-            if (_outputHandler != null)
+            if (_outputHandler is not null)
             {
                 process.StartInfo.RedirectStandardOutput = true;
                 process.OutputDataReceived += (_, e) => _outputHandler(e.Data);
             }
 
-            if (_errorHandler != null)
+            if (_errorHandler is not null)
             {
                 process.StartInfo.RedirectStandardError = true;
                 process.ErrorDataReceived += (_, e) => _errorHandler(e.Data);
@@ -74,9 +74,9 @@ namespace ConsoleFx.ConsoleExtensions
 
             process.Start();
 
-            if (_outputHandler != null)
+            if (_outputHandler is not null)
                 process.BeginOutputReadLine();
-            if (_errorHandler != null)
+            if (_errorHandler is not null)
                 process.BeginErrorReadLine();
 
             process.WaitForExit();

@@ -12,7 +12,7 @@ namespace ConsoleFx.CmdLine.Validators
             string falseString = "false", bool caseSensitive = false, string message = null)
         {
             var validator = new BooleanValidator(trueString, falseString, caseSensitive);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
         }
@@ -21,7 +21,7 @@ namespace ConsoleFx.CmdLine.Validators
             IEnumerable<string> falseStrings, bool caseSensitive = false, string message = null)
         {
             var validator = new BooleanValidator(trueStrings, falseStrings, caseSensitive);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
         }
@@ -30,7 +30,7 @@ namespace ConsoleFx.CmdLine.Validators
             string falseString = "false", bool caseSensitive = false, int parameterIndex = -1, string message = null)
         {
             var validator = new BooleanValidator(trueString, falseString, caseSensitive);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator);
         }
@@ -40,7 +40,7 @@ namespace ConsoleFx.CmdLine.Validators
             string message = null)
         {
             var validator = new BooleanValidator(trueStrings, falseStrings, caseSensitive);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator);
         }

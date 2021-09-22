@@ -50,9 +50,9 @@ namespace ConsoleFx.CmdLine.Validators
             string minLengthMessage = null, string maxLengthMessage = null)
         {
             var validator = new StringValidator(minLength, maxLength);
-            if (minLengthMessage != null)
+            if (minLengthMessage is not null)
                 validator.MinLengthMessage = minLengthMessage;
-            if (maxLengthMessage != null)
+            if (maxLengthMessage is not null)
                 validator.MaxLengthMessage = maxLengthMessage;
             return argument.ValidateWith(validator);
         }
@@ -61,9 +61,9 @@ namespace ConsoleFx.CmdLine.Validators
             int parameterIndex = -1, string minLengthMessage = null, string maxLengthMessage = null)
         {
             var validator = new StringValidator(minLength, maxLength);
-            if (minLengthMessage != null)
+            if (minLengthMessage is not null)
                 validator.MinLengthMessage = minLengthMessage;
-            if (maxLengthMessage != null)
+            if (maxLengthMessage is not null)
                 validator.MaxLengthMessage = maxLengthMessage;
             return option.ValidateWith(parameterIndex, validator);
         }

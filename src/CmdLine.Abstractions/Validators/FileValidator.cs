@@ -23,7 +23,7 @@ namespace ConsoleFx.CmdLine.Validators
             : base(typeof(FileInfo))
         {
             ShouldExist = shouldExist;
-            AllowedExtensions = allowedExtensions != null ? new List<string>(allowedExtensions) : new List<string>();
+            AllowedExtensions = allowedExtensions is not null ? new List<string>(allowedExtensions) : new List<string>();
         }
 
         public IList<string> AllowedExtensions { get; }
@@ -70,7 +70,7 @@ namespace ConsoleFx.CmdLine.Validators
             if (ShouldExist && !file.Exists)
                 ValidationFailed(FileMissingMessage, parameterValue);
 
-            if (AllowedExtensions != null && AllowedExtensions.Count > 0)
+            if (AllowedExtensions is not null && AllowedExtensions.Count > 0)
             {
                 string extension = file.Extension;
                 if (!AllowedExtensions.Any(ext => $".{ext}".Equals(extension, StringComparison.OrdinalIgnoreCase)))

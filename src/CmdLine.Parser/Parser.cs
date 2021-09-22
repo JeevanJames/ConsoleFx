@@ -106,9 +106,9 @@ namespace ConsoleFx.CmdLine.Parser
             var parseResult = new ParseResult(run);
 
             // Runs the custom validator, if it is assigned.
-            CommandCustomValidator customCommandValidator = parseResult.Command.CustomValidator;
-            string validationError = customCommandValidator?.Invoke(parseResult.Arguments, parseResult.Options);
-            if (validationError != null)
+            string validationError = parseResult.Command.ValidateParseResult(
+                parseResult.Arguments, parseResult.Options);
+            if (validationError is not null)
                 throw new ValidationException(validationError, null, null);
 
             return parseResult;
@@ -133,7 +133,7 @@ namespace ConsoleFx.CmdLine.Parser
                 // Check if subcommand exists under the current command with the token as a name.
                 Command subcommand = currentCommand.Commands[token];
 
-                if (subcommand != null)
+                if (subcommand is not null)
                 {
                     // Add the command and move to the next command level.
                     run.Commands.Add(subcommand);
@@ -391,7 +391,7 @@ namespace ConsoleFx.CmdLine.Parser
                         string parameter = or.Parameters[i];
 
                         IEnumerable<IValidator> validatorsByIndex = or.Option.Validators.GetValidators(i);
-                        if (validatorsByIndex != null)
+                        if (validatorsByIndex is not null)
                         {
                             foreach (IValidator validator in validatorsByIndex)
                                 validator.Validate(parameter);
@@ -404,7 +404,7 @@ namespace ConsoleFx.CmdLine.Parser
                 or.Assigned = true;
                 if (or.Occurrences > 0)
                     or.Value = ResolveOptionParameterValues(or);
-                else if (or.Option.DefaultSetter != null)
+                else if (or.Option.DefaultSetter is not null)
                     or.Value = GetDefaultValue(or);
                 else
                     or.Assigned = false;
@@ -528,7 +528,7 @@ namespace ConsoleFx.CmdLine.Parser
                 }
 
                 // No specified argument, but there is a default value.
-                else if (argument.DefaultSetter != null)
+                else if (argument.DefaultSetter is not null)
                 {
                     // Note: For default values, none of the validators are run. This enables special
                     // default values to be assigned that are outside the rules of validation.

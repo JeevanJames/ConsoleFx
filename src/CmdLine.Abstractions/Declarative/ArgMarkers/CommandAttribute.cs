@@ -13,7 +13,7 @@ namespace ConsoleFx.CmdLine
     ///     Indicates that a class is a <see cref="Command"/> with one or more names.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class CommandAttribute : Attribute
+    public class CommandAttribute : Attribute
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Type _parentType;
@@ -61,7 +61,7 @@ namespace ConsoleFx.CmdLine
             get => _parentType;
             set
             {
-                if (value != null && !typeof(Command).IsAssignableFrom(value))
+                if (value is not null && !typeof(Command).IsAssignableFrom(value))
                     throw new ArgumentException($"ParentType should be type {typeof(Command).FullName} or a derived type.", nameof(value));
                 _parentType = value;
             }

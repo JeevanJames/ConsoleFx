@@ -46,9 +46,9 @@ namespace ConsoleFx.CmdLine.Validators
             long maximumValue = long.MaxValue, string notAnIntegerMessage = null, string outOfRangeMessage = null)
         {
             var validator = new IntegerValidator(minimumValue, maximumValue);
-            if (notAnIntegerMessage != null)
+            if (notAnIntegerMessage is not null)
                 validator.NotAnIntegerMessage = notAnIntegerMessage;
-            if (outOfRangeMessage != null)
+            if (outOfRangeMessage is not null)
                 validator.OutOfRangeMessage = outOfRangeMessage;
             return argument.ValidateWith(validator);
         }
@@ -58,9 +58,9 @@ namespace ConsoleFx.CmdLine.Validators
             string outOfRangeMessage = null)
         {
             var validator = new IntegerValidator(minimumValue, maximumValue);
-            if (notAnIntegerMessage != null)
+            if (notAnIntegerMessage is not null)
                 validator.NotAnIntegerMessage = notAnIntegerMessage;
-            if (outOfRangeMessage != null)
+            if (outOfRangeMessage is not null)
                 validator.OutOfRangeMessage = outOfRangeMessage;
             return option.ValidateWith(parameterIndex, validator).TypeAs<long>();
         }

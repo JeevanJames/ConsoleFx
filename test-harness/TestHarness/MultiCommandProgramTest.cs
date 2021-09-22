@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
-using ConsoleFx.CmdLine.Program.HelpBuilders;
 using ConsoleFx.CmdLine.Validators;
 
 using static ConsoleFx.ConsoleExtensions.Clr;
@@ -21,7 +20,6 @@ namespace TestHarness
         internal override async Task RunAsync()
         {
             var program = new MyMultiCommandProgram();
-            program.HelpBuilder = new DefaultColorHelpBuilder("help", "h");
             string argsStr = Prompt($"{DkBlue.BgWhite}Enter args: ");
 
             while (!string.IsNullOrWhiteSpace(argsStr))

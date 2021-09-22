@@ -4,5 +4,8 @@
         <name>simple-program</name>
     </assembly>
     <members>
+        <member name="M:ConsoleFx.TestHarness.SimpleProgram.SendEmailProgram.Validate">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

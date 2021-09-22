@@ -16,8 +16,8 @@ namespace TestHarness.ConsoleProgramTest
     {
         internal override async Task RunAsync()
         {
-            var program = new MyProgram();
-            program.ErrorHandler = new DefaultErrorHandler { ForeColor = ConsoleColor.Red };
+            ConsoleProgram program = new MyProgram()
+                .HandleErrorsWith(() => new DefaultErrorHandler { ForeColor = ConsoleColor.Red });
             program.ScanEntryAssemblyForCommands(type => type.Namespace.Equals(typeof(Test).Namespace, StringComparison.Ordinal));
             int exitCode = await program.RunAsync("Jeevan", "-v", "--trait", "Handsome", "--trait", "Awesome");
             Console.WriteLine($"Exit code: {exitCode}");

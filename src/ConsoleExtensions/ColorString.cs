@@ -68,7 +68,7 @@ namespace ConsoleFx.ConsoleExtensions
             if (backColor.HasValue)
                 _currentBackColor = backColor.Value;
 
-            if (text != null)
+            if (text is not null)
                 _blocks.Add(new ColorStringBlock(text, _currentForeColor, _currentBackColor));
 
             return this;

@@ -36,7 +36,7 @@ namespace ConsoleFx.CmdLine.Program
 
         public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
         {
-            if (Name != null)
+            if (Name is not null)
                 yield return new KeyValuePair<string, object>(HelpMetadataKey.Name, Name);
 
             yield return new KeyValuePair<string, object>(HelpMetadataKey.Description, Description);
