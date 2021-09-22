@@ -137,6 +137,12 @@
         <member name="M:ConsoleFx.CmdLine.Program.HelpAttribute.GetApplicableArgTypes">
             <inheritdoc />
         </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ArgumentHelpAttribute.GetMetadata">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ArgumentHelpAttribute.GetApplicableArgTypes">
+            <inheritdoc />
+        </member>
         <member name="M:ConsoleFx.CmdLine.Program.HelpBuilder.DisplayHelp(ConsoleFx.CmdLine.Command)">
             <summary>
                 Override this method to display the help for the specified <paramref name="command"/>.

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.CmdLine.Program
 {
-    public sealed class HelpAttribute : MetadataAttribute
+    public class HelpAttribute : MetadataAttribute
     {
         public HelpAttribute(string description)
         {
@@ -17,30 +17,13 @@ namespace ConsoleFx.CmdLine.Program
             Description = description;
         }
 
-        public HelpAttribute(string name, string description)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name should be specified.", nameof(name));
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("Description should be specified.", nameof(description));
-
-            Name = name;
-            Description = description;
-        }
-
-        public string Name { get; }
-
         public string Description { get; }
 
         public int Order { get; }
 
         public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
         {
-            if (Name is not null)
-                yield return new KeyValuePair<string, object>(HelpMetadataKey.Name, Name);
-
             yield return new KeyValuePair<string, object>(HelpMetadataKey.Description, Description);
-
             yield return new KeyValuePair<string, object>(HelpMetadataKey.Order, Order);
         }
 

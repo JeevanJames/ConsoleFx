@@ -64,7 +64,7 @@ namespace ConsoleFx.TestHarness.SimpleProgram
 
         [Argument]
         [StringValidator(2, int.MaxValue)]
-        [Help("message", "The email message")]
+        [ArgumentHelp("message", "The email message")]
         public string Message { get; set; }
 
         [Help("Verifies details of the email")]
