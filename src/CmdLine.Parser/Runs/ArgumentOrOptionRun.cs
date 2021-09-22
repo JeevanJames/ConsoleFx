@@ -60,9 +60,9 @@ namespace ConsoleFx.CmdLine.Parser.Runs
             Exception exception = arg switch
             {
                 Option option => new ParserException(-1,
-                    $"Unable to determine an adequate way to convert parameters of {option.Name} option to type {Type.FullName}. Please specify a converter delegate for this option."),
+                    $"Unable to determine an adequate way to convert parameters of {option.Name} option to type {Type}. Please specify a converter delegate for this option."),
                 Argument argument => new ParserException(-1,
-                    $"Unable to determine an adequate way to convert the argument at index {argument.Order} to type {Type.FullName}. Please specify a converter delegate for this argument."),
+                    $"Unable to determine an adequate way to convert the argument at index {argument.Order} to type {Type}. Please specify a converter delegate for this argument."),
                 _ => new InvalidOperationException($"Unexpected arg type - {arg.GetType()}"),
             };
 

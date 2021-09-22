@@ -62,7 +62,7 @@ namespace ConsoleFx.CmdLine
             set
             {
                 if (value is not null && !typeof(Command).IsAssignableFrom(value))
-                    throw new ArgumentException($"ParentType should be type {typeof(Command).FullName} or a derived type.", nameof(value));
+                    throw new ArgumentException($"ParentType should be type {typeof(Command)} or a derived type.", nameof(value));
                 _parentType = value;
             }
         }

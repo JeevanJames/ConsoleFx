@@ -61,11 +61,11 @@ namespace ConsoleFx.CmdLine
             {
                 case OptionValueType.Count:
                     if (property.PropertyType != typeof(int))
-                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType.FullName} should be an integer.");
+                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType} should be an integer.");
                     break;
                 case OptionValueType.Flag:
                     if (property.PropertyType != typeof(bool))
-                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType.FullName} should be an boolean.");
+                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType} should be an boolean.");
                     break;
                 case OptionValueType.Object:
                     if (property.PropertyType != typeof(string))

@@ -82,7 +82,7 @@ namespace ConsoleFx.CmdLine
                 .Where(c => c.ParentType is not null);
             foreach ((Type commandType, Type parentType) in nonRootCommands)
             {
-                DebugOutput.Write($"Discovered child: {commandType.FullName} of {parentType.FullName}");
+                DebugOutput.Write($"Discovered child: {commandType} of {parentType}");
                 DiscoveredCommands.Add(commandType, parentType);
             }
 
@@ -95,7 +95,7 @@ namespace ConsoleFx.CmdLine
                     .Where(c => c.ParentType is null);
                 foreach ((Type commandType, _) in rootCommands)
                 {
-                    DebugOutput.Write($"Discovered root child: {commandType.FullName}");
+                    DebugOutput.Write($"Discovered root child: {commandType}");
                     var command = (Command)Activator.CreateInstance(commandType);
                     if (command.Name is not null)
                         Commands.Add(command);
