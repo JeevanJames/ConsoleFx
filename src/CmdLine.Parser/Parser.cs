@@ -159,8 +159,7 @@ namespace ConsoleFx.CmdLine.Parser
 
             // To avoid null-ref exceptions in case no tokens are specified, assign run.Tokens if it
             // is null.
-            if (run.Tokens is null)
-                run.Tokens = new List<string>(0);
+            run.Tokens ??= ParseRun.EmptyTokens;
 
             return run;
         }

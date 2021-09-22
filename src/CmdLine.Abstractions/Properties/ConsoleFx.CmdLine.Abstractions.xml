@@ -565,25 +565,22 @@
                 Represents an options arg.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Option.#ctor(System.String[])">
+        <member name="M:ConsoleFx.CmdLine.Option.#ctor(System.String,System.String[])">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Option" /> class with the specified identifying
                 names.
             </summary>
-            <param name="names">
-                One or more unique names to identify the option. All names added will be not be case-sensitive.
-                In case you require case-sensitive option names, use the overloaded constructor.
-            </param>
+            <param name="name">The primary name for the option.</param>
+            <param name="additionalNames">Optional additional names (aliases) for the option.</param>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Option.#ctor(System.Boolean,System.String[])">
+        <member name="M:ConsoleFx.CmdLine.Option.#ctor(System.Boolean,System.String,System.String[])">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Option" /> class with the specified identifying
                 names and specifies whether the names are case sensitive.
             </summary>
-            <param name="caseSensitive">
-                Indicates whether the specified <paramref name="names" /> are case sensitive.
-            </param>
-            <param name="names">One or more unique names to identify the option.</param>
+            <param name="caseSensitive">Indicates whether the specified names are case sensitive.</param>
+            <param name="name">The primary name for the option.</param>
+            <param name="additionalNames">Optional additional names (aliases) for the option.</param>
         </member>
         <member name="P:ConsoleFx.CmdLine.Option.Usage">
             <summary>
@@ -1012,12 +1009,13 @@
                 Marks a property in a <see cref="T:ConsoleFx.CmdLine.Command"/> class as an <see cref="T:ConsoleFx.CmdLine.Option"/>.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.OptionAttribute.#ctor(System.String[])">
+        <member name="M:ConsoleFx.CmdLine.OptionAttribute.#ctor(System.String,System.String[])">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.OptionAttribute"/> class with one or more
                 option names.
             </summary>
-            <param name="names">One or more <see cref="T:ConsoleFx.CmdLine.Option"/> names.</param>
+            <param name="name">The primary name for the option.</param>
+            <param name="additionalNames">Optional additional names (aliases) for the option.</param>
         </member>
         <member name="P:ConsoleFx.CmdLine.OptionAttribute.Names">
             <summary>

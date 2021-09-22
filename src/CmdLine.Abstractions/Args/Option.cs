@@ -3,7 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 using ConsoleFx.CmdLine.Validators.Bases;
 
@@ -20,30 +22,36 @@ namespace ConsoleFx.CmdLine
         ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying
         ///     names.
         /// </summary>
-        /// <param name="names">
-        ///     One or more unique names to identify the option. All names added will be not be case-sensitive.
-        ///     In case you require case-sensitive option names, use the overloaded constructor.
-        /// </param>
-        public Option(params string[] names)
+        /// <param name="name">The primary name for the option.</param>
+        /// <param name="additionalNames">Optional additional names (aliases) for the option.</param>
+        public Option(string name, params string[] additionalNames)
+            : this(caseSensitive: false, name, additionalNames)
         {
-            foreach (string name in names)
-                AddName(name);
-            Validators = new OptionParameterValidators(this);
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Option" /> class with the specified identifying
         ///     names and specifies whether the names are case sensitive.
         /// </summary>
-        /// <param name="caseSensitive">
-        ///     Indicates whether the specified <paramref name="names" /> are case sensitive.
-        /// </param>
-        /// <param name="names">One or more unique names to identify the option.</param>
-        public Option(bool caseSensitive, params string[] names)
+        /// <param name="caseSensitive">Indicates whether the specified names are case sensitive.</param>
+        /// <param name="name">The primary name for the option.</param>
+        /// <param name="additionalNames">Optional additional names (aliases) for the option.</param>
+        public Option(bool caseSensitive, string name, params string[] additionalNames)
         {
-            foreach (string name in names)
-                AddName(name, caseSensitive);
+            AddName(name);
+
+            if (additionalNames is not null)
+            {
+                foreach (string additionalName in additionalNames)
+                    AddName(additionalName, caseSensitive);
+            }
+
             Validators = new OptionParameterValidators(this);
+        }
+
+        internal Option(IEnumerable<string> names)
+            : this(caseSensitive: false, names.FirstOrDefault(), names.Skip(1).ToArray())
+        {
         }
 
         /// <summary>

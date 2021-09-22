@@ -147,14 +147,15 @@ namespace ConsoleFx.CmdLine
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(prop => prop.GetCustomAttribute<TArgAttribute>(true) is not null);
 
-            if (!argProperties.Any())
-                yield break;
-
             foreach (PropertyInfo property in argProperties)
             {
                 // Property should be read/write
                 if (!property.CanRead || !property.CanWrite)
-                    throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType} cannot be decorated with an {typeof(TArgAttribute).Name} attribute because it is not a read/write property.");
+                    throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType} cannot be decorated with the {typeof(TArgAttribute).Name} attribute because it is not a read/write property.");
+
+                // Property should not be indexed
+                if (property.GetIndexParameters().Length > 0)
+                    throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType} cannot be decorated with the {typeof(TArgAttribute).Name} attribute because it is an indexed property.");
 
                 //TODO: More checks
 
@@ -203,6 +204,9 @@ namespace ConsoleFx.CmdLine
             // Add subcommands from the GetArgs method.
             commands.AddRange(GetArgs().OfType<Command>());
 
+            // Add subcommands from any properties on this class that are derived from Command.
+            commands.AddRange(GetCommandsFromProperties());
+
             // Add the subcommands from the DiscoveredCommands collection created from the
             // ScanAssembliesForCommands method in the root command.
             IEnumerable<Type> childCommandTypes = RootCommand.DiscoveredCommands
@@ -216,6 +220,37 @@ namespace ConsoleFx.CmdLine
             }
 
             return commands;
+        }
+
+        private IEnumerable<Command> GetCommandsFromProperties()
+        {
+            // Get all properties that derive from Command. We want to get properties from base classes
+            // as well, but not the Command class itself, which has a couple of matching properties
+            // like RootCommand and ParentCommand, which don't want to consider.
+            IEnumerable<PropertyInfo> commandProperties = GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(pi => typeof(Command).IsAssignableFrom(pi.PropertyType) && pi.DeclaringType != typeof(Command));
+
+            foreach (PropertyInfo commandProperty in commandProperties)
+            {
+                // Property should be readable
+                if (!commandProperty.CanRead)
+                    throw new ParserException(-1, $"Property {commandProperty.Name} on {commandProperty.DeclaringType} cannot be used as a command because it cannot be read.");
+
+                // Property should not be indexed
+                if (commandProperty.GetIndexParameters().Length > 0)
+                    throw new ParserException(-1, $"Property {commandProperty.Name} on {commandProperty.DeclaringType} cannot be used as a command because it is indexed.");
+
+                var command = (Command)commandProperty.GetValue(this);
+
+                // Apply any metadata attributes to the arg
+                IEnumerable<MetadataAttribute> metadataAttrs = commandProperty
+                    .GetCustomAttributes<MetadataAttribute>(true);
+                foreach (MetadataAttribute metadataAttr in metadataAttrs)
+                    metadataAttr.AssignMetadata(command);
+
+                yield return command;
+            }
         }
 
         /// <summary>
@@ -257,6 +292,11 @@ namespace ConsoleFx.CmdLine
         //TODO: Change return type to something more descriptive
         public virtual string ValidateParseResult(IReadOnlyList<object> arguments,
             IReadOnlyDictionary<string, object> options)
+        {
+            return null;
+        }
+
+        public virtual string Validate()
         {
             return null;
         }

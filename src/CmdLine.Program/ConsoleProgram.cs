@@ -163,11 +163,6 @@ namespace ConsoleFx.CmdLine.Program
             HelpBuilder?.DisplayHelp(command ?? this);
         }
 
-        public virtual string Validate()
-        {
-            return null;
-        }
-
         /// <summary>
         ///     Runs the console program after parsing the specified <paramref name="args"/>.
         /// </summary>
@@ -192,7 +187,7 @@ namespace ConsoleFx.CmdLine.Program
                 AssignArgumentProperties(parseResult, parseResult.Command.Arguments);
                 AssignOptionProperties(parseResult, parseResult.Command.Options);
 
-                string validationError = Validate();
+                string validationError = parseResult.Command.Validate();
                 if (validationError is not null)
                     throw new ValidationException(validationError, null, null);
 
