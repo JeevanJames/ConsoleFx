@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ConsoleFx.CmdLine
@@ -16,20 +17,40 @@ namespace ConsoleFx.CmdLine
         ///     Initializes a new instance of the <see cref="OptionAttribute"/> class with one or more
         ///     option names.
         /// </summary>
-        /// <param name="names">One or more <see cref="Option"/> names.</param>
-        public OptionAttribute(params string[] names)
+        /// <param name="name">The primary name for the option.</param>
+        /// <param name="additionalNames">Optional additional names (aliases) for the option.</param>
+        public OptionAttribute(string name, params string[] additionalNames)
         {
-            if (names is null)
-                throw new ArgumentNullException(nameof(names));
-            if (names.Length < 1)
-                throw new ArgumentException("Option must have at least one name.", nameof(names));
+            if (name is null)
+                throw new ArgumentNullException(nameof(name));
+            if (name.Trim().Length == 0)
+                throw new ArgumentException("Option name cannot be empty or whitespaced.", nameof(name));
+
+            if (additionalNames is null)
+                throw new ArgumentNullException(nameof(additionalNames));
+
+            for (int i = 0; i < additionalNames.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(additionalNames[i]))
+                {
+                    throw new ArgumentException(
+                        $"Additional names for option '{name}' has an null, empty or whitespaced value at index {i}.",
+                        nameof(additionalNames));
+                }
+            }
+
+            string[] names = new string[additionalNames.Length + 1];
+            names[0] = name;
+            if (additionalNames.Length > 0)
+                additionalNames.CopyTo(names, index: 1);
+
             Names = names;
         }
 
         /// <summary>
         ///     Gets the names of the option.
         /// </summary>
-        public string[] Names { get; }
+        public IReadOnlyList<string> Names { get; }
 
         public CommonOptionUsage Usage { get; set; }
 

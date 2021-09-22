@@ -64,8 +64,22 @@ namespace ConsoleFx.TestHarness.SimpleProgram
 
         [Argument]
         [StringValidator(2, int.MaxValue)]
-        [Help("The email message")]
+        [Help("message", "The email message")]
         public string Message { get; set; }
+
+        [Help("Verifies details of the email")]
+        public VerifyCommand VerifyCommand { get; } = new();
+    }
+
+    [Command("verify")]
+    public sealed class VerifyCommand : Command
+    {
+        /// <inheritdoc />
+        protected override int HandleCommand()
+        {
+            Console.WriteLine("In verify");
+            return 0;
+        }
     }
 }
 #pragma warning restore CA2227 // Collection properties should be read only

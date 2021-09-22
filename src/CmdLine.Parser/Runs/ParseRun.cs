@@ -19,22 +19,24 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         ///     collection here, because we want to avoid the duplicate checks, as commands at different
         ///     levels can have the same name.
         /// </summary>
-        internal List<Command> Commands { get; } = new List<Command>();
+        internal List<Command> Commands { get; } = new();
 
         /// <summary>
         ///     Gets all allowed arguments and their values.
         /// </summary>
-        internal List<ArgumentRun> Arguments { get; } = new List<ArgumentRun>();
+        internal List<ArgumentRun> Arguments { get; } = new();
 
         /// <summary>
         ///     Gets all allowed options and details of which are specified.
         /// </summary>
-        internal List<OptionRun> Options { get; } = new List<OptionRun>();
+        internal List<OptionRun> Options { get; } = new();
 
         /// <summary>
         ///     Gets or sets all the specified options and argument tokens after accounting for the
         ///     commands.
         /// </summary>
         internal List<string> Tokens { get; set; }
+
+        internal static readonly List<string> EmptyTokens = new(0);
     }
 }
