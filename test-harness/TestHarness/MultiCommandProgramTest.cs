@@ -48,7 +48,7 @@ namespace TestHarness
     public sealed class AddCommand : Command
     {
         [Argument]
-        [Help("package-name", "The name of the package to install")]
+        [ArgumentHelp("package-name", "The name of the package to install")]
         public string PackageName { get; set; }
 
         protected override IEnumerable<Arg> GetArgs()
