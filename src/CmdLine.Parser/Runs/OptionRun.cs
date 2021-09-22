@@ -21,19 +21,12 @@ namespace ConsoleFx.CmdLine.Parser.Runs
             ValueType = option.GetValueType();
 
             // Optimize the size of the Parameters list based on the value type.
-            switch (ValueType)
+            Parameters = ValueType switch
             {
-                case OptionValueType.Flag:
-                case OptionValueType.Count:
-                    Parameters = new List<string>(0);
-                    break;
-                case OptionValueType.Object:
-                    Parameters = new List<string>(1);
-                    break;
-                default:
-                    Parameters = new List<string>();
-                    break;
-            }
+                OptionValueType.Flag or OptionValueType.Count => new List<string>(0), //TODO: Use Array.Empty?
+                OptionValueType.Object => new List<string>(1),
+                _ => new List<string>(),
+            };
         }
 
         internal Option Option => Arg;

@@ -54,7 +54,7 @@ namespace ConsoleFx.Prompter
         internal Validator<object> ConvertedValueValidator { get; set; }
 
         internal object Convert(object value) =>
-            ConverterFn != null ? ConverterFn(value) : value;
+            ConverterFn is not null ? ConverterFn(value) : value;
     }
 
     public abstract class Question<TRaw, TConverted> : Question

@@ -32,7 +32,7 @@ namespace ConsoleFx.CmdLine.Validators
             string message = null)
         {
             var validator = new UriValidator(uriKind);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
         }
@@ -41,7 +41,7 @@ namespace ConsoleFx.CmdLine.Validators
             int parameterIndex = -1, string message = null)
         {
             var validator = new UriValidator(uriKind);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator).TypeAs<Uri>();
         }

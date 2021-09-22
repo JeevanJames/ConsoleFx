@@ -65,7 +65,7 @@ namespace ConsoleFx.CmdLine.Parser
             }
 
             object resolvedValue = matchingArgument.Value;
-            if (resolvedValue != null)
+            if (resolvedValue is not null)
             {
                 Type valueType = resolvedValue.GetType();
                 if (!typeof(T).IsAssignableFrom(valueType))
@@ -87,7 +87,7 @@ namespace ConsoleFx.CmdLine.Parser
 
             if (matchingOption.Occurrences == 0)
             {
-                if (matchingOption.Option.DefaultSetter != null)
+                if (matchingOption.Option.DefaultSetter is not null)
                 {
                     value = (T)matchingOption.Option.DefaultSetter();
                     return true;
@@ -98,7 +98,7 @@ namespace ConsoleFx.CmdLine.Parser
             }
 
             object resolvedValue = matchingOption.Value;
-            if (resolvedValue != null)
+            if (resolvedValue is not null)
             {
                 Type valueType = resolvedValue.GetType();
                 if (!typeof(T).IsAssignableFrom(valueType))

@@ -70,7 +70,7 @@ namespace ConsoleFx.CmdLine
                 IEnumerable<(Type Type, Type ParentType)> assemblyCommands = assembly.GetExportedTypes()
                     .Where(type => (typePredicate is null || typePredicate(type))
                         && typeof(Command).IsAssignableFrom(type)
-                        && type.GetConstructor(Type.EmptyTypes) != null
+                        && type.GetConstructor(Type.EmptyTypes) is not null
                         && type != GetType())
                     .Select(type => (type, type.GetCustomAttribute<CommandAttribute>(true)?.ParentType));
                 discoveredCommands.AddRange(assemblyCommands);
@@ -79,7 +79,7 @@ namespace ConsoleFx.CmdLine
             // Add all discovered commands with a non-null parent type to the DiscoveredCommands
             // dictionary. These will be used when their corresponding parent commands are instantiated.
             IEnumerable<(Type CommandType, Type ParentType)> nonRootCommands = discoveredCommands
-                .Where(c => c.ParentType != null);
+                .Where(c => c.ParentType is not null);
             foreach ((Type commandType, Type parentType) in nonRootCommands)
             {
                 DebugOutput.Write($"Discovered child: {commandType.FullName} of {parentType.FullName}");
@@ -97,11 +97,11 @@ namespace ConsoleFx.CmdLine
                 {
                     DebugOutput.Write($"Discovered root child: {commandType.FullName}");
                     var command = (Command)Activator.CreateInstance(commandType);
-                    if (command.Name != null)
+                    if (command.Name is not null)
                         Commands.Add(command);
                 }
             }
-            catch (TargetInvocationException ex) when (ex.InnerException != null)
+            catch (TargetInvocationException ex) when (ex.InnerException is not null)
             {
                 // TargetInvocationException can happen when using Activator.CreateInstance.
                 // Catch them and throw the inner exception instead, as that's the true exception.

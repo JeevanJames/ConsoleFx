@@ -1,30 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>ConsoleFx.CmdLine.Program</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
-    <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
-    <Description>$(ProductDescription)The ConsoleFx.CmdLine.Program package provides support for creating console applications.</Description>
-  </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>ConsoleFx.CmdLine.Program</AssemblyName>
+        <RootNamespace>$(AssemblyName)</RootNamespace>
+        <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
+        <Description>$(ProductDescription)The ConsoleFx.CmdLine.Program package provides support for creating console applications.</Description>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
-    <ProjectReference Include="..\CmdLine.Parser\CmdLine.Parser.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
+        <ProjectReference Include="..\CmdLine.Parser\CmdLine.Parser.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Messages.Designer.cs">
-      <DependentUpon>Messages.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Messages.Designer.cs">
+            <DependentUpon>Messages.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Messages.resx">
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Messages.resx">
+            <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
 
 </Project>

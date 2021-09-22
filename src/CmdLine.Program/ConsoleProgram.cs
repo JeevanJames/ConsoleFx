@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
 using ConsoleFx.CmdLine.Program.HelpBuilders;
+using ConsoleFx.CmdLine.Validators;
 
 using ParserStyle = ConsoleFx.CmdLine.Parser.Style;
 
@@ -27,6 +28,12 @@ namespace ConsoleFx.CmdLine.Program
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private HelpBuilder _helpBuilder;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ErrorHandler _errorHandler;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private bool _displayHelpOnError;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ConsoleProgram"/> class.
         /// </summary>
@@ -41,7 +48,7 @@ namespace ConsoleFx.CmdLine.Program
             if (programAttribute is null)
             {
                 // Name defaults to the executable file name
-                AddName(Assembly.GetEntryAssembly().GetName().Name);
+                AddName(Assembly.GetEntryAssembly()?.GetName().Name ?? "program");
 
                 // Argument style defaults to Unix
                 _argStyle = new ParserStyle.UnixArgStyle();
@@ -51,27 +58,11 @@ namespace ConsoleFx.CmdLine.Program
             }
             else
             {
-                string name = string.IsNullOrWhiteSpace(programAttribute.Name)
-                    ? Assembly.GetEntryAssembly().GetName().Name
-                    : programAttribute.Name;
+                string name = programAttribute.Name;
                 AddName(name);
                 _argStyle = CreateArgStyle(programAttribute.Style);
                 Grouping = programAttribute.Grouping;
             }
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ConsoleProgram"/> class with the specified
-        ///     name, arg style and grouping.
-        /// </summary>
-        /// <param name="name">The name of the program.</param>
-        /// <param name="argStyle">The expected argument style.</param>
-        /// <param name="grouping">The expected arg grouping.</param>
-        public ConsoleProgram(string name, ArgStyle argStyle, ArgGrouping grouping = ArgGrouping.DoesNotMatter)
-            : base(caseSensitive: false, name)
-        {
-            _argStyle = CreateArgStyle(argStyle);
-            Grouping = grouping;
         }
 
         /// <summary>
@@ -80,39 +71,77 @@ namespace ConsoleFx.CmdLine.Program
         public ArgGrouping Grouping { get; }
 
         /// <summary>
-        ///     Gets or sets the <see cref="HelpBuilder"/> to use to display the help.
+        ///     Gets the <see cref="HelpBuilder"/> to use to display the help.
         /// </summary>
         public HelpBuilder HelpBuilder
         {
             get
             {
-                string[] optionNames = _argStyle.GetDefaultHelpOptionNames().ToArray();
-                return _helpBuilder ??= new DefaultHelpBuilder(optionNames);
-            }
+                if (_helpBuilder is null)
+                {
+                    string[] optionNames = _argStyle.GetDefaultHelpOptionNames().ToArray();
+                    _helpBuilder = new DefaultHelpBuilder(optionNames);
+                }
 
-            set => _helpBuilder = value;
+                return _helpBuilder;
+            }
+        }
+
+        public ConsoleProgram WithHelpBuilder<THelpBuilder>()
+            where THelpBuilder : HelpBuilder, new()
+        {
+            _helpBuilder = new THelpBuilder();
+            return this;
+        }
+
+        public ConsoleProgram WithHelpBuilder<THelpBuilder>(Func<THelpBuilder> helpBuilderFactory)
+            where THelpBuilder : HelpBuilder
+        {
+            if (helpBuilderFactory is null)
+                throw new ArgumentNullException(nameof(helpBuilderFactory));
+            _helpBuilder = helpBuilderFactory();
+            return this;
         }
 
         /// <summary>
-        ///     Gets or sets the <see cref="ErrorHandler"/> to use to handle any exceptions thrown
-        ///     when parsing and executing the application.
+        ///     Gets the <see cref="ErrorHandler"/> to use to handle any exceptions thrown when parsing
+        ///     and executing the application.
         /// </summary>
-        public ErrorHandler ErrorHandler { get; set; }
+        public ErrorHandler ErrorHandler => _errorHandler ??= new DefaultErrorHandler();
+
+        public ConsoleProgram HandleErrorsWith<TErrorHandler>()
+            where TErrorHandler : ErrorHandler, new()
+        {
+            _errorHandler = new TErrorHandler();
+            return this;
+        }
+
+        public ConsoleProgram HandleErrorsWith<TErrorHandler>(Func<TErrorHandler> errorHandlerFactory)
+            where TErrorHandler : ErrorHandler
+        {
+            if (errorHandlerFactory is null)
+                throw new ArgumentNullException(nameof(errorHandlerFactory));
+            _errorHandler = errorHandlerFactory();
+            return this;
+        }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to display help when an error occurs when
-        ///     parsing and executing the application.
+        ///     Gets a value indicating whether to display help when an error occurs when parsing and
+        ///     executing the application.
         /// </summary>
-        public bool DisplayHelpOnError { get; set; }
+        public ConsoleProgram DisplayHelpOnError()
+        {
+            _displayHelpOnError = true;
+            return this;
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the help builder should verify that all args
         ///     have the necessary information to display the help. Help information is stored in the
         ///     metadata, and each help builder can use different metadata to display the help.
         ///     <para/>
-        ///     When this property is set to <c>true</c>, the
-        ///     <see cref="HelpBuilder.VerifyHelp(Command)"/> method is called and if any necessary
-        ///     information is missing, an exception is thrown.
+        ///     When this property is set to <c>true</c>, the <see cref="Program.HelpBuilder.VerifyHelp(Command)"/>
+        ///     method is called and if any necessary information is missing, an exception is thrown.
         /// </summary>
         /// <remarks>
         ///     It is recommended to set this value to true in debug mode to ensure that no needed help
@@ -134,6 +163,11 @@ namespace ConsoleFx.CmdLine.Program
             HelpBuilder?.DisplayHelp(command ?? this);
         }
 
+        public virtual string Validate()
+        {
+            return null;
+        }
+
         /// <summary>
         ///     Runs the console program after parsing the specified <paramref name="args"/>.
         /// </summary>
@@ -143,8 +177,7 @@ namespace ConsoleFx.CmdLine.Program
         /// </returns>
         public async Task<int> RunAsync(IEnumerable<string> args = null)
         {
-            if (args is null)
-                args = new string[0];
+            args ??= Array.Empty<string>();
 
             IParseResult parseResult = null;
             IReadOnlyList<PrePostHandlerAttribute> prepostHandlers = null;
@@ -158,6 +191,10 @@ namespace ConsoleFx.CmdLine.Program
                 // Assign the properties on the command object from the parse result.
                 AssignArgumentProperties(parseResult, parseResult.Command.Arguments);
                 AssignOptionProperties(parseResult, parseResult.Command.Options);
+
+                string validationError = Validate();
+                if (validationError is not null)
+                    throw new ValidationException(validationError, null, null);
 
                 // Check if the help option is specified. If it is, display the help and get out.
                 HelpBuilder helpBuilder = HelpBuilder;
@@ -181,13 +218,13 @@ namespace ConsoleFx.CmdLine.Program
                     attribute.BeforeHandler(parseResult.Command);
 
                 // Execute the command handler.
-                return await parseResult.Command.Handler(parseResult).ConfigureAwait(false);
+                return await parseResult.Command.HandleCommandAsync(parseResult).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 // Run the exception through all attribute error handlers.
                 int? attributeErrorCode = null;
-                if (prepostHandlers != null)
+                if (prepostHandlers is not null)
                 {
                     foreach (PrePostHandlerAttribute attribute in prepostHandlers)
                         attributeErrorCode = attribute.OnException(ex, parseResult?.Command);
@@ -198,7 +235,7 @@ namespace ConsoleFx.CmdLine.Program
                 DebugOutput.Write(ex);
 
                 // Display help if so configured.
-                if (DisplayHelpOnError)
+                if (_displayHelpOnError)
                     HelpBuilder.DisplayHelp(parseResult?.Command ?? this);
 
                 // If the attributes have returned an error code, use that, otherwise use the error
@@ -208,7 +245,7 @@ namespace ConsoleFx.CmdLine.Program
             finally
             {
                 // Run all post-handler attributes.
-                if (prepostHandlers != null)
+                if (prepostHandlers is not null)
                 {
                     foreach (PrePostHandlerAttribute attribute in prepostHandlers)
                         attribute.AfterHandler(parseResult?.Command);
@@ -267,25 +304,20 @@ namespace ConsoleFx.CmdLine.Program
             Func<ConsoleProgram, Task<int>> defaultBehavior = null)
         {
             // Assign the default condition, if one is not specified.
-            if (condition is null)
+            condition ??= () =>
             {
-                condition = () =>
-                {
-                    string promptArgs = Environment.GetEnvironmentVariable("PromptArgs");
-                    return string.Equals(promptArgs, true.ToString(), StringComparison.OrdinalIgnoreCase);
-                };
-            }
+                string promptArgs = Environment.GetEnvironmentVariable("PromptArgs");
+                return string.Equals(promptArgs, true.ToString(), StringComparison.OrdinalIgnoreCase);
+            };
 
             // Assign the default behavior, if one is not specified.
-            if (defaultBehavior is null)
-                defaultBehavior = async (program) => await program.RunWithCommandLineArgsAsync().ConfigureAwait(false);
+            defaultBehavior ??= async program => await program.RunWithCommandLineArgsAsync().ConfigureAwait(false);
 
             if (!condition())
                 return await defaultBehavior(this).ConfigureAwait(false);
 
             // Assign a default prompt string, if one if not specified.
-            if (prompt is null)
-                prompt = "Enter args:";
+            prompt ??= "Enter args:";
 
             Console.Write($"{prompt} {Name} ");
             string args = Console.ReadLine();

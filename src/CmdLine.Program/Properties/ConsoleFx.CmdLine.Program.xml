@@ -22,15 +22,6 @@
                 on the class. If the class is not decorated, defaults are used.
             </remarks>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.#ctor(System.String,ConsoleFx.CmdLine.Program.ArgStyle,ConsoleFx.CmdLine.ArgGrouping)">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ConsoleProgram"/> class with the specified
-                name, arg style and grouping.
-            </summary>
-            <param name="name">The name of the program.</param>
-            <param name="argStyle">The expected argument style.</param>
-            <param name="grouping">The expected arg grouping.</param>
-        </member>
         <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.Grouping">
             <summary>
                 Gets the expected grouping of the args.
@@ -38,19 +29,19 @@
         </member>
         <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.HelpBuilder">
             <summary>
-                Gets or sets the <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.HelpBuilder"/> to use to display the help.
+                Gets the <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.HelpBuilder"/> to use to display the help.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.ErrorHandler">
             <summary>
-                Gets or sets the <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.ErrorHandler"/> to use to handle any exceptions thrown
-                when parsing and executing the application.
+                Gets the <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.ErrorHandler"/> to use to handle any exceptions thrown when parsing
+                and executing the application.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.DisplayHelpOnError">
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.DisplayHelpOnError">
             <summary>
-                Gets or sets a value indicating whether to display help when an error occurs when
-                parsing and executing the application.
+                Gets a value indicating whether to display help when an error occurs when parsing and
+                executing the application.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.VerifyHelp">
@@ -59,9 +50,8 @@
                 have the necessary information to display the help. Help information is stored in the
                 metadata, and each help builder can use different metadata to display the help.
                 <para/>
-                When this property is set to <c>true</c>, the
-                <see cref="M:ConsoleFx.CmdLine.Program.HelpBuilder.VerifyHelp(ConsoleFx.CmdLine.Command)"/> method is called and if any necessary
-                information is missing, an exception is thrown.
+                When this property is set to <c>true</c>, the <see cref="M:ConsoleFx.CmdLine.Program.HelpBuilder.VerifyHelp(ConsoleFx.CmdLine.Command)"/>
+                method is called and if any necessary information is missing, an exception is thrown.
             </summary>
             <remarks>
                 It is recommended to set this value to true in debug mode to ensure that no needed help

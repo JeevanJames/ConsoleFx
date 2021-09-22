@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
@@ -25,6 +26,7 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         protected Arg()
         {
+            ProcessMetadataAttributes();
         }
 
         /// <inheritdoc />
@@ -47,6 +49,16 @@ namespace ConsoleFx.CmdLine
                 _metadata.Value[name] = value;
             else
                 _metadata.Value.Add(name, value);
+        }
+
+        /// <summary>
+        ///     Read any metadata attributes on this class and assign them to this arg.
+        /// </summary>
+        private void ProcessMetadataAttributes()
+        {
+            IEnumerable<MetadataAttribute> metadataAttributes = GetType().GetCustomAttributes<MetadataAttribute>(inherit: true);
+            foreach (MetadataAttribute metadataAttribute in metadataAttributes)
+                metadataAttribute.AssignMetadata(this);
         }
     }
 }

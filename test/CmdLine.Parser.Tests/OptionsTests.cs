@@ -52,11 +52,11 @@ namespace CmdLine.Parser.Tests
         public void Add_Throws_on_duplicate_option(string name1, string shortName1, string name2, string shortName2)
         {
             var option1 = new Option(name1);
-            if (shortName1 != null)
+            if (shortName1 is not null)
                 option1.AddName(shortName1);
 
             var option2 = new Option(name2);
-            if (shortName2 != null)
+            if (shortName2 is not null)
                 option2.AddName(shortName2);
 
             var options = new Options { option1 };

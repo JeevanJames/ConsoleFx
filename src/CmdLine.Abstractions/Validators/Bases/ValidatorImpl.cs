@@ -18,7 +18,7 @@ namespace ConsoleFx.CmdLine.Validators.Bases
 
             // If there is a value, check that it is compatible with the expected type.
 #pragma warning disable S2219 // Runtime type checking should be simplified
-            if (Value != null && !ExpectedType.IsAssignableFrom(Value.GetType()))
+            if (Value is not null && !ExpectedType.IsAssignableFrom(Value.GetType()))
 #pragma warning restore S2219 // Runtime type checking should be simplified
                 throw new InvalidOperationException($"The {GetType().FullName} validator should validate an arg as a {ExpectedType.FullName} type, but is validating as a {Value.GetType().FullName} type.");
 

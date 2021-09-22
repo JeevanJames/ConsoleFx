@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ConsoleFx.CmdLine
 {
@@ -18,27 +19,6 @@ namespace ConsoleFx.CmdLine
         {
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AbstractCommand"/> class with the
-        ///     specified names.
-        /// </summary>
-        /// <param name="names">The names to assign to the command.</param>
-        public AbstractCommand(params string[] names)
-            : base(names)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AbstractCommand"/> class with the
-        ///     specified names.
-        /// </summary>
-        /// <param name="caseSensitive">Specifies whether the names are case sensitive or not.</param>
-        /// <param name="names">The names to assign to the command.</param>
-        public AbstractCommand(bool caseSensitive, params string[] names)
-            : base(caseSensitive, names)
-        {
-        }
-
         /// <inheritdoc />
         protected sealed override IEnumerable<Arg> GetArgs()
         {
@@ -46,17 +26,16 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <inheritdoc />
-        protected sealed override int HandleCommand()
+        public sealed override string ValidateParseResult(IReadOnlyList<object> arguments,
+            IReadOnlyDictionary<string, object> options)
         {
-            DisplayHelp(this);
-            return 0;
+            return base.ValidateParseResult(arguments, options);
         }
 
         /// <inheritdoc />
-        protected sealed override string PerformCustomValidation(IReadOnlyList<object> arguments,
-            IReadOnlyDictionary<string, object> options)
+        internal sealed override Task<int> HandleCommandAsync(IParseResult parseResult)
         {
-            return base.PerformCustomValidation(arguments, options);
+            return Task.FromResult(0);
         }
     }
 }

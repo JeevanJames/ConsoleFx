@@ -31,7 +31,7 @@ namespace ConsoleFx.CmdLine.Validators
         public static Argument ValidateAsGuid(this Argument argument, string message = null)
         {
             var validator = new GuidValidator();
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
         }
@@ -39,7 +39,7 @@ namespace ConsoleFx.CmdLine.Validators
         public static Option ValidateAsGuid(this Option option, int parameterIndex = -1, string message = null)
         {
             var validator = new GuidValidator();
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator).TypeAs<Guid>();
         }

@@ -52,7 +52,7 @@ namespace ConsoleFx.CmdLine.Validators
             where TEnum : Enum
         {
             var validator = new EnumValidator(typeof(TEnum), ignoreCase);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
         }
@@ -69,7 +69,7 @@ namespace ConsoleFx.CmdLine.Validators
             where TEnum : Enum
         {
             var validator = new EnumValidator(typeof(TEnum), ignoreCase);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator).TypeAs<TEnum>();
         }
@@ -82,7 +82,7 @@ namespace ConsoleFx.CmdLine.Validators
                 throw new ArgumentException("Specified type is not an enum.", nameof(enumType));
 
             var validator = new EnumValidator(enumType, ignoreCase);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
 
             return validator;

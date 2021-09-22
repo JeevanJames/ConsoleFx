@@ -40,7 +40,7 @@ namespace ConsoleFx.CmdLine.Validators
         public static Argument ValidateWithRegex(this Argument argument, Regex regex, string message = null)
         {
             var validator = new RegexValidator(regex);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
         }
@@ -48,7 +48,7 @@ namespace ConsoleFx.CmdLine.Validators
         public static Argument ValidateWithRegex(this Argument argument, string pattern, string message = null)
         {
             var validator = new RegexValidator(pattern);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return argument.ValidateWith(validator);
         }
@@ -57,7 +57,7 @@ namespace ConsoleFx.CmdLine.Validators
             string message = null)
         {
             var validator = new RegexValidator(regex);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator);
         }
@@ -65,7 +65,7 @@ namespace ConsoleFx.CmdLine.Validators
         public static Option ValidateWithRegex(this Option option, string pattern, int parameterIndex = -1, string message = null)
         {
             var validator = new RegexValidator(pattern);
-            if (message != null)
+            if (message is not null)
                 validator.Message = message;
             return option.ValidateWith(parameterIndex, validator);
         }

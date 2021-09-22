@@ -4,5 +4,8 @@
         <name>ConsoleFx.CmdLine.Parser.Tests</name>
     </assembly>
     <members>
+        <member name="M:CmdLine.Parser.Tests.ParserTestCommand.GetArgs">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

@@ -29,13 +29,13 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         {
             Converter<string, object> converter = arg.TypeConverter;
 
-            if (converter != null || Type == typeof(string))
+            if (converter is not null || Type == typeof(string))
                 return converter;
 
             // Look for a type converter that can convert from string.
             TypeConverter typeConverter = TypeDescriptor.GetConverter(Type);
             if (typeConverter.CanConvertFrom(typeof(string)))
-                return value => typeConverter.ConvertFromString(value);
+                return value => TypeDescriptor.GetConverter(Type).ConvertFromString(value);
 
             // Look for constructors on the type that can be used to instantiate an instance,
             // specifically those that accept a single parameter.
@@ -45,30 +45,28 @@ namespace ConsoleFx.CmdLine.Parser.Runs
             // Look for a public constructor that accepts a single string parameter.
             ConstructorInfo stringCtor = ctors
                 .SingleOrDefault(ctor => ctor.GetParameters()[0].ParameterType == typeof(string));
-            if (stringCtor != null)
+            if (stringCtor is not null)
                 return value => stringCtor.Invoke(new object[] { value });
 
             // Look for a public constructor that accepts a single object parameter.
             ConstructorInfo objectCtor = ctors
                 .SingleOrDefault(ctor => ctor.GetParameters()[0].ParameterType == typeof(object));
-            if (objectCtor != null)
+            if (objectCtor is not null)
                 return value => objectCtor.Invoke(new object[] { value });
 
-            //TODO: Should we also look for factory methods on the type? Static methods that accept a single parameter and return an instance of the type.
+            //TODO: Look for factory methods on the type? Static methods that accept a single parameter
+            //and return an instance of the type. Examples: int.Parse
 
-            if (arg is Option option)
+            Exception exception = arg switch
             {
-                throw new ParserException(-1,
-                    $"Unable to determine an adequate way to convert parameters of {option.Name} option to type {Type.FullName}. Please specify a converter delegate for this option.");
-            }
-            else if (arg is Argument argument)
-            {
-                //TODO: Replace argument.Order with argument.Index in the error message below
-                throw new ParserException(-1,
-                    $"Unable to determine an adequate way to convert the argument at index {argument.Order} to type {Type.FullName}. Please specify a converter delegate for this argument.");
-            }
-            else
-                throw new InvalidOperationException($"Unexpected arg type - {arg.GetType().FullName}");
+                Option option => new ParserException(-1,
+                    $"Unable to determine an adequate way to convert parameters of {option.Name} option to type {Type.FullName}. Please specify a converter delegate for this option."),
+                Argument argument => new ParserException(-1,
+                    $"Unable to determine an adequate way to convert the argument at index {argument.Order} to type {Type.FullName}. Please specify a converter delegate for this argument."),
+                _ => new InvalidOperationException($"Unexpected arg type - {arg.GetType()}"),
+            };
+
+            throw exception;
         }
 
         protected TArg Arg { get; }
@@ -96,8 +94,8 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         /// <returns>The resolved value after applying formatter and type converter.</returns>
         internal object ResolveValue(string rawValue)
         {
-            string formattedValue = Arg.Formatter != null ? Arg.Formatter(rawValue) : rawValue;
-            return _converter != null ? _converter(formattedValue) : formattedValue;
+            string formattedValue = Arg.Formatter is not null ? Arg.Formatter(rawValue) : rawValue;
+            return _converter is not null ? _converter(formattedValue) : formattedValue;
         }
 
         /// <summary>

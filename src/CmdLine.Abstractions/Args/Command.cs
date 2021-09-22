@@ -12,22 +12,16 @@ using System.Threading.Tasks;
 namespace ConsoleFx.CmdLine
 {
     [DebuggerDisplay("Command {Name}")]
-    public partial class Command : Arg
+    public abstract partial class Command : Arg
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Arguments _arguments;
+        private readonly Lazy<Arguments> _arguments;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Options _options;
+        private readonly Lazy<Options> _options;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Commands _commands;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private CommandCustomValidator _customValidator;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Func<IParseResult, Task<int>> _handler;
+        private readonly Lazy<Commands> _commands;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Command" /> class.
@@ -35,8 +29,12 @@ namespace ConsoleFx.CmdLine
         ///     This constructor tries to read the command details from the
         ///     <see cref="CommandAttribute"/> attribute.
         /// </summary>
-        public Command()
+        protected Command()
         {
+            _arguments = new Lazy<Arguments>(InitializeArguments);
+            _options = new Lazy<Options>(InitializeOptions);
+            _commands = new Lazy<Commands>(InitializeCommands);
+
             // Read the command attribute on this class.
             CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
             if (commandAttribute is null)
@@ -49,31 +47,10 @@ namespace ConsoleFx.CmdLine
             // The parent type is same as current type.
             if (commandAttribute.ParentType == GetType())
                 throw new InvalidOperationException($"Parent command type of {GetType().FullName} command cannot be the same type");
-
-            ProcessMetadataAttributes();
         }
 
-        public Command(bool caseSensitive, params string[] names)
-        {
-            ProcessMetadataAttributes();
-            foreach (string name in names)
-                AddName(name, caseSensitive);
-        }
-
-        public Command(params string[] names)
-            : this(caseSensitive: false, names)
-        {
-        }
-
-        /// <summary>
-        ///     Read any metadata attributes on this class and assign them to this command.
-        /// </summary>
-        private void ProcessMetadataAttributes()
-        {
-            IEnumerable<MetadataAttribute> metadataAttributes = GetType().GetCustomAttributes<MetadataAttribute>(inherit: true);
-            foreach (MetadataAttribute metadataAttribute in metadataAttributes)
-                metadataAttribute.AssignMetadata(this);
-        }
+        //TODO: Remove non-default ctors and only rely on attributes. This way, we can add support
+        //for dependency injection.
 
         /// <summary>
         ///     Gets a reference to the parent <see cref="Command"/> of this instance.
@@ -88,7 +65,7 @@ namespace ConsoleFx.CmdLine
             get
             {
                 Command currentCommand = this;
-                while (currentCommand.ParentCommand != null)
+                while (currentCommand.ParentCommand is not null)
                     currentCommand = currentCommand.ParentCommand;
                 return currentCommand;
             }
@@ -97,65 +74,59 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets the collection of <see cref="Argument" /> objects for this command.
         /// </summary>
-        public Arguments Arguments
+        public Arguments Arguments => _arguments.Value;
+
+        private Arguments InitializeArguments()
         {
-            get
-            {
-                if (_arguments is null)
-                {
-                    _arguments = new Arguments();
+            Arguments arguments = new();
 
-                    // Add arguments from the GetArgs method.
-                    _arguments.AddRange(GetArgs().OfType<Argument>());
+            // Add arguments from the GetArgs method.
+            arguments.AddRange(GetArgs().OfType<Argument>());
 
-                    // Add arguments from the properties in this class.
-                    IReadOnlyList<Argument> propertyArguments = GetPropertyArgs<Argument, ArgumentAttribute>(
-                        attr => new Argument(attr.Order, attr.Optional, attr.MaxOccurences));
-                    _arguments.AddRange(propertyArguments);
+            // Add arguments from the Argument attribute on properties in this class.
+            IEnumerable<Argument> propertyArguments = GetPropertyArgs<Argument, ArgumentAttribute>(
+                attr => new Argument(attr.Order, attr.Optional, attr.MaxOccurences));
+            arguments.AddRange(propertyArguments);
 
-                    SetupArguments(_arguments);
-                }
+            // Any additional setup on the arguments.
+            SetupArguments(arguments);
 
-                return _arguments;
-            }
+            return arguments;
         }
 
         /// <summary>
         ///     Gets the collection of <see cref="Option" /> objects for this command.
         /// </summary>
-        public Options Options
+        public Options Options => _options.Value;
+
+        private Options InitializeOptions()
         {
-            get
-            {
-                if (_options is null)
-                {
-                    _options = new Options();
+            Options options = new();
 
-                    // Add options from the GetArgs method.
-                    _options.AddRange(GetArgs().OfType<Option>());
+            // Add options from the GetArgs method.
+            options.AddRange(GetArgs().OfType<Option>());
 
-                    // Add options from the properties in this class.
-                    IReadOnlyList<Option> propertyOptions = GetPropertyArgs<Option, OptionAttribute>(
-                        attr => new Option(attr.Names));
-                    _options.AddRange(propertyOptions);
+            // Add options from the Option and Flag attributes on properties in this class.
+            IEnumerable<Option> propertyOptions = GetPropertyArgs<Option, OptionAttribute>(
+                attr => new Option(attr.Names));
+            options.AddRange(propertyOptions);
 
-                    IReadOnlyList<Option> propertyFlags = GetPropertyArgs<Option, FlagAttribute>(
-                        attr => new Option(attr.Names));
-                    _options.AddRange(propertyFlags);
+            IEnumerable<Option> propertyFlags = GetPropertyArgs<Option, FlagAttribute>(
+                attr => new Option(attr.Names));
+            options.AddRange(propertyFlags);
 
-                    // Add any universal options.
-                    // Universal options that apply to all commands are only specified at the root
-                    // command level.
-                    // It wouldn't make sense for non-root commands to specify universal options.
-                    IEnumerable<Option> additionalOptions = RootCommand.GetUniversalOptions();
-                    foreach (Option option in additionalOptions)
-                        _options.Add(option);
+            // Add any universal options.
+            // Universal options that apply to all commands are only specified at the root
+            // command level.
+            // It wouldn't make sense for non-root commands to specify universal options.
+            IEnumerable<Option> additionalOptions = RootCommand.GetUniversalOptions();
+            foreach (Option option in additionalOptions)
+                options.Add(option);
 
-                    SetupOptions(_options);
-                }
+            // Any additional setup on the options.
+            SetupOptions(options);
 
-                return _options;
-            }
+            return options;
         }
 
         /// <summary>
@@ -168,28 +139,22 @@ namespace ConsoleFx.CmdLine
         /// <typeparam name="TArgAttribute">The type of sttribute identifying the arg.</typeparam>
         /// <param name="argFactory">A delegate that creates the arg from the attribute.</param>
         /// <returns>An instance of the arg, based on the property's metadata.</returns>
-        private IReadOnlyList<TArg> GetPropertyArgs<TArg, TArgAttribute>(Func<TArgAttribute, TArg> argFactory)
+        private IEnumerable<TArg> GetPropertyArgs<TArg, TArgAttribute>(Func<TArgAttribute, TArg> argFactory)
             where TArg : ArgumentOrOption<TArg>
             where TArgAttribute : Attribute
         {
             IEnumerable<PropertyInfo> argProperties = GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(prop => prop.GetCustomAttribute<TArgAttribute>(true) != null);
+                .Where(prop => prop.GetCustomAttribute<TArgAttribute>(true) is not null);
 
             if (!argProperties.Any())
-#if NET45
-                return new TArg[0];
-#else
-                return Array.Empty<TArg>();
-#endif
-
-            var args = new List<TArg>();
+                yield break;
 
             foreach (PropertyInfo property in argProperties)
             {
-                // Verify property is usable
+                // Property should be read/write
                 if (!property.CanRead || !property.CanWrite)
-                    throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType.FullName} cannot be decorated with an {typeof(TArgAttribute).Name} attribute because it is not a read/write property.");
+                    throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType} cannot be decorated with an {typeof(TArgAttribute).Name} attribute because it is not a read/write property.");
 
                 //TODO: More checks
 
@@ -210,10 +175,8 @@ namespace ConsoleFx.CmdLine
                 foreach (MetadataAttribute metadataAttr in metadataAttrs)
                     metadataAttr.AssignMetadata(arg);
 
-                args.Add(arg);
+                yield return arg;
             }
-
-            return args;
         }
 
         /// <summary>
@@ -231,32 +194,28 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets the collection of <see cref="Command" /> sub-command objects for this command.
         /// </summary>
-        public Commands Commands
+        public Commands Commands => _commands.Value;
+
+        private Commands InitializeCommands()
         {
-            get
+            Commands commands = new(this);
+
+            // Add subcommands from the GetArgs method.
+            commands.AddRange(GetArgs().OfType<Command>());
+
+            // Add the subcommands from the DiscoveredCommands collection created from the
+            // ScanAssembliesForCommands method in the root command.
+            IEnumerable<Type> childCommandTypes = RootCommand.DiscoveredCommands
+                .Where(kvp => kvp.Value == GetType())
+                .Select(kvp => kvp.Key);
+            foreach (Type childCommandType in childCommandTypes)
             {
-                if (_commands is null)
-                {
-                    _commands = new Commands(this);
-
-                    // Add subcommands from the GetArgs method.
-                    _commands.AddRange(GetArgs().OfType<Command>());
-
-                    // Add the subcommands from the DiscoveredCommands collection created from the
-                    // ScanAssembliesForCommands method in the root command.
-                    IEnumerable<Type> childCommandTypes = RootCommand.DiscoveredCommands
-                        .Where(kvp => kvp.Value == GetType())
-                        .Select(kvp => kvp.Key);
-                    foreach (Type childCommandType in childCommandTypes)
-                    {
-                        var command = (Command)Activator.CreateInstance(childCommandType);
-                        if (command.Name != null)
-                            _commands.Add(command);
-                    }
-                }
-
-                return _commands;
+                var command = (Command)Activator.CreateInstance(childCommandType);
+                if (command.Name is not null)
+                    commands.Add(command);
             }
+
+            return commands;
         }
 
         /// <summary>
@@ -272,54 +231,44 @@ namespace ConsoleFx.CmdLine
             yield break;
         }
 
+        /// <summary>
+        ///     Override this method to perform any final setup on the arguments for this command.
+        /// </summary>
+        /// <param name="arguments">The list of arguments for this command.</param>
         protected virtual void SetupArguments(Arguments arguments)
         {
         }
 
+        /// <summary>
+        ///     Override this method to perform any final setup on the options for this command,.
+        /// </summary>
+        /// <param name="options">The list of options for this command.</param>
         protected virtual void SetupOptions(Options options)
         {
         }
 
         /// <summary>
-        ///     Gets or sets the delegate to call to perform additional validations after the tokens
-        ///     have been parsed.
-        ///     <para />
-        ///     If not assigned, the virtual
-        ///     <see cref="PerformCustomValidation(IReadOnlyList{object}, IReadOnlyDictionary{string, object})"/>
-        ///     method is called.
+        ///     Override this method to perform any additional custom validations after the args have
+        ///     been parsed.
         /// </summary>
-        public CommandCustomValidator CustomValidator
-        {
-            get => _customValidator ?? PerformCustomValidation;
-            set => _customValidator = value;
-        }
-
-        protected virtual string PerformCustomValidation(IReadOnlyList<object> arguments,
+        /// <param name="arguments">The arguments parsed from the args.</param>
+        /// <param name="options">The options parsed from the args.</param>
+        /// <returns>An error message if there are validation errors, otherwise <c>null</c>.</returns>
+        //TODO: Change return type to something more descriptive
+        public virtual string ValidateParseResult(IReadOnlyList<object> arguments,
             IReadOnlyDictionary<string, object> options)
         {
             return null;
         }
 
-        /// <summary>
-        ///     Gets or sets the delegate to call if the parsed args match this command.
-        ///     <para/>
-        ///     If not assigned, the virtual <see cref="HandleCommandAsync(IParseResult)"/> method is
-        ///     called.
-        /// </summary>
-        public Func<IParseResult, Task<int>> Handler
+        internal virtual Task<int> HandleCommandAsync(IParseResult parseResult)
         {
-            get => _handler ?? HandleCommandAsync;
-            set => _handler = value;
+            return Task.FromResult(HandleCommand(parseResult));
         }
 
-        protected virtual Task<int> HandleCommandAsync(IParseResult parseResult)
+        protected virtual int HandleCommand(IParseResult parseResult)
         {
-            return HandleCommandAsync();
-        }
-
-        protected virtual Task<int> HandleCommandAsync()
-        {
-            return Task.FromResult(HandleCommand());
+            return HandleCommand();
         }
 
         protected virtual int HandleCommand()
@@ -330,41 +279,6 @@ namespace ConsoleFx.CmdLine
         public virtual void DisplayHelp(Command command = null)
         {
             RootCommand.DisplayHelp(command ?? this);
-        }
-
-        public Argument AddArgument(int order = 0, bool isOptional = false, byte maxOccurences = 1)
-        {
-            var argument = new Argument(order, isOptional, maxOccurences);
-            Arguments.Add(argument);
-            return argument;
-        }
-
-        public Command AddCommand(params string[] names)
-        {
-            var command = new Command(names);
-            Commands.Add(command);
-            return command;
-        }
-
-        public Command AddCommand(bool caseSensitive, params string[] names)
-        {
-            var command = new Command(caseSensitive, names);
-            Commands.Add(command);
-            return command;
-        }
-
-        public Option AddOption(params string[] names)
-        {
-            var option = new Option(names);
-            Options.Add(option);
-            return option;
-        }
-
-        public Option AddOption(bool caseSensitive, params string[] names)
-        {
-            var option = new Option(caseSensitive, names);
-            Options.Add(option);
-            return option;
         }
     }
 }

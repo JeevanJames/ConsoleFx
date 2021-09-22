@@ -43,7 +43,7 @@ namespace ConsoleFx.CmdLine.Program
     public abstract partial class HelpBuilder : INamedObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly NamedObjectImpl _namedObject = new NamedObjectImpl();
+        private readonly NamedObjectImpl _namedObject = new();
 
         public string Name => ((INamedObject)_namedObject).Name;
 
