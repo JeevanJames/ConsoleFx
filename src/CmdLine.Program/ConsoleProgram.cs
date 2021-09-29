@@ -23,7 +23,10 @@ namespace ConsoleFx.CmdLine.Program
     public class ConsoleProgram : Command
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ParserStyle.ArgStyle _argStyle;
+        private ParserStyle.ArgStyle _argStyle;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ArgGrouping _grouping;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private HelpBuilder _helpBuilder;
@@ -35,14 +38,10 @@ namespace ConsoleFx.CmdLine.Program
         private bool _displayHelpOnError;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ConsoleProgram"/> class.
+        ///     This method is called using reflection from the base <see cref="Command"/> class.
+        ///     See the <see cref="Command"/> constructor for more information.
         /// </summary>
-        /// <remarks>
-        ///     This constructor tries to assign the <see cref="Command.Name"/>, <see cref="ArgStyle"/>
-        ///     and <see cref="Grouping"/> properties from the <see cref="ProgramAttribute"/> decorated
-        ///     on the class. If the class is not decorated, defaults are used.
-        /// </remarks>
-        public ConsoleProgram()
+        protected new void ProcessAttribute()
         {
             ProgramAttribute programAttribute = GetType().GetCustomAttribute<ProgramAttribute>(true);
             if (programAttribute is null)
@@ -54,21 +53,21 @@ namespace ConsoleFx.CmdLine.Program
                 _argStyle = new ParserStyle.UnixArgStyle();
 
                 // Grouping defaults to DoesNotMatter
-                Grouping = ArgGrouping.DoesNotMatter;
+                _grouping = ArgGrouping.DoesNotMatter;
             }
             else
             {
                 string name = programAttribute.Name;
                 AddName(name);
                 _argStyle = CreateArgStyle(programAttribute.Style);
-                Grouping = programAttribute.Grouping;
+                _grouping = programAttribute.Grouping;
             }
         }
 
         /// <summary>
         ///     Gets the expected grouping of the args.
         /// </summary>
-        public ArgGrouping Grouping { get; }
+        public ArgGrouping Grouping => _grouping;
 
         /// <summary>
         ///     Gets the <see cref="HelpBuilder"/> to use to display the help.

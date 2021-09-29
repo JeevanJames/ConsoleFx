@@ -13,6 +13,8 @@ namespace ConsoleFx.CmdLine
     /// </summary>
     public sealed class OptionAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
     {
+        //TODO: Add a parameterless ctor. The name of the option will be the property name.
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="OptionAttribute"/> class with one or more
         ///     option names.

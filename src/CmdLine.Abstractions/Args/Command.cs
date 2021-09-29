@@ -35,6 +35,22 @@ namespace ConsoleFx.CmdLine
             _options = new Lazy<Options>(InitializeOptions);
             _commands = new Lazy<Commands>(InitializeCommands);
 
+            // Command and ConsoleProgram need to process different types of attributes. Since ConsoleProgram
+            // derives from Command, it will inherit the attribute processing behavior from Command,
+            // which we don't want. So, we use reflection to call a predefined function (ProcessAttribute),
+            // without the inheritance behavior.
+#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+            MethodInfo processAttributeMethod = GetType().GetMethod(nameof(ProcessAttribute),
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                binder: null,
+                Type.EmptyTypes,
+                modifiers: null);
+#pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+            processAttributeMethod?.Invoke(this, parameters: null);
+        }
+
+        protected void ProcessAttribute()
+        {
             // Read the command attribute on this class.
             CommandAttribute commandAttribute = GetType().GetCustomAttribute<CommandAttribute>(true);
             if (commandAttribute is null)

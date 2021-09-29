@@ -14,7 +14,6 @@ namespace ConsoleFx.TestHarness.SimpleProgram
 {
 #pragma warning disable CA2227 // Collection properties should be read only
     [Program(Name = "simple-program", Style = ArgStyle.Unix)]
-    [Command("send-email")]
     public sealed class SendEmailProgram : ConsoleProgram
     {
         public static async Task<int> Main()
