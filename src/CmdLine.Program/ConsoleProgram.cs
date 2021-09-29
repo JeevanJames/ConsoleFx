@@ -3,12 +3,14 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using ConsoleFx.CmdLine.Internals;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
 using ConsoleFx.CmdLine.Program.HelpBuilders;
 using ConsoleFx.CmdLine.Validators;
@@ -57,7 +59,7 @@ namespace ConsoleFx.CmdLine.Program
             }
             else
             {
-                string name = programAttribute.Name;
+                string name = programAttribute.Name ?? Assembly.GetEntryAssembly()?.GetName().Name ?? "program";
                 AddName(name);
                 _argStyle = CreateArgStyle(programAttribute.Style);
                 _grouping = programAttribute.Grouping;
@@ -107,6 +109,14 @@ namespace ConsoleFx.CmdLine.Program
         ///     and executing the application.
         /// </summary>
         public ErrorHandler ErrorHandler => _errorHandler ??= new DefaultErrorHandler();
+
+        public ConsoleProgram HandleErrorsWith(Func<Exception, int> errorHandler)
+        {
+            if (errorHandler is null)
+                throw new ArgumentNullException(nameof(errorHandler));
+            _errorHandler = new DelegateErrorHandler(errorHandler);
+            return this;
+        }
 
         public ConsoleProgram HandleErrorsWith<TErrorHandler>()
             where TErrorHandler : ErrorHandler, new()
@@ -371,7 +381,7 @@ namespace ConsoleFx.CmdLine.Program
                 }
 
                 if (parseResult.TryGetOption(arg.Name, out object value))
-                    arg.AssignedProperty.SetValue(parseResult.Command, value);
+                    AssignProperty(parseResult.Command, arg.AssignedProperty, value);
             }
         }
 
@@ -395,7 +405,37 @@ namespace ConsoleFx.CmdLine.Program
                 }
 
                 if (parseResult.TryGetArgument(i, out object value))
-                    argument.AssignedProperty.SetValue(parseResult.Command, value);
+                    AssignProperty(parseResult.Command, argument.AssignedProperty, value);
+            }
+        }
+
+        private static void AssignProperty(Command command, PropertyInfo property, object value)
+        {
+            if (!property.IsCollectionProperty())
+            {
+                property.SetValue(command, value);
+                return;
+            }
+
+            object listObj = property.GetValue(command);
+            if (listObj is null)
+            {
+                if (!property.CanWrite)
+                {
+                    string errorMessage = $"The collection property {property.Name} on command {command.GetType()} "
+                        + "does not have a setter, so the framework cannot initialize it. You will need to initialize "
+                        + "the property yourself.";
+                    throw new ParserException(-1, errorMessage);
+                }
+
+                property.SetValue(command, value);
+            }
+            else
+            {
+                MethodInfo addMethod = listObj.GetType().GetMethods()
+                    .First(mi => mi.Name.Equals("Add") && mi.GetParameters().Length == 1);
+                foreach (object item in (IEnumerable)value)
+                    addMethod.Invoke(listObj, new[] { item });
             }
         }
     }

@@ -9,6 +9,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using ConsoleFx.CmdLine.Internals;
+
 namespace ConsoleFx.CmdLine
 {
     [DebuggerDisplay("Command {Name}")]
@@ -166,7 +168,13 @@ namespace ConsoleFx.CmdLine
             foreach (PropertyInfo property in argProperties)
             {
                 // Property should be read/write
-                if (!property.CanRead || !property.CanWrite)
+                bool isCollectionProperty = property.IsCollectionProperty();
+                if (isCollectionProperty)
+                {
+                    if (!property.CanRead)
+                        throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType} cannot be decorated with the {typeof(TArgAttribute).Name} attribute because it is not a readable property.");
+                }
+                else if (!property.CanRead || !property.CanWrite)
                     throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType} cannot be decorated with the {typeof(TArgAttribute).Name} attribute because it is not a read/write property.");
 
                 // Property should not be indexed

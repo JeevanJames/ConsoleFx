@@ -18,6 +18,12 @@
                 Represents a console program.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.ProcessAttribute">
+            <summary>
+                This method is called using reflection from the base <see cref="T:ConsoleFx.CmdLine.Command"/> class.
+                See the <see cref="T:ConsoleFx.CmdLine.Command"/> constructor for more information.
+            </summary>
+        </member>
         <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.Grouping">
             <summary>
                 Gets the expected grouping of the args.
@@ -129,6 +135,9 @@
             </summary>
             <param name="ex">The error to be handled.</param>
             <returns>The status code corresponding to the error.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.DelegateErrorHandler.HandleError(System.Exception)">
+            <inheritdoc />
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.HelpAttribute.GetApplicableArgTypes">
             <inheritdoc />
