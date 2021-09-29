@@ -12,13 +12,18 @@ using ConsoleFx.CmdLine.Validators;
 
 namespace ConsoleFx.TestHarness.SimpleProgram
 {
-#pragma warning disable CA2227 // Collection properties should be read only
-    [Program(Name = "simple-program", Style = ArgStyle.Unix)]
+    [Program(Style = ArgStyle.Unix)]
     public sealed class SendEmailProgram : ConsoleProgram
     {
         public static async Task<int> Main()
         {
             ConsoleProgram program = new SendEmailProgram()
+                .HandleErrorsWith(ex =>
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(ex.ToString());
+                    return 1;
+                })
                 .DisplayHelpOnError();
 #if DEBUG
             return await program.RunDebugAsync(condition: () => true).ConfigureAwait(false);
@@ -47,15 +52,15 @@ namespace ConsoleFx.TestHarness.SimpleProgram
 
         [Option("to", Optional = true, Usage = CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
         [Help("To addresses.")]
-        public IList<string> ToAddresses { get; set; } = new List<string>();
+        public IList<string> ToAddresses { get; } = new List<string> { "admin" };
 
         [Option("cc", Optional = true, Usage = CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
         [Help("CC addresses.")]
-        public IList<string> CcAddresses { get; set; } = new List<string>();
+        public IList<string> CcAddresses { get; } = new List<string>();
 
         [Option("bcc", Optional = true, Usage = CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
         [Help("BCC addresses.")]
-        public IList<string> BccAddresses { get; set; } = new List<string>();
+        public IList<string> BccAddresses { get; } = new List<string>();
 
         [Option("subject", "sub", "s", Usage = CommonOptionUsage.SingleParameter)]
         [Help("Email subject line")]
@@ -81,4 +86,3 @@ namespace ConsoleFx.TestHarness.SimpleProgram
         }
     }
 }
-#pragma warning restore CA2227 // Collection properties should be read only

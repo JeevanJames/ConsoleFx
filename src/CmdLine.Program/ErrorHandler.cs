@@ -15,4 +15,20 @@ namespace ConsoleFx.CmdLine.Program
         /// <returns>The status code corresponding to the error.</returns>
         public abstract int HandleError(Exception ex);
     }
+
+    internal sealed class DelegateErrorHandler : ErrorHandler
+    {
+        private readonly Func<Exception, int> _handler;
+
+        internal DelegateErrorHandler(Func<Exception, int> handler)
+        {
+            _handler = handler ?? throw new ArgumentNullException(nameof(handler));
+        }
+
+        /// <inheritdoc />
+        public override int HandleError(Exception ex)
+        {
+            return _handler(ex);
+        }
+    }
 }
