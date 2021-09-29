@@ -10,7 +10,9 @@ namespace ConsoleFx.CmdLine
     public sealed partial class Option : INamedObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly INamedObject _namedObject = new NamedObjectImpl();
+        private readonly INamedObject _namedObject = new NamedObjectImpl(
+            "The option name cannot be empty or whitespaced.",
+            "'{0}' is an invalid name for an option.");
 
         public string Name => _namedObject.Name;
 

@@ -62,9 +62,8 @@
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.DisplayHelp(ConsoleFx.CmdLine.Command)">
             <summary>
-                Displays the help. By default, this method calls the assigned
-                <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.HelpBuilder"/> to display the help, but it can be derived to
-                display help in a customized manner.
+                Displays the help. By default, this method calls the assigned <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.HelpBuilder"/>
+                to display the help, but it can be derived to display help in a customized manner.
                 <para/>
                 One common scenario for overriding this method is to display custom banners or footers
                 along with the help.

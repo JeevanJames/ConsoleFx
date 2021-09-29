@@ -141,7 +141,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             return sb.ToString().Trim();
         }
 
-        private void BuildCommandNamesChain(Command command, StringBuilder sb)
+        private static void BuildCommandNamesChain(Command command, StringBuilder sb)
         {
             Command currentCommand = command;
             while (currentCommand is not null)
@@ -280,7 +280,7 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
             ForegroundColor = ConsoleColor.Magenta;
             if (placement == ArgDescriptionPlacement.SameLine)
             {
-                Write($"{name.PadRight(maxNameLength)}{NameDescriptionSpacingStr}");
+                Write(name.PadRight(maxNameLength) + NameDescriptionSpacingStr);
             }
             else
             {

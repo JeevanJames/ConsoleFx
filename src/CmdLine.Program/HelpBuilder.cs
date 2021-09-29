@@ -43,7 +43,9 @@ namespace ConsoleFx.CmdLine.Program
     public abstract partial class HelpBuilder : INamedObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly NamedObjectImpl _namedObject = new();
+        private readonly NamedObjectImpl _namedObject = new(
+            "The help name cannot be empty or whitespaced.",
+            "'{0}' is an invalid name for a help.");
 
         public string Name => ((INamedObject)_namedObject).Name;
 

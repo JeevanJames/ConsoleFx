@@ -11,7 +11,9 @@ namespace ConsoleFx.CmdLine
     public partial class Command : INamedObject
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly INamedObject _namedObject = new NamedObjectImpl();
+        private readonly INamedObject _namedObject = new NamedObjectImpl(
+            "The command name cannot be empty or whitespaced.",
+            "'{0}' is an invalid name for a command.");
 
         /// <inheritdoc />
         public string Name => _namedObject.Name;

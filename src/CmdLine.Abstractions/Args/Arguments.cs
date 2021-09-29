@@ -13,25 +13,34 @@ namespace ConsoleFx.CmdLine
         protected override void InsertItem(int index, Argument item)
         {
             base.InsertItem(index, item);
-            VerifyOptionalArgumentsAtEnd();
+            VerifyOptionalArgumentsAtEnd(index);
         }
 
         protected override void SetItem(int index, Argument item)
         {
             base.SetItem(index, item);
-            VerifyOptionalArgumentsAtEnd();
+            VerifyOptionalArgumentsAtEnd(index);
         }
 
         /// <summary>
         ///     Called whenever an argument is added or set in the collection to verify that optional arguments are
         ///     specified only after the required ones.
         /// </summary>
-        private void VerifyOptionalArgumentsAtEnd()
+        private void VerifyOptionalArgumentsAtEnd(int index)
         {
-            //TODO: Try and optimize this to not traverse the whole list each time.
-            var inOptionalSet = false;
-            foreach (var argument in this)
+            // We don't need to traverse the entire list. Assuming that the existing list is already
+            // in the correct order, we just need to start traversing from the item before the specified
+            // index.
+            int startIndex = index - 1 >= 0 ? index - 1 : 0;
+
+            bool inOptionalSet = false;
+
+            for (int i = startIndex; i < Count; i++)
             {
+                Argument argument = this[i];
+
+                // If we're iterating over optional arguments and the current argument is not optional,
+                // throw an exception.
                 if (inOptionalSet)
                 {
                     if (!argument.IsOptional)
@@ -41,9 +50,7 @@ namespace ConsoleFx.CmdLine
                     }
                 }
                 else
-                {
                     inOptionalSet = argument.IsOptional;
-                }
             }
         }
     }

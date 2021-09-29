@@ -23,7 +23,7 @@ namespace ConsoleFx.CmdLine.Parser.Runs
             // Optimize the size of the Parameters list based on the value type.
             Parameters = ValueType switch
             {
-                OptionValueType.Flag or OptionValueType.Count => new List<string>(0), //TODO: Use Array.Empty?
+                OptionValueType.Flag or OptionValueType.Count => EmptyList,
                 OptionValueType.Object => new List<string>(1),
                 _ => new List<string>(),
             };
@@ -39,5 +39,7 @@ namespace ConsoleFx.CmdLine.Parser.Runs
         internal List<string> Parameters { get; }
 
         internal OptionValueType ValueType { get; }
+
+        private static readonly List<string> EmptyList = new(0);
     }
 }

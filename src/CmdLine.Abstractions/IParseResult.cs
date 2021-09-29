@@ -14,9 +14,8 @@ namespace ConsoleFx.CmdLine
         /// <summary>
         ///     Gets the top-level <see cref="Command"/>.
         ///     <para/>
-        ///     The <see cref="Command"/> instance has properties such as
-        ///     <see cref="Command.ParentCommand"/> and <see cref="Command.RootCommand"/> to traverse up
-        ///     the command chain.
+        ///     The <see cref="Command"/> instance has properties such as <see cref="Command.ParentCommand"/>
+        ///     and <see cref="Command.RootCommand"/> to traverse up the command chain.
         /// </summary>
         Command Command { get; }
 

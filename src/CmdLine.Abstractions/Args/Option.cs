@@ -225,8 +225,7 @@ namespace ConsoleFx.CmdLine
             if (Usage.MaxParameters == 1 && Usage.MaxOccurrences == 1)
                 return OptionValueType.Object;
 
-            //TODO: Change this to an internal parser exception.
-            throw new InvalidOperationException("Should never reach here.");
+            throw new ParserException(-1, "Should never reach here.");
         }
     }
 
