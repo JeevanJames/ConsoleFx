@@ -4,6 +4,12 @@
         <name>ConsoleFx.CmdLine.Program</name>
     </assembly>
     <members>
+        <member name="M:ConsoleFx.CmdLine.Program.ArgumentHelpAttribute.GetMetadata">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.ArgumentHelpAttribute.GetApplicableArgTypes">
+            <inheritdoc />
+        </member>
         <member name="M:ConsoleFx.CmdLine.Program.CategoryAttribute.GetApplicableArgTypes">
             <inheritdoc />
         </member>
@@ -11,16 +17,6 @@
             <summary>
                 Represents a console program.
             </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ConsoleProgram.#ctor">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.Program.ConsoleProgram"/> class.
-            </summary>
-            <remarks>
-                This constructor tries to assign the <see cref="P:ConsoleFx.CmdLine.Command.Name"/>, <see cref="T:ConsoleFx.CmdLine.Program.ArgStyle"/>
-                and <see cref="P:ConsoleFx.CmdLine.Program.ConsoleProgram.Grouping"/> properties from the <see cref="T:ConsoleFx.CmdLine.Program.ProgramAttribute"/> decorated
-                on the class. If the class is not decorated, defaults are used.
-            </remarks>
         </member>
         <member name="P:ConsoleFx.CmdLine.Program.ConsoleProgram.Grouping">
             <summary>
@@ -135,12 +131,6 @@
             <returns>The status code corresponding to the error.</returns>
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.HelpAttribute.GetApplicableArgTypes">
-            <inheritdoc />
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ArgumentHelpAttribute.GetMetadata">
-            <inheritdoc />
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ArgumentHelpAttribute.GetApplicableArgTypes">
             <inheritdoc />
         </member>
         <member name="M:ConsoleFx.CmdLine.Program.HelpBuilder.DisplayHelp(ConsoleFx.CmdLine.Command)">
