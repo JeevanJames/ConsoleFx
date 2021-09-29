@@ -1,4 +1,4 @@
-![ConsoleFx](Logo.png)
+![ConsoleFx](shared/Logo.png)
 # ConsoleFx
 
 [![Build status](https://img.shields.io/appveyor/ci/JeevanJames/consolefx.svg)](https://ci.appveyor.com/project/JeevanJames/consolefx) [![Test status](https://img.shields.io/appveyor/tests/JeevanJames/consolefx.svg)](https://ci.appveyor.com/project/JeevanJames/consolefx/build/tests) [![codecov](https://codecov.io/gh/JeevanJames/ConsoleFx/branch/master/graph/badge.svg)](https://codecov.io/gh/JeevanJames/ConsoleFx)
@@ -8,24 +8,28 @@ ConsoleFx is a suite of .NET libraries for building command-line (CLI) applicati
 ## Build console apps with command line arguments
 The following code simulates the following made-up console app:
 
-`COPY <source file> [<destination dir>] [--overwrite] [--create-dir]`
+`COPY <source file> [<destination dir>] [--overwrite | o] [--create-dir | c]`
 
 ```cs
 public class Program : ConsoleProgram
 {
-    // Declare one property per argument and option.
-    
+    [Argument, ArgumentHelp("source file", "File to copy")]
+    [ValidateFile(ShouldExist = true)]
     public string SourceFile { get; set; }
     
-    public string DestinationDir { get; set; }
+    [Argument(Optional = true)]
+    [ArgumentHelp("destination dir", "Directory to copy the file")]
+    [ValidateDirectory]
+    public string DestinationDir { get; set; } = ".";
     
-    [Option("overwrite")]
+    [Flag("overwrite", "o")]
+    [Help("Specify to allow overwriting the file if it already exists")]
     public bool OverwriteExistingFile { get; set; }
     
-    [Option("create-dir")]
+    [Flag("create-dir", "c")]
+    [Help("Specify to create the destination directory if it does not exist")]
     public bool CreateDirIfMissing { get; set; }
     
-    // Code to execute the console program if all command line args are verified.
     protected int HandleCommand()
     {
         Console.WriteLine($"You want to copy {SourceFile} to {DestinationDir}");
@@ -34,23 +38,10 @@ public class Program : ConsoleProgram
         return 0;
     }
     
-    // Specify the options and arguments that are accepted by the console app
-    protected override IEnumerable<Arg> GetArgs()
-    {
-        yield return new Argument(nameof(SourceFile))
-            .ValidateAsFile(shouldExist: true);
-        yield return new Argument(nameof(DestinationDir), optional: true)
-            .ValidateAsDirectory();
-        yield return new Option("overwrite", "o")
-            .UsedAsFlag();
-        yield return new Option("create-dir", "c")
-            .UsedAsFlag();
-    }
-    
-    public static int Main()
+    public static async Task<int> Main(string[] args)
     {
         var program = new Program();
-        return program.Run();
+        return await program.RunAsync(args);
     }
 }
 ```
@@ -63,7 +54,7 @@ Package | Description | Dev Build
 `ConsoleFx.CmdLine.Program` | Write command line programs with sophisticated argument parsing, including error handling, automatic help generation and rich validation support. Supports both Unix and Windows-style arguments. | [![ConsoleFx.CmdLine.Program](https://img.shields.io/myget/consolefx/v/ConsoleFx.CmdLine.Program.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.CmdLine.Program)
 `ConsoleFx.CmdLine.Parser` | Standalone argument parser that is used by `ConsoleFx.CmdLine.Program`. Can be used in non-console program such as Windows Forms, WPF, REPL, etc. to parse command line arguments in a similar fashion. | [![ConsoleFx.CmdLine.Parser](https://img.shields.io/myget/consolefx/v/ConsoleFx.CmdLine.Parser.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.CmdLine.Parser)
 `ConsoleFx.ConsoleExtensions` | Extended console capabilities like color output, prompts, inputting secrets, outputting indented text, progress bars, etc. | [![ConsoleFx.ConsoleExtensions](https://img.shields.io/myget/consolefx/v/ConsoleFx.ConsoleExtensions.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.ConsoleExtensions)
-`ConsoleFx.Prompter` | Rich interactive framework from getting inputs from users. Inspired by the [Inquirer.js](https://github.com/SBoudrias/Inquirer.js) framework for JavaScript. | [![ConsoleFx.Prompter](https://img.shields.io/myget/consolefx/v/ConsoleFx.Prompter.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.Prompter)
+`ConsoleFx.Prompter` | Rich interactive framework for getting inputs from users. Inspired by the [Inquirer.js](https://github.com/SBoudrias/Inquirer.js) framework for JavaScript. | [![ConsoleFx.Prompter](https://img.shields.io/myget/consolefx/v/ConsoleFx.Prompter.svg)](https://www.myget.org/feed/consolefx/package/nuget/ConsoleFx.Prompter)
 
 ### Metapackage
 ConsoleFx includes a metapackage that contains all the major packages that would typically needed to build a complex console application.
