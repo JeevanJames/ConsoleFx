@@ -42,7 +42,7 @@ namespace ConsoleFx.CmdLine
 
         public override int? OnException(Exception ex, Command command)
         {
-            return ExceptionTypes.Any(type => type.IsAssignableFrom(ex.GetType())) ? ErrorCode : (int?)null;
+            return ExceptionTypes.Any(type => type.IsAssignableFrom(ex.GetType())) ? ErrorCode : null;
         }
     }
 }

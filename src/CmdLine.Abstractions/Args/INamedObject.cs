@@ -43,9 +43,5 @@ namespace ConsoleFx.CmdLine
         ///     Gets all the names of the arg.
         /// </summary>
         IEnumerable<string> AllNames { get; }
-
-        //TODO: Add a method to retrieve the error messages for different types of implementors.
-        //Instead of a very generic error message coming from the common NamedObjectImpl, let
-        //implementers be allowed to sepcify detailed messages.
     }
 }

@@ -20,15 +20,19 @@ namespace ConsoleFx.CmdLine
     {
         private readonly Dictionary<string, bool> _names = new(StringComparer.Ordinal);
         private readonly Regex _namePattern;
+        private readonly string _emptyOrWhitespaceNameError;
+        private readonly string _invalidNameError;
 
-        internal NamedObjectImpl()
-            : this(DefaultNamePattern)
+        internal NamedObjectImpl(string emptyOrWhitespaceNameError, string invalidNameError)
+            : this(DefaultNamePattern, emptyOrWhitespaceNameError, invalidNameError)
         {
         }
 
-        internal NamedObjectImpl(Regex pattern)
+        internal NamedObjectImpl(Regex pattern, string emptyOrWhitespaceNameError, string invalidNameError)
         {
             _namePattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
+            _emptyOrWhitespaceNameError = emptyOrWhitespaceNameError;
+            _invalidNameError = invalidNameError;
         }
 
         void INamedObject.AddName(string name, bool caseSensitive)
@@ -36,9 +40,9 @@ namespace ConsoleFx.CmdLine
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             if (name.Trim().Length == 0)
-                throw new ArgumentException("Arg cannot be null, empty or whitespaced.", nameof(name));
+                throw new ArgumentException(_emptyOrWhitespaceNameError, nameof(name));
             if (!_namePattern.IsMatch(name))
-                throw new ArgumentException(string.Format(Errors.Arg_Invalid_name, name), nameof(name));
+                throw new ArgumentException(string.Format(_invalidNameError, name), nameof(name));
 
             //TODO: Need to check if the name is already present in the dictionary, but should do it
             //while respecting the caseSensitive param.

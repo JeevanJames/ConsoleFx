@@ -67,9 +67,6 @@ namespace ConsoleFx.CmdLine
                 throw new InvalidOperationException($"Parent command type of {GetType()} command cannot be the same type");
         }
 
-        //TODO: Remove non-default ctors and only rely on attributes. This way, we can add support
-        //for dependency injection.
-
         /// <summary>
         ///     Gets a reference to the parent <see cref="Command"/> of this instance.
         /// </summary>
@@ -167,7 +164,7 @@ namespace ConsoleFx.CmdLine
 
             foreach (PropertyInfo property in argProperties)
             {
-                // Property should be read/write
+                // Property should be read/write. Read-only is allowed if the property is a collection.
                 bool isCollectionProperty = property.IsCollectionProperty();
                 if (isCollectionProperty)
                 {
@@ -180,8 +177,6 @@ namespace ConsoleFx.CmdLine
                 // Property should not be indexed
                 if (property.GetIndexParameters().Length > 0)
                     throw new ParserException(-1, $"Property {property.Name} on {property.DeclaringType} cannot be decorated with the {typeof(TArgAttribute).Name} attribute because it is an indexed property.");
-
-                //TODO: More checks
 
                 // Create the arg instance
                 TArgAttribute attribute = property.GetCustomAttribute<TArgAttribute>(true);

@@ -2,6 +2,7 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,11 +23,11 @@ namespace ConsoleFx.CmdLine
         private readonly Option _option;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Dictionary<int, ValidatorCollection> _validators = new Dictionary<int, ValidatorCollection>();
+        private readonly Dictionary<int, ValidatorCollection> _validators = new();
 
         internal OptionParameterValidators(Option option)
         {
-            _option = option;
+            _option = option ?? throw new ArgumentNullException(nameof(option));
         }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace ConsoleFx.CmdLine
         /// <returns>Total number of validators for the parameter at the specified index.</returns>
         public int? CountOf(int parameterIndex)
         {
-            return _validators.TryGetValue(parameterIndex, out ValidatorCollection validators) ? validators.Count : (int?)null;
+            return _validators.TryGetValue(parameterIndex, out ValidatorCollection validators) ? validators.Count : null;
         }
 
         /// <summary>

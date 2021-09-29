@@ -159,9 +159,8 @@ namespace ConsoleFx.CmdLine.Program
         public bool VerifyHelp { get; set; }
 
         /// <summary>
-        ///     Displays the help. By default, this method calls the assigned
-        ///     <see cref="ConsoleProgram.HelpBuilder"/> to display the help, but it can be derived to
-        ///     display help in a customized manner.
+        ///     Displays the help. By default, this method calls the assigned <see cref="HelpBuilder"/>
+        ///     to display the help, but it can be derived to display help in a customized manner.
         ///     <para/>
         ///     One common scenario for overriding this method is to display custom banners or footers
         ///     along with the help.

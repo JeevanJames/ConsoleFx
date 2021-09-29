@@ -54,8 +54,21 @@ namespace ConsoleFx.CmdLine.Parser.Runs
             if (objectCtor is not null)
                 return value => objectCtor.Invoke(new object[] { value });
 
-            //TODO: Look for factory methods on the type? Static methods that accept a single parameter
-            //and return an instance of the type. Examples: int.Parse
+            // Look for possible static factory methods
+            IEnumerable<MethodInfo> factoryMethods = Type.GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .Where(mi => mi.ReturnType == Type && mi.GetParameters().Length == 1);
+
+            // Look for a static factory method that accepts a single string parameter.
+            MethodInfo stringFactory = factoryMethods
+                .SingleOrDefault(mi => mi.GetParameters()[0].ParameterType == typeof(string));
+            if (stringFactory is not null)
+                return value => stringFactory.Invoke(null, new object[] { value });
+
+            // Look for a static factory method that accepts a single object parameter.
+            MethodInfo objectFactory = factoryMethods
+                .SingleOrDefault(mi => mi.GetParameters()[0].ParameterType == typeof(object));
+            if (objectFactory is not null)
+                return value => objectFactory.Invoke(null, new object[] { value });
 
             Exception exception = arg switch
             {
