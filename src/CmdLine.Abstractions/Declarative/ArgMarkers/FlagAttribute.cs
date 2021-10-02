@@ -7,7 +7,9 @@ using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
-    public sealed class FlagAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public sealed class FlagAttribute : Attribute, IArgApplicator<Option>
     {
         public FlagAttribute(params string[] names)
         {
@@ -18,10 +20,10 @@ namespace ConsoleFx.CmdLine
 
         public string[] Names { get; }
 
-        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
+        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo propertyInfo)
         {
-            if (property.PropertyType != typeof(bool))
-                throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType} should be an boolean.");
+            if (propertyInfo.PropertyType != typeof(bool))
+                throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be an boolean.");
             arg.UsedAsFlag();
         }
     }

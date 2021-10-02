@@ -6,12 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using ConsoleFx.CmdLine.Internals;
+
 namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Marks a property in a <see cref="Command"/> class as an <see cref="Option"/>.
     /// </summary>
-    public sealed class OptionAttribute : ArgumentOrOptionAttribute, IArgApplicator<Option>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public sealed class OptionAttribute : Attribute, IArgApplicator<Option>
     {
         //TODO: Add a parameterless ctor. The name of the option will be the property name.
 
@@ -61,7 +64,7 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public bool Optional { get; set; }
 
-        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
+        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo propertyInfo)
         {
             switch (Usage)
             {
@@ -83,27 +86,48 @@ namespace ConsoleFx.CmdLine
             switch (expectedValueType)
             {
                 case OptionValueType.Count:
-                    if (property.PropertyType != typeof(int))
-                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType} should be an integer.");
+                    if (propertyInfo.PropertyType != typeof(int))
+                        throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be an integer.");
                     break;
                 case OptionValueType.Flag:
-                    if (property.PropertyType != typeof(bool))
-                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType} should be an boolean.");
+                    if (propertyInfo.PropertyType != typeof(bool))
+                        throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be an boolean.");
                     break;
                 case OptionValueType.Object:
-                    if (property.PropertyType != typeof(string))
-                        arg.TypeAs(property.PropertyType);
+                    if (propertyInfo.PropertyType != typeof(string))
+                        arg.TypeAs(propertyInfo.PropertyType);
                     break;
                 case OptionValueType.List:
-                    Type itemType = GetCollectionItemType(property);
+                    Type itemType = propertyInfo.GetCollectionItemType();
                     if (itemType is null)
-                        throw new ParserException(-1, $"Type for property {property.Name} in command {property.DeclaringType} should be a generic collection type like IEnumerable<T> or List<T>.");
+                        throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be a generic collection type like IEnumerable<T> or List<T>.");
                     if (itemType != typeof(string))
                         arg.TypeAs(itemType);
                     break;
                 default:
                     throw new NotSupportedException($"Unexpected OptionValueType value of {expectedValueType}.");
             }
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public sealed class MultiOptionAttribute : Attribute, IArgApplicator<Option>
+    {
+        public bool Optional { get; set; }
+
+        public bool MultipleOccurrences { get; set; }
+
+        public bool MultipleParameters { get; set; }
+
+        /// <inheritdoc />
+        public void Apply(Option arg, PropertyInfo propertyInfo)
+        {
+            if (MultipleOccurrences && MultipleParameters)
+                arg.UsedAsUnlimitedOccurrencesAndParameters(Optional);
+            else if (MultipleOccurrences)
+                arg.UsedAsUnlimitedOccurrencesAndSingleParameter(Optional);
+            else if (MultipleParameters)
+                arg.UsedAsSingleOccurrenceAndUnlimitedParameters(Optional);
         }
     }
 }

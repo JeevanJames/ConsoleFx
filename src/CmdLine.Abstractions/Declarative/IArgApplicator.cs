@@ -9,6 +9,6 @@ namespace ConsoleFx.CmdLine
     public interface IArgApplicator<in TArg>
         where TArg : ArgumentOrOption<TArg>
     {
-        void Apply(TArg arg, PropertyInfo property);
+        void Apply(TArg arg, PropertyInfo propertyInfo);
     }
 }

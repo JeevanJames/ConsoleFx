@@ -961,23 +961,6 @@
                 applies to the last argument. For other arguments, this value can only be one.
             </summary>
         </member>
-        <member name="T:ConsoleFx.CmdLine.ArgumentOrOptionAttribute">
-            <summary>
-                Base class for attributes that mark properties in a <see cref="T:ConsoleFx.CmdLine.Command"/> class as an
-                <see cref="T:ConsoleFx.CmdLine.Argument"/> or an <see cref="T:ConsoleFx.CmdLine.Option"/>.
-            </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.ArgumentOrOptionAttribute.GetCollectionItemType(System.Reflection.PropertyInfo)">
-            <summary>
-                Helper method to return the item type from the specified collection
-                <paramref name="property"/> info.
-            </summary>
-            <param name="property">The collection property info.</param>
-            <returns>
-                The item type of the collection property. If the property is not a collection (doesn't
-                implement <see cref="T:System.Collections.Generic.IEnumerable`1"/>), returns <c>null</c>.
-            </returns>
-        </member>
         <member name="T:ConsoleFx.CmdLine.CommandAttribute">
             <summary>
                 Indicates that a class is a <see cref="T:ConsoleFx.CmdLine.Command"/> with one or more names.
@@ -1158,6 +1141,17 @@
             <summary>
               Looks up a localized string similar to Specify at least one validator..
             </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Internals.ReflectionExtensions.GetCollectionItemType(System.Reflection.PropertyInfo)">
+            <summary>
+                Helper method to return the item type from the specified collection
+                <paramref name="property"/> info.
+            </summary>
+            <param name="property">The collection property info.</param>
+            <returns>
+                The item type of the collection property. If the property is not a collection (doesn't
+                implement <see cref="T:System.Collections.Generic.IEnumerable`1"/>), returns <c>null</c>.
+            </returns>
         </member>
         <member name="T:ConsoleFx.CmdLine.IParseResult">
             <summary>
