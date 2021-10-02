@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -11,22 +12,28 @@ namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Enables or disables debugging output from the ConsoleFx framework. Any code in the framework
-    ///     can use the <see cref="Write(object, IEnumerable{object}, string, string, int)"/> method to
+    ///     can use the <see cref="Write(object, IEnumerable{object}, string, string, int)" /> method to
     ///     write debugging information that can be useful to troubleshoot issues.
-    ///     <para/>
-    ///     Debugging output is disabled by default. To enable it, call the <see cref="Enable"/> method.
+    ///     <para />
+    ///     Debugging output is disabled by default. To enable it, call the <see cref="Enable" /> method.
     /// </summary>
     public static class DebugOutput
     {
         private const string Prefix = "[CONSOLEFX] ";
 
+        private static DebugOutputWriter _writer;
         private static bool _enabled;
 
         /// <summary>
         ///     Enables debugging output from the framework.
         /// </summary>
-        public static void Enable()
+        /// <param name="writer">
+        ///     The delegate that will perform the actual writing. If <c>null</c>, then a default delegate
+        ///     is used that just writes to the console.
+        /// </param>
+        public static void Enable(DebugOutputWriter writer = null)
         {
+            _writer = writer ?? DefaultOutputWriter;
             _enabled = true;
         }
 
@@ -47,15 +54,20 @@ namespace ConsoleFx.CmdLine
         /// <param name="memberName">The calling member name.</param>
         /// <param name="sourceFilePath">The calling member source file path.</param>
         /// <param name="sourceLineNumber">The calling member source line number.</param>
-        public static void Write(object message, IEnumerable<object> list = null,
+        public static void Write(object message, IEnumerable list = null,
             [CallerMemberName] string memberName = "",
             [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            if (!_enabled)
-                return;
+            if (_enabled)
+                _writer(message, list, memberName, sourceFilePath, sourceLineNumber);
+        }
 
-            (ConsoleColor foregroundColor, ConsoleColor backgroundColor) = (Console.ForegroundColor, Console.BackgroundColor);
+        private static void DefaultOutputWriter(object message, IEnumerable list, string memberName,
+            string sourceFilePath, int sourceLineNumber)
+        {
+            (ConsoleColor foregroundColor, ConsoleColor backgroundColor) =
+                (Console.ForegroundColor, Console.BackgroundColor);
             try
             {
                 Console.BackgroundColor = ConsoleColor.Black;
@@ -83,4 +95,7 @@ namespace ConsoleFx.CmdLine
             }
         }
     }
+
+    public delegate void DebugOutputWriter(object message, IEnumerable list, string memberName, string sourceFilePath,
+        int sourceLineNumber);
 }
