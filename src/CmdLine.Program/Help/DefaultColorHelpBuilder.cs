@@ -4,7 +4,7 @@
 
 using System;
 
-namespace ConsoleFx.CmdLine.Program.Help
+namespace ConsoleFx.CmdLine.Help
 {
     public class DefaultColorHelpBuilder : DefaultHelpBuilder
     {

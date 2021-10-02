@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ConsoleFx.CmdLine.Program.Help
+namespace ConsoleFx.CmdLine.Help
 {
     public abstract partial class HelpBuilder : INamedObject
     {

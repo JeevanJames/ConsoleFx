@@ -10,7 +10,7 @@ using System.Text;
 
 using static System.Console;
 
-namespace ConsoleFx.CmdLine.Program.Help
+namespace ConsoleFx.CmdLine.Help
 {
     public class DefaultHelpBuilder : HelpBuilder
     {

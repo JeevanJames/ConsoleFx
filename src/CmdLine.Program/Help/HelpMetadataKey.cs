@@ -2,7 +2,7 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
-namespace ConsoleFx.CmdLine.Program.Help
+namespace ConsoleFx.CmdLine.Help
 {
     public static class HelpMetadataKey
     {

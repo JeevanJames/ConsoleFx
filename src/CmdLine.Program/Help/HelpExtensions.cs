@@ -5,7 +5,7 @@
 using System;
 using System.Globalization;
 
-namespace ConsoleFx.CmdLine.Program.Help
+namespace ConsoleFx.CmdLine.Help
 {
     /// <summary>
     ///     Provides extension methods to add standard help metadata to various <see cref="Arg"/>

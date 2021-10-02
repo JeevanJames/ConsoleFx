@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Program;
 using ConsoleFx.CmdLine.Validators;
 
 namespace TestHarness.DeepMultiCommand

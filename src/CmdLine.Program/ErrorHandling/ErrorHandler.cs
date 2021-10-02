@@ -4,7 +4,7 @@
 
 using System;
 
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine.ErrorHandling
 {
     public abstract class ErrorHandler
     {

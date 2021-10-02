@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Program;
-using ConsoleFx.CmdLine.Program.ErrorHandlers;
 
 namespace TestHarness.ConsoleProgramTest
 {

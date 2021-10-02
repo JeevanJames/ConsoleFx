@@ -10,14 +10,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using ConsoleFx.CmdLine.ErrorHandling;
+using ConsoleFx.CmdLine.Help;
 using ConsoleFx.CmdLine.Internals;
-using ConsoleFx.CmdLine.Program.ErrorHandlers;
-using ConsoleFx.CmdLine.Program.Help;
 using ConsoleFx.CmdLine.Validators;
 
 using ParserStyle = ConsoleFx.CmdLine.Parser.Style;
 
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Represents a console program.

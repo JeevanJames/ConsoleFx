@@ -7,8 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Program;
-using ConsoleFx.CmdLine.Program.Help;
+using ConsoleFx.CmdLine.Help;
 using ConsoleFx.CmdLine.Validators;
 
 using static ConsoleFx.ConsoleExtensions.Clr;

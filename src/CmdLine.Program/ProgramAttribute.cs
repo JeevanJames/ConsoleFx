@@ -4,7 +4,7 @@
 
 using System;
 
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class ProgramAttribute : Attribute
