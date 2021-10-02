@@ -432,7 +432,7 @@ namespace ConsoleFx.CmdLine
             else
             {
                 MethodInfo addMethod = listObj.GetType().GetMethods()
-                    .First(mi => mi.Name.Equals("Add") && mi.GetParameters().Length == 1);
+                    .First(mi => mi.Name.Equals("Add", StringComparison.Ordinal) && mi.GetParameters().Length == 1);
                 foreach (object item in (IEnumerable)value)
                     addMethod.Invoke(listObj, new[] { item });
             }
