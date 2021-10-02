@@ -129,12 +129,6 @@
         <member name="M:ConsoleFx.CmdLine.ErrorHandling.DelegateErrorHandler.HandleError(System.Exception)">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.Help.ArgumentHelpAttribute.GetMetadata">
-            <inheritdoc />
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Help.ArgumentHelpAttribute.GetApplicableArgTypes">
-            <inheritdoc />
-        </member>
         <member name="M:ConsoleFx.CmdLine.Help.CategoryAttribute.GetApplicableArgTypes">
             <inheritdoc />
         </member>

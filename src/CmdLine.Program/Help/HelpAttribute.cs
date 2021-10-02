@@ -7,15 +7,27 @@ using System.Collections.Generic;
 
 namespace ConsoleFx.CmdLine.Help
 {
-    public class HelpAttribute : MetadataAttribute
+    public sealed class HelpAttribute : MetadataAttribute
     {
         public HelpAttribute(string description)
         {
             if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException("Description should be specified.", nameof(description));
 
+            Name = null;
             Description = description;
         }
+
+        public HelpAttribute(string name, string description)
+            : this(description)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Name should be specified.", nameof(name));
+
+            Name = name;
+        }
+
+        public string Name { get; }
 
         public string Description { get; }
 
@@ -23,6 +35,8 @@ namespace ConsoleFx.CmdLine.Help
 
         public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
         {
+            if (Name is not null)
+                yield return new KeyValuePair<string, object>(HelpMetadataKey.Name, Name);
             yield return new KeyValuePair<string, object>(HelpMetadataKey.Description, Description);
             yield return new KeyValuePair<string, object>(HelpMetadataKey.Order, Order);
         }
@@ -30,9 +44,13 @@ namespace ConsoleFx.CmdLine.Help
         /// <inheritdoc />
         protected override IEnumerable<Type> GetApplicableArgTypes()
         {
-            yield return typeof(Command);
-            yield return typeof(Option);
-            yield return typeof(Argument);
+            if (Name is not null)
+                yield return typeof(Argument);
+            else
+            {
+                yield return typeof(Command);
+                yield return typeof(Option);
+            }
         }
     }
 }

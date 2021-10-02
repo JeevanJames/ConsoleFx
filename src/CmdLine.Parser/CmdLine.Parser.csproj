@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Compile Update="Messages.Designer.cs">
             <DependentUpon>Messages.resx</DependentUpon>
             <DesignTime>True</DesignTime>
@@ -20,10 +24,6 @@
             <LastGenOutput>Messages.Designer.cs</LastGenOutput>
             <Generator>ResXFileCodeGenerator</Generator>
         </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

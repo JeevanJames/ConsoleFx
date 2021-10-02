@@ -7,6 +7,14 @@
         <Description>$(ProductDescription)The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-line argument concepts.</Description>
     </PropertyGroup>
 
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789.`))' == 'net'">
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Validators\Impls\" />
+    </ItemGroup>
+
     <ItemGroup>
         <Compile Update="Errors.Designer.cs">
             <DependentUpon>Errors.resx</DependentUpon>
@@ -38,14 +46,6 @@
             <LastGenOutput>Messages.Designer.cs</LastGenOutput>
             <Generator>ResXFileCodeGenerator</Generator>
         </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789.`))' == 'net'">
-        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Validators\Impls\" />
     </ItemGroup>
 
 </Project>

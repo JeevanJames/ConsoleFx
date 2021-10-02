@@ -909,23 +909,27 @@
         <member name="T:ConsoleFx.CmdLine.DebugOutput">
             <summary>
                 Enables or disables debugging output from the ConsoleFx framework. Any code in the framework
-                can use the <see cref="M:ConsoleFx.CmdLine.DebugOutput.Write(System.Object,System.Collections.Generic.IEnumerable{System.Object},System.String,System.String,System.Int32)"/> method to
+                can use the <see cref="!:Write(object, IEnumerable&lt;object&gt;, string, string, int)" /> method to
                 write debugging information that can be useful to troubleshoot issues.
-                <para/>
-                Debugging output is disabled by default. To enable it, call the <see cref="M:ConsoleFx.CmdLine.DebugOutput.Enable"/> method.
+                <para />
+                Debugging output is disabled by default. To enable it, call the <see cref="M:ConsoleFx.CmdLine.DebugOutput.Enable(ConsoleFx.CmdLine.DebugOutputWriter)" /> method.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.DebugOutput.Enable">
+        <member name="M:ConsoleFx.CmdLine.DebugOutput.Enable(ConsoleFx.CmdLine.DebugOutputWriter)">
             <summary>
                 Enables debugging output from the framework.
             </summary>
+            <param name="writer">
+                The delegate that will perform the actual writing. If <c>null</c>, then a default delegate
+                is used that just writes to the console.
+            </param>
         </member>
         <member name="M:ConsoleFx.CmdLine.DebugOutput.Disable">
             <summary>
                 Disables debugging output from the framework.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.DebugOutput.Write(System.Object,System.Collections.Generic.IEnumerable{System.Object},System.String,System.String,System.Int32)">
+        <member name="M:ConsoleFx.CmdLine.DebugOutput.Write(System.Object,System.Collections.IEnumerable,System.String,System.String,System.Int32)">
             <summary>
                 Writes debugging output to the console. This method should only be called from ConsoleFx
                 code.
