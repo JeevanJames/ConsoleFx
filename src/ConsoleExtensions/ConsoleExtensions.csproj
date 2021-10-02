@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>ConsoleFx.ConsoleExtensions</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
-    <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
-    <Description>$(ProductDescription)The ConsoleFx.ConsoleExtensions package provides enhancements to the Console class.</Description>
-  </PropertyGroup>
+    <PropertyGroup>
+        <RootNamespace>$(BaseNamespace).ConsoleExtensions</RootNamespace>
+        <AssemblyName>$(RootNamespace)</AssemblyName>
+        <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
+        <Description>$(ProductDescription)The ConsoleFx.ConsoleExtensions package provides enhancements to the Console class.</Description>
+    </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789.`))' == 'net'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789.`))' == 'net'">
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    </ItemGroup>
 
 </Project>

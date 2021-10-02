@@ -27,9 +27,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CmdLine.Parser.Tests", "tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test-harness", "test-harness", "{37C9795D-F31E-4738-89AA-964E971FC4E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleProgram", "test-harness\SimpleProgram\SimpleProgram.csproj", "{1016B435-3437-4E90-9C3D-E08795E4786B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleProgram", "test-harness\SimpleProgram\SimpleProgram.csproj", "{1016B435-3437-4E90-9C3D-E08795E4786B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "test-harness\TestHarness\TestHarness.csproj", "{C4FF6BB9-5ED0-4982-8528-768C9A8C1D18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestHarness", "test-harness\TestHarness\TestHarness.csproj", "{C4FF6BB9-5ED0-4982-8528-768C9A8C1D18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{844568D4-65C9-4C57-9140-207E4F642A8F}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		ConsoleFx.sln.licenseheader = ConsoleFx.sln.licenseheader
+		Directory.Build.props = Directory.Build.props
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

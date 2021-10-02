@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>ConsoleFx.CmdLine.Parser</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
-    <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
-    <Description>$(ProductDescription)The ConsoleFx.CmdLine.Parser package provides a sophisticated command-line arguments parser.</Description>
-  </PropertyGroup>
+    <PropertyGroup>
+        <RootNamespace>$(BaseNamespace).CmdLine.Parser</RootNamespace>
+        <AssemblyName>$(RootNamespace)</AssemblyName>
+        <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
+        <Description>$(ProductDescription)The ConsoleFx.CmdLine.Parser package provides a sophisticated command-line arguments parser.</Description>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Update="Messages.Designer.cs">
-      <DependentUpon>Messages.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Messages.Designer.cs">
+            <DependentUpon>Messages.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Messages.resx">
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Messages.resx">
+            <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CmdLine.Abstractions\CmdLine.Abstractions.csproj" />
+    </ItemGroup>
 
 </Project>

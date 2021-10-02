@@ -22,7 +22,7 @@ namespace ConsoleFx.ConsoleExtensions
 
         public IList<char> IndentationLineBreakChars
         {
-            get => _indentationLineBreakChars ?? (_indentationLineBreakChars = new List<char> { ' ' });
+            get => _indentationLineBreakChars ??= new List<char> { ' ' };
             set => _indentationLineBreakChars = value;
         }
     }

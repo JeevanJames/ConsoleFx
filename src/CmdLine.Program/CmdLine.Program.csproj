@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>ConsoleFx.CmdLine.Program</AssemblyName>
-        <RootNamespace>$(AssemblyName)</RootNamespace>
+        <RootNamespace>$(BaseNamespace).CmdLine.Program</RootNamespace>
+        <AssemblyName>$(RootNamespace)</AssemblyName>
         <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
         <Description>$(ProductDescription)The ConsoleFx.CmdLine.Program package provides support for creating console applications.</Description>
     </PropertyGroup>

@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>ConsoleFx.Art</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
-    <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
-    <Description>$(ProductDescription)The ConsoleFx.Art package provides support for rendering ASCII art on the console.</Description>
-  </PropertyGroup>
+    <PropertyGroup>
+        <RootNamespace>$(BaseNamespace).Art</RootNamespace>
+        <AssemblyName>$(RootNamespace)</AssemblyName>
+        <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
 
 </Project>

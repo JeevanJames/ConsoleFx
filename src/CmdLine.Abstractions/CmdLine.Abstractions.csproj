@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>ConsoleFx.CmdLine.Abstractions</AssemblyName>
-        <RootNamespace>ConsoleFx.CmdLine</RootNamespace>
+        <RootNamespace>$(BaseNamespace).CmdLine</RootNamespace>
+        <AssemblyName>$(RootNamespace).Abstractions</AssemblyName>
         <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
         <Description>$(ProductDescription)The ConsoleFx.CmdLine.Abstractions package provides abstractions for command-line argument concepts.</Description>
     </PropertyGroup>

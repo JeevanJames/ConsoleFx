@@ -1164,9 +1164,8 @@
             <summary>
                 Gets the top-level <see cref="P:ConsoleFx.CmdLine.IParseResult.Command"/>.
                 <para/>
-                The <see cref="P:ConsoleFx.CmdLine.IParseResult.Command"/> instance has properties such as
-                <see cref="P:ConsoleFx.CmdLine.Command.ParentCommand"/> and <see cref="P:ConsoleFx.CmdLine.Command.RootCommand"/> to traverse up
-                the command chain.
+                The <see cref="P:ConsoleFx.CmdLine.IParseResult.Command"/> instance has properties such as <see cref="P:ConsoleFx.CmdLine.Command.ParentCommand"/>
+                and <see cref="P:ConsoleFx.CmdLine.Command.RootCommand"/> to traverse up the command chain.
             </summary>
         </member>
         <member name="P:ConsoleFx.CmdLine.IParseResult.Arguments">
