@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine.Program.Help
 {
     public sealed class ArgumentHelpAttribute : HelpAttribute
     {

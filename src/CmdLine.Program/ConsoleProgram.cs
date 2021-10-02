@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine.Internals;
 using ConsoleFx.CmdLine.Program.ErrorHandlers;
-using ConsoleFx.CmdLine.Program.HelpBuilders;
+using ConsoleFx.CmdLine.Program.Help;
 using ConsoleFx.CmdLine.Validators;
 
 using ParserStyle = ConsoleFx.CmdLine.Parser.Style;
@@ -149,7 +149,7 @@ namespace ConsoleFx.CmdLine.Program
         ///     have the necessary information to display the help. Help information is stored in the
         ///     metadata, and each help builder can use different metadata to display the help.
         ///     <para/>
-        ///     When this property is set to <c>true</c>, the <see cref="Program.HelpBuilder.VerifyHelp(Command)"/>
+        ///     When this property is set to <c>true</c>, the <see cref="Help.HelpBuilder.VerifyHelp(Command)"/>
         ///     method is called and if any necessary information is missing, an exception is thrown.
         /// </summary>
         /// <remarks>

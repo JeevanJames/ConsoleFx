@@ -4,9 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine.Program.Help
 {
     public abstract partial class HelpBuilder
     {
@@ -37,30 +36,6 @@ namespace ConsoleFx.CmdLine.Program
         /// <param name="command">The <see cref="Command"/> to verify.</param>
         public virtual void VerifyHelp(Command command)
         {
-        }
-    }
-
-    public abstract partial class HelpBuilder : INamedObject
-    {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly NamedObjectImpl _namedObject = new(
-            "The help name cannot be empty or whitespaced.",
-            "'{0}' is an invalid name for a help.");
-
-        public string Name => ((INamedObject)_namedObject).Name;
-
-        public IEnumerable<string> AlternateNames => ((INamedObject)_namedObject).AlternateNames;
-
-        public IEnumerable<string> AllNames => ((INamedObject)_namedObject).AllNames;
-
-        public void AddName(string name, bool caseSensitive = false)
-        {
-            ((INamedObject)_namedObject).AddName(name, caseSensitive);
-        }
-
-        public bool HasName(string name)
-        {
-            return ((INamedObject)_namedObject).HasName(name);
         }
     }
 }

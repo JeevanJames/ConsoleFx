@@ -4,15 +4,6 @@
         <name>ConsoleFx.CmdLine.Program</name>
     </assembly>
     <members>
-        <member name="M:ConsoleFx.CmdLine.Program.ArgumentHelpAttribute.GetMetadata">
-            <inheritdoc />
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.ArgumentHelpAttribute.GetApplicableArgTypes">
-            <inheritdoc />
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Program.CategoryAttribute.GetApplicableArgTypes">
-            <inheritdoc />
-        </member>
         <member name="T:ConsoleFx.CmdLine.Program.ConsoleProgram">
             <summary>
                 Represents a console program.
@@ -52,7 +43,7 @@
                 have the necessary information to display the help. Help information is stored in the
                 metadata, and each help builder can use different metadata to display the help.
                 <para/>
-                When this property is set to <c>true</c>, the <see cref="M:ConsoleFx.CmdLine.Program.HelpBuilder.VerifyHelp(ConsoleFx.CmdLine.Command)"/>
+                When this property is set to <c>true</c>, the <see cref="M:ConsoleFx.CmdLine.Program.Help.HelpBuilder.VerifyHelp(ConsoleFx.CmdLine.Command)"/>
                 method is called and if any necessary information is missing, an exception is thrown.
             </summary>
             <remarks>
@@ -138,23 +129,16 @@
         <member name="M:ConsoleFx.CmdLine.Program.DelegateErrorHandler.HandleError(System.Exception)">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpAttribute.GetApplicableArgTypes">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.ArgumentHelpAttribute.GetMetadata">
             <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpBuilder.DisplayHelp(ConsoleFx.CmdLine.Command)">
-            <summary>
-                Override this method to display the help for the specified <paramref name="command"/>.
-            </summary>
-            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> for which to display help.</param>
+        <member name="M:ConsoleFx.CmdLine.Program.Help.ArgumentHelpAttribute.GetApplicableArgTypes">
+            <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpBuilder.VerifyHelp(ConsoleFx.CmdLine.Command)">
-            <summary>
-                Derived help builders can override this method to verify that they have all the
-                necessary information from the <see cref="T:ConsoleFx.CmdLine.Command"/> to display help.
-            </summary>
-            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> to verify.</param>
+        <member name="M:ConsoleFx.CmdLine.Program.Help.CategoryAttribute.GetApplicableArgTypes">
+            <inheritdoc />
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpBuilders.DefaultHelpBuilder.PrintArg(System.String,System.String,System.Int32,ConsoleFx.CmdLine.Program.HelpBuilders.ArgDescriptionPlacement)">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.DefaultHelpBuilder.PrintArg(System.String,System.String,System.Int32,ConsoleFx.CmdLine.Program.Help.ArgDescriptionPlacement)">
             <summary>
                 Prints an arg and its description.
                 <para />
@@ -165,24 +149,40 @@
             <param name="maxNameLength">Length pf the longest arg name.</param>
             <param name="placement">The placement of the description in relation to the name.</param>
         </member>
-        <member name="T:ConsoleFx.CmdLine.Program.HelpBuilders.UsageType">
+        <member name="T:ConsoleFx.CmdLine.Program.Help.UsageType">
             <summary>
                 Describes how the program usage is to be displayed.
             </summary>
         </member>
-        <member name="F:ConsoleFx.CmdLine.Program.HelpBuilders.UsageType.Summary">
+        <member name="F:ConsoleFx.CmdLine.Program.Help.UsageType.Summary">
             <summary>
                 The program usage is to be displayed as a summary, showing just the existence of
                 subcommands, arguments and options, but not mentioning them in detail.
             </summary>
         </member>
-        <member name="F:ConsoleFx.CmdLine.Program.HelpBuilders.UsageType.Detailed">
+        <member name="F:ConsoleFx.CmdLine.Program.Help.UsageType.Detailed">
             <summary>
                 The program usage is to be displayed in detail, with every argument and option
                 combinations mentioned.
             </summary>
         </member>
-        <member name="T:ConsoleFx.CmdLine.Program.HelpExtensions">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpAttribute.GetApplicableArgTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpBuilder.DisplayHelp(ConsoleFx.CmdLine.Command)">
+            <summary>
+                Override this method to display the help for the specified <paramref name="command"/>.
+            </summary>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> for which to display help.</param>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpBuilder.VerifyHelp(ConsoleFx.CmdLine.Command)">
+            <summary>
+                Derived help builders can override this method to verify that they have all the
+                necessary information from the <see cref="T:ConsoleFx.CmdLine.Command"/> to display help.
+            </summary>
+            <param name="command">The <see cref="T:ConsoleFx.CmdLine.Command"/> to verify.</param>
+        </member>
+        <member name="T:ConsoleFx.CmdLine.Program.Help.HelpExtensions">
             <summary>
                 Provides extension methods to add standard help metadata to various <see cref="T:ConsoleFx.CmdLine.Arg"/>
                 objects.
@@ -191,7 +191,7 @@
                 metadata or use different metadata.
             </summary>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Help(ConsoleFx.CmdLine.Argument,System.String,System.String)">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpExtensions.Help(ConsoleFx.CmdLine.Argument,System.String,System.String)">
             <summary>
                 Sets a <paramref name="description"/> and optional <paramref name="name"/> for the
                 specified <paramref name="argument"/>.
@@ -204,7 +204,7 @@
                 Thrown if the description is <c>null</c>.
             </exception>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Help(ConsoleFx.CmdLine.Command,System.String,System.String)">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpExtensions.Help(ConsoleFx.CmdLine.Command,System.String,System.String)">
             <summary>
                 Sets a <paramref name="description"/> and optional <paramref name="name"/> for the
                 specified <paramref name="command"/>.
@@ -217,7 +217,7 @@
                 Thrown if the <paramref name="description"/> is <c>null</c>.
             </exception>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Help(ConsoleFx.CmdLine.Option,System.String)">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpExtensions.Help(ConsoleFx.CmdLine.Option,System.String)">
             <summary>
                 Sets a <paramref name="description"/> for the specified <paramref name="option"/>.
             </summary>
@@ -228,7 +228,7 @@
                 Thrown if the <paramref name="description"/> is <c>null</c>.
             </exception>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Category``1(``0,System.String,System.String)">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpExtensions.Category``1(``0,System.String,System.String)">
             <summary>
                 Sets a category <paramref name="name"/> and <paramref name="description"/> for the
                 specified <paramref name="arg"/>.
@@ -247,7 +247,7 @@
                 Thrown if the <paramref name="name"/> is <c>null</c>.
             </exception>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.Order``1(``0,System.Int32)">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpExtensions.Order``1(``0,System.Int32)">
             <summary>
                 Sets a help metadata on the specified <paramref name="arg"/> to control the order in
                 which the arg will be displayed in the help. If the arg belongs to a category, this
@@ -262,7 +262,7 @@
             <param name="order">The order of the arg.</param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</returns>
         </member>
-        <member name="M:ConsoleFx.CmdLine.Program.HelpExtensions.HideHelp``1(``0)">
+        <member name="M:ConsoleFx.CmdLine.Program.Help.HelpExtensions.HideHelp``1(``0)">
             <summary>
                 Sets a help metadata on the specified <paramref name="arg"/> to indicate that help for
                 the arg should not be displayed.
@@ -274,23 +274,23 @@
             </param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</returns>
         </member>
-        <member name="T:ConsoleFx.CmdLine.Program.Messages">
+        <member name="T:ConsoleFx.CmdLine.Messages">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Program.Messages.ResourceManager">
+        <member name="P:ConsoleFx.CmdLine.Messages.ResourceManager">
             <summary>
               Returns the cached ResourceManager instance used by this class.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Program.Messages.Culture">
+        <member name="P:ConsoleFx.CmdLine.Messages.Culture">
             <summary>
               Overrides the current thread's CurrentUICulture property for all
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Program.Messages.InternalError">
+        <member name="P:ConsoleFx.CmdLine.Messages.InternalError">
              <summary>
                Looks up a localized string similar to An internal error has occurred with the following message:
                 {0}

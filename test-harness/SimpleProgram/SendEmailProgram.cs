@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Program;
+using ConsoleFx.CmdLine.Program.Help;
 using ConsoleFx.CmdLine.Validators;
 
 namespace ConsoleFx.TestHarness.SimpleProgram

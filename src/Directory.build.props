@@ -31,7 +31,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="$(MSBuildThisFileDirectory)../shared/Logo.png" Pack="true" PackagePath="" />
+        <None Include="$(MSBuildThisFileDirectory)../shared/Logo.png" Pack="true" PackagePath="" Link="Properties/Logo.png" />
     </ItemGroup>
 
     <ItemGroup>

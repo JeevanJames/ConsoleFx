@@ -5,29 +5,26 @@
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine.Program.Help
 {
-    public sealed class CategoryAttribute : MetadataAttribute
+    public class HelpAttribute : MetadataAttribute
     {
-        public CategoryAttribute(string name, string description)
+        public HelpAttribute(string description)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Specify valid category name.", nameof(name));
             if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("Specify valid category description.", nameof(description));
+                throw new ArgumentException("Description should be specified.", nameof(description));
 
-            Name = name;
             Description = description;
         }
 
-        public string Name { get; }
-
         public string Description { get; }
+
+        public int Order { get; }
 
         public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
         {
-            yield return new KeyValuePair<string, object>(HelpMetadataKey.CategoryName, Name);
-            yield return new KeyValuePair<string, object>(HelpMetadataKey.CategoryDescription, Description);
+            yield return new KeyValuePair<string, object>(HelpMetadataKey.Description, Description);
+            yield return new KeyValuePair<string, object>(HelpMetadataKey.Order, Order);
         }
 
         /// <inheritdoc />

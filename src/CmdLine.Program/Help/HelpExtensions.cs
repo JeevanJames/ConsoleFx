@@ -3,8 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Globalization;
 
-namespace ConsoleFx.CmdLine.Program
+namespace ConsoleFx.CmdLine.Program.Help
 {
     /// <summary>
     ///     Provides extension methods to add standard help metadata to various <see cref="Arg"/>
@@ -28,6 +29,8 @@ namespace ConsoleFx.CmdLine.Program
         /// </exception>
         public static Argument Help(this Argument argument, string description, string name = null)
         {
+            if (argument is null)
+                throw new ArgumentNullException(nameof(argument));
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
 
@@ -51,6 +54,8 @@ namespace ConsoleFx.CmdLine.Program
         /// </exception>
         public static Command Help(this Command command, string description, string name = null)
         {
+            if (command is null)
+                throw new ArgumentNullException(nameof(command));
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
 
@@ -72,6 +77,8 @@ namespace ConsoleFx.CmdLine.Program
         /// </exception>
         public static Option Help(this Option option, string description)
         {
+            if (option is null)
+                throw new ArgumentNullException(nameof(option));
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
 
@@ -100,6 +107,8 @@ namespace ConsoleFx.CmdLine.Program
         public static TArg Category<TArg>(this TArg arg, string name, string description = null)
             where TArg : Arg, IMetadataObject
         {
+            if (arg is null)
+                throw new ArgumentNullException(nameof(arg));
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
 
@@ -124,7 +133,10 @@ namespace ConsoleFx.CmdLine.Program
         public static TArg Order<TArg>(this TArg arg, int order)
             where TArg : Arg, IMetadataObject
         {
-            arg[HelpMetadataKey.Order] = order.ToString();
+            if (arg is null)
+                throw new ArgumentNullException(nameof(arg));
+
+            arg[HelpMetadataKey.Order] = order.ToString(CultureInfo.InvariantCulture);
             return arg;
         }
 
@@ -141,6 +153,9 @@ namespace ConsoleFx.CmdLine.Program
         public static TArg HideHelp<TArg>(this TArg arg)
             where TArg : Arg, IMetadataObject
         {
+            if (arg is null)
+                throw new ArgumentNullException(nameof(arg));
+
             arg[HelpMetadataKey.Hide] = true;
             return arg;
         }

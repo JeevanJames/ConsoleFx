@@ -10,7 +10,7 @@ using System.Text;
 
 using static System.Console;
 
-namespace ConsoleFx.CmdLine.Program.HelpBuilders
+namespace ConsoleFx.CmdLine.Program.Help
 {
     public class DefaultHelpBuilder : HelpBuilder
     {
@@ -40,6 +40,9 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
         public override void DisplayHelp(Command command)
         {
+            if (command is null)
+                throw new ArgumentNullException(nameof(command));
+
             string usage = GetSummaryUsage(command);
             WriteLine($"Usage: {usage}");
 
@@ -258,39 +261,6 @@ namespace ConsoleFx.CmdLine.Program.HelpBuilders
 
                 index++;
             }
-        }
-    }
-
-    public class DefaultColorHelpBuilder : DefaultHelpBuilder
-    {
-        public DefaultColorHelpBuilder(params string[] names)
-            : base(names)
-        {
-        }
-
-        public DefaultColorHelpBuilder(bool caseSensitive, params string[] names)
-            : base(caseSensitive, names)
-        {
-        }
-
-        protected override void PrintArg(string name, string description, int maxNameLength, ArgDescriptionPlacement placement)
-        {
-            Write(IndentStr);
-
-            ForegroundColor = ConsoleColor.Magenta;
-            if (placement == ArgDescriptionPlacement.SameLine)
-            {
-                Write(name.PadRight(maxNameLength) + NameDescriptionSpacingStr);
-            }
-            else
-            {
-                WriteLine(name);
-                Write(NewLineDescriptionIndentStr);
-            }
-
-            ResetColor();
-
-            WriteLine(description);
         }
     }
 
