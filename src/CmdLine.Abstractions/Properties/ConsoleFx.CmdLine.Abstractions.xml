@@ -189,6 +189,9 @@
             <param name="validators">The validators to use to validate the argument.</param>
             <returns>The same instance of the <see cref="T:ConsoleFx.CmdLine.Argument"/> object to allow for fluent syntax.</returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Argument.ValidateUnderlyingProperty">
+            <inheritdoc />
+        </member>
         <member name="T:ConsoleFx.CmdLine.ArgumentValueType">
             <summary>
                 The type of the resolved value of an option.
@@ -662,6 +665,9 @@
             </summary>
             <returns>An <see cref="T:ConsoleFx.CmdLine.OptionValueType"/> enum specifying the expected value type.</returns>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Option.ValidateUnderlyingProperty">
+            <inheritdoc />
+        </member>
         <member name="T:ConsoleFx.CmdLine.OptionValueType">
             <summary>
                 The type of the resolved value of an option.
@@ -1011,8 +1017,22 @@
         </member>
         <member name="P:ConsoleFx.CmdLine.OptionAttribute.Optional">
             <summary>
-                Gets or sets a value indicating whether the option is optional.
+                Gets or sets a value indicating whether the option is required. Defaults to required.
             </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionAttribute.MultipleOccurrences">
+            <summary>
+                Gets or sets a value indicating whether the option can be specified multiple times.
+            </summary>
+        </member>
+        <member name="P:ConsoleFx.CmdLine.OptionAttribute.MultipleParameters">
+            <summary>
+                Gets or sets a value indicating whether the option can have multiple parameters. If
+                <c>false</c>, then the option can have only a single parameter.
+            </summary>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.OptionAttribute.ConsoleFx#CmdLine#IArgApplicator{ConsoleFx#CmdLine#Option}#Apply(ConsoleFx.CmdLine.Option,System.Reflection.PropertyInfo)">
+            <inheritdoc />
         </member>
         <member name="T:ConsoleFx.CmdLine.MetadataAttribute">
             <summary>

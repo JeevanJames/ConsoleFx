@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
+using ConsoleFx.CmdLine.Internals;
 using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine
@@ -226,6 +228,36 @@ namespace ConsoleFx.CmdLine
                 return OptionValueType.Object;
 
             throw new ParserException(-1, "Should never reach here.");
+        }
+
+        /// <inheritdoc />
+        internal override void ValidateUnderlyingProperty()
+        {
+            OptionValueType expectedValueType = GetValueType();
+            switch (expectedValueType)
+            {
+                case OptionValueType.Count:
+                    if (AssignedProperty.PropertyType != typeof(int))
+                        throw new ParserException(-1, $"Type for property {AssignedProperty.Name} in command {AssignedProperty.DeclaringType} should be an integer.");
+                    break;
+                case OptionValueType.Flag:
+                    if (AssignedProperty.PropertyType != typeof(bool))
+                        throw new ParserException(-1, $"Type for property {AssignedProperty.Name} in command {AssignedProperty.DeclaringType} should be an boolean.");
+                    break;
+                case OptionValueType.Object:
+                    if (AssignedProperty.PropertyType != typeof(string))
+                        TypeAs(AssignedProperty.PropertyType);
+                    break;
+                case OptionValueType.List:
+                    Type itemType = AssignedProperty.GetCollectionItemType();
+                    if (itemType is null)
+                        throw new ParserException(-1, $"Type for property {AssignedProperty.Name} in command {AssignedProperty.DeclaringType} should be a generic collection type like IEnumerable<T> or List<T>.");
+                    if (itemType != typeof(string))
+                        TypeAs(itemType);
+                    break;
+                default:
+                    throw new NotSupportedException($"Unexpected OptionValueType value of {expectedValueType}.");
+            }
         }
     }
 

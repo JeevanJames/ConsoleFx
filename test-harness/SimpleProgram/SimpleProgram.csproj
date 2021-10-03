@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\CmdLine.Program\CmdLine.Program.csproj" />
+        <ProjectReference Include="..\..\src\ConsoleExtensions\ConsoleExtensions.csproj" />
     </ItemGroup>
 
 </Project>

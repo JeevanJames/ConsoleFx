@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Help;
 using ConsoleFx.CmdLine.Validators;
+using ConsoleFx.ConsoleExtensions;
 
 namespace ConsoleFx.TestHarness.SimpleProgram
 {
@@ -20,8 +21,7 @@ namespace ConsoleFx.TestHarness.SimpleProgram
             ConsoleProgram program = new SendEmailProgram()
                 .HandleErrorsWith(ex =>
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(ex.ToString());
+                    ConsoleEx.PrintLine($"[Red]{ex}[Reset]");
                     return 1;
                 })
                 .DisplayHelpOnError();
@@ -50,19 +50,19 @@ namespace ConsoleFx.TestHarness.SimpleProgram
             return null;
         }
 
-        [Option("to", Optional = true, Usage = CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
+        [Option("to", Optional = true, MultipleOccurrences = true)]
         [Help("To addresses.")]
         public IList<string> ToAddresses { get; } = new List<string> { "admin" };
 
-        [Option("cc", Optional = true, Usage = CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
+        [Option("cc", Optional = true, MultipleOccurrences = true)]
         [Help("CC addresses.")]
         public IList<string> CcAddresses { get; } = new List<string>();
 
-        [Option("bcc", Optional = true, Usage = CommonOptionUsage.UnlimitedOccurrencesSingleParameter)]
+        [Option("bcc", Optional = true, MultipleOccurrences = true)]
         [Help("BCC addresses.")]
         public IList<string> BccAddresses { get; } = new List<string>();
 
-        [Option("subject", "sub", "s", Usage = CommonOptionUsage.SingleParameter)]
+        [Option("subject", "sub", "s")]
         [Help("Email subject line")]
         public string Subject { get; set; }
 

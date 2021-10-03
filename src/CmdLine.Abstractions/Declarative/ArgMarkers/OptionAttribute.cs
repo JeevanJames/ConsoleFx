@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using ConsoleFx.CmdLine.Internals;
-
 namespace ConsoleFx.CmdLine
 {
     /// <summary>
@@ -57,70 +55,24 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public IReadOnlyList<string> Names { get; }
 
-        public CommonOptionUsage Usage { get; set; }
-
         /// <summary>
-        ///     Gets or sets a value indicating whether the option is optional.
+        ///     Gets or sets a value indicating whether the option is required. Defaults to required.
         /// </summary>
         public bool Optional { get; set; }
 
-        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo propertyInfo)
-        {
-            switch (Usage)
-            {
-                case CommonOptionUsage.SingleParameter:
-                    arg.UsedAsSingleParameter(Optional);
-                    break;
-                case CommonOptionUsage.SingleOccurrenceUnlimitedParameters:
-                    arg.UsedAsSingleOccurrenceAndUnlimitedParameters(Optional);
-                    break;
-                case CommonOptionUsage.UnlimitedOccurrencesSingleParameter:
-                    arg.UsedAsUnlimitedOccurrencesAndSingleParameter(Optional);
-                    break;
-                case CommonOptionUsage.UnlimitedOccurrencesAndParameters:
-                    arg.UsedAsUnlimitedOccurrencesAndParameters(Optional);
-                    break;
-            }
-
-            OptionValueType expectedValueType = arg.GetValueType();
-            switch (expectedValueType)
-            {
-                case OptionValueType.Count:
-                    if (propertyInfo.PropertyType != typeof(int))
-                        throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be an integer.");
-                    break;
-                case OptionValueType.Flag:
-                    if (propertyInfo.PropertyType != typeof(bool))
-                        throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be an boolean.");
-                    break;
-                case OptionValueType.Object:
-                    if (propertyInfo.PropertyType != typeof(string))
-                        arg.TypeAs(propertyInfo.PropertyType);
-                    break;
-                case OptionValueType.List:
-                    Type itemType = propertyInfo.GetCollectionItemType();
-                    if (itemType is null)
-                        throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be a generic collection type like IEnumerable<T> or List<T>.");
-                    if (itemType != typeof(string))
-                        arg.TypeAs(itemType);
-                    break;
-                default:
-                    throw new NotSupportedException($"Unexpected OptionValueType value of {expectedValueType}.");
-            }
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class MultiOptionAttribute : Attribute, IArgApplicator<Option>
-    {
-        public bool Optional { get; set; }
-
+        /// <summary>
+        ///     Gets or sets a value indicating whether the option can be specified multiple times.
+        /// </summary>
         public bool MultipleOccurrences { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether the option can have multiple parameters. If
+        ///     <c>false</c>, then the option can have only a single parameter.
+        /// </summary>
         public bool MultipleParameters { get; set; }
 
         /// <inheritdoc />
-        public void Apply(Option arg, PropertyInfo propertyInfo)
+        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo propertyInfo)
         {
             if (MultipleOccurrences && MultipleParameters)
                 arg.UsedAsUnlimitedOccurrencesAndParameters(Optional);
@@ -128,6 +80,8 @@ namespace ConsoleFx.CmdLine
                 arg.UsedAsUnlimitedOccurrencesAndSingleParameter(Optional);
             else if (MultipleParameters)
                 arg.UsedAsSingleOccurrenceAndUnlimitedParameters(Optional);
+            else
+                arg.UsedAsSingleParameter(Optional);
         }
     }
 }

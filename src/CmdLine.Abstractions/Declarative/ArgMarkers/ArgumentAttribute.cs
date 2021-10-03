@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Reflection;
-
-using ConsoleFx.CmdLine.Internals;
 
 namespace ConsoleFx.CmdLine
 {
@@ -13,7 +10,7 @@ namespace ConsoleFx.CmdLine
     ///     Marks a property in a <see cref="Command"/> class as an <see cref="Argument"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class ArgumentAttribute : Attribute, IArgApplicator<Argument>
+    public sealed class ArgumentAttribute : Attribute
     {
         /// <summary>
         ///     Gets or sets the order of the argument in the list of arguments.
@@ -30,26 +27,5 @@ namespace ConsoleFx.CmdLine
         ///     applies to the last argument. For other arguments, this value can only be one.
         /// </summary>
         public byte MaxOccurences { get; set; } = 1;
-
-        void IArgApplicator<Argument>.Apply(Argument arg, PropertyInfo propertyInfo)
-        {
-            ArgumentValueType expectedValueType = arg.GetValueType();
-            switch (expectedValueType)
-            {
-                case ArgumentValueType.Object:
-                    if (propertyInfo.PropertyType != typeof(string))
-                        arg.TypeAs(propertyInfo.PropertyType);
-                    break;
-                case ArgumentValueType.List:
-                    Type itemType = propertyInfo.GetCollectionItemType();
-                    if (itemType is null)
-                        throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be a generic collection type like IEnumerable<T> or List<T>.");
-                    if (itemType != typeof(string))
-                        arg.TypeAs(itemType);
-                    break;
-                default:
-                    throw new NotSupportedException($"Unexpected ArgumentValueType value of {expectedValueType}.");
-            }
-        }
     }
 }

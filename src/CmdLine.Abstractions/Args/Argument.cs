@@ -4,7 +4,9 @@
 
 using System;
 using System.Diagnostics;
+using System.Reflection;
 
+using ConsoleFx.CmdLine.Internals;
 using ConsoleFx.CmdLine.Validators.Bases;
 
 namespace ConsoleFx.CmdLine
@@ -119,7 +121,7 @@ namespace ConsoleFx.CmdLine
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         public override Argument TypeAs<T>(Converter<string, T> converter = null)
         {
-            InternalTypeAs<T>(typeof(T), converter);
+            InternalTypeAs(typeof(T), converter);
             return this;
         }
 
@@ -139,6 +141,28 @@ namespace ConsoleFx.CmdLine
         internal ArgumentValueType GetValueType()
         {
             return MaxOccurences > 1 ? ArgumentValueType.List : ArgumentValueType.Object;
+        }
+
+        /// <inheritdoc />
+        internal override void ValidateUnderlyingProperty()
+        {
+            ArgumentValueType expectedValueType = GetValueType();
+            switch (expectedValueType)
+            {
+                case ArgumentValueType.Object:
+                    if (AssignedProperty.PropertyType != typeof(string))
+                        TypeAs(AssignedProperty.PropertyType);
+                    break;
+                case ArgumentValueType.List:
+                    Type itemType = AssignedProperty.GetCollectionItemType();
+                    if (itemType is null)
+                        throw new ParserException(-1, $"Type for property {AssignedProperty.Name} in command {AssignedProperty.DeclaringType} should be a generic collection type like IEnumerable<T> or List<T>.");
+                    if (itemType != typeof(string))
+                        TypeAs(itemType);
+                    break;
+                default:
+                    throw new NotSupportedException($"Unexpected ArgumentValueType value of {expectedValueType}.");
+            }
         }
     }
 

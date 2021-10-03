@@ -190,6 +190,8 @@ namespace ConsoleFx.CmdLine
                 foreach (IArgApplicator<TArg> applicatorAttr in applicatorAttrs)
                     applicatorAttr.Apply(arg, property);
 
+                arg.ValidateUnderlyingProperty();
+
                 // Apply any metadata attributes to the arg
                 IEnumerable<MetadataAttribute> metadataAttrs = property.GetCustomAttributes<MetadataAttribute>(true);
                 foreach (MetadataAttribute metadataAttr in metadataAttrs)

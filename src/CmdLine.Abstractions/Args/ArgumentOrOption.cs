@@ -176,5 +176,7 @@ namespace ConsoleFx.CmdLine
             _groups.Clear();
             _groups.AddRange(groups);
         }
+
+        internal abstract void ValidateUnderlyingProperty();
     }
 }
