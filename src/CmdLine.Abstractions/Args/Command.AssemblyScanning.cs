@@ -16,7 +16,7 @@ namespace ConsoleFx.CmdLine
         ///     Gets the commands that are discovered by calling one of the <c>ScanAssemblies</c>
         ///     methods.
         /// </summary>
-        internal IDictionary<Type, Type> DiscoveredCommands { get; } = new Dictionary<Type, Type>();
+        internal Dictionary<Type, Type> DiscoveredCommands { get; } = new();
 
         /// <summary>
         ///     Scans the entry assembly and locates any commands objects. Add applicable commands
@@ -28,6 +28,17 @@ namespace ConsoleFx.CmdLine
         public void ScanEntryAssemblyForCommands(Func<Type, bool> typePredicate = null)
         {
             ScanAssembliesForCommands(new[] { Assembly.GetEntryAssembly() }, typePredicate);
+        }
+
+        /// <summary>
+        ///     Scans all assemblies in the current app domain and locates any command objects.
+        /// </summary>
+        /// <param name="typePredicate">
+        ///     Optional predicate that can be used to filter the discovered commands.
+        /// </param>
+        public void ScanAllAssembliesForCommands(Func<Type, bool> typePredicate = null)
+        {
+            ScanAssembliesForCommands(AppDomain.CurrentDomain.GetAssemblies(), typePredicate);
         }
 
         /// <summary>

@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using ConsoleFx.CmdLine.Internals;
+
 namespace ConsoleFx.CmdLine
 {
     /// <summary>
@@ -24,30 +26,7 @@ namespace ConsoleFx.CmdLine
         /// <param name="additionalNames">Optional additional names (aliases) for the option.</param>
         public OptionAttribute(string name, params string[] additionalNames)
         {
-            if (name is null)
-                throw new ArgumentNullException(nameof(name));
-            if (name.Trim().Length == 0)
-                throw new ArgumentException("Option name cannot be empty or whitespaced.", nameof(name));
-
-            if (additionalNames is null)
-                throw new ArgumentNullException(nameof(additionalNames));
-
-            for (int i = 0; i < additionalNames.Length; i++)
-            {
-                if (string.IsNullOrWhiteSpace(additionalNames[i]))
-                {
-                    throw new ArgumentException(
-                        $"Additional names for option '{name}' has an null, empty or whitespaced value at index {i}.",
-                        nameof(additionalNames));
-                }
-            }
-
-            string[] names = new string[additionalNames.Length + 1];
-            names[0] = name;
-            if (additionalNames.Length > 0)
-                additionalNames.CopyTo(names, index: 1);
-
-            Names = names;
+            Names = name.ConstructNames(additionalNames);
         }
 
         /// <summary>

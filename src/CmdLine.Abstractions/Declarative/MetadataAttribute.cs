@@ -39,7 +39,7 @@ namespace ConsoleFx.CmdLine
             // Validate applicable args for this attribute.
             //TODO: Simplify code
             IEnumerable<Type> applicableArgs = GetApplicableArgTypes();
-            if (!applicableArgs.Any(type => type.IsAssignableFrom(typeof(TArg))))
+            if (!applicableArgs.Any(type => typeof(TArg).IsAssignableFrom(type)))
             {
                 throw new InvalidOperationException(
                     $"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");

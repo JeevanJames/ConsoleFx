@@ -332,6 +332,14 @@
                 Optional predicate that can be used to filter the discovered commands.
             </param>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Command.ScanAllAssembliesForCommands(System.Func{System.Type,System.Boolean})">
+            <summary>
+                Scans all assemblies in the current app domain and locates any command objects.
+            </summary>
+            <param name="typePredicate">
+                Optional predicate that can be used to filter the discovered commands.
+            </param>
+        </member>
         <member name="M:ConsoleFx.CmdLine.Command.ScanAssembliesForCommands(System.Reflection.Assembly[])">
             <summary>
                 Scans the specified <paramref name="assemblies"/> and locates any commands objects.
@@ -980,12 +988,13 @@
             <param name="name">The primary name of the command.</param>
             <param name="parentType">The optional type of the parent <see cref="T:ConsoleFx.CmdLine.Command"/>.</param>
         </member>
-        <member name="M:ConsoleFx.CmdLine.CommandAttribute.#ctor(System.String[])">
+        <member name="M:ConsoleFx.CmdLine.CommandAttribute.#ctor(System.String,System.String[])">
             <summary>
                 Initializes a new instance of the <see cref="T:ConsoleFx.CmdLine.CommandAttribute"/> class with the
-                specified <paramref name="names"/>.
+                specified <paramref name="additionalNames"/>.
             </summary>
-            <param name="names">One or more names of the command.</param>
+            <param name="name">The primary name of the command.</param>
+            <param name="additionalNames">Optional additional names for the command.</param>
         </member>
         <member name="P:ConsoleFx.CmdLine.CommandAttribute.Names">
             <summary>

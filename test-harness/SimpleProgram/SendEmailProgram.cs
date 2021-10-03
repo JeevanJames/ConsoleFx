@@ -18,13 +18,14 @@ namespace ConsoleFx.TestHarness.SimpleProgram
     {
         public static async Task<int> Main()
         {
-            ConsoleProgram program = new SendEmailProgram()
-                .HandleErrorsWith(ex =>
-                {
-                    ConsoleEx.PrintLine($"[Red]{ex}[Reset]");
-                    return 1;
-                })
-                .DisplayHelpOnError();
+            ConsoleProgram program = new SendEmailProgram();
+            program.HandleErrorsWith(ex =>
+            {
+                ConsoleEx.PrintLine($"[Red]{ex}[Reset]");
+                return 1;
+            });
+            program.DisplayHelpOnError();
+            program.ScanEntryAssemblyForCommands();
 #if DEBUG
             return await program.RunDebugAsync(condition: () => true).ConfigureAwait(false);
 #else
@@ -70,12 +71,10 @@ namespace ConsoleFx.TestHarness.SimpleProgram
         [StringValidator(2, int.MaxValue)]
         [Help("message", "The email message")]
         public string Message { get; set; }
-
-        [Help("Verifies details of the email")]
-        public VerifyCommand VerifyCommand { get; } = new();
     }
 
     [Command("verify")]
+    [Help("Verifies things")]
     public sealed class VerifyCommand : Command
     {
         /// <inheritdoc />

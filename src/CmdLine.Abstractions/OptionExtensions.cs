@@ -2,6 +2,8 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
+using System;
+
 namespace ConsoleFx.CmdLine
 {
     public static class OptionExtensions
@@ -15,6 +17,8 @@ namespace ConsoleFx.CmdLine
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         public static Option UsedAsFlag(this Option option, bool optional = true)
         {
+            if (option is null)
+                throw new ArgumentNullException(nameof(option));
             option.Usage.SetParametersNotAllowed();
             option.Usage.MinOccurrences = optional ? 0 : 1;
             option.Usage.MaxOccurrences = 1;
@@ -30,6 +34,8 @@ namespace ConsoleFx.CmdLine
         /// <returns>The instance of the <see cref="Option"/>.</returns>
         public static Option UsedAsSingleParameter(this Option option, bool optional = true)
         {
+            if (option is null)
+                throw new ArgumentNullException(nameof(option));
             option.Usage.SetParametersRequired();
             option.Usage.MinOccurrences = optional ? 0 : 1;
             option.Usage.MaxOccurrences = 1;
@@ -38,6 +44,8 @@ namespace ConsoleFx.CmdLine
 
         public static Option UsedAsUnlimitedOccurrencesAndParameters(this Option option, bool optional = false)
         {
+            if (option is null)
+                throw new ArgumentNullException(nameof(option));
             option.Usage.MinOccurrences = optional ? 0 : 1;
             option.Usage.MaxOccurrences = int.MaxValue;
             option.Usage.MinParameters = 1;
@@ -47,6 +55,8 @@ namespace ConsoleFx.CmdLine
 
         public static Option UsedAsSingleOccurrenceAndUnlimitedParameters(this Option option, bool optional = false)
         {
+            if (option is null)
+                throw new ArgumentNullException(nameof(option));
             option.Usage.Requirement = optional ? OptionRequirement.Optional : OptionRequirement.Required;
             option.Usage.ParameterRequirement = OptionParameterRequirement.Required;
             return option;
@@ -54,6 +64,8 @@ namespace ConsoleFx.CmdLine
 
         public static Option UsedAsUnlimitedOccurrencesAndSingleParameter(this Option option, bool optional = false)
         {
+            if (option is null)
+                throw new ArgumentNullException(nameof(option));
             option.Usage.MinOccurrences = optional ? 0 : 1;
             option.Usage.MaxOccurrences = int.MaxValue;
             option.Usage.ExpectedParameters = 1;

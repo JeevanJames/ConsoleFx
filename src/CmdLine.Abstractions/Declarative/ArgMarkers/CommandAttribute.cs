@@ -5,7 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+
+using ConsoleFx.CmdLine.Internals;
 
 namespace ConsoleFx.CmdLine
 {
@@ -35,17 +36,13 @@ namespace ConsoleFx.CmdLine
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CommandAttribute"/> class with the
-        ///     specified <paramref name="names"/>.
+        ///     specified <paramref name="additionalNames"/>.
         /// </summary>
-        /// <param name="names">One or more names of the command.</param>
-        public CommandAttribute(params string[] names)
+        /// <param name="name">The primary name of the command.</param>
+        /// <param name="additionalNames">Optional additional names for the command.</param>
+        public CommandAttribute(string name, params string[] additionalNames)
         {
-            if (names is null)
-                throw new ArgumentNullException(nameof(names));
-            if (names.Length == 0)
-                throw new ArgumentException("Specify at least one name for the command.", nameof(names));
-
-            Names = names.ToList();
+            Names = name.ConstructNames(additionalNames);
         }
 
         /// <summary>
