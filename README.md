@@ -16,12 +16,12 @@ The following code simulates the following made-up console app:
 ```cs
 public class Program : ConsoleProgram
 {
-    [Argument, ArgumentHelp("source file", "File to copy")]
+    [Argument, Help("source file", "File to copy")]
     [ValidateFile(ShouldExist = true)]
     public string SourceFile { get; set; }
     
     [Argument(Optional = true)]
-    [ArgumentHelp("destination dir", "Directory to copy the file")]
+    [Help("destination dir", "Directory to copy the file")]
     [ValidateDirectory]
     public string DestinationDir { get; set; } = ".";
     
