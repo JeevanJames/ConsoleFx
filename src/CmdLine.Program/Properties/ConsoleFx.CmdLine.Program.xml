@@ -169,6 +169,9 @@
                 combinations mentioned.
             </summary>
         </member>
+        <member name="M:ConsoleFx.CmdLine.Help.FlagHelpAttribute.GetApplicableArgTypes">
+            <inheritdoc />
+        </member>
         <member name="M:ConsoleFx.CmdLine.Help.HelpBuilder.DisplayHelp(ConsoleFx.CmdLine.Command)">
             <summary>
                 Override this method to display the help for the specified <paramref name="command"/>.

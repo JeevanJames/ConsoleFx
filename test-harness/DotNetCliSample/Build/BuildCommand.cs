@@ -34,23 +34,23 @@ namespace ConsoleFx.TestHarness.DotNetCliSample.Build
         public string VersionSuffix { get; set; }
 
         [Flag("no-incremental")]
-        [OptionHelp("Do not use incremental building.")]
+        [FlagHelp("Do not use incremental building.")]
         public bool NoIncremental { get; set; }
 
         [Flag("no-dependencies")]
-        [OptionHelp("Do not build project-to-project references and only build the specified project.")]
+        [FlagHelp("Do not build project-to-project references and only build the specified project.")]
         public bool NoDependencies { get; set; }
 
         [Flag("nologo")]
-        [OptionHelp("Do not display the startup banner or the copyright message.")]
+        [FlagHelp("Do not display the startup banner or the copyright message.")]
         public bool NoLogo { get; set; }
 
         [Flag("no-restore")]
-        [OptionHelp("Do not restore the project before building.")]
+        [FlagHelp("Do not restore the project before building.")]
         public bool NoRestore { get; set; }
 
         [Flag("interactive")]
-        [OptionHelp("Allows the command to stop and wait for user input or action (for example to complete authentication).")]
+        [FlagHelp("Allows the command to stop and wait for user input or action (for example to complete authentication).")]
         public bool Interactive { get; set; }
 
         [Option("verbosity", "v")]
@@ -58,7 +58,7 @@ namespace ConsoleFx.TestHarness.DotNetCliSample.Build
         public Verbosity Verbosity { get; set; }
 
         [Flag("force")]
-        [OptionHelp("Force all dependencies to be resolved even if the last restore was successful. This is equivalent to deleting project.assets.json.")]
+        [FlagHelp("Force all dependencies to be resolved even if the last restore was successful. This is equivalent to deleting project.assets.json.")]
         public bool Force { get; set; }
 
         [Argument]
