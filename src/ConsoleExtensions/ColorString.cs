@@ -337,16 +337,21 @@ namespace ConsoleFx.ConsoleExtensions
             return true;
         }
 
-        private static readonly Regex ColorStringPattern = new Regex(
+        private static readonly Regex ColorStringPattern = new(
             @"\[((?:Bg)?(?:Dk)?(?:Black|Blue|Cyan|Gray|Green|Magenta|Red|Yellow|White|Reset)(?:\.(?:Bg)?(?:Dk)?(?:Black|Blue|Cyan|Gray|Green|Magenta|Red|Yellow|White|Reset))*)\]",
             RegexOptions.IgnoreCase);
 
         public static implicit operator string(ColorString cstr)
         {
-            return cstr.ToString();
+            return cstr?.ToString();
         }
 
         public static implicit operator ColorString(string cstr)
+        {
+            return TryParse(cstr, out ColorString colorStr) ? colorStr : null;
+        }
+
+        public static ColorString FromString(string cstr)
         {
             return TryParse(cstr, out ColorString colorStr) ? colorStr : null;
         }

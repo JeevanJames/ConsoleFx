@@ -20,11 +20,7 @@ namespace ConsoleFx.ConsoleExtensions
         /// </summary>
         public char SecretMask { get; set; } = '*';
 
-        public IList<char> IndentationLineBreakChars
-        {
-            get => _indentationLineBreakChars ??= new List<char> { ' ' };
-            set => _indentationLineBreakChars = value;
-        }
+        public IList<char> IndentationLineBreakChars => _indentationLineBreakChars ??= new List<char> { ' ' };
     }
 
     /// <summary>

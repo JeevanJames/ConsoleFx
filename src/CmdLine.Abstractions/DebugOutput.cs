@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -12,8 +11,8 @@ namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Enables or disables debugging output from the ConsoleFx framework. Any code in the framework
-    ///     can use the <see cref="Write(object, IEnumerable{object}, string, string, int)" /> method to
-    ///     write debugging information that can be useful to troubleshoot issues.
+    ///     can use the <see cref="Write(object,IEnumerable,string,string,int)" /> method to write
+    ///     debugging information that can be useful to troubleshoot issues.
     ///     <para />
     ///     Debugging output is disabled by default. To enable it, call the <see cref="Enable" /> method.
     /// </summary>

@@ -26,12 +26,12 @@ namespace ConsoleFx.CmdLine.Validators.Bases
             _validatorImpl.Validate(parameterValue);
         }
 
-        void IArgApplicator<Argument>.Apply(Argument arg, PropertyInfo property)
+        void IArgApplicator<Argument>.Apply(Argument arg, PropertyInfo propertyInfo)
         {
             arg.Validators.Add(this);
         }
 
-        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
+        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo propertyInfo)
         {
             arg.Validators.Add(this);
         }

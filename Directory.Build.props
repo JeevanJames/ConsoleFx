@@ -14,7 +14,7 @@
         <WarningsAsErrors />
         <NoWarn>1701;1702;1591;NU5105</NoWarn>
         <Features>scrict</Features>
-        <AnalysisLevel>latest</AnalysisLevel>
+        <!--<AnalysisLevel>latest</AnalysisLevel>-->
 
     </PropertyGroup>
 

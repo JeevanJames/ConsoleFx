@@ -223,7 +223,7 @@ namespace ConsoleFx.CmdLine
             _maxParameters = max;
         }
 
-        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo property)
+        void IArgApplicator<Option>.Apply(Option arg, PropertyInfo propertyInfo)
         {
             arg.Usage.MinOccurrences = MinOccurrences;
             arg.Usage.MaxOccurrences = MaxOccurrences;

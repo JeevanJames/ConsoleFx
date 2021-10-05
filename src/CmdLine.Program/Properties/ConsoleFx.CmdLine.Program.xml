@@ -280,23 +280,23 @@
         <member name="M:ConsoleFx.CmdLine.Help.OptionHelpAttribute.GetMetadata">
             <inheritdoc />
         </member>
-        <member name="T:ConsoleFx.CmdLine.Messages">
+        <member name="T:ConsoleFx.CmdLine.ProgramMessages">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Messages.ResourceManager">
+        <member name="P:ConsoleFx.CmdLine.ProgramMessages.ResourceManager">
             <summary>
               Returns the cached ResourceManager instance used by this class.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Messages.Culture">
+        <member name="P:ConsoleFx.CmdLine.ProgramMessages.Culture">
             <summary>
               Overrides the current thread's CurrentUICulture property for all
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
-        <member name="P:ConsoleFx.CmdLine.Messages.InternalError">
+        <member name="P:ConsoleFx.CmdLine.ProgramMessages.InternalError">
              <summary>
                Looks up a localized string similar to An internal error has occurred with the following message:
                 {0}

@@ -30,20 +30,20 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <inheritdoc />
-        object IMetadataObject.this[string name]
+        public object this[string name]
         {
             get => ((IMetadataObject)this).Get<object>(name);
             set => ((IMetadataObject)this).Set(name, value);
         }
 
         /// <inheritdoc />
-        T IMetadataObject.Get<T>(string name)
+        public T Get<T>(string name)
         {
             return _metadata.Value.TryGetValue(name, out object result) ? (T)result : default;
         }
 
         /// <inheritdoc />
-        void IMetadataObject.Set<T>(string name, T value)
+        public void Set<T>(string name, T value)
         {
             if (_metadata.Value.ContainsKey(name))
                 _metadata.Value[name] = value;

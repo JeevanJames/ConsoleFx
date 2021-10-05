@@ -6,8 +6,8 @@ namespace ConsoleFx.TestHarness.DotNetCliSample
 {
     public enum Verbosity
     {
-        Quite = 0,
-        Q = 0,
+        Quite,
+        Q,
         Minimial,
         M,
         Normal,

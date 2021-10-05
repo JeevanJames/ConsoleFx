@@ -12,7 +12,6 @@ namespace ConsoleFx.CmdLine.Help
     {
         protected HelpAttribute()
         {
-
         }
 
         protected HelpAttribute(string description)
