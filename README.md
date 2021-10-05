@@ -16,21 +16,21 @@ The following code simulates the following made-up console app:
 ```cs
 public class Program : ConsoleProgram
 {
-    [Argument, Help("source file", "File to copy")]
+    [Argument, ArgumentHelp("source file", "File to copy")]
     [ValidateFile(ShouldExist = true)]
     public string SourceFile { get; set; }
     
     [Argument(Optional = true)]
-    [Help("destination dir", "Directory to copy the file")]
+    [ArgumentHelp("destination dir", "Directory to copy the file")]
     [ValidateDirectory]
     public string DestinationDir { get; set; } = ".";
     
     [Flag("overwrite", "o")]
-    [Help("Specify to allow overwriting the file if it already exists")]
+    [FlagHelp("Specify to allow overwriting the file if it already exists")]
     public bool OverwriteExistingFile { get; set; }
     
     [Flag("create-dir", "c")]
-    [Help("Specify to create the destination directory if it does not exist")]
+    [FlagHelp("Specify to create the destination directory if it does not exist")]
     public bool CreateDirIfMissing { get; set; }
     
     protected int HandleCommand()
