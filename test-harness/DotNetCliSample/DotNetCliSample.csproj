@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <RootNamespace>$(BaseNamespace).TestHarness.DotNetCliSample</RootNamespace>
+        <AssemblyName>dotnet-cli</AssemblyName>
+        <DocumentationFile>Properties\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\CmdLine.Program\CmdLine.Program.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -42,6 +42,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCliSample", "test-harness\DotNetCliSample\DotNetCliSample.csproj", "{D1058A47-D86B-4E61-94A5-9254BFDFE08D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{C4FF6BB9-5ED0-4982-8528-768C9A8C1D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4FF6BB9-5ED0-4982-8528-768C9A8C1D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4FF6BB9-5ED0-4982-8528-768C9A8C1D18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1058A47-D86B-4E61-94A5-9254BFDFE08D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1058A47-D86B-4E61-94A5-9254BFDFE08D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1058A47-D86B-4E61-94A5-9254BFDFE08D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1058A47-D86B-4E61-94A5-9254BFDFE08D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{726DE503-F41C-4390-9FB6-C7936D7CFC09} = {2B5DD9C7-9043-4E9E-8DDD-99318CD21433}
 		{1016B435-3437-4E90-9C3D-E08795E4786B} = {37C9795D-F31E-4738-89AA-964E971FC4E7}
 		{C4FF6BB9-5ED0-4982-8528-768C9A8C1D18} = {37C9795D-F31E-4738-89AA-964E971FC4E7}
+		{D1058A47-D86B-4E61-94A5-9254BFDFE08D} = {37C9795D-F31E-4738-89AA-964E971FC4E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {749E0893-E1E2-4ECD-9C74-6CC8FEE5E1D3}

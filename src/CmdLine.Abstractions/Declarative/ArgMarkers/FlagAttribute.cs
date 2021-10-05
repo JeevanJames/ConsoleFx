@@ -7,7 +7,6 @@ using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
-
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class FlagAttribute : Attribute, IArgApplicator<Option>
     {
