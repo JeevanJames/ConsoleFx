@@ -6,8 +6,11 @@ namespace ConsoleFx.CmdLine.Help
 {
     public static class HelpMetadataKey
     {
-        public const string Name = "Name";
         public const string Description = "Description";
+
+        public const string Name = "Name"; // Only for Argument
+
+        public const string ParameterName = "ParameterName"; // Only for Option
 
         public const string CategoryName = "CategoryName";
         public const string CategoryDescription = "CategoryDescription";

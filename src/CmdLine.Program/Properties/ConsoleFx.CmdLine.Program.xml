@@ -129,7 +129,16 @@
         <member name="M:ConsoleFx.CmdLine.ErrorHandling.DelegateErrorHandler.HandleError(System.Exception)">
             <inheritdoc />
         </member>
+        <member name="M:ConsoleFx.CmdLine.Help.ArgumentHelpAttribute.GetApplicableArgTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Help.ArgumentHelpAttribute.GetMetadata">
+            <inheritdoc />
+        </member>
         <member name="M:ConsoleFx.CmdLine.Help.CategoryAttribute.GetApplicableArgTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Help.CommandHelpAttribute.GetApplicableArgTypes">
             <inheritdoc />
         </member>
         <member name="M:ConsoleFx.CmdLine.Help.DefaultHelpBuilder.PrintArg(System.String,System.String,System.Int32,ConsoleFx.CmdLine.Help.ArgDescriptionPlacement)">
@@ -159,9 +168,6 @@
                 The program usage is to be displayed in detail, with every argument and option
                 combinations mentioned.
             </summary>
-        </member>
-        <member name="M:ConsoleFx.CmdLine.Help.HelpAttribute.GetApplicableArgTypes">
-            <inheritdoc />
         </member>
         <member name="M:ConsoleFx.CmdLine.Help.HelpBuilder.DisplayHelp(ConsoleFx.CmdLine.Command)">
             <summary>
@@ -267,6 +273,12 @@
                 add the help metadata.
             </param>
             <returns>The instance of the <see cref="T:ConsoleFx.CmdLine.Arg"/>.</returns>
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Help.OptionHelpAttribute.GetApplicableArgTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.Help.OptionHelpAttribute.GetMetadata">
+            <inheritdoc />
         </member>
         <member name="T:ConsoleFx.CmdLine.Messages">
             <summary>

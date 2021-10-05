@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
@@ -52,29 +53,30 @@ namespace ConsoleFx.TestHarness.SimpleProgram
         }
 
         [Option("to", Optional = true, MultipleOccurrences = true)]
-        [Help("To addresses.")]
+        [OptionHelp("To addresses.")]
+        [Required]
         public IList<string> ToAddresses { get; } = new List<string> { "admin" };
 
         [Option("cc", Optional = true, MultipleOccurrences = true)]
-        [Help("CC addresses.")]
+        [OptionHelp("CC addresses.")]
         public IList<string> CcAddresses { get; } = new List<string>();
 
         [Option("bcc", Optional = true, MultipleOccurrences = true)]
-        [Help("BCC addresses.")]
+        [OptionHelp("BCC addresses.")]
         public IList<string> BccAddresses { get; } = new List<string>();
 
         [Option("subject", "sub", "s")]
-        [Help("Email subject line")]
+        [OptionHelp("Email subject line")]
         public string Subject { get; set; }
 
         [Argument]
         [StringValidator(2, int.MaxValue)]
-        [Help("message", "The email message")]
+        [ArgumentHelp("message", "The email message")]
         public string Message { get; set; }
     }
 
     [Command("verify")]
-    [Help("Verifies things")]
+    [CommandHelp("Verifies things")]
     public sealed class VerifyCommand : Command
     {
         /// <inheritdoc />

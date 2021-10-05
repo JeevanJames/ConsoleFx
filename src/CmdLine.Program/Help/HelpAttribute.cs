@@ -4,53 +4,71 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace ConsoleFx.CmdLine.Help
 {
-    public sealed class HelpAttribute : MetadataAttribute
+    public abstract class HelpAttribute : MetadataAttribute
     {
-        public HelpAttribute(string description)
+        protected HelpAttribute()
         {
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("Description should be specified.", nameof(description));
 
-            Name = null;
+        }
+
+        protected HelpAttribute(string description)
+        {
             Description = description;
         }
 
-        public HelpAttribute(string name, string description)
-            : this(description)
+        protected HelpAttribute(Type descriptionResourceType, string descriptionResourceName)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name should be specified.", nameof(name));
-
-            Name = name;
+            DescriptionResourceType = descriptionResourceType ?? throw new ArgumentNullException(nameof(descriptionResourceType));
+            DescriptionResourceName = descriptionResourceName ?? throw new ArgumentNullException(nameof(descriptionResourceName));
         }
 
-        public string Name { get; }
+        public string Description { get; set; }
 
-        public string Description { get; }
+        public string DescriptionResourceName { get; set; }
 
-        public int Order { get; }
+        public Type DescriptionResourceType { get; set; }
+
+        public int Order { get; set; }
 
         public override IEnumerable<KeyValuePair<string, object>> GetMetadata()
         {
-            if (Name is not null)
-                yield return new KeyValuePair<string, object>(HelpMetadataKey.Name, Name);
-            yield return new KeyValuePair<string, object>(HelpMetadataKey.Description, Description);
+            yield return new KeyValuePair<string, object>(HelpMetadataKey.Description,
+                ResolveString(Description, DescriptionResourceType, DescriptionResourceName, required: true));
             yield return new KeyValuePair<string, object>(HelpMetadataKey.Order, Order);
         }
 
-        /// <inheritdoc />
-        protected override IEnumerable<Type> GetApplicableArgTypes()
+        protected static string ResolveString(string unlocalizedValue, Type resourceType, string resourceName,
+            bool required)
         {
-            if (Name is not null)
-                yield return typeof(Argument);
-            else
+            if (resourceType is not null && !string.IsNullOrWhiteSpace(resourceName))
             {
-                yield return typeof(Command);
-                yield return typeof(Option);
+                PropertyInfo resourceProperty = resourceType.GetTypeInfo().GetDeclaredProperty(resourceName);
+                if (resourceProperty is null)
+                {
+                    throw new ParserException(-1,
+                        $"Resource type {resourceType} does not contain a resource named {resourceName}.");
+                }
+
+                if (resourceProperty.PropertyType != typeof(string))
+                {
+                    throw new ParserException(-1,
+                        $"Resource {resourceName} on the resource type {resourceType} is not a string.");
+                }
+
+                return resourceProperty.GetValue(null, null) as string;
             }
+
+            if (unlocalizedValue is not null)
+                return unlocalizedValue;
+
+            if (required)
+                throw new ParserException(-1, "Specify either a string value or a resource type/name pair.");
+
+            return null;
         }
     }
 }
