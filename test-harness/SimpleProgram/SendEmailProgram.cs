@@ -45,17 +45,21 @@ namespace ConsoleFx.TestHarness.SimpleProgram
         }
 
         /// <inheritdoc />
-        public override string Validate()
+        public override string Validate(IParseResult parseResult)
         {
-            if (ToAddresses.Count == 0 && CcAddresses.Count == 0 && BccAddresses.Count == 0)
-                return "Specify at least one To, CC or BCC address";
+            if (parseResult.Group == 0)
+            {
+                if (ToAddresses.Count == 0 && CcAddresses.Count == 0 && BccAddresses.Count == 0)
+                    return "Specify at least one To, CC or BCC address";
+            }
+
             return null;
         }
 
         [Option("to", Optional = true, MultipleOccurrences = true)]
         [OptionHelp("To addresses.")]
         [Required]
-        public IList<string> ToAddresses { get; } = new List<string> { "admin" };
+        public IList<string> ToAddresses { get; } = new List<string>();
 
         [Option("cc", Optional = true, MultipleOccurrences = true)]
         [OptionHelp("CC addresses.")]

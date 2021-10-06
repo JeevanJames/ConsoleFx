@@ -96,6 +96,8 @@ namespace ConsoleFx.CmdLine.Parser
             if (matchingGroups.Count == 0)
                 throw new ParserException(-1, "The specified arguments and options are invalid.");
 
+            //TODO: Should we assert that there should only be one matching group
+
             // Trim the argument and option runs to those that contain the matcing groups.
             TrimRunsToMatchingGroups(run, matchingGroups);
 
@@ -103,7 +105,7 @@ namespace ConsoleFx.CmdLine.Parser
             ProcessOptions(run.Options);
             ProcessArguments(specifiedArguments, run.Arguments);
 
-            var parseResult = new ParseResult(run);
+            var parseResult = new ParseResult(run, matchingGroups[0]);
 
             // Runs the custom validator, if it is assigned.
             string validationError = parseResult.Command.ValidateParseResult(

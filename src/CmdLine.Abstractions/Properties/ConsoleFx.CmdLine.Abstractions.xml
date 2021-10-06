@@ -1043,6 +1043,12 @@
         <member name="M:ConsoleFx.CmdLine.OptionAttribute.ConsoleFx#CmdLine#IArgApplicator{ConsoleFx#CmdLine#Option}#Apply(ConsoleFx.CmdLine.Option,System.Reflection.PropertyInfo)">
             <inheritdoc />
         </member>
+        <member name="M:ConsoleFx.CmdLine.GroupsAttribute.ConsoleFx#CmdLine#IArgApplicator{ConsoleFx#CmdLine#Option}#Apply(ConsoleFx.CmdLine.Option,System.Reflection.PropertyInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:ConsoleFx.CmdLine.GroupsAttribute.ConsoleFx#CmdLine#IArgApplicator{ConsoleFx#CmdLine#Argument}#Apply(ConsoleFx.CmdLine.Argument,System.Reflection.PropertyInfo)">
+            <inheritdoc />
+        </member>
         <member name="T:ConsoleFx.CmdLine.MetadataAttribute">
             <summary>
                 Base class for any attribute that can assign metadata to an <see cref="T:ConsoleFx.CmdLine.Arg"/>.

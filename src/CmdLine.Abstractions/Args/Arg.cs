@@ -56,7 +56,8 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         private void ProcessMetadataAttributes()
         {
-            IEnumerable<MetadataAttribute> metadataAttributes = GetType().GetCustomAttributes<MetadataAttribute>(inherit: true);
+            IEnumerable<MetadataAttribute> metadataAttributes = GetType()
+                .GetCustomAttributes<MetadataAttribute>(inherit: true);
             foreach (MetadataAttribute metadataAttribute in metadataAttributes)
                 metadataAttribute.AssignMetadata(this);
         }

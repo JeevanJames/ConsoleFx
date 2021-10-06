@@ -195,7 +195,7 @@ namespace ConsoleFx.CmdLine
                 AssignArgumentProperties(parseResult, parseResult.Command.Arguments);
                 AssignOptionProperties(parseResult, parseResult.Command.Options);
 
-                string validationError = parseResult.Command.Validate();
+                string validationError = parseResult.Command.Validate(parseResult);
                 if (validationError is not null)
                     throw new ValidationException(validationError, null, null);
 

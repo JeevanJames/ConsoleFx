@@ -29,6 +29,8 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         IReadOnlyDictionary<string, object> Options { get; }
 
+        int Group { get; }
+
         bool TryGetArgument<T>(int index, out T value);
 
         bool TryGetOption<T>(string name, out T value);

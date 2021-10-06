@@ -283,7 +283,7 @@ namespace ConsoleFx.CmdLine
             return null;
         }
 
-        public virtual string Validate()
+        public virtual string Validate(IParseResult parseResult)
         {
             return null;
         }

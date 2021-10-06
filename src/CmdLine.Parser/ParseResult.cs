@@ -20,7 +20,7 @@ namespace ConsoleFx.CmdLine.Parser
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ParseRun _run;
 
-        internal ParseResult(ParseRun run)
+        internal ParseResult(ParseRun run, int group)
         {
             _run = run;
             Command = run.Commands[run.Commands.Count - 1];
@@ -29,6 +29,7 @@ namespace ConsoleFx.CmdLine.Parser
                 .ToList();
             Options = run.Options
                 .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.Value);
+            Group = group;
         }
 
         public Command Command { get; }
@@ -42,6 +43,8 @@ namespace ConsoleFx.CmdLine.Parser
         ///     Gets the list of specified command line options.
         /// </summary>
         public IReadOnlyDictionary<string, object> Options { get; }
+
+        public int Group { get; }
 
         public bool TryGetArgument<T>(int index, out T value)
         {

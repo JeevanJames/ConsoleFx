@@ -4,7 +4,7 @@
         <name>simple-program</name>
     </assembly>
     <members>
-        <member name="M:ConsoleFx.TestHarness.SimpleProgram.SendEmailProgram.Validate">
+        <member name="M:ConsoleFx.TestHarness.SimpleProgram.SendEmailProgram.Validate(ConsoleFx.CmdLine.IParseResult)">
             <inheritdoc />
         </member>
         <member name="M:ConsoleFx.TestHarness.SimpleProgram.VerifyCommand.HandleCommand">
