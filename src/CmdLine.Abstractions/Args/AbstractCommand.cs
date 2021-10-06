@@ -33,7 +33,7 @@ namespace ConsoleFx.CmdLine
         }
 
         /// <inheritdoc />
-        internal sealed override Task<int> HandleCommandAsync(IParseResult parseResult)
+        public sealed override Task<int> HandleCommandAsync(IParseResult parseResult)
         {
             return Task.FromResult(0);
         }

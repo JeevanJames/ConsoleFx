@@ -288,7 +288,7 @@ namespace ConsoleFx.CmdLine
             return null;
         }
 
-        internal virtual Task<int> HandleCommandAsync(IParseResult parseResult)
+        public virtual Task<int> HandleCommandAsync(IParseResult parseResult)
         {
             return Task.FromResult(HandleCommand(parseResult));
         }
