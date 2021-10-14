@@ -19,14 +19,14 @@ environment:
 install:
 - pwsh: dotnet --list-sdks
 - pwsh: choco install codecov
-- ps: ./.build/install-dotnet-sdk.ps1
+- ps: ./.scripts/install-dotnet-sdk.ps1
 
 build_script:
-- pwsh: ./.build/build.ps1
+- pwsh: ./.scripts/build.ps1
 
 test_script:
-- pwsh: ./.build/test.ps1
-- pwsh: ./.build/cc-codecov.ps1
+- pwsh: ./.scripts/test.ps1
+- pwsh: ./.scripts/cc-codecov.ps1
 
 deploy_script:
-- pwsh: ./.build/deploy.ps1
+- pwsh: ./.scripts/deploy.ps1
