@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using ConsoleFx.ConsoleExtensions;
+using Spectre.Console;
 
 namespace ConsoleFx.Prompter.Questions
 {
@@ -14,7 +14,7 @@ namespace ConsoleFx.Prompter.Questions
     {
         private readonly IReadOnlyList<string> _choices;
 
-        public CheckboxQuestion(string name, FunctionOrColorString message, IEnumerable<string> choices)
+        public CheckboxQuestion(string name, string message, IEnumerable<string> choices)
             : base(name, message)
         {
             if (choices is null)
@@ -25,9 +25,22 @@ namespace ConsoleFx.Prompter.Questions
         /// <inheritdoc />
         internal override object Ask(dynamic answers)
         {
-            ConsoleEx.PrintLine(new ColorString(Message.Resolve(answers),
-                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-            return ConsoleEx.SelectMultiple(_choices);
+            string message = Message.Resolve(answers);
+            List<string> selectedItems = AnsiConsole.Prompt(new MultiSelectionPrompt<string>()
+                .Title(message)
+                .AddChoices(_choices));
+            return selectedItems.Select(IndexOf).Where(index => index >= 0).ToList();
+        }
+
+        private int IndexOf(string str)
+        {
+            for (int i = 0; i < _choices.Count; i++)
+            {
+                if (string.Equals(_choices[i], str, StringComparison.Ordinal))
+                    return i;
+            }
+
+            return -1;
         }
     }
 }

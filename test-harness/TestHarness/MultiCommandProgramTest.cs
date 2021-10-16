@@ -10,8 +10,7 @@ using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Help;
 using ConsoleFx.CmdLine.Validators;
 
-using static ConsoleFx.ConsoleExtensions.Clr;
-using static ConsoleFx.ConsoleExtensions.ConsoleEx;
+using Spectre.Console;
 
 namespace TestHarness
 {
@@ -20,15 +19,16 @@ namespace TestHarness
         internal override async Task RunAsync()
         {
             var program = new MyMultiCommandProgram();
-            string argsStr = Prompt($"{DkBlue.BgWhite}Enter args: ");
+            string argsStr = AnsiConsole.Ask<string>("[darkblue on white]Enter args: [/]");
 
             while (!string.IsNullOrWhiteSpace(argsStr))
             {
                 string[] args = argsStr.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 await program.RunAsync(args);
 
-                PrintBlank();
-                argsStr = Prompt($"{DkBlue.BgWhite}Enter args: ");
+                Console.WriteLine();
+
+                argsStr = AnsiConsole.Ask<string>("[darkblue on white]Enter args: [/]");
             }
         }
     }
@@ -59,7 +59,7 @@ namespace TestHarness
 
         protected override int HandleCommand()
         {
-            PrintLine($"{Yellow}Add {Reset}new package {PackageName}.");
+            AnsiConsole.MarkupLine($"[yellow]Add [/]new package {PackageName}.");
             return 0;
         }
     }
@@ -77,7 +77,7 @@ namespace TestHarness
 
         protected override int HandleCommand()
         {
-            PrintLine($"{Yellow}Lists {Reset}all installed packages.");
+            AnsiConsole.MarkupLine("[yellow]Lists [/]all installed packages.");
             return 0;
         }
     }

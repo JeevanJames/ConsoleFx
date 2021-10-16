@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="Collections.NET" Version="1.7.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageReference Include="Spectre.Console" Version="0.42.0" />
     </ItemGroup>
 
     <ItemGroup>

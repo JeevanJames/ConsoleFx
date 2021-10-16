@@ -11,14 +11,14 @@ namespace ConsoleFx.Prompter
     [DebuggerDisplay("Question: {Name,nq}: {Message.Resolve(),nq}")]
     public abstract class Question : DisplayItem
     {
-        private IList<FunctionOrColorString> _instructions;
+        private IList<Factory<string>> _instructions;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Question"/> class.
         /// </summary>
         /// <param name="name">The name of the variable to store the answer.</param>
         /// <param name="message">The message to display to the user.</param>
-        protected Question(string name, FunctionOrColorString message)
+        protected Question(string name, Factory<string> message)
             : base(message)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -39,13 +39,13 @@ namespace ConsoleFx.Prompter
         /// </summary>
         public string Name { get; }
 
-        public IList<FunctionOrColorString> Instructions
+        public IList<Factory<string>> Instructions
         {
-            get => _instructions ??= new List<FunctionOrColorString>();
+            get => _instructions ??= new List<Factory<string>>();
             set => _instructions = value;
         }
 
-        internal FunctionOrValue<object> DefaultValue { get; set; }
+        internal Factory<object> DefaultValue { get; set; }
 
         internal Validator<object> RawValueValidator { get; set; }
 
@@ -59,17 +59,17 @@ namespace ConsoleFx.Prompter
 
     public abstract class Question<TRaw, TConverted> : Question
     {
-        protected Question(string name, FunctionOrColorString message)
+        protected Question(string name, Factory<string> message)
             : base(name, message)
         {
         }
 
-        public Question<TRaw, TConverted> WithInstructions(params FunctionOrColorString[] instructions)
+        public Question<TRaw, TConverted> WithInstructions(params Factory<string>[] instructions)
         {
             if (instructions is null)
                 throw new ArgumentNullException(nameof(instructions));
 
-            foreach (FunctionOrColorString instruction in instructions)
+            foreach (Factory<string> instruction in instructions)
             {
                 if (instruction.IsAssigned)
                     Instructions.Add(instruction);
@@ -84,7 +84,7 @@ namespace ConsoleFx.Prompter
             return this;
         }
 
-        public Question<TRaw, TConverted> DefaultsTo(FunctionOrValue<TConverted> defaultValue)
+        public Question<TRaw, TConverted> DefaultsTo(Factory<TConverted> defaultValue)
         {
             DefaultValue = defaultValue;
             return this;

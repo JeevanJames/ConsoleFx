@@ -4,10 +4,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
-using ConsoleFx.ConsoleExtensions;
+using Spectre.Console;
 
 namespace ConsoleFx.Prompter.Questions
 {
@@ -15,7 +14,7 @@ namespace ConsoleFx.Prompter.Questions
     {
         private readonly IReadOnlyList<string> _choices;
 
-        public ListQuestion(string name, FunctionOrColorString message, IEnumerable<string> choices)
+        public ListQuestion(string name, Factory<string> message, IEnumerable<string> choices)
             : base(name, message)
         {
             if (choices is null)
@@ -27,15 +26,23 @@ namespace ConsoleFx.Prompter.Questions
         /// <inheritdoc />
         internal override object Ask(dynamic answers)
         {
-            ConsoleEx.PrintLine(new ColorString(Message.Resolve(answers),
-                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-            return ConsoleEx.SelectSingle(_choices);
+            string choice = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                .Title((string)Message.Resolve(answers))
+                .AddChoices(_choices));
+
+            for (int i = 0; i < _choices.Count; i++)
+            {
+                if (string.Equals(choice, _choices[i], StringComparison.Ordinal))
+                    return i;
+            }
+
+            return -1;
         }
     }
 
     public sealed class ListQuestion : ListQuestion<int>
     {
-        public ListQuestion(string name, FunctionOrColorString message, IEnumerable<string> choices)
+        public ListQuestion(string name, Factory<string> message, IEnumerable<string> choices)
             : base(name, message, choices)
         {
         }

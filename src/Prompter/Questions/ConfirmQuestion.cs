@@ -2,8 +2,7 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using ConsoleFx.ConsoleExtensions;
+using Spectre.Console;
 
 namespace ConsoleFx.Prompter.Questions
 {
@@ -11,7 +10,7 @@ namespace ConsoleFx.Prompter.Questions
     {
         private readonly bool _default;
 
-        public ConfirmQuestion(string name, FunctionOrColorString message, bool @default)
+        public ConfirmQuestion(string name, Factory<string> message, bool @default)
             : base(name, message)
         {
             _default = @default;
@@ -20,18 +19,7 @@ namespace ConsoleFx.Prompter.Questions
         /// <inheritdoc />
         internal override object Ask(dynamic answers)
         {
-            ConsoleEx.Print(new ColorString(Message.Resolve(answers),
-                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-
-            ConsoleEx.Print(new ColorString($" ({(_default ? 'Y' : 'y')}/{(_default ? 'n' : 'N')}) ",
-                PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor));
-
-            ConsoleKey keyPressed = ConsoleEx.WaitForKeys(ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
-            bool result = keyPressed == ConsoleKey.Enter ? _default : (keyPressed == ConsoleKey.Y);
-
-            ConsoleEx.PrintLine(result ? "Y" : "N");
-
-            return result;
+            return (bool)AnsiConsole.Confirm(Message.Resolve(answers), _default);
         }
     }
 }

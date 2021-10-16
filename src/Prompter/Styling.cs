@@ -2,7 +2,8 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
-using ConsoleFx.ConsoleExtensions;
+using System;
+
 using ConsoleFx.Prompter.Style;
 
 namespace ConsoleFx.Prompter
@@ -32,26 +33,26 @@ namespace ConsoleFx.Prompter
 
         public static readonly Styling Terminal = new()
         {
-            Question = { ForeColor = CColor.Green, },
-            Instructions = { ForeColor = CColor.DkGreen, },
+            Question = { ForeColor = ConsoleColor.Green, },
+            Instructions = { ForeColor = ConsoleColor.DarkGreen, },
         };
 
         public static readonly Styling Ruby = new()
         {
-            Question = { ForeColor = CColor.Magenta, },
+            Question = { ForeColor = ConsoleColor.Magenta, },
         };
 
         public static readonly Styling Colorful = new()
         {
             Question =
             {
-                ForeColor = CColor.Yellow,
-                BackColor = CColor.DkMagenta,
+                ForeColor = ConsoleColor.Yellow,
+                BackColor = ConsoleColor.DarkMagenta,
             },
             Instructions =
             {
-                ForeColor = CColor.White,
-                BackColor = CColor.DkBlue,
+                ForeColor = ConsoleColor.White,
+                BackColor = ConsoleColor.DarkBlue,
             },
         };
     }

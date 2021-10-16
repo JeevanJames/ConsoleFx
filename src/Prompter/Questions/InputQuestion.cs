@@ -2,13 +2,13 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
-using ConsoleFx.ConsoleExtensions;
+using Spectre.Console;
 
 namespace ConsoleFx.Prompter.Questions
 {
     public class InputQuestion<TValue> : TextEntryQuestion<TValue>
     {
-        internal InputQuestion(string name, FunctionOrColorString message)
+        internal InputQuestion(string name, Factory<string> message)
             : base(name, message)
         {
         }
@@ -16,26 +16,14 @@ namespace ConsoleFx.Prompter.Questions
         /// <inheritdoc />
         internal override object Ask(dynamic answers)
         {
-            bool Validator(string str)
-            {
-                if (string.IsNullOrEmpty(str) && DefaultValue.IsAssigned)
-                    str = DefaultValue.Resolve(answers);
-                bool valid = (RawValueValidator is null) || RawValueValidator(str, answers).Valid;
-                if (valid && IsRequired)
-                    return AllowWhitespaceOnly ? !string.IsNullOrEmpty(str) : !string.IsNullOrWhiteSpace(str);
-
-                return valid;
-            }
-
-            return ConsoleEx.Prompt(new ColorString(Message.Resolve(answers),
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor).ToString(),
-                Validator);
+            return AnsiConsole.Prompt(new TextPrompt<TValue>(Message.Resolve(answers))
+                .Validate(value => ConvertedValueValidator(value, answers)));
         }
     }
 
     public sealed class InputQuestion : InputQuestion<string>
     {
-        public InputQuestion(string name, FunctionOrColorString message)
+        public InputQuestion(string name, Factory<string> message)
             : base(name, message)
         {
         }

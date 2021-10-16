@@ -6,6 +6,8 @@ using System;
 using System.Security;
 using System.Text;
 
+using Spectre.Console;
+
 namespace ConsoleFx.ConsoleExtensions
 {
     public static partial class ConsoleEx
@@ -36,10 +38,10 @@ namespace ConsoleFx.ConsoleExtensions
         /// <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
         /// <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
         /// <returns>The entered stream of characters as a string.</returns>
-        public static string ReadSecret(ColorString prompt, bool hideCursor = false, bool hideMask = false,
+        public static string ReadSecret(string prompt, bool hideCursor = false, bool hideMask = false,
             bool needValue = false)
         {
-            Print(prompt);
+            AnsiConsole.Write(prompt);
             return ReadSecret(hideCursor, hideMask, needValue);
         }
 
@@ -70,10 +72,10 @@ namespace ConsoleFx.ConsoleExtensions
         /// <param name="hideMask">If <c>true</c>, prevents the mask character from being shown.</param>
         /// <param name="needValue">If <c>true</c>, at least one character must be entered.</param>
         /// <returns>The entered stream of characters as a <see cref="SecureString"/>.</returns>
-        public static SecureString ReadSecretSecure(ColorString prompt, bool hideCursor = false, bool hideMask = false,
+        public static SecureString ReadSecretSecure(string prompt, bool hideCursor = false, bool hideMask = false,
             bool needValue = false)
         {
-            Print(prompt);
+            AnsiConsole.Write(prompt);
             return ReadSecretSecure(hideCursor, hideMask, needValue);
         }
 
@@ -118,7 +120,7 @@ namespace ConsoleFx.ConsoleExtensions
                     {
                         accumulatorAppender(accumulator, keyInfo.KeyChar);
                         if (!hideMask)
-                            Console.Write(Settings.SecretMask);
+                            Console.Write('*');
 
                         //Move the cursor only if hideCursor is false
                         else if (!hideCursor)

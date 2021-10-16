@@ -10,9 +10,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
+using ConsoleFx.ConsoleExtensions;
 
-using static ConsoleFx.ConsoleExtensions.Clr;
-using static ConsoleFx.ConsoleExtensions.ConsoleEx;
+using Spectre.Console;
 
 namespace TestHarness
 {
@@ -32,35 +32,31 @@ namespace TestHarness
                 {
                     Console.Clear();
 
-                    PrintLine("What do you want to test?");
+                    string selectedValue = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                        .Title("What do you want to test?")
+                        .AddChoices(MenuItems.Values));
 
-                    string[] menuItems = MenuItems.Values.ToArray();
-                    selectedItem = SelectSingle(menuItems, startingIndex: selectedItem);
-
-                    Type[] testTypes = MenuItems.Keys.ToArray();
-                    Type selectedType = testTypes[selectedItem];
+                    Type selectedType = MenuItems.Single(mi => mi.Value.Equals(selectedValue, StringComparison.Ordinal)).Key;
                     if (selectedType == typeof(Program))
                         Environment.Exit(0);
 
-                    PrintBlank();
+                    Console.WriteLine();
 
                     var testHarness = (TestBase)Activator.CreateInstance(selectedType);
                     await testHarness.RunAsync();
                 }
                 catch (TargetInvocationException ex) when (ex.InnerException is not null)
                 {
-                    PrintLine($"{Red.BgWhite}[{ex.InnerException.GetType().Name}]{ex.InnerException.Message}");
-                    PrintLine($"{Magenta.BgWhite}{ex.InnerException.StackTrace}");
+                    AnsiConsole.WriteException(ex.InnerException);
                 }
                 catch (Exception ex)
                 {
-                    PrintLine($"{Red.BgWhite}[{ex.GetType().Name}]{ex.Message}");
-                    PrintLine($"{Magenta.BgWhite}{ex.StackTrace}");
+                    AnsiConsole.WriteException(ex);
                 }
 
-                PrintBlank();
-                PrintLine($"{Black.BgYellow}Press ANY key to continue...");
-                WaitForAnyKey();
+                Console.WriteLine();
+                AnsiConsole.MarkupLine("[black on yellow]Press ANY key to continue...[/]");
+                ConsoleEx.WaitForAnyKey();
             }
         }
 
@@ -74,10 +70,8 @@ namespace TestHarness
         {
             [typeof(ConsoleProgramTest.Test)] = "Console Program",
             [typeof(DeclarativeConsoleProgramTest.Test)] = "Declarative Console Program",
-            [typeof(ConsoleExtensions.Test)] = "ConsoleEx",
             [typeof(MultiCommandProgramTest)] = "Multi-command Console Program",
             [typeof(DeepMultiCommand.Test)] = "Deep multi-command Console Program",
-            [typeof(ProgressBarTest.Test)] = "Progress bar",
             [typeof(Prompter.Test)] = "Prompter",
             [typeof(ConsoleCaptureTest.Test)] = "Console Capture",
             [typeof(Program)] = "Exit",

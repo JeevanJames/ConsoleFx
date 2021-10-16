@@ -17,7 +17,7 @@ namespace ConsoleFx.Prompter
         ///     Initializes a new instance of the <see cref="DisplayItem"/> class.
         /// </summary>
         /// <param name="message">The <paramref name="message"/> to display to the user.</param>
-        protected DisplayItem(FunctionOrColorString message)
+        protected DisplayItem(Factory<string> message)
         {
             if (!message.IsAssigned)
                 throw new ArgumentNullException(nameof(message));
@@ -27,6 +27,6 @@ namespace ConsoleFx.Prompter
         /// <summary>
         ///     Gets the message to display to the user for this display item.
         /// </summary>
-        internal FunctionOrColorString Message { get; }
+        internal Factory<string> Message { get; }
     }
 }

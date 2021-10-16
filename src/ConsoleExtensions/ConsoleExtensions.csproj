@@ -11,4 +11,8 @@
         <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Spectre.Console" Version="0.42.0" />
+    </ItemGroup>
+
 </Project>

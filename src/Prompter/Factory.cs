@@ -12,14 +12,14 @@ namespace ConsoleFx.Prompter
     ///     Represents a fixed value or a factory function that can generate the value.
     /// </summary>
     /// <typeparam name="TValue">The type of the value.</typeparam>
-    public readonly struct FunctionOrValue<TValue>
+    public readonly struct Factory<TValue>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FunctionOrValue{TValue}"/> struct with
+        ///     Initializes a new instance of the <see cref="Factory{TValue}"/> struct with
         ///     a fixed <paramref name="value"/>.
         /// </summary>
         /// <param name="value">The fixed value to set.</param>
-        internal FunctionOrValue(TValue value)
+        internal Factory(TValue value)
         {
             Value = value;
             Function = null;
@@ -27,11 +27,11 @@ namespace ConsoleFx.Prompter
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FunctionOrValue{TValue}"/> struct with
+        ///     Initializes a new instance of the <see cref="Factory{TValue}"/> struct with
         ///     a factory <paramref name="function"/>.
         /// </summary>
         /// <param name="function">The factory function.</param>
-        internal FunctionOrValue(Func<dynamic, TValue> function)
+        internal Factory(Func<dynamic, TValue> function)
         {
             if (function is null)
                 throw new ArgumentNullException(nameof(function));
@@ -51,21 +51,21 @@ namespace ConsoleFx.Prompter
         internal Func<dynamic, TValue> Function { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether the <see cref="FunctionOrValue{TValue}"/> is assigned
+        ///     Gets a value indicating whether the <see cref="Factory{TValue}"/> is assigned
         ///     a value, i.e. whether its constructor was called.
         /// </summary>
         internal bool IsAssigned { get; }
 
         /// <summary>
-        ///     Resolves the value of the <see cref="FunctionOrValue{TValue}"/> by either returning
+        ///     Resolves the value of the <see cref="Factory{TValue}"/> by either returning
         ///     the fixed value or executing the factory function and returning a dynamic value.
         /// </summary>
         /// <param name="answers">The set of answers passed to the factory function.</param>
-        /// <returns>The resolved value of the <see cref="FunctionOrValue{TValue}"/>.</returns>
+        /// <returns>The resolved value of the <see cref="Factory{TValue}"/>.</returns>
         internal TValue Resolve(dynamic answers = null)
         {
             if (!IsAssigned)
-                throw new InvalidOperationException("The FunctionOrValue instance is not assigned.");
+                throw new InvalidOperationException("The Factory instance is not assigned.");
 
             if (Function is not null)
                 return (TValue)Function(answers);
@@ -81,22 +81,22 @@ namespace ConsoleFx.Prompter
         }
 
         /// <summary>
-        ///     Implicitly converts a fixed value to a <see cref="FunctionOrValue{TValue}"/> struct.
+        ///     Implicitly converts a fixed value to a <see cref="Factory{TValue}"/> struct.
         /// </summary>
         /// <param name="value">The fixed value to convert.</param>
-        public static implicit operator FunctionOrValue<TValue>(TValue value)
+        public static implicit operator Factory<TValue>(TValue value)
         {
-            return new FunctionOrValue<TValue>(value);
+            return new Factory<TValue>(value);
         }
 
         /// <summary>
-        ///     Implicitly converts a factory function delegate to a <see cref="FunctionOrValue{TValue}"/>
+        ///     Implicitly converts a factory function delegate to a <see cref="Factory{TValue}"/>
         ///     struct.
         /// </summary>
         /// <param name="function">The factory function delegate to convert.</param>
-        public static implicit operator FunctionOrValue<TValue>(Func<dynamic, TValue> function)
+        public static implicit operator Factory<TValue>(Func<dynamic, TValue> function)
         {
-            return new FunctionOrValue<TValue>(function);
+            return new Factory<TValue>(function);
         }
 
         private bool ValueIsFunctionOrValue(out Type type)
@@ -110,7 +110,7 @@ namespace ConsoleFx.Prompter
                     return false;
                 }
 
-                if (currentType.IsGenericType && currentType.GetGenericTypeDefinition() == typeof(FunctionOrValue<>))
+                if (currentType.IsGenericType && currentType.GetGenericTypeDefinition() == typeof(Factory<>))
                 {
                     type = currentType.GetGenericArguments()[0];
                     return true;
@@ -121,51 +121,6 @@ namespace ConsoleFx.Prompter
 
             type = null;
             return false;
-        }
-    }
-
-    public readonly struct FunctionOrColorString
-    {
-        internal FunctionOrColorString(ColorString cstr)
-        {
-            Value = cstr;
-            Function = null;
-            IsAssigned = true;
-        }
-
-        internal FunctionOrColorString(Func<dynamic, ColorString> function)
-        {
-            if (function is null)
-                throw new ArgumentNullException(nameof(function));
-            Function = function;
-            Value = null;
-            IsAssigned = true;
-        }
-
-        internal ColorString Value { get; }
-
-        internal Func<dynamic, ColorString> Function { get; }
-
-        internal bool IsAssigned { get; }
-
-        internal ColorString Resolve(dynamic answers = null)
-        {
-            return Function is not null ? Function(answers) : Value;
-        }
-
-        public static implicit operator FunctionOrColorString(ColorString cstr)
-        {
-            return new FunctionOrColorString(cstr);
-        }
-
-        public static implicit operator FunctionOrColorString(string str)
-        {
-            return new FunctionOrColorString(str);
-        }
-
-        public static implicit operator FunctionOrColorString(Func<dynamic, ColorString> function)
-        {
-            return new FunctionOrColorString(function);
         }
     }
 }

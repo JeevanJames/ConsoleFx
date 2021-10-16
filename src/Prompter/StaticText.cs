@@ -5,30 +5,30 @@
 using System;
 using System.Diagnostics;
 
-using ConsoleFx.ConsoleExtensions;
+using Spectre.Console;
 
 namespace ConsoleFx.Prompter
 {
     [DebuggerDisplay("Static Text: {Message,nq}")]
     public class StaticText : DisplayItem
     {
-        public StaticText(FunctionOrColorString message)
+        public StaticText(Factory<string> message)
             : base(message)
         {
         }
 
         public virtual void Display(dynamic answers)
         {
-            ColorString staticText = Message.Resolve(answers);
+            string staticText = Message.Resolve(answers);
             if (staticText is not null)
-                ConsoleEx.PrintLine(staticText);
+                AnsiConsole.MarkupLine(staticText);
         }
 
-        public static StaticText BlankLine() => new(ColorString.Empty);
+        public static StaticText BlankLine() => new(string.Empty);
 
         public static StaticText Separator(char separatorChar = '=')
         {
-            return new StaticText(new ColorString(new string(separatorChar, Console.WindowWidth)));
+            return new StaticText(new string(separatorChar, Console.WindowWidth));
         }
     }
 }

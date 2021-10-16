@@ -6,7 +6,7 @@ namespace ConsoleFx.Prompter.Questions
 {
     public abstract class TextEntryQuestion<TValue> : Question<string, TValue>
     {
-        protected TextEntryQuestion(string name, FunctionOrColorString message)
+        protected TextEntryQuestion(string name, Factory<string> message)
             : base(name, message)
         {
         }

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using ConsoleFx.ConsoleExtensions;
+using Spectre.Console;
 
 namespace ConsoleFx.Prompter
 {
@@ -99,11 +99,10 @@ namespace ConsoleFx.Prompter
         {
             if (question.Instructions.Count > 0)
             {
-                foreach (FunctionOrColorString instruction in question.Instructions)
+                foreach (Factory<string> instruction in question.Instructions)
                 {
-                    ColorString cstr = new ColorString().Text(instruction.Resolve(answers),
-                        Style.Instructions.ForeColor, Style.Instructions.BackColor);
-                    ConsoleEx.PrintLine(cstr.ToString());
+                    string instructions = instruction.Resolve(answers);
+                    AnsiConsole.MarkupLine(instructions);
                 }
             }
 
@@ -118,10 +117,10 @@ namespace ConsoleFx.Prompter
                 if (question.RawValueValidator is not null)
                 {
                     ValidationResult validationResult = question.RawValueValidator(input, answers);
-                    if (!validationResult.IsValid)
+                    if (!validationResult.Successful)
                     {
-                        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                            ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
+                        if (!string.IsNullOrWhiteSpace(validationResult.Message))
+                            AnsiConsole.MarkupLine($"[red]{validationResult.Message}[/]");
                         continue;
                     }
                 }
@@ -137,10 +136,10 @@ namespace ConsoleFx.Prompter
                 if (question.ConvertedValueValidator is not null)
                 {
                     ValidationResult validationResult = question.ConvertedValueValidator(answer, answers);
-                    if (!validationResult.IsValid)
+                    if (!validationResult.Successful)
                     {
-                        if (!string.IsNullOrWhiteSpace(validationResult.ErrorMessage))
-                            ConsoleEx.PrintLine($"{Clr.Red}{validationResult.ErrorMessage}");
+                        if (!string.IsNullOrWhiteSpace(validationResult.Message))
+                            AnsiConsole.MarkupLine($"[red]{validationResult.Message}[/]");
                         continue;
                     }
                 }

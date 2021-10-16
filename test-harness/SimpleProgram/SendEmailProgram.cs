@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using ConsoleFx.CmdLine;
 using ConsoleFx.CmdLine.Help;
 using ConsoleFx.CmdLine.Validators;
-using ConsoleFx.ConsoleExtensions;
+
+using Spectre.Console;
 
 namespace ConsoleFx.TestHarness.SimpleProgram
 {
@@ -22,7 +23,7 @@ namespace ConsoleFx.TestHarness.SimpleProgram
             ConsoleProgram program = new SendEmailProgram();
             program.HandleErrorsWith(ex =>
             {
-                ConsoleEx.PrintLine($"[Red]{ex}[Reset]");
+                AnsiConsole.WriteException(ex);
                 return 1;
             });
             program.DisplayHelpOnError();

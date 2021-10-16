@@ -11,7 +11,7 @@ namespace ConsoleFx.Prompter.Questions
         private bool _hideCursor;
         private bool _hideMask;
 
-        internal PasswordQuestion(string name, FunctionOrColorString message)
+        internal PasswordQuestion(string name, Factory<string> message)
             : base(name, message)
         {
         }
@@ -31,15 +31,13 @@ namespace ConsoleFx.Prompter.Questions
         /// <inheritdoc />
         internal override object Ask(dynamic answers)
         {
-            return ConsoleEx.ReadSecret(new ColorString(Message.Resolve(answers),
-                    PrompterFlow.Style.Question.ForeColor, PrompterFlow.Style.Question.BackColor),
-                _hideCursor, _hideMask);
+            return ConsoleEx.ReadSecret(Message.Resolve(answers), _hideCursor, _hideMask);
         }
     }
 
     public sealed class PasswordQuestion : PasswordQuestion<string>
     {
-        public PasswordQuestion(string name, FunctionOrColorString message)
+        public PasswordQuestion(string name, Factory<string> message)
             : base(name, message)
         {
         }
