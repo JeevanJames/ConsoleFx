@@ -230,7 +230,7 @@ namespace ConsoleFx.CmdLine
                 if (prepostHandlers is not null)
                 {
                     foreach (PrePostHandlerAttribute attribute in prepostHandlers)
-                        attributeErrorCode = attribute.OnException(ex, parseResult?.Command);
+                        attributeErrorCode = attribute.OnException(ex, parseResult.Command);
                 }
 
                 // Run the configured error handler.
@@ -251,7 +251,7 @@ namespace ConsoleFx.CmdLine
                 if (prepostHandlers is not null)
                 {
                     foreach (PrePostHandlerAttribute attribute in prepostHandlers)
-                        attribute.AfterHandler(parseResult?.Command);
+                        attribute.AfterHandler(parseResult.Command);
                 }
             }
         }

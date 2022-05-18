@@ -15,7 +15,7 @@ namespace ConsoleFx.CmdLine
     ///     <para />
     ///     This class adds support for metadata.
     /// </summary>
-    public abstract class Arg : IMetadataObject
+    public abstract class Arg
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<Dictionary<string, object>> _metadata = new(
@@ -29,28 +29,6 @@ namespace ConsoleFx.CmdLine
             ProcessMetadataAttributes();
         }
 
-        /// <inheritdoc />
-        public object this[string name]
-        {
-            get => ((IMetadataObject)this).Get<object>(name);
-            set => ((IMetadataObject)this).Set(name, value);
-        }
-
-        /// <inheritdoc />
-        public T Get<T>(string name)
-        {
-            return _metadata.Value.TryGetValue(name, out object result) ? (T)result : default;
-        }
-
-        /// <inheritdoc />
-        public void Set<T>(string name, T value)
-        {
-            if (_metadata.Value.ContainsKey(name))
-                _metadata.Value[name] = value;
-            else
-                _metadata.Value.Add(name, value);
-        }
-
         /// <summary>
         ///     Read any metadata attributes on this class and assign them to this arg.
         /// </summary>
@@ -60,6 +38,31 @@ namespace ConsoleFx.CmdLine
                 .GetCustomAttributes<MetadataAttribute>(inherit: true);
             foreach (MetadataAttribute metadataAttribute in metadataAttributes)
                 metadataAttribute.AssignMetadata(this);
+        }
+
+        /// <summary>
+        ///     Gets a metadata value by name.
+        /// </summary>
+        /// <typeparam name="T">The type of the metadata value.</typeparam>
+        /// <param name="name">The name of the metadata value.</param>
+        /// <returns>The metadata value or the default of T if the value does not exist.</returns>
+        public T Get<T>(string name)
+        {
+            return _metadata.Value.TryGetValue(name, out object result) ? (T)result : default;
+        }
+
+        /// <summary>
+        ///     Sets a metadata value by name.
+        /// </summary>
+        /// <typeparam name="T">The type of the metadata value.</typeparam>
+        /// <param name="name">The name of the metadata value.</param>
+        /// <param name="value">The value of the metadata to set.</param>
+        public void Set<T>(string name, T value)
+        {
+            if (_metadata.Value.ContainsKey(name))
+                _metadata.Value[name] = value;
+            else
+                _metadata.Value.Add(name, value);
         }
     }
 }

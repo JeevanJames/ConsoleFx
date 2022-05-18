@@ -17,10 +17,9 @@ namespace TestHarness.Prompter
     internal sealed class Test : TestBase
     {
         private const string NameInstructions1 = "We need your name to address you for the rest of the questions.";
+        private const string NameInstructions2 = "You have [red on white]our guarantee[/] that we will keep your details private.";
         private const string NameInstructions3 = "Please trust us.";
         private const string PasswordInstructions = "We need your password to log into your bank account and steal all your money. Make sure to type it in correctly.";
-
-        private static readonly string NameInstructions2 = "You have [red on white]our guarantee[/] that we will keep your details private.";
 
         internal override async Task RunAsync()
         {
@@ -72,7 +71,7 @@ namespace TestHarness.Prompter
                 new ListQuestion<bool>("Proceed2", "Should we proceed (checkbox)? ", new[] { "Yes", "No", "Maybe" })
                     .WithInstructions("This is a confirmation using checkboxes")
                     .Transform(selected => selected == 1),
-                StaticText.Separator(),
+                new Separator(),
                 new CheckboxQuestion("Checkbox", "This is a checkbox", new[] { "Choice 1", "Choice 2", "Choice 3" })
                     .WithInstructions("Select at least one option")
                     .ValidateWith(list => list.Count > 0 ? ValidationResult.Success() : ValidationResult.Error()),

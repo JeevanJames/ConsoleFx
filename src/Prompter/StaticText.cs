@@ -2,7 +2,6 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Diagnostics;
 
 using Spectre.Console;
@@ -25,10 +24,24 @@ namespace ConsoleFx.Prompter
         }
 
         public static StaticText BlankLine() => new(string.Empty);
+    }
 
-        public static StaticText Separator(char separatorChar = '=')
+    public class Separator : StaticText
+    {
+        public Separator()
+            : base(string.Empty)
         {
-            return new StaticText(new string(separatorChar, Console.WindowWidth));
+        }
+
+        public Separator(Factory<string> message)
+            : base(message)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void Display(dynamic answers)
+        {
+            AnsiConsole.Write(new Rule(Message.Resolve(answers)).RuleStyle(new Spectre.Console.Style(Color.Red)));
         }
     }
 }

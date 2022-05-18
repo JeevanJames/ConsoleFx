@@ -48,11 +48,8 @@ namespace ConsoleFx.TestHarness.SimpleProgram
         /// <inheritdoc />
         public override string Validate(IParseResult parseResult)
         {
-            if (parseResult.Group == 0)
-            {
-                if (ToAddresses.Count == 0 && CcAddresses.Count == 0 && BccAddresses.Count == 0)
-                    return "Specify at least one To, CC or BCC address";
-            }
+            if (parseResult.Group == 0 && ToAddresses.Count == 0 && CcAddresses.Count == 0 && BccAddresses.Count == 0)
+                return "Specify at least one To, CC or BCC address";
 
             return null;
         }

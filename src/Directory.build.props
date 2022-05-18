@@ -4,7 +4,7 @@
 
     <PropertyGroup>
         <!-- Build properties -->
-        <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
 
         <!-- Package properties -->
         <Version>0.1.0</Version>

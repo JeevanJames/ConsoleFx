@@ -34,10 +34,9 @@ namespace ConsoleFx.CmdLine.Help
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
 
-            var metadata = (IMetadataObject)argument;
-            metadata[HelpMetadataKey.Description] = description;
+            argument.Set(HelpMetadataKey.Description, description);
             if (!string.IsNullOrWhiteSpace(name))
-                metadata[HelpMetadataKey.Name] = name;
+                argument.Set(HelpMetadataKey.Name, name);
             return argument;
         }
 
@@ -59,10 +58,9 @@ namespace ConsoleFx.CmdLine.Help
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
 
-            var metadata = (IMetadataObject)command;
-            metadata[HelpMetadataKey.Description] = description;
+            command.Set(HelpMetadataKey.Description, description);
             if (!string.IsNullOrWhiteSpace(name))
-                metadata[HelpMetadataKey.Name] = name;
+                command.Set(HelpMetadataKey.Name, name);
             return command;
         }
 
@@ -82,8 +80,7 @@ namespace ConsoleFx.CmdLine.Help
             if (description is null)
                 throw new ArgumentNullException(nameof(description));
 
-            var metadata = (IMetadataObject)option;
-            metadata[HelpMetadataKey.Description] = description;
+            option.Set(HelpMetadataKey.Description, description);
             return option;
         }
 
@@ -105,15 +102,15 @@ namespace ConsoleFx.CmdLine.Help
         ///     Thrown if the <paramref name="name"/> is <c>null</c>.
         /// </exception>
         public static TArg Category<TArg>(this TArg arg, string name, string description = null)
-            where TArg : Arg, IMetadataObject
+            where TArg : Arg
         {
             if (arg is null)
                 throw new ArgumentNullException(nameof(arg));
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
 
-            arg[HelpMetadataKey.CategoryName] = name;
-            arg[HelpMetadataKey.CategoryDescription] = description;
+            arg.Set(HelpMetadataKey.CategoryName, name);
+            arg.Set(HelpMetadataKey.CategoryDescription, description);
             return arg;
         }
 
@@ -131,12 +128,12 @@ namespace ConsoleFx.CmdLine.Help
         /// <param name="order">The order of the arg.</param>
         /// <returns>The instance of the <see cref="Arg"/>.</returns>
         public static TArg Order<TArg>(this TArg arg, int order)
-            where TArg : Arg, IMetadataObject
+            where TArg : Arg
         {
             if (arg is null)
                 throw new ArgumentNullException(nameof(arg));
 
-            arg[HelpMetadataKey.Order] = order.ToString(CultureInfo.InvariantCulture);
+            arg.Set(HelpMetadataKey.Order, order.ToString(CultureInfo.InvariantCulture));
             return arg;
         }
 
@@ -151,12 +148,12 @@ namespace ConsoleFx.CmdLine.Help
         /// </param>
         /// <returns>The instance of the <see cref="Arg"/>.</returns>
         public static TArg HideHelp<TArg>(this TArg arg)
-            where TArg : Arg, IMetadataObject
+            where TArg : Arg
         {
             if (arg is null)
                 throw new ArgumentNullException(nameof(arg));
 
-            arg[HelpMetadataKey.Hide] = true;
+            arg.Set(HelpMetadataKey.Hide, true);
             return arg;
         }
     }

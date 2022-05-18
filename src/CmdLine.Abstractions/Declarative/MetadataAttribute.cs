@@ -34,7 +34,7 @@ namespace ConsoleFx.CmdLine
         /// <typeparam name="TArg">The type of arg.</typeparam>
         /// <param name="arg">The arg to assign the metadata to.</param>
         public void AssignMetadata<TArg>(TArg arg)
-            where TArg : IMetadataObject
+            where TArg : Arg
         {
             // Validate applicable args for this attribute.
             //TODO: Simplify code

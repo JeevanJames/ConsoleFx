@@ -127,7 +127,7 @@ namespace ConsoleFx.CmdLine.Help
             WriteLine(description);
         }
 
-        private string GetSummaryUsage(Command command)
+        private static string GetSummaryUsage(Command command)
         {
             var sb = new StringBuilder();
             BuildCommandNamesChain(command, sb);
@@ -162,12 +162,12 @@ namespace ConsoleFx.CmdLine.Help
                 return;
 
             IEnumerable<IGrouping<string, TArg>> categories = args.GroupBy(
-                arg => ((IMetadataObject)arg).Get<string>(HelpMetadataKey.CategoryName), StringComparer.OrdinalIgnoreCase);
+                arg => arg.Get<string>(HelpMetadataKey.CategoryName), StringComparer.OrdinalIgnoreCase);
             foreach (IGrouping<string, TArg> category in categories)
             {
                 List<TArg> categoryArgs = category
-                    .Where(arg => !((IMetadataObject)arg).Get<bool>(HelpMetadataKey.Hide))
-                    .OrderBy(arg => ((IMetadataObject)arg).Get<int>(HelpMetadataKey.Order))
+                    .Where(arg => !arg.Get<bool>(HelpMetadataKey.Hide))
+                    .OrderBy(arg => arg.Get<int>(HelpMetadataKey.Order))
 
                     //.ThenBy(arg => arg.Name) //TODO
                     .ToList();
@@ -186,13 +186,13 @@ namespace ConsoleFx.CmdLine.Help
                 foreach (TArg arg in categoryArgs)
                 {
                     string resolvedName = nameResolver(arg);
-                    string description = ((IMetadataObject)arg).Get<string>(HelpMetadataKey.Description) ?? "<No description provided>";
+                    string description = arg.Get<string>(HelpMetadataKey.Description) ?? "<No description provided>";
                     PrintArg(resolvedName, description, maxNameLength, placement);
                 }
             }
         }
 
-        private string ResolveCommandNames(Arg arg)
+        private static string ResolveCommandNames(Arg arg)
         {
             return ((INamedObject)arg).AllNames
                 .Aggregate(new StringBuilder(), (sb, name) =>
@@ -204,20 +204,27 @@ namespace ConsoleFx.CmdLine.Help
                 .ToString();
         }
 
-        private string ResolveOptionNames(Arg arg)
+        private static string ResolveOptionNames(Arg arg)
         {
-            return ((INamedObject)arg).AllNames
-                .Select(name => name.Length > 1 ? $"--{name}" : $"-{name}")
-                .Aggregate(new StringBuilder(), (sb, name) =>
-                {
-                    if (sb.Length > 0)
-                        sb.Append(", ");
-                    return sb.Append(name);
-                })
-                .ToString();
+            IEnumerable<string> allNames = ((INamedObject)arg).AllNames;
+            string shortName = allNames.FirstOrDefault(n => n.Length == 1);
+            string longName = allNames.FirstOrDefault(n => n.Length > 1);
+            StringBuilder sb = new();
+            if (shortName is not null)
+                sb.Append("-").Append(shortName);
+            else
+                sb.Append("  ");
+            if (longName is not null)
+            {
+                sb.Append(shortName is not null ? ", " : "  ")
+                    .Append("--")
+                    .Append(longName);
+            }
+
+            return sb.ToString();
         }
 
-        private string ResolveArgumentName(IMetadataObject arg)
+        private static string ResolveArgumentName(Arg arg)
         {
             string customName = arg.Get<string>(HelpMetadataKey.Name);
             return customName ?? "argument";
@@ -231,28 +238,24 @@ namespace ConsoleFx.CmdLine.Help
             {
                 Command currentCommand = allCommands[index];
 
-                Arguments arguments = currentCommand.Arguments;
-                foreach (Argument argument in arguments)
+                foreach (Argument argument in currentCommand.Arguments)
                 {
-                    var metadata = (IMetadataObject)argument;
-                    bool hide = metadata.Get<bool>(HelpMetadataKey.Hide);
+                    bool hide = argument.Get<bool>(HelpMetadataKey.Hide);
                     if (hide)
                         continue;
-                    string description = metadata.Get<string>(HelpMetadataKey.Description);
+                    string description = argument.Get<string>(HelpMetadataKey.Description);
 
                     //TODO: Replace argument.Order with argument.Index in the error message below.
                     if (string.IsNullOrWhiteSpace(description))
                         throw new InvalidOperationException($"Argument at index '{argument.Order}' under command '{currentCommand.Name}' does not have a description.");
                 }
 
-                Options options = currentCommand.Options;
-                foreach (Option option in options)
+                foreach (Option option in currentCommand.Options)
                 {
-                    var metadata = (IMetadataObject)option;
-                    bool hide = metadata.Get<bool>(HelpMetadataKey.Hide);
+                    bool hide = option.Get<bool>(HelpMetadataKey.Hide);
                     if (hide)
                         continue;
-                    string description = metadata.Get<string>(HelpMetadataKey.Description);
+                    string description = option.Get<string>(HelpMetadataKey.Description);
                     if (string.IsNullOrWhiteSpace(description))
                         throw new InvalidOperationException($"Option '{option.Name}' under command '{currentCommand.Name}' does not have a description.");
                 }

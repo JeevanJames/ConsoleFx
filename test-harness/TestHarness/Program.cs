@@ -25,7 +25,6 @@ namespace TestHarness
 
             Console.CancelKeyPress += Console_CancelKeyPress;
 
-            int selectedItem = 0;
             while (true)
             {
                 try
