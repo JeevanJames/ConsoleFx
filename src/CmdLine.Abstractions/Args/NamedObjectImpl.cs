@@ -54,13 +54,10 @@ namespace ConsoleFx.CmdLine
         {
             if (string.IsNullOrWhiteSpace(name))
                 return false;
-            return _names.Any(kvp =>
-            {
-                StringComparison comparison = kvp.Value
-                    ? StringComparison.Ordinal
-                    : StringComparison.OrdinalIgnoreCase;
-                return name.Equals(kvp.Key, comparison);
-            });
+
+            return _names.Any(kvp => name.Equals(kvp.Key, kvp.Value
+                ? StringComparison.Ordinal
+                : StringComparison.OrdinalIgnoreCase));
         }
 
         string INamedObject.Name => _names.Count == 0 ? null : _names.First().Key;
