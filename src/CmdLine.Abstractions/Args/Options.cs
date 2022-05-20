@@ -25,7 +25,7 @@ namespace ConsoleFx.CmdLine
         /// <inheritdoc />
         protected override void CheckDuplicates(Option obj, int index)
         {
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (i == index)
                     continue;
@@ -40,9 +40,9 @@ namespace ConsoleFx.CmdLine
         /// <param name="option1">The first <see cref="Option"/> instance.</param>
         /// <param name="option2">The second <see cref="Option"/> instance.</param>
         /// <returns><c>true</c> if the options match, otherwise <c>false</c>.</returns>
-        private bool ObjectsMatch(Option option1, Option option2)
+        private static bool ObjectsMatch(Option option1, Option option2)
         {
-            return option1.AllNames.Any(name => option2.HasName(name));
+            return option1.AllNames.Any(option2.HasName);
         }
     }
 }

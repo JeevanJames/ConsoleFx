@@ -66,9 +66,9 @@ namespace ConsoleFx.CmdLine
             }
         }
 
-        private bool ObjectsMatch(Command command1, Command command2)
+        private static bool ObjectsMatch(Command command1, Command command2)
         {
-            return command1.AllNames.Any(name => command2.HasName(name));
+            return command1.AllNames.Any(command2.HasName);
         }
     }
 }
