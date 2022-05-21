@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Help;
 using ConsoleFx.CmdLine.Validators;
 
 using Spectre.Console;
@@ -33,7 +32,7 @@ namespace TestHarness
         }
     }
 
-    [Program(Style = ArgStyle.Unix)]
+    [Program(Style = ArgStyle.GnuGetOpts)]
     public sealed class MyMultiCommandProgram : ConsoleProgram
     {
         protected override IEnumerable<Arg> GetArgs()
@@ -43,12 +42,10 @@ namespace TestHarness
         }
     }
 
-    [Command("add", "install")]
-    [CommandHelp("Installs a package")]
+    [Command("add", "install", HelpText = "Installs a package")]
     public sealed class AddCommand : Command
     {
-        [Argument]
-        [ArgumentHelp("package-name", "The name of the package to install")]
+        [Argument(HelpName = "package-name", HelpText = "The name of the package to install")]
         public string PackageName { get; set; }
 
         protected override IEnumerable<Arg> GetArgs()

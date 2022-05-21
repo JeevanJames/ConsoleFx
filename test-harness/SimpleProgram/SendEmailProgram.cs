@@ -8,14 +8,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 using ConsoleFx.CmdLine;
-using ConsoleFx.CmdLine.Help;
 using ConsoleFx.CmdLine.Validators;
 
 using Spectre.Console;
 
 namespace ConsoleFx.TestHarness.SimpleProgram
 {
-    [Program(Style = ArgStyle.Unix)]
+    [Program(Style = ArgStyle.GnuGetOpts)]
     public sealed class SendEmailProgram : ConsoleProgram
     {
         public static async Task<int> Main()
@@ -54,31 +53,25 @@ namespace ConsoleFx.TestHarness.SimpleProgram
             return null;
         }
 
-        [Option("to", Optional = true, MultipleOccurrences = true)]
-        [OptionHelp("To addresses.")]
+        [Option("to", Optional = true, MultipleOccurrences = true, HelpText = "To address.")]
         [Required]
         public IList<string> ToAddresses { get; } = new List<string>();
 
-        [Option("cc", Optional = true, MultipleOccurrences = true)]
-        [OptionHelp("CC addresses.")]
+        [Option("cc", Optional = true, MultipleOccurrences = true, HelpText = "CC addresses.")]
         public IList<string> CcAddresses { get; } = new List<string>();
 
-        [Option("bcc", Optional = true, MultipleOccurrences = true)]
-        [OptionHelp("BCC addresses.")]
+        [Option("bcc", Optional = true, MultipleOccurrences = true, HelpText = "BCC addresses.")]
         public IList<string> BccAddresses { get; } = new List<string>();
 
-        [Option("subject", "sub", "s")]
-        [OptionHelp("Email subject line")]
+        [Option("subject", "sub", "s", HelpText = "Email subject line")]
         public string Subject { get; set; }
 
-        [Argument]
+        [Argument(HelpName = "message", HelpText = "The email message")]
         [StringValidator(2, int.MaxValue)]
-        [ArgumentHelp("message", "The email message")]
         public string Message { get; set; }
     }
 
-    [Command("verify")]
-    [CommandHelp("Verifies things")]
+    [Command("verify", HelpText = "Verifies things")]
     public sealed class VerifyCommand : Command
     {
         /// <inheritdoc />

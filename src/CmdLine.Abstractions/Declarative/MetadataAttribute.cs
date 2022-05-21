@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
@@ -25,7 +26,7 @@ namespace ConsoleFx.CmdLine
         ///     attribute.
         /// </summary>
         /// <returns>One or more metadata key-value pairs.</returns>
-        public abstract IEnumerable<KeyValuePair<string, object>> GetMetadata();
+        public abstract IEnumerable<ArgMetadata> GetMetadata();
 
         /// <summary>
         ///     Helper method to assign the metadata values from this attribute to the specified
@@ -45,9 +46,8 @@ namespace ConsoleFx.CmdLine
                     $"Cannot apply the {GetType().Name} attribute to an arg of type {typeof(TArg).Name}.");
             }
 
-            IEnumerable<KeyValuePair<string, object>> metadata = GetMetadata();
-            foreach (KeyValuePair<string, object> metadataItem in metadata)
-                arg.Set(metadataItem.Key, metadataItem.Value);
+            foreach (ArgMetadata metadataItem in GetMetadata())
+                arg.Set(metadataItem.Name, metadataItem.Value);
         }
 
         /// <summary>
@@ -55,5 +55,44 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         /// <returns>The applicable arg types.</returns>
         protected abstract IEnumerable<Type> GetApplicableArgTypes();
+
+        protected static string ResolveResourceString(string unlocalizedValue, Type resourceType, string resourceName,
+            bool required)
+        {
+            if (resourceType is not null && !string.IsNullOrWhiteSpace(resourceName))
+            {
+                PropertyInfo resourceProperty = resourceType.GetTypeInfo().GetDeclaredProperty(resourceName);
+                if (resourceProperty is null)
+                {
+                    throw new ParserException(-1,
+                        $"Resource type {resourceType} does not contain a resource named {resourceName}.");
+                }
+
+                if (resourceProperty.PropertyType != typeof(string))
+                {
+                    throw new ParserException(-1,
+                        $"Resource {resourceName} on the resource type {resourceType} is not a string.");
+                }
+
+                return resourceProperty.GetValue(null, null) as string;
+            }
+
+            if (unlocalizedValue is not null)
+                return unlocalizedValue;
+
+            if (required)
+                throw new ParserException(-1, "Specify either a string value or a resource type/name pair.");
+
+            return null;
+        }
+    }
+
+    public static class CommonApplicableArgTypes
+    {
+        public static readonly Type[] Command = { typeof(Command) };
+        public static readonly Type[] Argument = { typeof(Argument) };
+        public static readonly Type[] Option = { typeof(Option) };
+
+        public static readonly Type[] All = { typeof(Command), typeof(Argument), typeof(Option) };
     }
 }

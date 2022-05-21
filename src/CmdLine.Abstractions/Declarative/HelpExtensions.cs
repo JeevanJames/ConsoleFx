@@ -5,7 +5,7 @@
 using System;
 using System.Globalization;
 
-namespace ConsoleFx.CmdLine.Help
+namespace ConsoleFx.CmdLine
 {
     /// <summary>
     ///     Provides extension methods to add standard help metadata to various <see cref="Arg"/>
@@ -36,7 +36,7 @@ namespace ConsoleFx.CmdLine.Help
 
             argument.Set(HelpMetadataKey.Description, description);
             if (!string.IsNullOrWhiteSpace(name))
-                argument.Set(HelpMetadataKey.Name, name);
+                argument.Set(HelpMetadataKey.ArgumentName, name);
             return argument;
         }
 
@@ -60,7 +60,7 @@ namespace ConsoleFx.CmdLine.Help
 
             command.Set(HelpMetadataKey.Description, description);
             if (!string.IsNullOrWhiteSpace(name))
-                command.Set(HelpMetadataKey.Name, name);
+                command.Set(HelpMetadataKey.ArgumentName, name);
             return command;
         }
 

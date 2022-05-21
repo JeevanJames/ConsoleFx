@@ -1,12 +1,12 @@
 ﻿extensions: designer.cs generated.cs
 extensions: .cs
-// Copyright (c) 2015-2021 Jeevan James
+// Copyright (c) 2015-2022 Jeevan James
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
 extensions: .xml .config .xsd .nuspec
 <!--
-  Copyright (c) 2015-2021 Jeevan James
+  Copyright (c) 2015-2022 Jeevan James
   This file is licensed to you under the Apache License, Version 2.0.
   See the LICENSE file in the project root for more information.
 -->

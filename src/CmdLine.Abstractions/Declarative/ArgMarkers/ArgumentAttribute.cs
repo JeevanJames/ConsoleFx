@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleFx.CmdLine
 {
@@ -10,7 +12,7 @@ namespace ConsoleFx.CmdLine
     ///     Marks a property in a <see cref="Command"/> class as an <see cref="Argument"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class ArgumentAttribute : Attribute
+    public sealed class ArgumentAttribute : ArgAttribute
     {
         /// <summary>
         ///     Gets or sets the order of the argument in the list of arguments.
@@ -27,5 +29,27 @@ namespace ConsoleFx.CmdLine
         ///     applies to the last argument. For other arguments, this value can only be one.
         /// </summary>
         public byte MaxOccurences { get; set; } = 1;
+
+        public string HelpName { get; set; }
+
+        public Type HelpNameResourceType { get; set; }
+
+        public string HelpNameResourceName { get; set; }
+
+        /// <inheritdoc />
+        public override IEnumerable<ArgMetadata> GetMetadata()
+        {
+            return base.GetMetadata().Concat(new[]
+            {
+                new ArgMetadata(HelpMetadataKey.ArgumentName,
+                    ResolveResourceString(HelpName, HelpNameResourceType, HelpNameResourceName, required: false)),
+            });
+        }
+
+        /// <inheritdoc />
+        protected override IEnumerable<Type> GetApplicableArgTypes()
+        {
+            return CommonApplicableArgTypes.Argument;
+        }
     }
 }

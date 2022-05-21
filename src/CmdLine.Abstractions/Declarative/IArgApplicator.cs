@@ -6,6 +6,11 @@ using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
+    /// <summary>
+    ///     Applied to attributes decorated on args. Provides a common way to update the args from
+    ///     the attribute.
+    /// </summary>
+    /// <typeparam name="TArg">The type of the arg.</typeparam>
     public interface IArgApplicator<in TArg>
         where TArg : ArgumentOrOption<TArg>
     {

@@ -1,15 +1,32 @@
-﻿// Copyright (c) 2015-2021 Jeevan James
-// This file is licensed to you under the Apache License, Version 2.0.
-// See the LICENSE file in the project root for more information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace ConsoleFx.CmdLine.Internals
+namespace ConsoleFx.CmdLine
 {
-    internal static class NameExtensions
+    /// <summary>
+    ///     Common base class for all arg attributes, which has common properties for help.
+    /// </summary>
+    public abstract class ArgAttribute : MetadataAttribute
     {
-        internal static IReadOnlyList<string> ConstructNames(this string name, string[] additionalNames)
+        public string HelpText { get; set; }
+
+        public Type HelpTextResourceType { get; set; }
+
+        public string HelpTextResourceName { get; set; }
+
+        public int HelpOrder { get; set; }
+
+        public bool HideHelp { get; set; }
+
+        public override IEnumerable<ArgMetadata> GetMetadata()
+        {
+            yield return new ArgMetadata(HelpMetadataKey.Description,
+                ResolveResourceString(HelpText, HelpTextResourceType, HelpTextResourceName, required: false));
+            yield return new ArgMetadata(HelpMetadataKey.Order, HelpOrder);
+            yield return new ArgMetadata(HelpMetadataKey.Hide, HideHelp);
+        }
+
+        protected static IReadOnlyList<string> ConstructNames(string name, string[] additionalNames)
         {
             if (name is null)
                 throw new ArgumentNullException(nameof(name));

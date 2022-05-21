@@ -11,7 +11,7 @@ using ConsoleFx.CmdLine.Parser.Runs;
 
 namespace ConsoleFx.CmdLine.Parser.Style
 {
-    public sealed class UnixArgStyle : ArgStyle
+    public sealed class GnuGetOptsArgStyle : ArgStyle
     {
         /// <inheritdoc/>
         public override ArgGrouping GetGrouping(ArgGrouping specifiedGrouping, IReadOnlyList<Option> options,

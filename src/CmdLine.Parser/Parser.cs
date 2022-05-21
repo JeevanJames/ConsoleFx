@@ -13,7 +13,7 @@ using ConsoleFx.CmdLine.Parser.Style;
 using ConsoleFx.CmdLine.Validators;
 using ConsoleFx.CmdLine.Validators.Bases;
 
-using RegexCapture = System.Text.RegularExpressions.Capture;
+//using RegexCapture = System.Text.RegularExpressions.Capture;
 
 namespace ConsoleFx.CmdLine.Parser
 {
@@ -486,7 +486,8 @@ namespace ConsoleFx.CmdLine.Parser
         ///     Thrown if any of the validation or usage checks on the <see cref="ArgumentRun"/> objects
         ///     fails.
         /// </exception>
-        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments, IReadOnlyList<ArgumentRun> argumentRuns)
+        private static void ProcessArguments(IReadOnlyList<string> specifiedArguments,
+            IReadOnlyList<ArgumentRun> argumentRuns)
         {
             // We already verified the number of specified arguments in the GetMatchingGroups method.
 
@@ -578,11 +579,11 @@ namespace ConsoleFx.CmdLine.Parser
             if (!match.Success)
                 yield break;
 
-            foreach (RegexCapture capture in match.Groups["token"].Captures)
+            foreach (Capture capture in match.Groups["token"].Captures)
                 yield return capture.Value;
         }
 
-        private static readonly Regex TokenPattern = new Regex(@"((\s*""(?<token>[^""]*)(""|$)\s*)|(\s*(?<token>[^\s""]+)\s*))*",
-            RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex TokenPattern = new(@"((\s*""(?<token>[^""]*)(""|$)\s*)|(\s*(?<token>[^\s""]+)\s*))*",
+            RegexOptions.Compiled | RegexOptions.ExplicitCapture, TimeSpan.FromSeconds(1));
     }
 }

@@ -3,12 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ConsoleFx.CmdLine
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class FlagAttribute : Attribute, IArgApplicator<Option>
+    public sealed class FlagAttribute : ArgAttribute, IArgApplicator<Option>
     {
         public FlagAttribute(params string[] names)
         {
@@ -24,6 +25,12 @@ namespace ConsoleFx.CmdLine
             if (propertyInfo.PropertyType != typeof(bool))
                 throw new ParserException(-1, $"Type for property {propertyInfo.Name} in command {propertyInfo.DeclaringType} should be an boolean.");
             arg.UsedAsFlag();
+        }
+
+        /// <inheritdoc />
+        protected override IEnumerable<Type> GetApplicableArgTypes()
+        {
+            return CommonApplicableArgTypes.Option;
         }
     }
 }

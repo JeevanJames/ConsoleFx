@@ -6,7 +6,11 @@ namespace ConsoleFx.CmdLine
 {
     public enum ArgStyle
     {
-        Unix,
+        // As per https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html, this
+        // is not a POSIX style. POSIX only uses single char (single dash options).
+        // POSIX usage guide: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
+        GnuGetOpts,
+
         Windows,
     }
 }

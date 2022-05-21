@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using ConsoleFx.CmdLine.Internals;
@@ -14,7 +15,7 @@ namespace ConsoleFx.CmdLine
     ///     Marks a property in a <see cref="Command"/> class as an <see cref="Option"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class OptionAttribute : Attribute, IArgApplicator<Option>
+    public sealed class OptionAttribute : ArgAttribute, IArgApplicator<Option>
     {
         //TODO: Add a parameterless ctor. The name of the option will be the property name.
 
@@ -26,7 +27,7 @@ namespace ConsoleFx.CmdLine
         /// <param name="additionalNames">Optional additional names (aliases) for the option.</param>
         public OptionAttribute(string name, params string[] additionalNames)
         {
-            Names = name.ConstructNames(additionalNames);
+            Names = ConstructNames(name, additionalNames);
         }
 
         /// <summary>
@@ -50,6 +51,12 @@ namespace ConsoleFx.CmdLine
         /// </summary>
         public bool MultipleParameters { get; set; }
 
+        public string HelpParamName { get; set; }
+
+        public Type HelpParamNameResourceType { get; set; }
+
+        public string HelpParamNameResourceName { get; set; }
+
         /// <inheritdoc />
         void IArgApplicator<Option>.Apply(Option arg, PropertyInfo propertyInfo)
         {
@@ -61,6 +68,23 @@ namespace ConsoleFx.CmdLine
                 arg.UsedAsSingleOccurrenceAndUnlimitedParameters(Optional);
             else
                 arg.UsedAsSingleParameter(Optional);
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<ArgMetadata> GetMetadata()
+        {
+            return base.GetMetadata().Concat(new[]
+            {
+                new ArgMetadata(HelpMetadataKey.OptionParameterName,
+                    ResolveResourceString(HelpParamName, HelpParamNameResourceType, HelpParamNameResourceName,
+                        required: false)),
+            });
+        }
+
+        /// <inheritdoc />
+        protected override IEnumerable<Type> GetApplicableArgTypes()
+        {
+            return CommonApplicableArgTypes.Option;
         }
     }
 }

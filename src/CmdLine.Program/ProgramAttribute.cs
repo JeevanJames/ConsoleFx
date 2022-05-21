@@ -11,7 +11,7 @@ namespace ConsoleFx.CmdLine
     {
         public string Name { get; set; }
 
-        public ArgStyle Style { get; set; } = ArgStyle.Unix;
+        public ArgStyle Style { get; set; } = ArgStyle.GnuGetOpts;
 
         public ArgGrouping Grouping { get; set; } = ArgGrouping.DoesNotMatter;
     }

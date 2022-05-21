@@ -24,14 +24,15 @@ namespace ConsoleFx.CmdLine.Parser
         {
             _run = run;
             Command = run.Commands[run.Commands.Count - 1];
-            Arguments = run.Arguments
-                .Select(ar => ar.Value)
-                .ToList();
-            Options = run.Options
-                .ToDictionary(rootOptionRun => rootOptionRun.Option.Name, rootOptionRun => rootOptionRun.Value);
+            Arguments = run.Arguments.ConvertAll(ar => ar.Value)
+;
+            Options = run.Options.ToDictionary(
+                rootOptionRun => rootOptionRun.Option.Name,
+                rootOptionRun => rootOptionRun.Value);
             Group = group;
         }
 
+        /// <inheritdoc />
         public Command Command { get; }
 
         /// <summary>
@@ -46,8 +47,10 @@ namespace ConsoleFx.CmdLine.Parser
 
         public int Group { get; }
 
+        /// <inheritdoc />
         public bool TryGetArgument<T>(int index, out T value)
         {
+            // If the specified index is greater than the number of arguments, return false.
             if (index >= _run.Arguments.Count)
             {
                 value = default;
@@ -56,11 +59,7 @@ namespace ConsoleFx.CmdLine.Parser
 
             ArgumentRun matchingArgument = _run.Arguments[index];
 
-            return TryGetArgument(matchingArgument, out value);
-        }
-
-        private static bool TryGetArgument<T>(ArgumentRun matchingArgument, out T value)
-        {
+            // If the argument at the specified index is not assigned, return false.
             if (!matchingArgument.Assigned)
             {
                 value = default;
@@ -79,9 +78,10 @@ namespace ConsoleFx.CmdLine.Parser
             return true;
         }
 
+        /// <inheritdoc />
         public bool TryGetOption<T>(string name, out T value)
         {
-            OptionRun matchingOption = _run.Options.FirstOrDefault(r => r.Option.HasName(name));
+            OptionRun matchingOption = _run.Options.Find(r => r.Option.HasName(name));
             if (matchingOption is null)
             {
                 value = default;

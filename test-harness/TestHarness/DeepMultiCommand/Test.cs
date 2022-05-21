@@ -21,7 +21,7 @@ namespace TestHarness.DeepMultiCommand
         }
     }
 
-    [Program(Style = ArgStyle.Unix)]
+    [Program(Style = ArgStyle.GnuGetOpts)]
     public sealed class MyProgram : ConsoleProgram
     {
     }

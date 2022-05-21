@@ -226,7 +226,7 @@ namespace ConsoleFx.CmdLine.Help
 
         private static string ResolveArgumentName(Arg arg)
         {
-            string customName = arg.Get<string>(HelpMetadataKey.Name);
+            string customName = arg.Get<string>(HelpMetadataKey.ArgumentName);
             return customName ?? "argument";
         }
 

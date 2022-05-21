@@ -52,7 +52,7 @@ namespace ConsoleFx.CmdLine
                 AddName(Assembly.GetEntryAssembly()?.GetName().Name ?? "program");
 
                 // Argument style defaults to Unix
-                _argStyle = new ParserStyle.UnixArgStyle();
+                _argStyle = new ParserStyle.GnuGetOptsArgStyle();
 
                 // Grouping defaults to DoesNotMatter
                 _grouping = ArgGrouping.DoesNotMatter;
@@ -356,7 +356,7 @@ namespace ConsoleFx.CmdLine
         {
             return argStyle switch
             {
-                ArgStyle.Unix => new ParserStyle.UnixArgStyle(),
+                ArgStyle.GnuGetOpts => new ParserStyle.GnuGetOptsArgStyle(),
                 ArgStyle.Windows => new ParserStyle.WindowsArgStyle(),
                 _ => throw new NotSupportedException($"Unsupported argument style: '{argStyle}'."),
             };

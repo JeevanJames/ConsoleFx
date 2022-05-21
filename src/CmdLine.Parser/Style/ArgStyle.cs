@@ -60,7 +60,7 @@ namespace ConsoleFx.CmdLine.Parser.Style
         /// <returns>A sequence of help option names.</returns>
         public abstract IEnumerable<string> GetDefaultHelpOptionNames();
 
-        public static readonly ArgStyle Unix = new UnixArgStyle();
+        public static readonly ArgStyle Unix = new GnuGetOptsArgStyle();
 
         public static readonly ArgStyle Windows = new WindowsArgStyle();
     }

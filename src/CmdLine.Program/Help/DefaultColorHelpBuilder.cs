@@ -18,7 +18,8 @@ namespace ConsoleFx.CmdLine.Help
         {
         }
 
-        protected override void PrintArg(string name, string description, int maxNameLength, ArgDescriptionPlacement placement)
+        protected override void PrintArg(string name, string description, int maxNameLength,
+            ArgDescriptionPlacement placement)
         {
             Console.Write(IndentStr);
 

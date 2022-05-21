@@ -14,7 +14,7 @@ namespace ConsoleFx.CmdLine
     ///     Indicates that a class is a <see cref="Command"/> with one or more names.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class CommandAttribute : Attribute
+    public class CommandAttribute : ArgAttribute
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Type _parentType;
@@ -42,7 +42,7 @@ namespace ConsoleFx.CmdLine
         /// <param name="additionalNames">Optional additional names for the command.</param>
         public CommandAttribute(string name, params string[] additionalNames)
         {
-            Names = name.ConstructNames(additionalNames);
+            Names = ConstructNames(name, additionalNames);
         }
 
         /// <summary>
@@ -62,6 +62,12 @@ namespace ConsoleFx.CmdLine
                     throw new ArgumentException($"ParentType should be type {typeof(Command)} or a derived type.", nameof(value));
                 _parentType = value;
             }
+        }
+
+        /// <inheritdoc />
+        protected override IEnumerable<Type> GetApplicableArgTypes()
+        {
+            return CommonApplicableArgTypes.Command;
         }
     }
 }

@@ -2,15 +2,15 @@
 // This file is licensed to you under the Apache License, Version 2.0.
 // See the LICENSE file in the project root for more information.
 
-namespace ConsoleFx.CmdLine.Help
+namespace ConsoleFx.CmdLine
 {
     public static class HelpMetadataKey
     {
         public const string Description = "Description";
 
-        public const string Name = "Name"; // Only for Argument
+        public const string ArgumentName = "Name";
 
-        public const string ParameterName = "ParameterName"; // Only for Option
+        public const string OptionParameterName = "ParameterName";
 
         public const string CategoryName = "CategoryName";
         public const string CategoryDescription = "CategoryDescription";
